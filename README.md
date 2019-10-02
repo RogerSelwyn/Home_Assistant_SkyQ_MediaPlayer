@@ -13,7 +13,7 @@ font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times
 color:#222222;mso-fareast-language:EN-GB">There is currently support for the following device types within Home Assistant:</span>
 
 *   <span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-         mso-fareast-font-family:&quot;Times New Roman&quot;;mso-fareast-language:EN-GB">[<span style="color:#0378A9">Media Player</span>](https://www.home-assistant.io/components/webostv/#media-player)</span>
+         mso-fareast-font-family:&quot;Times New Roman&quot;;mso-fareast-language:EN-GB">[<span style="color:#0378A9">Media Player</span></span>
 
 <a name="media-player"></a>**<span style="font-size:18.0pt;font-family:&quot;Helvetica&quot;,sans-serif;
 mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
