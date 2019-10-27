@@ -7,7 +7,7 @@ import time
 
 
 from custom_components.skyq.skyq.sky_remote import SkyRemote
-from custom_components.skyq.skyq.sky_remote import SwitchMaker
+from custom_components.skyq.util.config_gen import SwitchMaker
 
 import voluptuous as vol
 
