@@ -1,4 +1,4 @@
-import time, math, socket, struct, time
+import time, math, socket
 import requests
 import json
 
