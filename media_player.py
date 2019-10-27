@@ -6,8 +6,8 @@ import socket
 import time
 
 
-from custom_components.skyq.sky_remote.sky_remote import SkyRemote
-from custom_components.skyq.sky_remote.sky_remote import SwitchMaker
+from custom_components.skyq.skyq.sky_remote import SkyRemote
+from custom_components.skyq.skyq.sky_remote import SwitchMaker
 
 import voluptuous as vol
 
