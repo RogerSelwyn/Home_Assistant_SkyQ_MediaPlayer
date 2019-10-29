@@ -6,16 +6,20 @@ class SkyRemote:
     commands={"power": 0, "select": 1, "backup": 2, "dismiss": 2, "channelup": 6, "channeldown": 7, "interactive": 8, "sidebar": 8, "help": 9, "services": 10, "search": 10, "tvguide": 11, "home": 11, "i": 14, "text": 15,  "up": 16, "down": 17, "left": 18, "right": 19, "red": 32, "green": 33, "yellow": 34, "blue": 35, "0": 48, "1": 49, "2": 50, "3": 51, "4": 52, "5": 53, "6": 54, "7": 55, "8": 56, "9": 57, "play": 64, "pause": 65, "stop": 66, "record": 67, "fastforward": 69, "rewind": 71, "boxoffice": 240, "sky": 241}
     connectTimeout = 1000
 
-    def __init__(self, ip, port=49160):
-        self.ip=ip
-        self.port=port
+    REST_BASE_URL = 'http://{0}:{1}/as/{2}'
+    REST_PATH_INFO = 'system/information'
 
-    def http_json(self) -> str:
-        response = requests.get('http://' + self.ip + ':9006/as/system/information')
+    def __init__(self, host, port=49160, jsonport=9006):
+        self._host=host
+        self._port=port
+        self._jsonport = jsonport
+
+    def http_json(self, path) -> str:
+        response = requests.get(self.REST_BASE_URL.format(self._host, self._jsonport, path))
         return response.content
 
     def powerStatus(self) -> str:
-        output = json.loads(self.http_json())        
+        output = json.loads(self.http_json(self.REST_PATH_INFO))        
         if (output['activeStandby'] == False):
             return 'On'
         else:
@@ -46,7 +50,7 @@ class SkyRemote:
             return
 
         try:
-            client.connect((self.ip, self.port))
+            client.connect((self._host, self._port))
         except:
             print("Failed to connect to client")
             return
