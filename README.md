@@ -1,296 +1,107 @@
-<div class="WordSection1">
-
-<span style="font-size:13.5pt;
-font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#222222;mso-fareast-language:EN-GB">The </span><span class="SpellE"><span style="font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:#1990B8;background:#FDFDFD;mso-fareast-language:
-EN-GB">skyq</span></span><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB"> platform allows you to control a <span class="SpellE">SkyQ</span> set top box.</span>
-
-<span style="font-size:13.5pt;
-font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#222222;mso-fareast-language:EN-GB">There is currently support for the following device types within Home Assistant:</span>
-
-*   <span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-         mso-fareast-font-family:&quot;Times New Roman&quot;;mso-fareast-language:EN-GB">[<span style="color:#0378A9">Media Player</span></span>
-
-<a name="media-player"></a>**<span style="font-size:18.0pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB">Media Player</span>**
-
-<span style="font-size:13.5pt;
-font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#222222;mso-fareast-language:EN-GB">To begin with ensure your <span class="SpellE">SkyQ</span> set top box or boxes have static IP addresses.</span>
-
-<span style="font-size:13.5pt;
-font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#222222;mso-fareast-language:EN-GB">Download the custom component into your <home assistant config folder>\<span class="SpellE">custom_components</span>\<span class="SpellE">skyq</span>\</span>
-
-<a name="configuration"></a>**<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;text-transform:uppercase;
-mso-fareast-language:EN-GB">CONFIGURATION</span>**
-
-<span style="font-size:13.5pt;
-font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#222222;mso-fareast-language:EN-GB">To add a <span class="SpellE">SkyQ</span> to your installation, add the following to your </span><span class="SpellE"><span style="font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:#1990B8;background:#FDFDFD;mso-fareast-language:
-EN-GB">configuration.yaml</span></span><span style="font-size:13.5pt;
-font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#222222;mso-fareast-language:EN-GB"> file:</span>
-
-<span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:#7D8B99;mso-fareast-language:EN-GB"># Example <span class="SpellE">configuration.yaml</span> entry</span><span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:
-&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;color:black;mso-fareast-language:
-EN-GB"></span>
-
-<span class="SpellE"><span style="font-size:10.0pt;
-font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-&quot;Courier New&quot;;color:#1990B8;mso-fareast-language:EN-GB">media_player</span></span><span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:#5F6364;mso-fareast-language:EN-GB">:</span><span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:black;mso-fareast-language:EN-GB"></span>
-
-<span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:black;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> </span><span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:
-&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;color:#5F6364;mso-fareast-language:
-EN-GB">-</span> <span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:
-&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;color:black;mso-fareast-language:
-EN-GB"></span> <span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:
-&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;color:#1990B8;mso-fareast-language:
-EN-GB">platform</span><span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:#5F6364;mso-fareast-language:EN-GB">:</span> <span style="font-size:10.0pt;
-font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-&quot;Courier New&quot;;color:black;mso-fareast-language:EN-GB"><span class="SpellE">skyq</span></span><span style="font-size:11.5pt;font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:black;mso-fareast-language:EN-GB"></span>
-
-**<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;text-transform:uppercase;mso-fareast-language:
-EN-GB">CONFIGURATION VARIABLES</span>**
-
-<a name="host">**<span style="font-size:13.5pt;
-font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#222222;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> host</span>**</a>
-
-<span style="mso-bookmark:host">_<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB">(string)(Required)</span>_</span><span style="mso-bookmark:host"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB"></span></span>
-
-<span style="mso-bookmark:host"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB">The IP of the <span class="SpellE">SkyQ</span> set top box, e.g., </span></span><span style="mso-bookmark:host"><span style="font-family:Consolas;mso-fareast-font-family:
-&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;color:#1990B8;background:
-#FDFDFD;mso-fareast-language:EN-GB">192.168.0.10</span></span><span style="mso-bookmark:host"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB">.</span></span>
-
-<span style="mso-bookmark:host"><a name="name">**<span style="font-size:13.5pt;
-font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#222222;mso-fareast-language:EN-GB">name</span>**</a></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name">_<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">(string)( Required)</span>_</span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB"></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">The name you would like to give to the <span class="SpellE">SkyQ</span> set top box.</span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><a name="filename"></a><a name="sources"></a><a name="turn_on_action"></a><span style="mso-bookmark:filename"><span style="mso-bookmark:sources">**<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB">sources</span>**</span></span></span></span>
+The skyq platform allows you to control a SkyQ  set top box.
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources">_<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">(list)( Required)</span>_</span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB"></span></span></span></span></span>
+There is currently support for the following device types within Home Assistant:
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">List of channels or other commands that will appear in the source selection.</span></span></span></span></span>
+-   Media Player
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources">**<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">room</span>**</span></span></span></span>
+To begin with ensure your  SkyQ  set top box or boxes have static IP addresses.
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources">_<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">(string)( Required)</span>_</span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB"></span></span></span></span></span>
+Download the custom component into <config_folder>/custom_components/skyq
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">The room where the <span class="SpellE">SkyQ</span> set top box is located.</span></span></span></span></span>
+# Media Player
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources">**<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">name</span>**</span></span></span></span>
+## Configuration
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources">_<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">(string)( Required)</span>_</span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB"></span></span></span></span></span>
+To add a  SkyQ  to your installation, add the following to your configuration.yaml file:
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">The name you would like to give to the <span class="SpellE">SkyQ</span> set top box.</span></span></span></span></span>
+### Configuration variables
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span class="SpellE">**<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB">config_directory</span>**</span></span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources">**<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB"></span>**</span></span></span></span>
+media_player:
+-  platform:  skyq
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources">_<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">(string)( Required)</span>_</span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB"></span></span></span></span></span>
+**host**
+_(string)(Required)_
+The IP of the  SkyQ  set top box, e.g., 192.168.0.10.
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">The location of your default configuration folder.</span></span></span></span></span>
+**name**
+_(string)( Required)_
+The name you would like to give to the  SkyQ  set top box.
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span class="SpellE"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB">Hassbian</span></span></span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"> <span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">default would be - <span class="SpellE">config_directory</span>: '/home/<span class="SpellE">homeassistant</span>/.<span class="SpellE">homeassistant</span>/'</span></span></span></span></span>
+**sources**
+_(list)( Required)_
+List of channels or other commands that will appear in the source selection.
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span class="SpellE">**<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB">generate_switches_for_channels</span>**</span></span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources">**<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB"></span>**</span></span></span></span>
+**room**
+_(string)( Required)_
+The room where the  SkyQ  set top box is located. 
+Avoid using [ ] in the name: or room: of your device.
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources">_<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">(<span class="SpellE">boolean</span>)( Required)</span>_</span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB"></span></span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">Generate switches for each item listed in source, this helps when using an assistant <span class="SpellE">e.g</span> google home</span></span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">Usage based on google home: _“turn on <source name / channel name> in the <room>”_</span></span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">To integrate these, add the generated <span class="SpellE">yaml</span>, to your <span class="SpellE">configuration.yaml</span></span></span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">EXAMPLE</span></span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">switch:</span></span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> - platform: template</span></span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> <span style="mso-spacerun:yes">  </span>switches: !include <span class="SpellE">skyq</span><room*>.<span class="SpellE">yaml</span></span></span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources">_<span style="font-size:13.5pt;font-family:
-&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;
-mso-fareast-language:EN-GB">*remove any spaces from the room</span>_</span></span></span></span>
+**name**
+_(string)( Required)_
+The name you would like to give to the  SkyQ  set top box.
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB"></span></span></span></span></span>
+**config_directory**
+_(string)( Required)_
+The location of your default configuration folder.
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><a name="example"></a>**<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;text-transform:uppercase;
-mso-fareast-language:EN-GB">EXAMPLE</span>**</span></span></span></span>
+Hassbian default would be -  config_directory: '/home/homeassistant/.homeassistant/'
+or 
+'/config/' for hassio
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB">A full configuration example will look like the sample below:</span></span></span></span></span>
+# Switch Generation
+A utilility function has been created to generate yaml configuraition for skyq enabled media players to support easy usage with ohter home assistant integrations lke google home
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:
-name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:#7D8B99;mso-fareast-language:EN-GB"># Example <span class="SpellE">configuration.yaml</span> entry</span></span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:black;mso-fareast-language:EN-GB"></span></span></span></span></span>
+## Configuration
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:
-name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span class="SpellE"><span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:
-&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;color:#1990B8;mso-fareast-language:
-EN-GB">media_player</span></span></span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:#5F6364;mso-fareast-language:EN-GB">:</span></span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:black;mso-fareast-language:EN-GB"></span></span></span></span></span>
+**generate_switches_for_channels**
+_(boolean)( Required)_
+Generate switches for each item listed in source.
+The files will be generated in <config folder>/skyq<room>.yaml
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span class="SpellE"><span style="font-size:10.0pt;
-font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-&quot;Courier New&quot;;color:black;mso-fareast-language:EN-GB">media_player</span></span></span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:black;mso-fareast-language:EN-GB">:</span></span></span></span></span>
+Usage based on google home:  _“turn on <source name / channel name> in the ”_
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:black;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> - platform: <span class="SpellE">skyq</span></span></span></span></span></span>
+To integrate these, add the generated  yaml, to your  configuration.yaml
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:black;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> <span style="mso-spacerun:yes">  </span>name: <span class="SpellE">SkyQ</span> Living Room</span></span></span></span></span>
+The following example configuration implements the generated switches from the generate_switches_for_channels function.
+```
+switch:
+- platform: template
+  switches: !include  skyq<room*>.yaml
+```
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:black;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> <span style="mso-spacerun:yes">  </span>host: 192.168.0.10</span></span></span></span></span>
+A full configuration example will look like the sample below:
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:black;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> <span style="mso-spacerun:yes">  </span>room: Living Room</span></span></span></span></span>
+# Example  configuration.yaml  entry
+```
+media_player:
+ - platform:  skyq
+   name: SkyQ Living Room
+   host: 192.168.0.10
+   room: Living Room
+   config_directory: '/home/homeassistant/.homeassistant/'
+   generate_switches_for_channels: true
+   sources:
+      SkyOne: '1,0,6'
+      SkyNews: '5,0,1'
+```
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:black;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> <span style="mso-spacerun:yes">  </span><span class="SpellE">config_directory</span>: '/home/<span class="SpellE">homeassistant</span>/.<span class="SpellE">homeassistant</span>/'</span></span></span></span></span>
+### Sources
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:black;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> <span style="mso-spacerun:yes">  </span><span class="SpellE">generate_switches_for_channels</span>: true</span></span></span></span></span>
+To configure sources, set as 
+```
+<YourChanneName> : ‘<button>,<button>,<button>’.
+```
+### Supported buttons
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:black;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> <span style="mso-spacerun:yes">  </span>sources:</span></span></span></span></span>
+sky, power,  tvguide  or home,  boxoffice, search, sidebar, up, down, left, right, select,  channelup,  channeldown,  i, dismiss, text, help,
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:black;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> <span style="mso-spacerun:yes">  </span><span class="SpellE">SkyOne</span>: '1,0,6'</span></span></span></span></span>
+play, pause, rewind,  fastforward, stop, record
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:10.0pt;font-family:Consolas;
-mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Courier New&quot;;
-color:black;mso-fareast-language:EN-GB"><span style="mso-spacerun:yes"></span> <span style="mso-spacerun:yes">  </span><span class="SpellE">SkyNews</span>: '5,0,1'</span></span></span></span></span>
+red, green, yellow, blue
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB">Avoid using </span></span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:#1990B8;background:#FDFDFD;mso-fareast-language:
-EN-GB">[ ]</span></span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB"> in the </span></span></span></span></span><span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-family:Consolas;mso-fareast-font-family:&quot;Times New Roman&quot;;
-mso-bidi-font-family:&quot;Courier New&quot;;color:#1990B8;background:#FDFDFD;mso-fareast-language:
-EN-GB">name: or room:</span></span></span></span></span><span style="mso-bookmark:
-host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="mso-bookmark:sources"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:
-EN-GB"> of your device.</span></span></span></span></span>
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
-<span style="mso-bookmark:sources"></span>
+### Next/Previous Buttons
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><a name="turn-on-action"></a>**<span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;text-transform:uppercase;mso-fareast-language:
-EN-GB">SOURCES</span>**</span></span></span>
+The behaviour of the next and previous buttons is  fastforward  and rewind (multiple presses to increase speed, play to resume)
 
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">To configure sources, set the name as <name>: ‘<button>,<button>,<button>’.</span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">Supported buttons:</span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">sky, power, <span class="SpellE">tvguide</span> or home, <span class="SpellE">boxoffice</span>, search, sidebar, up, down, left, right, select, <span class="SpellE">channelup</span>, <span class="SpellE">channeldown</span>, <span class="SpellE">i</span>, dismiss, text, help,</span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">play, pause, rewind, <span class="SpellE">fastforward</span>, stop, record</span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">red, green, yellow, blue</span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">0, 1, 2, 3, 4, 5, 6, 7, 8, 9</span></span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><a name="change-channel-through-play_media-servic"></a><a name="nextprevious-buttons"></a>**<span style="font-size:13.5pt;font-family:
-&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;color:#222222;
-text-transform:uppercase;mso-fareast-language:EN-GB">NEXT/PREVIOUS BUTTONS</span>**</span></span></span>
-
-<span style="mso-bookmark:host"><span style="mso-bookmark:name"><span style="mso-bookmark:filename"><span style="font-size:13.5pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#222222;mso-fareast-language:EN-GB">The behaviour of the next and previous buttons is <span class="SpellE">fastforward</span> and rewind (multiple presses to increase speed, play to resume)</span></span></span></span>
-
-<span style="mso-bookmark:filename"></span><span style="mso-bookmark:name"></span><span style="mso-bookmark:host"></span>
-
-<a name="notifications"></a>
-
-</div>
