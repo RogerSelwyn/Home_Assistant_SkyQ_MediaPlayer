@@ -63,7 +63,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Required(CONF_HOST): cv.string,
         vol.Required(CONF_NAME): cv.string,
         vol.Optional(CONF_ROOM, default='Default Room'): cv.string,
-        vol.Optional(CONF_DIR, default='/config/): cv.string,
+        vol.Optional(CONF_DIR, default='/config/'): cv.string,
         vol.Optional(CONF_GEN_SWITCH, default=False): cv.string,
 
     }
