@@ -1,10 +1,12 @@
+# SkyQ Platform Integration for Home Assistant
+
 The skyq platform allows you to control a SkyQ  set top box.
 
 There is currently support for the following device types within Home Assistant:
 
 -   Media Player
 
-To begin with ensure your  SkyQ  set top box or boxes have static IP addresses.
+To begin with it is recommended you ensure your SkyQ set top box or boxes have static IP addresses.
 
 Download the custom component into <config_folder>/custom_components/skyq
 
@@ -12,62 +14,24 @@ Download the custom component into <config_folder>/custom_components/skyq
 
 ## Configuration
 
-To add a  SkyQ  to your installation, add the following to your configuration.yaml file:
+To add a SkyQ instance to your home assistant, add the following to your configuration.yaml file for each instance:
 
 ### Configuration variables
 
 media_player:
 -  platform:  skyq
 
-**host**
-_(string)(Required)_
+**host** _(string)(Required)_
 The IP of the  SkyQ  set top box, e.g., 192.168.0.10.
 
-**name**
-_(string)( Required)_
+**name** _(string)(Required)_
 The name you would like to give to the  SkyQ  set top box.
 
-**sources**
-_(list)( Required)_
+**sources** _(list)(Required)_
 List of channels or other commands that will appear in the source selection.
 
-**room**
-_(string)( Required)_
-The room where the  SkyQ  set top box is located. 
-Avoid using [ ] in the name: or room: of your device.
-
-**name**
-_(string)( Required)_
+**name** _(string)(Required)_
 The name you would like to give to the  SkyQ  set top box.
-
-**config_directory**
-_(string)( Required)_
-The location of your default configuration folder.
-
-Hassbian default would be -  config_directory: '/home/homeassistant/.homeassistant/'
-or 
-'/config/' for hassio
-
-# Switch Generation
-A utilility function has been created to generate yaml configuraition for skyq enabled media players to support easy usage with ohter home assistant integrations lke google home
-
-## Configuration
-
-**generate_switches_for_channels**
-_(boolean)( Required)_
-Generate switches for each item listed in source.
-The files will be generated in <config folder>/skyq<room>.yaml
-
-Usage based on google home:  _“turn on <source name / channel name> in the ”_
-
-To integrate these, add the generated  yaml, to your  configuration.yaml
-
-The following example configuration implements the generated switches from the generate_switches_for_channels function.
-```
-switch:
-- platform: template
-  switches: !include  skyq<room*>.yaml
-```
 
 A full configuration example will look like the sample below:
 
@@ -77,9 +41,6 @@ media_player:
  - platform:  skyq
    name: SkyQ Living Room
    host: 192.168.0.10
-   room: Living Room
-   config_directory: '/home/homeassistant/.homeassistant/'
-   generate_switches_for_channels: true
    sources:
       SkyOne: '1,0,6'
       SkyNews: '5,0,1'
@@ -103,5 +64,52 @@ red, green, yellow, blue
 
 ### Next/Previous Buttons
 
-The behaviour of the next and previous buttons is  fastforward  and rewind (multiple presses to increase speed, play to resume)
+The behaviour of the next and previous buttons is fastforward and rewind (multiple presses to increase speed, play to resume)
+
+
+# Switch Generation Helper
+A utility function has been created to generate yaml configuration for SkyQ enabled media players to support easy usage with other home assistant integrations, e.g. google home
+
+Usage based on google home:  _“turn on <source name / channel name> in the ”_
+
+## Configuration
+
+**generate_switches_for_channels** _(boolean)(Optional)_ Default False
+Generate switches for each item listed in source.
+The files will be generated in <config folder>/skyq<room>.yaml
+
+**config_directory** _(string)(Optional)_ Default '/config/'
+The location of your configuration folder. 
+
+The correct path required if generate_switches_for_channels is set to True to enable output generation of yaml files to the correct location
+
+Hassbian default would be -  config_directory: '/home/homeassistant/.homeassistant/' or '/config/' for hassio
+
+**room**
+_(string)(Optional)_ Default 'Default Room'
+The room where the  SkyQ  set top box is located. 
+
+Avoid using [ ] in the name: or room: of your device. This field is required if you have more than one SkyQ box being configured with switches
+
+ 
+# Example  configuration.yaml  entry
+```
+media_player:
+ - platform:  skyq
+   name: SkyQ Living Room
+   host: 192.168.0.10
+   sources:
+      SkyOne: '1,0,6'
+      SkyNews: '5,0,1'
+   room: Living Room
+   config_directory: '/home/homeassistant/.homeassistant/'
+   generate_switches_for_channels: true
+```
+
+To integrate these generated switch configuration files, add the generated yaml to your configuration.yaml. The following example configuration implements the generated switches from the generate_switches_for_channels function.
+```
+switch:
+- platform: template
+  switches: !include  skyq<room*>.yaml
+```
 
