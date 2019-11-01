@@ -1,25 +1,35 @@
-# SkyQ Platform Integration for Home Assistant
+# Custom Component for SkyQ Integration for Home Assistant
 
-The skyq platform allows you to control a SkyQ  set top box.
+The skyq platform allows you to control a SkyQ set top box.
 
 There is currently support for the following device types within Home Assistant:
 
 -   Media Player
 
+## Installation
+
 To begin with it is recommended you ensure your SkyQ set top box or boxes have static IP addresses.
 
-Download the custom component into <config_folder>/custom_components/skyq
+Download the custom component in to your folder <config_directory>/custom_components/skyq
 
-# Media Player
+# Media Player Configuration 
 
-## Configuration
+### Example of basic configuration.yaml
+```
+media_player:
+ - platform:  skyq
+   name: SkyQ Living Room
+   host: 192.168.0.10
+   sources:
+      SkyOne: '1,0,6'
+      SkyNews: '5,0,1'
+```
 
-To add a SkyQ instance to your home assistant, add the following to your configuration.yaml file for each instance:
-
-### Configuration variables
+## Configuration variables
 
 media_player:
--  platform:  skyq
+**platform** (string)(Required) 
+Must be set to skyq
 
 **host** _(string)(Required)_
 The IP of the  SkyQ  set top box, e.g., 192.168.0.10.
@@ -33,18 +43,6 @@ List of channels or other commands that will appear in the source selection.
 **name** _(string)(Required)_
 The name you would like to give to the  SkyQ  set top box.
 
-A full configuration example will look like the sample below:
-
-# Example  configuration.yaml  entry
-```
-media_player:
- - platform:  skyq
-   name: SkyQ Living Room
-   host: 192.168.0.10
-   sources:
-      SkyOne: '1,0,6'
-      SkyNews: '5,0,1'
-```
 
 ### Sources
 
@@ -92,7 +90,7 @@ The room where the  SkyQ  set top box is located.
 Avoid using [ ] in the name: or room: of your device. This field is required if you have more than one SkyQ box being configured with switches
 
  
-# Example  configuration.yaml  entry
+### Example configuration.yaml with switch generation
 ```
 media_player:
  - platform:  skyq
@@ -107,6 +105,7 @@ media_player:
 ```
 
 To integrate these generated switch configuration files, add the generated yaml to your configuration.yaml. The following example configuration implements the generated switches from the generate_switches_for_channels function.
+
 ```
 switch:
 - platform: template
