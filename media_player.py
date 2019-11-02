@@ -142,7 +142,7 @@ class SkyQDevice(MediaPlayerDevice):
         self._power = STATE_OFF
         self._source_names = sources or {}
         LOGGER.warning(generate_switches_for_channels)
-        if (generate_switches_for_channels is 'True'):
+        if (generate_switches_for_channels == 'True'):
             swMaker = SwitchMaker(name, room, config_directory)
             for ch in [*self._source_names.keys()]:
                 swMaker.addChannel(ch)
@@ -167,8 +167,7 @@ class SkyQDevice(MediaPlayerDevice):
         return [*self._source_names.keys()]
 
     def update(self):
-    #LOGGER.warning(self._client.powerStatus())
-        if (self._client.powerStatus() is 'On'):
+        if (self._client.powerStatus() == 'On'):
             if(self._power is not STATE_PLAYING):
                 self._state = STATE_PLAYING
                 self._power = STATE_PLAYING
@@ -182,23 +181,19 @@ class SkyQDevice(MediaPlayerDevice):
 
     def turn_off(self):
         self._client.press('power')
-        return None
 
     def turn_on(self):
         self._client.press(['home', 'dismiss'])
-        return None
 
     def media_play(self):
         self._client.press('play')
         self._state = STATE_PLAYING
         self._playing = True
-        return None
 
     def media_pause(self):
         self._client.press('pause')
         self._state = STATE_PAUSED
         self._playing = False
-        return None
     
     def media_next_track(self):
         self._client.press('fastforward')
