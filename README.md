@@ -1,3 +1,6 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/madmanmonty/home_assistant_skyq_mediaplayer/badge)](https://www.codefactor.io/repository/github/madmanmonty/home_assistant_skyq_mediaplayer)
+
+
 # Custom Component for SkyQ Integration for Home Assistant
 
 The skyq platform allows you to control a SkyQ set top box.
