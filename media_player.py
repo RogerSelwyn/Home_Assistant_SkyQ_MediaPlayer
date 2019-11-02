@@ -53,7 +53,6 @@ SUPPORT_SKYQ = (
 )
 
 
-
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
         vol.Required(CONF_SOURCES, default={}): {cv.string: cv.string},
@@ -83,11 +82,9 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     add_entities([player])
 
 
-
-
 class SkyQDevice(MediaPlayerDevice):
     """Representation of a SkyQ Box"""
-    def __init__(self,hass,name,host,sources,room,generate_switches_for_channels,config_directory, xmlTvUrl):
+    def __init__(self, hass, name, host, sources, room, generate_switches_for_channels, config_directory, xmlTvUrl):
         self.hass = hass
         self._name = name
         self._host = host
@@ -103,7 +100,7 @@ class SkyQDevice(MediaPlayerDevice):
             swMaker = SwitchMaker(name, room, config_directory)
             for ch in [*self._source_names.keys()]:
                 swMaker.addChannel(ch)
-            swMaker.closeFile()      
+            swMaker.closeFile()  
         self._title = None
         self._xmlTvUrl = xmlTvUrl
         self.channel = None
@@ -112,26 +109,25 @@ class SkyQDevice(MediaPlayerDevice):
         self.imageUrl = None
         self.lastEpgUpdate = None
         self.season = None
-        
 
     @property
     def supported_features(self):
-        return SUPPORT_SKYQ  
-    
+        return SUPPORT_SKYQ
+
     @property
     def name(self):
         return self._name
 
     @property
     def should_poll(self):
-	"""Device should be polled."""
-	return True
-    
+    # Device should be polled.
+        return True
+
     @property
     def state(self):
         """Get the device state. An exception means OFF state."""
         return self._state
-    
+
     @property
     def source_list(self):
         return [*self._source_names.keys()]
@@ -154,13 +150,13 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def media_series_title(self):
         """Return the title of the series of current playing media."""
-        #return self._title if self.isTvShow else None
+        # return self._title if self.isTvShow else None
         return self._title if self.channel is not None else None
 
     @property
     def media_title(self):
         """Title of current playing media."""
-        #return self._title if not self.isTvShow else self.channel
+        # return self._title if not self.isTvShow else self.channel
         return self.channel if self.channel is not None else self._title
 
     @property
@@ -184,7 +180,6 @@ class SkyQDevice(MediaPlayerDevice):
             self._power = STATE_OFF
             self._state = STATE_OFF
             self._playing = False
-        
 
     def turn_off(self):
         self._client.press('power')
@@ -201,13 +196,12 @@ class SkyQDevice(MediaPlayerDevice):
         self._client.press('pause')
         self._state = STATE_PAUSED
         self._playing = False
-    
+
     def media_next_track(self):
         self._client.press('fastforward')
 
     def media_previous_track(self):
         self._client.press('rewind')
-        
+
     def select_source(self, source):
         self._client.press(self._source_names.get(source).split(','))
-        
