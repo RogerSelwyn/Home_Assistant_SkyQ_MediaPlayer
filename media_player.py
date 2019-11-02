@@ -21,6 +21,7 @@ from homeassistant.components.media_player.const import (
     SUPPORT_NEXT_TRACK,
     SUPPORT_PREVIOUS_TRACK,
     SUPPORT_SELECT_SOURCE,
+    MEDIA_TYPE_TVSHOW,
 )
 from homeassistant.const import (
     CONF_HOST,
@@ -53,10 +54,6 @@ SUPPORT_SKYQ = (
 
 
 
-#CUSTOMIZE_SCHEMA = vol.Schema(
-#    {vol.Optional(CONF_SOURCES): vol.All(cv.string, [cv.string, cv.string])}
-#)
-
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
         vol.Required(CONF_SOURCES, default={}): {cv.string: cv.string},
@@ -68,49 +65,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 
     }
 )
-POWER = 0
-SELECT = 1
-BACKUP = 2
-DISMISS = 2
-CHANNELUP = 6
-CHANNELDOWN = 7
-INTERACTIVE = 8
-SIDEBAR = 8
-HELP = 9
-SERVICES = 10
-SEARCH = 10
-TVGUIDE = 11
-HOME = 11
-INFO = 14
-TEXT = 15 
-UP = 16
-DOWN = 17
-LEFT = 18
-RIGHT = 19
-RED = 32
-GREEN = 33
-YELLOW = 34
-BLUE = 35
-ZERO = 48
-ONE = 49
-TWO = 50
-THREE = 51
-FOUR = 52
-FIVE = 53
-SIX = 54
-SEVEN = 55
-EIGHT = 56
-NINE = 57
-PLAY = 64
-PAUSE = 65
-STOP = 66
-RECORD = 67
-FASTFORWARD = 69
-REWIND = 71
-BOXOFFICE = 240
-SKY = 241
+
 LOGGER = logging.getLogger(__name__)
-REMOTE_PORT = 49160
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the SkyQ platform."""
@@ -122,6 +78,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         config.get(CONF_ROOM),
         config.get(CONF_GEN_SWITCH),
         config.get(CONF_DIR),
+        'asdf',
         )
     add_entities([player])
 
@@ -130,7 +87,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
 class SkyQDevice(MediaPlayerDevice):
     """Representation of a SkyQ Box"""
-    def __init__(self,hass,name,host,sources,room,generate_switches_for_channels,config_directory):
+    def __init__(self,hass,name,host,sources,room,generate_switches_for_channels,config_directory, xmlTvUrl):
         self.hass = hass
         self._name = name
         self._host = host
@@ -147,7 +104,14 @@ class SkyQDevice(MediaPlayerDevice):
             for ch in [*self._source_names.keys()]:
                 swMaker.addChannel(ch)
             swMaker.closeFile()      
-        
+        self._title = None
+        self._xmlTvUrl = xmlTvUrl
+        self.channel = None
+        self.epgData = None
+        self.episode = None
+        self.imageUrl = None
+        self.lastEpgUpdate = None
+        self.season = None
         
 
     @property
@@ -157,14 +121,57 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def name(self):
         return self._name
+
+    @property
+    def should_poll(self):
+	"""Device should be polled."""
+	return True
     
     @property
     def state(self):
+        """Get the device state. An exception means OFF state."""
         return self._state
     
     @property
     def source_list(self):
         return [*self._source_names.keys()]
+
+    @property
+    def media_image_url(self):
+        """Image url of current playing media."""
+        return self.imageUrl
+
+    @property
+    def media_channel(self):
+        """Channel currently playing"""
+        return self.channel
+
+    @property
+    def media_content_type(self):
+        """Content type of current playing media."""
+        return MEDIA_TYPE_TVSHOW
+
+    @property
+    def media_series_title(self):
+        """Return the title of the series of current playing media."""
+        #return self._title if self.isTvShow else None
+        return self._title if self.channel is not None else None
+
+    @property
+    def media_title(self):
+        """Title of current playing media."""
+        #return self._title if not self.isTvShow else self.channel
+        return self.channel if self.channel is not None else self._title
+
+    @property
+    def media_season(self):
+        """Season of current playing media (TV Show only)."""
+        return self.season
+
+    @property
+    def media_episode(self):
+        """Episode of current playing media (TV Show only)."""
+        return self.episode
 
     def update(self):
         if (self._client.powerStatus() == 'On'):
@@ -203,3 +210,4 @@ class SkyQDevice(MediaPlayerDevice):
         
     def select_source(self, source):
         self._client.press(self._source_names.get(source).split(','))
+        
