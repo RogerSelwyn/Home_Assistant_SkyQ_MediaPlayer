@@ -1,4 +1,6 @@
-import time, math, socket
+import time
+import math
+import socket
 import requests
 import json
 
@@ -24,7 +26,7 @@ class SkyRemote:
 
     def powerStatus(self) -> str:
         output = self.http_json(self.REST_PATH_INFO)
-        if ('activeStandby' in output and output['activeStandby'] == False):
+        if ('activeStandby' in output and output['activeStandby'] is False):
             return 'On'
         else:
             return 'Off'
