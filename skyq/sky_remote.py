@@ -34,7 +34,7 @@ REST_BASE_URL = 'http://{0}:{1}/as/{2}'
 REST_PATH_INFO = 'system/information'
 REST_PATH_APPS = 'apps/status'
 REST_CHANNEL_LIST = 'services'
-REST_RECORDING_DETAILS = 'pvr/details/{0}'# SOAP/UPnP Constants
+REST_RECORDING_DETAILS = 'pvr/details/{0}'
 
 # Sky specific constants
 CURRENT_URI = 'CurrentURI'
@@ -57,6 +57,14 @@ class SkyRemote:
     SKY_STATE_PAUSED = 'PAUSED_PLAYBACK'
     SKY_STATE_OFF = 'OFF'
 
+    # Application Constants
+    APP_EPG = 'com.bskyb.epgui'
+    APP_YOUTUBE = 'YouTube'
+    APP_YOUTUBE_TITLE = 'YouTube'
+    APP_VEVO = 'com.bskyb.vevo'
+    APP_VEVO_TITLE = 'Vevo'
+    APP_STATUS_VISIBLE = 'VISIBLE'
+
     def __init__(self, host, port=49160, jsonport=9006):
         self._host=host
         self._port=port
@@ -65,13 +73,20 @@ class SkyRemote:
         if (self._soapControlURl is None):
             self._soapControlURl = self._getSoapControlURL(1)
 
-    def http_json(self, path) -> str:
+    def http_json(self, path, headers=None) -> str:
         try:
-            response = requests.get(self.REST_BASE_URL.format(self._host, self._jsonport, path), timeout=self.TIMEOUT)
+            response = requests.get(self.REST_BASE_URL.format(self._host, self._jsonport, path), timeout=self.TIMEOUT, headers=headers)
             return json.loads(response.content)
         except Exception as err:
             return {}
     
+    def getActiveApplication(self):
+        try:
+            headers = {'Uprade': 'websocket'}
+            apps = self.http_json(REST_PATH_APPS, headers)
+            return next(a for a in apps['apps'] if a['status'] == self.APP_STATUS_VISIBLE)['appId']
+        except Exception:
+            return self.APP_EPG
 
     def _getSoapControlURL(self, descriptionIndex):
         try:
@@ -110,6 +125,63 @@ class SkyRemote:
             return 'On'
         else:
             return 'Off'
+
+    def _getCurrentLiveTVProgramme(self, channel):
+        try:
+            result = { 'title': None, 'season': None, 'episode': None, 'channel': channel}
+            # self._getEpgData()
+            queryChannel = channel
+            if queryChannel.endswith(" HD"):
+                queryChannel = queryChannel[:-3]
+            channelNode = next(c for c in self.epgData['tv']['channel'] if c['display-name'] == queryChannel)
+            channelId = channelNode['@id']
+            now = pytz.utc.localize(datetime.now())
+            programme = next(p for p in self.epgData['tv']['programme'] if p["@channel"] == channelId and datetime.strptime(p["@start"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) < now and datetime.strptime(p["@stop"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) > now)
+            result.update({'title': programme['title']['#text']})
+            if 'episode-num' in programme:
+                result.update({'season': int(programme['episode-num']['#text'][1:3])})
+                result.update({'episode': int(programme['episode-num']['#text'][5:7])})
+            
+            return result
+        except Exception as err:
+            return result
+        
+    def getCurrentMedia(self):
+        result = { 'channel': None, 'imageUrl': None, 'title': None, 'season': None, 'episode': None}
+
+        response = self._callSkySOAPService(UPNP_GET_MEDIA_INFO)
+
+        if (response is not None):
+            currentURI = response[CURRENT_URI]
+            if (currentURI is not None):
+                if (XSI in currentURI):
+                    # Live content
+                    sid = int(currentURI[6:], 16)
+                    channels = self.http_json(REST_CHANNEL_LIST)
+                    channelNode = next(s for s in channels['services'] if s['sid'] == str(sid))
+                    result.update({'imageUrl': None})
+                    channel = channelNode['t']
+                    result.update(self._getCurrentLiveTVProgramme(channel))
+                elif (PVR in currentURI):
+                    # Recorded content
+                    pvrId = "P"+currentURI[11:]
+                    recording = self.http_json(REST_RECORDING_DETAILS.format(pvrId))
+                    result.update({'channel': recording['details']['cn']})
+                    result.update({'title': recording['details']['t']})
+                    #if (title.startswith('New: ')):
+                    #    result.udpate({'title': title[5:]})
+                    if ('seasonnumber' in recording['details'] and 'episodenumber' in recording['details']):
+                        result.update({'season':  recording['details']['seasonnumber']})
+                        result.update({'episode': recording['details']['episodenumber'] })
+                    if ('programmeuuid' in recording['details']):
+                        programmeuuid = recording['details']['programmeuuid']
+                        imageUrl = IMAGE_URL_BASE.format(str(programmeuuid))
+                        if ('osid' in recording['details']):
+                            osid = recording['details']['osid']
+                            imageUrl += ("?sid=" + str(osid))
+                        result.update({'imageUrl': imageUrl})
+        return result
+
 
     def getCurrentState(self):
         if(self.powerStatus() == 'Off'):

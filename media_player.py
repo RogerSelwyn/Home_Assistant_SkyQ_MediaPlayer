@@ -86,6 +86,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         config.get(CONF_ROOM),
         config.get(CONF_GEN_SWITCH),
         config.get(CONF_DIR),
+        'to setup xmltvurl',
         )
     add_entities([player])
 
@@ -187,8 +188,26 @@ class SkyQDevice(MediaPlayerDevice):
         self._title = None
         self._updateState()
 
-        # activeApp = self._getActiveApplication()
-        
+        activeApp = self._client.getActiveApplication()
+        LOGGER.warning('Active APP: ' + str(activeApp))
+
+      
+        if (activeApp == SkyRemote.APP_EPG):
+            self._title = 'EPG'
+            currentProgramme = self._client.getCurrentMedia()
+            self.channel = currentProgramme.get('channel')
+            self.episode = currentProgramme.get('episode')
+            self.imageUrl = currentProgramme.get('imageUrl')
+            self.isTvShow = False
+            self.season = currentProgramme.get('season')
+            self._title = currentProgramme.get('title')
+        elif(activeApp == SkyRemote.APP_YOUTUBE):
+            # self._state = STATE_PLAYING
+            self._title = SkyRemote.APP_YOUTUBE_TITLE
+        elif(activeApp == APP_VEVO):
+            # self._state = STATE_PLAYING
+            self._title = SkyRemote.APP_VEVO_TITLE
+
         if (self._client.powerStatus() == 'On'):
             if(self._power is not STATE_PLAYING):
                 self._state = STATE_PLAYING
