@@ -7,11 +7,6 @@ import xml
 import xmltodict
 from http import HTTPStatus
 
-SKY_STATE_NO_MEDIA_PRESENT = 'NO_MEDIA_PRESENT'
-SKY_STATE_PLAYING = 'PLAYING'
-SKY_STATE_PAUSED = 'PAUSED_PLAYBACK'
-SKY_STATE_OFF = 'OFF'
-
 # SOAP/UPnP Constants
 SKY_PLAY_URN = 'urn:nds-com:serviceId:SkyPlay'
 SOAP_ACTION = '"urn:schemas-nds-com:service:SkyPlay:2#{0}"'
