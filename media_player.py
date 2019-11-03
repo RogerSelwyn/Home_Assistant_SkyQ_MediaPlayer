@@ -35,6 +35,11 @@ from homeassistant.const import (
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.script import Script
 
+SKY_STATE_NO_MEDIA_PRESENT = 'NO_MEDIA_PRESENT'
+SKY_STATE_PLAYING = 'PLAYING'
+SKY_STATE_PAUSED = 'PAUSED_PLAYBACK'
+SKY_STATE_OFF = 'OFF'
+
 _LOGGER = logging.getLogger(__name__)
 
 CONF_SOURCES = "sources"
@@ -154,7 +159,6 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def media_series_title(self):
         """Return the title of the series of current playing media."""
-        return 'test title'
         # return self._title if self.isTvShow else None
         return self._title if self.channel is not None else None
 
@@ -184,7 +188,7 @@ class SkyQDevice(MediaPlayerDevice):
         self._title = None
         self._updateState()
 
-        activeApp = self._getActiveApplication()
+        # activeApp = self._getActiveApplication()
         
         if (self._client.powerStatus() == 'On'):
             if(self._power is not STATE_PLAYING):
