@@ -41,9 +41,6 @@ CURRENT_URI = 'CurrentURI'
 CURRENT_TRANSPORT_STATE = 'CurrentTransportState'
 IMAGE_URL_BASE = 'http://images.metadata.sky.com/pd-image/{0}/16-9/1788'
 PVR = 'pvr'
-SKY_STATE_NO_MEDIA_PRESENT = 'NO_MEDIA_PRESENT'
-SKY_STATE_PLAYING = 'PLAYING'
-SKY_STATE_PAUSED = 'PAUSED_PLAYBACK'
 XSI = 'xsi'
 
 
@@ -54,6 +51,11 @@ class SkyRemote:
 
     REST_BASE_URL = 'http://{0}:{1}/as/{2}'
     REST_PATH_INFO = 'system/information'
+
+    SKY_STATE_NO_MEDIA_PRESENT = 'NO_MEDIA_PRESENT'
+    SKY_STATE_PLAYING = 'PLAYING'
+    SKY_STATE_PAUSED = 'PAUSED_PLAYBACK'
+    SKY_STATE_OFF = 'OFF'
 
     def __init__(self, host, port=49160, jsonport=9006):
         self._host=host
@@ -98,7 +100,7 @@ class SkyRemote:
             else:
                 return None
         except requests.exceptions.RequestException as err:
-                self._connfail = CONNFAILCOUNT
+                # self._connfail = CONNFAILCOUNT
                 return None
 
 
@@ -115,11 +117,11 @@ class SkyRemote:
         response = self._callSkySOAPService(UPNP_GET_TRANSPORT_INFO)
         if (response is not None):
             state = response[CURRENT_TRANSPORT_STATE]
-            if state == SKY_STATE_PLAYING:
-                return SKY_STATE_PLAYING
-            elif state == SKY_STATE_PAUSED:
-                return SKY_STATE_PAUSED
-        return SKY_STATE_OFF
+            if state == self.SKY_STATE_PLAYING:
+                return self.SKY_STATE_PLAYING
+            elif state == self.SKY_STATE_PAUSED:
+                return self.SKY_STATE_PAUSED
+        return self.SKY_STATE_OFF
         
         
     

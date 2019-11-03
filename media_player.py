@@ -86,7 +86,6 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         config.get(CONF_ROOM),
         config.get(CONF_GEN_SWITCH),
         config.get(CONF_DIR),
-        'asdf',
         )
     add_entities([player])
 
