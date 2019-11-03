@@ -98,7 +98,6 @@ class SkyQDevice(MediaPlayerDevice):
         self._name = name
         self._host = host
         self._client = SkyRemote(host)
-        self._playing = True
         self._current_source = None
         self._current_source_id = None
         self._state = STATE_OFF
@@ -113,7 +112,6 @@ class SkyQDevice(MediaPlayerDevice):
         self._title = None
         self._xmlTvUrl = xmlTvUrl
         self.channel = None
-        self.epgData = None
         self.episode = None
         self.imageUrl = None
         self.lastEpgUpdate = None
@@ -180,20 +178,36 @@ class SkyQDevice(MediaPlayerDevice):
 
     def update(self):
         """Get the latest data and update device state."""
+        
+        self._updateState()
+        self._updateCurrentProgramme()
+        
+    def _updateState(self):
+        if (self._client.powerStatus() == 'On'):
+            if(self._power is not STATE_PLAYING):
+                self._state = STATE_PLAYING
+                self._power = STATE_PLAYING
+            # this checks is flakey during channel changes, so only used for pause checks if we know its on
+            if(self._client.getCurrentState() == SkyRemote.SKY_STATE_PAUSED):
+                self._state = STATE_PAUSED
+            else:
+                self._state = STATE_PLAYING
+        else:
+            self._power = STATE_OFF
+            self._state = STATE_OFF
+
+    def _updateCurrentProgramme(self):
         self.channel = None
         self.episode = None
         self.imageUrl = None
         self.isTvShow = False
         self.season = None
         self._title = None
-        self._updateState()
 
         activeApp = self._client.getActiveApplication()
         LOGGER.warning('Active APP: ' + str(activeApp))
-
-      
+        
         if (activeApp == SkyRemote.APP_EPG):
-            self._title = 'EPG'
             currentProgramme = self._client.getCurrentMedia()
             self.channel = currentProgramme.get('channel')
             self.episode = currentProgramme.get('episode')
@@ -208,26 +222,6 @@ class SkyQDevice(MediaPlayerDevice):
             # self._state = STATE_PLAYING
             self._title = SkyRemote.APP_VEVO_TITLE
 
-        if (self._client.powerStatus() == 'On'):
-            if(self._power is not STATE_PLAYING):
-                self._state = STATE_PLAYING
-                self._power = STATE_PLAYING
-                self._playing = True
-
-        else:
-            self._power = STATE_OFF
-            self._state = STATE_OFF
-            self._playing = False
-
-    def _updateState(self):
-        response = self._client.getCurrentState()
-        if response == SkyRemote.SKY_STATE_PLAYING:
-            self._state = STATE_PLAYING
-        elif response == SkyRemote.SKY_STATE_PAUSED:
-            self._state = STATE_PAUSED
-        else:
-            self._state = STATE_OFF
-
 
     def turn_off(self):
         self._client.press('power')
@@ -238,12 +232,10 @@ class SkyQDevice(MediaPlayerDevice):
     def media_play(self):
         self._client.press('play')
         self._state = STATE_PLAYING
-        self._playing = True
 
     def media_pause(self):
         self._client.press('pause')
         self._state = STATE_PAUSED
-        self._playing = False
 
     def media_next_track(self):
         self._client.press('fastforward')
