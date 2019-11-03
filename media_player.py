@@ -21,6 +21,8 @@ from homeassistant.components.media_player.const import (
     SUPPORT_NEXT_TRACK,
     SUPPORT_PREVIOUS_TRACK,
     SUPPORT_SELECT_SOURCE,
+    SUPPORT_STOP,
+    SUPPORT_SEEK,
     MEDIA_TYPE_TVSHOW,
 )
 from homeassistant.const import (
@@ -50,6 +52,8 @@ SUPPORT_SKYQ = (
     | SUPPORT_NEXT_TRACK
     | SUPPORT_PREVIOUS_TRACK
     | SUPPORT_SELECT_SOURCE
+    | SUPPORT_STOP
+    | SUPPORT_SEEK
 )
 
 
@@ -150,6 +154,7 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def media_series_title(self):
         """Return the title of the series of current playing media."""
+        return 'test title'
         # return self._title if self.isTvShow else None
         return self._title if self.channel is not None else None
 
@@ -170,6 +175,17 @@ class SkyQDevice(MediaPlayerDevice):
         return self.episode
 
     def update(self):
+        """Get the latest data and update device state."""
+        self.channel = None
+        self.episode = None
+        self.imageUrl = None
+        self.isTvShow = False
+        self.season = None
+        self._title = None
+        self._updateState()
+
+        activeApp = self._getActiveApplication()
+        
         if (self._client.powerStatus() == 'On'):
             if(self._power is not STATE_PLAYING):
                 self._state = STATE_PLAYING
@@ -180,6 +196,16 @@ class SkyQDevice(MediaPlayerDevice):
             self._power = STATE_OFF
             self._state = STATE_OFF
             self._playing = False
+
+    def _updateState(self):
+        response = self._client.getCurrentState()
+        if state == SKY_STATE_PLAYING:
+            self._state = STATE_PLAYING
+        elif state == SKY_STATE_PAUSED:
+            self._state = STATE_PAUSED
+        else:
+            self._state = STATE_OFF
+
 
     def turn_off(self):
         self._client.press('power')
