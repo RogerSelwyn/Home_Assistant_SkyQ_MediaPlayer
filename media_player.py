@@ -86,14 +86,13 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         config.get(CONF_ROOM),
         config.get(CONF_GEN_SWITCH),
         config.get(CONF_DIR),
-        'to setup xmltvurl',
         )
     add_entities([player])
 
 
 class SkyQDevice(MediaPlayerDevice):
     """Representation of a SkyQ Box"""
-    def __init__(self, hass, name, host, sources, room, generate_switches_for_channels, config_directory, xmlTvUrl):
+    def __init__(self, hass, name, host, sources, room, generate_switches_for_channels, config_directory):
         self.hass = hass
         self._name = name
         self._host = host
@@ -110,11 +109,9 @@ class SkyQDevice(MediaPlayerDevice):
                 swMaker.addChannel(ch)
             swMaker.closeFile()  
         self._title = None
-        self._xmlTvUrl = xmlTvUrl
         self.channel = None
         self.episode = None
         self.imageUrl = None
-        self.lastEpgUpdate = None
         self.season = None
 
     @property
