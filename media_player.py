@@ -199,9 +199,9 @@ class SkyQDevice(MediaPlayerDevice):
 
     def _updateState(self):
         response = self._client.getCurrentState()
-        if state == SKY_STATE_PLAYING:
+        if response == SkyRemote.SKY_STATE_PLAYING:
             self._state = STATE_PLAYING
-        elif state == SKY_STATE_PAUSED:
+        elif response == SkyRemote.SKY_STATE_PAUSED:
             self._state = STATE_PAUSED
         else:
             self._state = STATE_OFF
