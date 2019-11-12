@@ -102,7 +102,7 @@ class SkyQDevice(MediaPlayerDevice):
         self._state = STATE_OFF
         self._power = STATE_OFF
         self._source_names = sources or {}
-        LOGGER.warning(generate_switches_for_channels)
+        # LOGGER.warning(generate_switches_for_channels)
         if (generate_switches_for_channels == 'True'):
             swMaker = SwitchMaker(name, room, config_directory)
             for ch in [*self._source_names.keys()]:
@@ -202,7 +202,7 @@ class SkyQDevice(MediaPlayerDevice):
         self._title = None
 
         activeApp = self._client.getActiveApplication()
-        LOGGER.warning('Active APP: ' + str(activeApp))
+        # LOGGER.warning('Active APP: ' + str(activeApp))
         
         if (activeApp == SkyRemote.APP_EPG):
             currentProgramme = self._client.getCurrentMedia()
