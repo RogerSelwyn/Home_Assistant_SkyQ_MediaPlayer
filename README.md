@@ -46,6 +46,9 @@ List of channels or other commands that will appear in the source selection.
 **name** _(string)(Required)_
 The name you would like to give to the  SkyQ  set top box.
 
+** output_programme_image** _(boolean)(Optional)_ Default True
+Enables you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing.
+
 
 ### Sources
 

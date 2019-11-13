@@ -46,6 +46,7 @@ CONF_SOURCES = "sources"
 CONF_ROOM = "room"
 CONF_DIR = "config_directory"
 CONF_GEN_SWITCH = "generate_switches_for_channels"
+CONF_OUTPUT_PROGRAMME_IMAGE = "output_programme_image"
 
 DEFAULT_NAME = "SkyQ Box"
 
@@ -61,6 +62,14 @@ SUPPORT_SKYQ = (
     | SUPPORT_SEEK
 )
 
+FEATURE_BASIC = 1
+FEATURE_IMAGE = 2
+
+
+ENABLED_FEATURES = (
+    FEATURE_BASIC
+    | FEATURE_IMAGE
+)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
@@ -69,8 +78,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Required(CONF_NAME): cv.string,
         vol.Optional(CONF_ROOM, default='Default Room'): cv.string,
         vol.Optional(CONF_DIR, default='/config/'): cv.string,
-        vol.Optional(CONF_GEN_SWITCH, default=False): cv.string,
-
+        vol.Optional(CONF_GEN_SWITCH, default=False): cv.boolean,
+        vol.Optional(CONF_OUTPUT_PROGRAMME_IMAGE, default=True): cv.boolean,
     }
 )
 
@@ -86,13 +95,14 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         config.get(CONF_ROOM),
         config.get(CONF_GEN_SWITCH),
         config.get(CONF_DIR),
+        config.get(CONF_OUTPUT_PROGRAMME_IMAGE),
         )
     add_entities([player])
 
 
 class SkyQDevice(MediaPlayerDevice):
     """Representation of a SkyQ Box"""
-    def __init__(self, hass, name, host, sources, room, generate_switches_for_channels, config_directory):
+    def __init__(self, hass, name, host, sources, room, generate_switches_for_channels, config_directory, output_programme_image):
         self.hass = hass
         self._name = name
         self._host = host
@@ -101,9 +111,15 @@ class SkyQDevice(MediaPlayerDevice):
         self._current_source_id = None
         self._state = STATE_OFF
         self._power = STATE_OFF
+        self._enabled_features = ENABLED_FEATURES
+        
+        if(output_programme_image == False):
+            self._enabled_features = FEATURE_BASIC
+            
         self._source_names = sources or {}
+
         # LOGGER.warning(generate_switches_for_channels)
-        if (generate_switches_for_channels == 'True'):
+        if (generate_switches_for_channels == True):
             swMaker = SwitchMaker(name, room, config_directory)
             for ch in [*self._source_names.keys()]:
                 swMaker.addChannel(ch)
@@ -208,7 +224,8 @@ class SkyQDevice(MediaPlayerDevice):
             currentProgramme = self._client.getCurrentMedia()
             self.channel = currentProgramme.get('channel')
             self.episode = currentProgramme.get('episode')
-            self.imageUrl = currentProgramme.get('imageUrl')
+            if(self._enabled_features & FEATURE_IMAGE):
+               self.imageUrl = currentProgramme.get('imageUrl')
             self.isTvShow = False
             self.season = currentProgramme.get('season')
             self._title = currentProgramme.get('title')
