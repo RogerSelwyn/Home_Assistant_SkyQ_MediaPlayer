@@ -6,8 +6,8 @@ import socket
 import time
 
 
-from custom_components.skyq.sky_remote.sky_remote import SkyRemote
-from custom_components.skyq.sky_remote.sky_remote import SwitchMaker
+from custom_components.skyq.skyq.sky_remote import SkyRemote
+from custom_components.skyq.util.config_gen import SwitchMaker
 
 import voluptuous as vol
 
@@ -62,8 +62,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Required(CONF_SOURCES, default={}): {cv.string: cv.string},
         vol.Required(CONF_HOST): cv.string,
         vol.Required(CONF_NAME): cv.string,
-        vol.Required(CONF_ROOM): cv.string,
-        vol.Required(CONF_DIR): cv.string,
+        vol.Optional(CONF_ROOM, default='Default Room'): cv.string,
+        vol.Optional(CONF_DIR, default='/config/'): cv.string,
         vol.Optional(CONF_GEN_SWITCH, default=False): cv.string,
 
     }
