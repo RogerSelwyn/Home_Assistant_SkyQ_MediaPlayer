@@ -1,3 +1,6 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/madmanmonty/home_assistant_skyq_mediaplayer/badge)](https://www.codefactor.io/repository/github/madmanmonty/home_assistant_skyq_mediaplayer)
+
+
 # Custom Component for SkyQ Integration for Home Assistant
 
 The skyq platform allows you to control a SkyQ set top box.
@@ -42,6 +45,9 @@ List of channels or other commands that will appear in the source selection.
 
 **name** _(string)(Required)_
 The name you would like to give to the  SkyQ  set top box.
+
+**output_programme_image** _(boolean)(Optional)_ Default True
+Enables you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing.
 
 
 ### Sources
