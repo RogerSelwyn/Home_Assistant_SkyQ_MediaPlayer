@@ -64,9 +64,10 @@ class SkyRemote:
         self._host=host
         self._port=port
         self._jsonport = jsonport
-        self._soapControlURl = self._getSoapControlURL(0)
-        if (self._soapControlURl is None):
-            self._soapControlURl = self._getSoapControlURL(1)
+        response = self._getSoapControlURL(0)
+        self._soapControlURl = response['url']
+        if (self._soapControlURl is None and response['status'] == 'Not Found'):
+            self._soapControlURl = self._getSoapControlURL(1)['url']
 
     def http_json(self, path, headers=None) -> str:
         try:
@@ -92,13 +93,22 @@ class SkyRemote:
             if resp.status_code == HTTPStatus.OK:
                 description = xmltodict.parse(resp.text)
                 services = description['root']['device']['serviceList']['service']
-                playService = next(s for s in services if s['serviceId'] == SKY_PLAY_URN)
-                return SOAP_CONTROL_BASE_URL.format(self._host, playService['controlURL'])
-            return None
-        except:
-            print ("soap error")
-            return None
-		    
+                if (type(services) != list):
+                    services = [services]
+                playService = None
+                for s in services:
+                    if s['serviceId'] == SKY_PLAY_URN:
+                        playService = s
+                if playService == None:
+                    return {'url': None, 'status': 'Not Found'}
+                return {'url':SOAP_CONTROL_BASE_URL.format(self._host, playService['controlURL']), 'status': 'OK'}
+            return {'url': None, 'status': 'Not Found'}
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+            return {'url': None, 'status': 'Error'}
+        except Exception as err:
+            print(f'Other error occurred: {err}')
+            return {'url': None, 'status': 'Error'}
+            
     def _callSkySOAPService(self, method):
         try:
             payload = SOAP_PAYLOAD.format(method)
@@ -115,6 +125,8 @@ class SkyRemote:
 
 
     def powerStatus(self) -> str:
+        if self._soapControlURl is None:
+            return 'Powered Off'
         output = self.http_json(self.REST_PATH_INFO)
         if ('activeStandby' in output and output['activeStandby'] is False):
             return 'On'

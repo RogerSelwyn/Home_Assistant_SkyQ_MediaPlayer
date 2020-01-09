@@ -193,7 +193,8 @@ class SkyQDevice(MediaPlayerDevice):
         """Get the latest data and update device state."""
         
         self._updateState()
-        self._updateCurrentProgramme()
+        if self._power != STATE_OFF:
+            self._updateCurrentProgramme()
         
     def _updateState(self):
         if (self._client.powerStatus() == 'On'):
