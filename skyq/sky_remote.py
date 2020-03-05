@@ -6,6 +6,10 @@ import json
 import xml
 import xmltodict
 from http import HTTPStatus
+#from ws4py.client.threadedclient import WebSocketClient
+from custom_components.skyq.skyq.ws4py.client.threadedclient import WebSocketClient
+from datetime import datetime, timedelta
+
 
 # SOAP/UPnP Constants
 SKY_PLAY_URN = 'urn:nds-com:serviceId:SkyPlay'
@@ -13,23 +17,29 @@ SOAP_ACTION = '"urn:schemas-nds-com:service:SkyPlay:2#{0}"'
 SOAP_CONTROL_BASE_URL = 'http://{0}:49153{1}'
 SOAP_DESCRIPTION_BASE_URL = 'http://{0}:49153/description{1}.xml'
 SOAP_PAYLOAD = """<s:Envelope xmlns:s='http://schemas.xmlsoap.org/soap/envelope/' s:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'>
-	<s:Body>
-		<u:{0} xmlns:u="urn:schemas-nds-com:service:SkyPlay:2">
-			<InstanceID>0</InstanceID>
-		</u:{0}>
-	</s:Body>
+    <s:Body>
+        <u:{0} xmlns:u="urn:schemas-nds-com:service:SkyPlay:2">
+            <InstanceID>0</InstanceID>
+        </u:{0}>
+    </s:Body>
 </s:Envelope>"""
 SOAP_RESPONSE = 'u:{0}Response'
 SOAP_USER_AGENT = 'SKYPLUS_skyplus'
 UPNP_GET_MEDIA_INFO = 'GetMediaInfo'
 UPNP_GET_TRANSPORT_INFO = 'GetTransportInfo'
 
+# WebSocket Constants
+WS_BASE_URL = 'ws://{0}:9006/as/{1}'
+WS_CURRENT_APPS = 'apps/status'
+
 # REST Constants
-REST_BASE_URL = 'http://{0}:{1}/as/{2}'
-REST_PATH_INFO = 'system/information'
 REST_PATH_APPS = 'apps/status'
 REST_CHANNEL_LIST = 'services'
 REST_RECORDING_DETAILS = 'pvr/details/{0}'
+
+# Generic Constants
+DEFAULT_ENCODING = 'utf-8'
+RESPONSE_OK = 200
 
 # Sky specific constants
 CURRENT_URI = 'CurrentURI'
@@ -76,14 +86,6 @@ class SkyRemote:
         except Exception as err:
             return {}
     
-    def getActiveApplication(self):
-        try:
-            headers = {'Uprade': 'websocket'}
-            apps = self.http_json(REST_PATH_APPS, headers)
-            return next(a for a in apps['apps'] if a['status'] == self.APP_STATUS_VISIBLE)['appId']
-        except Exception:
-            return self.APP_EPG
-
     def _getSoapControlURL(self, descriptionIndex):
         try:
             descriptionUrl = SOAP_DESCRIPTION_BASE_URL.format(self._host, descriptionIndex)
@@ -122,6 +124,29 @@ class SkyRemote:
                 # self._connfail = CONNFAILCOUNT
                 return None
 
+    def _callSkyWebSocket(self, method):
+        try:
+            client = SkyWebSocket(WS_BASE_URL.format(self._host, method))
+            client.connect()
+            timeout = datetime.now() + timedelta(0, 5)
+            while client.data is None and datetime.now() < timeout:
+                pass
+            client.close()
+            if client.data is not None:
+                return json.loads(client.data.decode(DEFAULT_ENCODING), encoding=DEFAULT_ENCODING)
+            else:
+                return None
+        except Exception as err:
+            print(f'Error occurred: {err}')
+            return None
+
+    def getActiveApplication(self):
+        try:
+            apps = self._callSkyWebSocket(WS_CURRENT_APPS)
+            return next(a for a in apps['apps'] if a['status'] == self.APP_STATUS_VISIBLE)['appId']
+        except Exception:
+            return self.APP_EPG
+
 
     def powerStatus(self) -> str:
         if self._soapControlURl is None:
@@ -143,7 +168,6 @@ class SkyRemote:
         result = { 'channel': None, 'imageUrl': None, 'title': None, 'season': None, 'episode': None}
 
         response = self._callSkySOAPService(UPNP_GET_MEDIA_INFO)
-
         if (response is not None):
             currentURI = response[CURRENT_URI]
             if (currentURI is not None):
@@ -240,3 +264,9 @@ class SkyRemote:
                 print("timeout error")
                 break
             
+class SkyWebSocket(WebSocketClient):
+    def __init__(self, url):
+        super(SkyWebSocket, self).__init__(url)
+        self.data = None
+    def received_message(self, message):
+        self.data = message.data

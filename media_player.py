@@ -233,9 +233,12 @@ class SkyQDevice(MediaPlayerDevice):
         elif(activeApp == SkyRemote.APP_YOUTUBE):
             # self._state = STATE_PLAYING
             self._title = SkyRemote.APP_YOUTUBE_TITLE
-        elif(activeApp == APP_VEVO):
+        elif(activeApp == SkyRemote.APP_VEVO):
             # self._state = STATE_PLAYING
             self._title = SkyRemote.APP_VEVO_TITLE
+        else:
+            # self._state = STATE_PLAYING
+            self._title = activeApp
 
 
     def turn_off(self):
