@@ -87,7 +87,6 @@ class SkyRemote:
     def _getSoapControlURL(self, descriptionIndex):
         try:
             descriptionUrl = SOAP_DESCRIPTION_BASE_URL.format(self._host, descriptionIndex)
-            print(descriptionUrl)
             headers = {'User-Agent': SOAP_USER_AGENT}
             resp = requests.get(descriptionUrl, headers=headers, timeout=self.TIMEOUT)
             if resp.status_code == HTTPStatus.OK:
