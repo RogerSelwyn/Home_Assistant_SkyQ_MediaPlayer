@@ -182,7 +182,6 @@ class SkyRemote:
             if queryChannel == 'BBC Two':
                 queryChannel = 'BBC Two Eng'
             channelNode = next(c for c in self.epgData['tv']['channel'] if c['display-name'].startswith(queryChannel))
-            print(channelNode)
             channelId = channelNode['@id']
             if 'icon' in channelNode:
                 imageUrl = xmlTvUrlBase + channelNode['icon']['@src']
