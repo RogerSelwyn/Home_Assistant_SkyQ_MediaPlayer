@@ -189,8 +189,7 @@ class SkyRemote:
             programme = next(p for p in self.epgData['tv']['programme'] if p["@channel"] == channelId and datetime.strptime(p["@start"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) < now and datetime.strptime(p["@stop"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) > now)
             title = programme['title']['#text']
             if 'episode-num' not in programme:
-                #episodeNum = programme['episode-num']['#text']
-                episodeNum = 's01.e07'
+                episodeNum = programme['episode-num']['#text']
                 if episodeNum[0:1] == 's':
                     season = int(episodeNum[1:3])
                     episode = int(episodeNum[5:7])
