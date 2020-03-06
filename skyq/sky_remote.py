@@ -185,9 +185,11 @@ class SkyRemote:
             channelId = channelNode['@id']
             if 'icon' in channelNode:
                 imageUrl = xmlTvUrlBase + channelNode['icon']['@src']
+                result.update({'imageUrl': imageUrl})
             now = pytz.utc.localize(datetime.now())
             programme = next(p for p in self.epgData['tv']['programme'] if p["@channel"] == channelId and datetime.strptime(p["@start"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) < now and datetime.strptime(p["@stop"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) > now)
             title = programme['title']['#text']
+            result.update({'title': title})
             if 'episode-num' not in programme:
                 episodeNum = programme['episode-num']['#text']
                 if episodeNum[0:1] == 's':
@@ -195,15 +197,10 @@ class SkyRemote:
                     episode = int(episodeNum[5:7])
                 else:
                     episode = int(episodeNum[1:3])
-            result.update({'title': title})
             result.update({'season': season})
             result.update({'episode': episode})
-            result.update({'imageUrl': imageUrl})
             return result
         except Exception as err:
-            result.update({'title': channel})
-            result.update({'season': None})
-            result.update({'episode': None})
             return result
         
     def getCurrentMedia(self):
