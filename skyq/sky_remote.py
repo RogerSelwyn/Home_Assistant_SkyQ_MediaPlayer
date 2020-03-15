@@ -174,7 +174,6 @@ class SkyRemote:
     def _getAwkEpgData(self, sid):
         queryDate = date.today().strftime("%Y%m%d")
         epgUrl = awkTvUrlBase.format(queryDate, sid)
-        print(epgUrl)
         if self.lastEpgUrl is None or self.lastEpgUrl != epgUrl:
             resp = requests.get(epgUrl)
             if resp.status_code == RESPONSE_OK:
