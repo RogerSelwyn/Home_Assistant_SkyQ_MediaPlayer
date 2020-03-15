@@ -9,6 +9,7 @@ import pytz
 from http import HTTPStatus
 from custom_components.skyq.skyq.ws4py.client.threadedclient import WebSocketClient
 from datetime import datetime, timedelta, date
+#import base64
 
 
 # SOAP/UPnP Constants
@@ -45,7 +46,7 @@ RESPONSE_OK = 200
 CURRENT_URI = 'CurrentURI'
 CURRENT_TRANSPORT_STATE = 'CurrentTransportState'
 IMAGE_URL_BASE = 'https://images.metadata.sky.com/pd-image/{0}/16-9/1788'
-CLOUDFRONT_IMAGE_URL_BASE = 'https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/320/320/skychb{0}.png'
+CLOUDFRONT_IMAGE_URL_BASE = 'https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/600/600/skychb{0}.png'
 PVR = 'pvr'
 XSI = 'xsi'
 
@@ -182,10 +183,11 @@ class SkyRemote:
 
     def _getCurrentLiveTVProgramme(self, channel):
         try:
-            result = { 'channel': channel, 'title': None, 'season': None, 'episode': None}
+            result = { 'channel': channel, 'imageUrl': None, 'title': None, 'season': None, 'episode': None}
             title = None
             season = None
             episode = None
+            imageUrl = None
             self._getEpgData()
             queryChannel = channel
             if queryChannel.endswith(" HD"):
@@ -194,6 +196,9 @@ class SkyRemote:
                 queryChannel = 'BBC Two Eng'
             channelNode = next(c for c in self.epgData['tv']['channel'] if c['display-name'].startswith(queryChannel))
             channelId = channelNode['@id']
+            if 'icon' in channelNode:
+                imageUrl = xmlTvUrlBase + channelNode['icon']['@src']
+                result.update({'imageUrl': imageUrl})
             now = pytz.utc.localize(datetime.now())
             programme = next(p for p in self.epgData['tv']['programme'] if p["@channel"] == channelId and datetime.strptime(p["@start"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) < now and datetime.strptime(p["@stop"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) > now)
             title = programme['title']['#text']
@@ -209,8 +214,8 @@ class SkyRemote:
             result.update({'episode': episode})
             return result
         except Exception as err:
-            return result
-        
+            return result        
+
     def _getCurrentAWKLiveTVProgramme(self, sid):
         try:
             result = { 'title': None, 'season': None, 'episode': None}
@@ -253,6 +258,8 @@ class SkyRemote:
                     programme = self._getCurrentAWKLiveTVProgramme(sid)
                     #programme = self._getCurrentLiveTVProgramme(channel)
                     result.update({'channel': channel})
+                    #blah =  base64.b64encode(requests.get(CLOUDFRONT_IMAGE_URL_BASE.format(sid)).content)
+                    #print(blah)
                     result.update({'imageUrl': CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
                     result.update(programme)
                 elif (PVR in currentURI):
