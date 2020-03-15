@@ -9,7 +9,6 @@ import pytz
 from http import HTTPStatus
 from custom_components.skyq.skyq.ws4py.client.threadedclient import WebSocketClient
 from datetime import datetime, timedelta, date
-#import base64
 
 
 # SOAP/UPnP Constants
@@ -258,8 +257,6 @@ class SkyRemote:
                     programme = self._getCurrentAWKLiveTVProgramme(sid)
                     #programme = self._getCurrentLiveTVProgramme(channel)
                     result.update({'channel': channel})
-                    #blah =  base64.b64encode(requests.get(CLOUDFRONT_IMAGE_URL_BASE.format(sid)).content)
-                    #print(blah)
                     result.update({'imageUrl': CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
                     result.update(programme)
                 elif (PVR in currentURI):
