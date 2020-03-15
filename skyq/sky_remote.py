@@ -8,7 +8,7 @@ import xmltodict
 import pytz
 from http import HTTPStatus
 from custom_components.skyq.skyq.ws4py.client.threadedclient import WebSocketClient
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 
 # SOAP/UPnP Constants
@@ -45,11 +45,13 @@ RESPONSE_OK = 200
 CURRENT_URI = 'CurrentURI'
 CURRENT_TRANSPORT_STATE = 'CurrentTransportState'
 IMAGE_URL_BASE = 'https://images.metadata.sky.com/pd-image/{0}/16-9/1788'
+CLOUDFRONT_IMAGE_URL_BASE = 'https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/320/320/skychb{0}.png'
 PVR = 'pvr'
 XSI = 'xsi'
 
 xmlTvUrlBase = 'http://www.xmltv.co.uk'
 xmlTvUrl = xmlTvUrlBase + '/feed/3364'
+awkTvUrlBase = 'http://awk.epgsky.com/hawk/linear/schedule/{0}/{1}'
 
 class SkyRemote:
     commands={"power": 0, "select": 1, "backup": 2, "dismiss": 2, "channelup": 6, "channeldown": 7, "interactive": 8, "sidebar": 8, "help": 9, "services": 10, "search": 10, "tvguide": 11, "home": 11, "i": 14, "text": 15,  "up": 16, "down": 17, "left": 18, "right": 19, "red": 32, "green": 33, "yellow": 34, "blue": 35, "0": 48, "1": 49, "2": 50, "3": 51, "4": 52, "5": 53, "6": 54, "7": 55, "8": 56, "9": 57, "play": 64, "pause": 65, "stop": 66, "record": 67, "fastforward": 69, "rewind": 71, "boxoffice": 240, "sky": 241}
@@ -81,6 +83,7 @@ class SkyRemote:
         if (self._soapControlURl is None and response['status'] == 'Not Found'):
             self._soapControlURl = self._getSoapControlURL(0)['url']
         self.lastEpgUpdate = None
+        self.lastEpgUrl = None
         self._xmlTvUrl = xmlTvUrl
 
     def http_json(self, path, headers=None) -> str:
@@ -168,13 +171,22 @@ class SkyRemote:
                 self.epgData = xmltodict.parse(resp.text)
                 self.lastEpgUpdate = datetime.now()
 
+    def _getAwkEpgData(self, sid):
+        queryDate = date.today().strftime("%Y%m%d")
+        epgUrl = awkTvUrlBase.format(queryDate, sid)
+        print(epgUrl)
+        if self.lastEpgUrl is None or self.lastEpgUrl != epgUrl:
+            resp = requests.get(epgUrl)
+            if resp.status_code == RESPONSE_OK:
+                self.awkEpgData = resp.json()['schedule'][0]
+                self.lastEpgUrl = epgUrl
+
     def _getCurrentLiveTVProgramme(self, channel):
         try:
-            result = { 'channel': channel, 'imageUrl': None, 'title': None, 'season': None, 'episode': None}
+            result = { 'channel': channel, 'title': None, 'season': None, 'episode': None}
             title = None
             season = None
             episode = None
-            imageUrl = None
             self._getEpgData()
             queryChannel = channel
             if queryChannel.endswith(" HD"):
@@ -183,14 +195,11 @@ class SkyRemote:
                 queryChannel = 'BBC Two Eng'
             channelNode = next(c for c in self.epgData['tv']['channel'] if c['display-name'].startswith(queryChannel))
             channelId = channelNode['@id']
-            if 'icon' in channelNode:
-                imageUrl = xmlTvUrlBase + channelNode['icon']['@src']
-                result.update({'imageUrl': imageUrl})
             now = pytz.utc.localize(datetime.now())
             programme = next(p for p in self.epgData['tv']['programme'] if p["@channel"] == channelId and datetime.strptime(p["@start"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) < now and datetime.strptime(p["@stop"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) > now)
             title = programme['title']['#text']
             result.update({'title': title})
-            if 'episode-num' not in programme:
+            if 'episode-num' in programme:
                 episodeNum = programme['episode-num']['#text']
                 if episodeNum[0:1] == 's':
                     season = int(episodeNum[1:3])
@@ -201,6 +210,31 @@ class SkyRemote:
             result.update({'episode': episode})
             return result
         except Exception as err:
+            return result
+        
+    def _getCurrentAWKLiveTVProgramme(self, sid):
+        try:
+            result = { 'title': None, 'season': None, 'episode': None}
+            title = None
+            season = None
+            episode = None
+            self._getAwkEpgData(sid)
+            epoch = datetime.utcfromtimestamp(0)
+            timefromepoch = int((datetime.now() - epoch).total_seconds())
+            programme = next(p for p in self.awkEpgData['events'] if p['st'] <= timefromepoch and  p['st'] +  p['d'] >= timefromepoch)
+            title = programme['t']
+            if 'episodenumber' in programme:
+                if programme['episodenumber'] > 0:
+                    episode = programme['episodenumber']
+            if 'seasonnumber' in programme:
+                if programme['seasonnumber'] > 0:
+                    season = programme['seasonnumber']
+            result.update({'title': title})
+            result.update({'season': season})
+            result.update({'episode': episode})
+            return result
+        except Exception as err:
+            print(err)
             return result
         
     def getCurrentMedia(self):
@@ -217,7 +251,10 @@ class SkyRemote:
                     channelNode = next(s for s in channels['services'] if s['sid'] == str(sid))
                     result.update({'imageUrl': None})
                     channel = channelNode['t']
-                    programme = self._getCurrentLiveTVProgramme(channel)
+                    programme = self._getCurrentAWKLiveTVProgramme(sid)
+                    #programme = self._getCurrentLiveTVProgramme(channel)
+                    result.update({'channel': channel})
+                    result.update({'imageUrl': CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
                     result.update(programme)
                 elif (PVR in currentURI):
                     # Recorded content
