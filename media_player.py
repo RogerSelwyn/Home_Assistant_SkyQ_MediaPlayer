@@ -242,10 +242,11 @@ class SkyQDevice(MediaPlayerDevice):
 
 
     def turn_off(self):
-        self._client.press('power')
-
+        if (self._client.powerStatus() == 'On'):
+             self._client.press('power')
     def turn_on(self):
-        self._client.press(['home', 'dismiss'])
+        if (self._client.powerStatus() == 'Off'):
+             self._client.press(['home', 'dismiss'])
 
     def media_play(self):
         self._client.press('play')
