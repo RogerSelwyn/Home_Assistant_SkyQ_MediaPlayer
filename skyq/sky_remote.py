@@ -79,9 +79,10 @@ class SkyRemote:
         self._port=port
         self._jsonport = jsonport
         url_index = 0
-        self._soapControlURl = self._getSoapControlURL(1)		         self._soapControlURl = None
+        self._soapControlURl = None
         while self._soapControlURl is None and url_index < 3:
-             self._soapControlURl = self._getSoapControlURL(url_index)
+             self._soapControlURl = self._getSoapControlURL(url_index)['url']
+             print(self._soapControlURl)
              url_index += 1
         #self.lastEpgUpdate = None
         self.lastEpgUrl = None
