@@ -81,9 +81,8 @@ class SkyRemote:
         url_index = 0
         self._soapControlURl = None
         while self._soapControlURl is None and url_index < 3:
-             self._soapControlURl = self._getSoapControlURL(url_index)['url']
-             print(self._soapControlURl)
-             url_index += 1
+            self._soapControlURl = self._getSoapControlURL(url_index)['url']
+            url_index += 1
         #self.lastEpgUpdate = None
         self.lastEpgUrl = None
         #self._xmlTvUrl = xmlTvUrl
