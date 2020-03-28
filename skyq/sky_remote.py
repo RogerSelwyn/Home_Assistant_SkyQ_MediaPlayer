@@ -118,12 +118,11 @@ class SkyRemote:
         try:
             payload = SOAP_PAYLOAD.format(method)
             headers = {'Content-Type': 'text/xml; charset="utf-8"', 'SOAPACTION': SOAP_ACTION.format(method)}
-            resp = requests.post(self._soapControlURl, headers=headers, data=payload, verify=False, timeout=self.TIMEOUT)
+            resp = requests.post(self._soapControlURl, headers=headers, data=payload, verify=True, timeout=self.TIMEOUT)
             if resp.status_code == HTTPStatus.OK:
                 xml = resp.text
                 return xmltodict.parse(xml)['s:Envelope']['s:Body'][SOAP_RESPONSE.format(method)]
-            else:
-                return None
+            return None
         except requests.exceptions.RequestException as err:
                 # self._connfail = CONNFAILCOUNT
                 return None
@@ -158,8 +157,7 @@ class SkyRemote:
         output = self.http_json(self.REST_PATH_INFO)
         if ('activeStandby' in output and output['activeStandby'] is False):
             return 'On'
-        else:
-            return 'Off'
+        return 'Off'
 
     def _getEpgData(self, sid):
         queryDate = date.today().strftime("%Y%m%d")
@@ -242,7 +240,7 @@ class SkyRemote:
             state = response[CURRENT_TRANSPORT_STATE]
             if state == self.SKY_STATE_PLAYING:
                 return self.SKY_STATE_PLAYING
-            elif state == self.SKY_STATE_PAUSED:
+            if state == self.SKY_STATE_PAUSED:
                 return self.SKY_STATE_PAUSED
         return self.SKY_STATE_OFF
         
