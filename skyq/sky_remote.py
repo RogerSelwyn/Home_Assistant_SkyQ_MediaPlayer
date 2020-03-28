@@ -98,13 +98,13 @@ class SkyRemote:
             if resp.status_code == HTTPStatus.OK:
                 description = xmltodict.parse(resp.text)
                 services = description['root']['device']['serviceList']['service']
-                if (type(services) != list):
+                if not isinstance(services, list):
                     services = [services]
                 playService = None
                 for s in services:
                     if s['serviceId'] == SKY_PLAY_URN:
                         playService = s
-                if playService == None:
+                if playService is None:
                     return {'url': None, 'status': 'Not Found'}
                 return {'url':SOAP_CONTROL_BASE_URL.format(self._host, playService['controlURL']), 'status': 'OK'}
             return {'url': None, 'status': 'Not Found'}
@@ -137,8 +137,7 @@ class SkyRemote:
             client.close()
             if client.data is not None:
                 return json.loads(client.data.decode(DEFAULT_ENCODING), encoding=DEFAULT_ENCODING)
-            else:
-                return None
+            return None
         except Exception as err:
             print(f'Error occurred: {err}')
             return None
@@ -147,7 +146,7 @@ class SkyRemote:
         try:
             apps = self._callSkyWebSocket(WS_CURRENT_APPS)
             return next(a for a in apps['apps'] if a['status'] == self.APP_STATUS_VISIBLE)['appId']
-        except Exception:
+        except Exception as err:
             return self.APP_EPG
 
 
@@ -271,7 +270,7 @@ class SkyRemote:
 
         try:
             client.connect((self._host, self._port))
-        except:
+        except Exception as err:
             print("Failed to connect to client")
             return
 
@@ -302,3 +301,4 @@ class SkyWebSocket(WebSocketClient):
         self.data = None
     def received_message(self, message):
         self.data = message.data
+        
