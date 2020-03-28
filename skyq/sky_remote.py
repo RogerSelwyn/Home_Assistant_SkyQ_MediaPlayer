@@ -14,6 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 
 # SOAP/UPnP Constants
 SKY_PLAY_URN = 'urn:nds-com:serviceId:SkyPlay'
+SKYControl = 'SkyControl'
 SOAP_ACTION = '"urn:schemas-nds-com:service:SkyPlay:2#{0}"'
 SOAP_CONTROL_BASE_URL = 'http://{0}:49153{1}'
 SOAP_DESCRIPTION_BASE_URL = 'http://{0}:49153/description{1}.xml'
@@ -101,6 +102,9 @@ class SkyRemote:
             if resp.status_code == HTTPStatus.OK:
                 _LOGGER.debug("Control Info {0}: {1}".format(descriptionIndex, resp.text))
                 description = xmltodict.parse(resp.text)
+                deviceType = description['root']['device']['deviceType']
+                if not (SKYControl in deviceType):
+                    return {'url': None, 'status': 'Not Found'}
                 services = description['root']['device']['serviceList']['service']
                 if not isinstance(services, list):
                     services = [services]
