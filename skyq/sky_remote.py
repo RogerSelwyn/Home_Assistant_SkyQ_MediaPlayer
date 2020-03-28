@@ -7,7 +7,7 @@ import xml
 import xmltodict
 import pytz
 from http import HTTPStatus
-from custom_components.skyq.skyq.ws4py.client.threadedclient import WebSocketClient
+from ws4py.client.threadedclient import WebSocketClient
 from datetime import datetime, timedelta, date
 
 
@@ -243,7 +243,6 @@ class SkyRemote:
         
     def getCurrentMedia(self):
         result = { 'channel': None, 'imageUrl': None, 'title': None, 'season': None, 'episode': None}
-
         response = self._callSkySOAPService(UPNP_GET_MEDIA_INFO)
         if (response is not None):
             currentURI = response[CURRENT_URI]

@@ -3,4 +3,3 @@ __pycache__/
 .DS_Store
 skyq/bash_sky_test.py
 skyq/Thumbs.db
-skyq/custom_components/
