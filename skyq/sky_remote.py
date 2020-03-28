@@ -3,13 +3,14 @@ import math
 import socket
 import requests
 import json
-import xml
 import xmltodict
-import pytz
+import logging
+
 from http import HTTPStatus
 from ws4py.client.threadedclient import WebSocketClient
 from datetime import datetime, timedelta, date
 
+_LOGGER = logging.getLogger(__name__)
 
 # SOAP/UPnP Constants
 SKY_PLAY_URN = 'urn:nds-com:serviceId:SkyPlay'
@@ -111,7 +112,7 @@ class SkyRemote:
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
             return {'url': None, 'status': 'Error'}
         except Exception as err:
-            print(f'Other error occurred: {err}')
+            _LOGGER.error(f'Other error occurred: {err}')
             return {'url': None, 'status': 'Error'}
             
     def _callSkySOAPService(self, method):
@@ -139,7 +140,7 @@ class SkyRemote:
                 return json.loads(client.data.decode(DEFAULT_ENCODING), encoding=DEFAULT_ENCODING)
             return None
         except Exception as err:
-            print(f'Error occurred: {err}')
+            _LOGGER.error(f'Error occurred: {err}')
             return None
 
     def getActiveApplication(self):
@@ -188,12 +189,13 @@ class SkyRemote:
             result.update({'programmeuuid': programme['programmeuuid']})
             return result
         except Exception as err:
-            print(err)
+            _LOGGER.error(err)
             return result
         
     def getCurrentMedia(self):
         result = { 'channel': None, 'imageUrl': None, 'title': None, 'season': None, 'episode': None}
         response = self._callSkySOAPService(UPNP_GET_MEDIA_INFO)
+        _LOGGER.debug(response)
         if (response is not None):
             currentURI = response[CURRENT_URI]
             if (currentURI is not None):
@@ -226,6 +228,7 @@ class SkyRemote:
                             osid = recording['details']['osid']
                             imageUrl += ("?sid=" + str(osid))
                         result.update({'imageUrl': imageUrl})
+        _LOGGER.debug(result)
         return result
 
 
@@ -247,13 +250,13 @@ class SkyRemote:
         if isinstance(sequence, list):
             for item in sequence:
                 if item not in self.commands:
-                    print('Invalid command: {}'.format(item))
+                    _LOGGER.error('Invalid command: {}'.format(item))
                     break
                 self.sendCommand(self.commands[item.casefold()])
                 time.sleep(0.5)
         else:
             if sequence not in self.commands:
-                print('Invalid command: {}'.format(sequence))
+                _LOGGER.error('Invalid command: {}'.format(sequence))
             else:
                 self.sendCommand(self.commands[sequence])    
 
@@ -263,13 +266,13 @@ class SkyRemote:
         try:
             client=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error as msg:
-            print('Failed to create socket. Error code: %s , Error message : %s' % (str(msg[0]), msg[1]))
+            _LOGGER.error('Failed to create socket. Error code: %s , Error message : %s' % (str(msg[0]), msg[1]))
             return
 
         try:
             client.connect((self._host, self._port))
         except Exception as err:
-            print("Failed to connect to client")
+            _LOGGER.error("Failed to connect to client")
             return
 
         l=12
@@ -290,7 +293,7 @@ class SkyRemote:
                 break
 
             if time.time() > timeout:
-                print("timeout error")
+                _LOGGER.error("timeout error")
                 break
             
 class SkyWebSocket(WebSocketClient):
