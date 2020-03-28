@@ -148,6 +148,8 @@ class SkyRemote:
             if client.data is not None:
                 return json.loads(client.data.decode(DEFAULT_ENCODING), encoding=DEFAULT_ENCODING)
             return None
+        except (AttributeError) as err:
+            return None
         except Exception as err:
             _LOGGER.exception(f'X0020 - Error occurred: {err}')
             return None
@@ -155,6 +157,8 @@ class SkyRemote:
     def getActiveApplication(self):
         try:
             apps = self._callSkyWebSocket(WS_CURRENT_APPS)
+            if (apps is None):
+                return self.APP_EPG 
             return next(a for a in apps['apps'] if a['status'] == self.APP_STATUS_VISIBLE)['appId']
         except Exception as err:
             return self.APP_EPG
