@@ -78,6 +78,8 @@ class SkyRemote:
         self._port=port
         self._jsonport = jsonport
         url_index = 0
+        _LOGGER.debug("SoapURL 0: {0}".format(self._getSoapControlURL(0)))
+        _LOGGER.debug("SoapURL 1: {0}".format(self._getSoapControlURL(1)))
         self._soapControlURl = None
         while self._soapControlURl is None and url_index < 3:
             self._soapControlURl = self._getSoapControlURL(url_index)['url']
@@ -97,6 +99,7 @@ class SkyRemote:
             headers = {'User-Agent': SOAP_USER_AGENT}
             resp = requests.get(descriptionUrl, headers=headers, timeout=self.TIMEOUT)
             if resp.status_code == HTTPStatus.OK:
+                _LOGGER.debug("Control Info {0}: {1}".format(descriptionIndex, resp.text))
                 description = xmltodict.parse(resp.text)
                 services = description['root']['device']['serviceList']['service']
                 if not isinstance(services, list):
@@ -177,6 +180,7 @@ class SkyRemote:
             epoch = datetime.utcfromtimestamp(0)
             timefromepoch = int((datetime.now() - epoch).total_seconds())
             programme = next(p for p in self.epgData['events'] if p['st'] <= timefromepoch and  p['st'] +  p['d'] >= timefromepoch)
+            _LOGGER.debug("Full programme: {0}".format(programme))
             if 'episodenumber' in programme:
                 if programme['episodenumber'] > 0:
                     episode = programme['episodenumber']
@@ -195,7 +199,7 @@ class SkyRemote:
     def getCurrentMedia(self):
         result = { 'channel': None, 'imageUrl': None, 'title': None, 'season': None, 'episode': None}
         response = self._callSkySOAPService(UPNP_GET_MEDIA_INFO)
-        _LOGGER.debug(response)
+        _LOGGER.debug("Current media info: {0}".format(response))
         if (response is not None):
             currentURI = response[CURRENT_URI]
             if (currentURI is not None):
@@ -207,6 +211,7 @@ class SkyRemote:
                     result.update({'imageUrl': None})
                     result.update({'channel': channelNode['t']})
                     programme = self._getCurrentLiveTVProgramme(sid)
+                    _LOGGER.debug("Programme info: {0}".format(programme))
                     if not (programme['programmeuuid'] is None):
                         result.update({'imageUrl': IMAGE_URL_BASE.format(str(programme['programmeuuid']))})
                     else:
@@ -228,7 +233,7 @@ class SkyRemote:
                             osid = recording['details']['osid']
                             imageUrl += ("?sid=" + str(osid))
                         result.update({'imageUrl': imageUrl})
-        _LOGGER.debug(result)
+        _LOGGER.debug("Final result: {0}".format(result))
         return result
 
 
