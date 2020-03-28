@@ -113,13 +113,13 @@ class SkyQDevice(MediaPlayerDevice):
         self._power = STATE_OFF
         self._enabled_features = ENABLED_FEATURES
         
-        if(output_programme_image == False):
+        if not (output_programme_image):
             self._enabled_features = FEATURE_BASIC
             
         self._source_names = sources or {}
 
         # LOGGER.warning(generate_switches_for_channels)
-        if (generate_switches_for_channels == True):
+        if (generate_switches_for_channels):
             swMaker = SwitchMaker(name, room, config_directory)
             for ch in [*self._source_names.keys()]:
                 swMaker.addChannel(ch)
