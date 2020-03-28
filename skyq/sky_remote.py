@@ -49,8 +49,6 @@ CLOUDFRONT_IMAGE_URL_BASE = 'https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/n
 PVR = 'pvr'
 XSI = 'xsi'
 
-xmlTvUrlBase = 'http://www.xmltv.co.uk'
-xmlTvUrl = xmlTvUrlBase + '/feed/3364'
 awkTvUrlBase = 'http://awk.epgsky.com/hawk/linear/schedule/{0}/{1}'
 
 class SkyRemote:
@@ -83,9 +81,7 @@ class SkyRemote:
         while self._soapControlURl is None and url_index < 3:
             self._soapControlURl = self._getSoapControlURL(url_index)['url']
             url_index += 1
-        #self.lastEpgUpdate = None
         self.lastEpgUrl = None
-        #self._xmlTvUrl = xmlTvUrl
 
     def http_json(self, path, headers=None) -> str:
         try:
@@ -165,67 +161,25 @@ class SkyRemote:
         else:
             return 'Off'
 
-    def _getEpgData(self):
-        if self.lastEpgUpdate is None or self.lastEpgUpdate < (datetime.now() - timedelta(hours = 12)):
-            resp = requests.get(self._xmlTvUrl)
-            if resp.status_code == RESPONSE_OK:
-                self.epgData = xmltodict.parse(resp.text)
-                self.lastEpgUpdate = datetime.now()
-
-    def _getAwkEpgData(self, sid):
+    def _getEpgData(self, sid):
         queryDate = date.today().strftime("%Y%m%d")
         epgUrl = awkTvUrlBase.format(queryDate, sid)
         if self.lastEpgUrl is None or self.lastEpgUrl != epgUrl:
             resp = requests.get(epgUrl)
             if resp.status_code == RESPONSE_OK:
-                self.awkEpgData = resp.json()['schedule'][0]
+                self.epgData = resp.json()['schedule'][0]
                 self.lastEpgUrl = epgUrl
 
-    def _getCurrentLiveTVProgramme(self, channel):
-        try:
-            result = { 'channel': channel, 'imageUrl': None, 'title': None, 'season': None, 'episode': None}
-            title = None
-            season = None
-            episode = None
-            imageUrl = None
-            self._getEpgData()
-            queryChannel = channel
-            if queryChannel.endswith(" HD"):
-                queryChannel = queryChannel[:-3]
-            if queryChannel == 'BBC Two':
-                queryChannel = 'BBC Two Eng'
-            channelNode = next(c for c in self.epgData['tv']['channel'] if c['display-name'].startswith(queryChannel))
-            channelId = channelNode['@id']
-            if 'icon' in channelNode:
-                imageUrl = xmlTvUrlBase + channelNode['icon']['@src']
-                result.update({'imageUrl': imageUrl})
-            now = pytz.utc.localize(datetime.now())
-            programme = next(p for p in self.epgData['tv']['programme'] if p["@channel"] == channelId and datetime.strptime(p["@start"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) < now and datetime.strptime(p["@stop"], "%Y%m%d%H%M%S %z").astimezone(pytz.utc) > now)
-            title = programme['title']['#text']
-            result.update({'title': title})
-            if 'episode-num' in programme:
-                episodeNum = programme['episode-num']['#text']
-                if episodeNum[0:1] == 's':
-                    season = int(episodeNum[1:3])
-                    episode = int(episodeNum[5:7])
-                else:
-                    episode = int(episodeNum[1:3])
-            result.update({'season': season})
-            result.update({'episode': episode})
-            return result
-        except Exception as err:
-            return result        
-
-    def _getCurrentAWKLiveTVProgramme(self, sid):
+    def _getCurrentLiveTVProgramme(self, sid):
         try:
             result = { 'title': None, 'season': None, 'episode': None}
             title = None
             season = None
             episode = None
-            self._getAwkEpgData(sid)
+            self._getEpgData(sid)
             epoch = datetime.utcfromtimestamp(0)
             timefromepoch = int((datetime.now() - epoch).total_seconds())
-            programme = next(p for p in self.awkEpgData['events'] if p['st'] <= timefromepoch and  p['st'] +  p['d'] >= timefromepoch)
+            programme = next(p for p in self.epgData['events'] if p['st'] <= timefromepoch and  p['st'] +  p['d'] >= timefromepoch)
             title = programme['t']
             if 'episodenumber' in programme:
                 if programme['episodenumber'] > 0:
@@ -254,7 +208,7 @@ class SkyRemote:
                     channelNode = next(s for s in channels['services'] if s['sid'] == str(sid))
                     result.update({'imageUrl': None})
                     channel = channelNode['t']
-                    programme = self._getCurrentAWKLiveTVProgramme(sid)
+                    programme = self._getCurrentLiveTVProgramme(sid)
                     #programme = self._getCurrentLiveTVProgramme(channel)
                     result.update({'channel': channel})
                     result.update({'imageUrl': CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
