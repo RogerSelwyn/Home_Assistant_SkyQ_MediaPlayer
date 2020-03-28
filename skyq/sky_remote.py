@@ -79,9 +79,9 @@ class SkyRemote:
         self._port=port
         self._jsonport = jsonport
         url_index = 0
-        self._soapControlURl = None
-        while self._soapControlURl is None and url_index < 3:
-            self._soapControlURl = self._getSoapControlURL(url_index)['url']
+        self._soapControlURL = None
+        while self._soapControlURL is None and url_index < 3:
+            self._soapControlURL = self._getSoapControlURL(url_index)['url']
             url_index += 1
         self.lastEpgUrl = None
 
@@ -114,7 +114,11 @@ class SkyRemote:
                     return {'url': None, 'status': 'Not Found'}
                 return {'url':SOAP_CONTROL_BASE_URL.format(self._host, playService['controlURL']), 'status': 'OK'}
             return {'url': None, 'status': 'Not Found'}
-        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+        except (requests.exceptions.Timeout) as err:
+            _LOGGER.exception(f'X0080 - Timeout error: {err}')
+            return {'url': None, 'status': 'Error'}
+        except (requests.exceptions.ConnectionError) as err:
+            _LOGGER.exception(f'X0070 - Connection error: {err}')
             return {'url': None, 'status': 'Error'}
         except Exception as err:
             _LOGGER.exception(f'X0010 - Other error occurred: {err}')
@@ -124,7 +128,7 @@ class SkyRemote:
         try:
             payload = SOAP_PAYLOAD.format(method)
             headers = {'Content-Type': 'text/xml; charset="utf-8"', 'SOAPACTION': SOAP_ACTION.format(method)}
-            resp = requests.post(self._soapControlURl, headers=headers, data=payload, verify=True, timeout=self.TIMEOUT)
+            resp = requests.post(self._soapControlURL, headers=headers, data=payload, verify=True, timeout=self.TIMEOUT)
             if resp.status_code == HTTPStatus.OK:
                 xml = resp.text
                 return xmltodict.parse(xml)['s:Envelope']['s:Body'][SOAP_RESPONSE.format(method)]
@@ -149,11 +153,15 @@ class SkyRemote:
             return None
 
     def getActiveApplication(self):
-        apps = self._callSkyWebSocket(WS_CURRENT_APPS)
-        return next(a for a in apps['apps'] if a['status'] == self.APP_STATUS_VISIBLE)['appId']
+        try:
+            apps = self._callSkyWebSocket(WS_CURRENT_APPS)
+            return next(a for a in apps['apps'] if a['status'] == self.APP_STATUS_VISIBLE)['appId']
+        except Exception as err:
+            return self.APP_EPG
+        
 
     def powerStatus(self) -> str:
-        if self._soapControlURl is None:
+        if self._soapControlURL is None:
             return 'Powered Off'
         output = self.http_json(self.REST_PATH_INFO)
         if ('activeStandby' in output and output['activeStandby'] is False):
