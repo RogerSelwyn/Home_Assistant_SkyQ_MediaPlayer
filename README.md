@@ -1,4 +1,4 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/madmanmonty/home_assistant_skyq_mediaplayer/badge)](https://www.codefactor.io/repository/github/madmanmonty/home_assistant_skyq_mediaplayer)
+[![CodeFactor](https://www.codefactor.io/repository/github/rogerselwyn/home_assistant_skyq_mediaplayer/badge)](https://www.codefactor.io/repository/github/rogerselwyn/home_assistant_skyq_mediaplayer)
 
 
 # Custom Component for SkyQ Integration for Home Assistant
