@@ -90,6 +90,7 @@ class SkyRemote:
             response = requests.get(self.REST_BASE_URL.format(self._host, self._jsonport, path), timeout=self.TIMEOUT, headers=headers)
             return json.loads(response.content)
         except Exception as err:
+            _LOGGER.exception(f'X0060 - Other error occurred: {err}')
             return {}
     
     def _getSoapControlURL(self, descriptionIndex):
@@ -116,7 +117,7 @@ class SkyRemote:
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
             return {'url': None, 'status': 'Error'}
         except Exception as err:
-            _LOGGER.error(f'Other error occurred: {err}')
+            _LOGGER.exception(f'X0010 - Other error occurred: {err}')
             return {'url': None, 'status': 'Error'}
             
     def _callSkySOAPService(self, method):
@@ -129,8 +130,8 @@ class SkyRemote:
                 return xmltodict.parse(xml)['s:Envelope']['s:Body'][SOAP_RESPONSE.format(method)]
             return None
         except requests.exceptions.RequestException as err:
-                # self._connfail = CONNFAILCOUNT
-                return None
+            # self._connfail = CONNFAILCOUNT
+            return None
 
     def _callSkyWebSocket(self, method):
         try:
@@ -144,16 +145,12 @@ class SkyRemote:
                 return json.loads(client.data.decode(DEFAULT_ENCODING), encoding=DEFAULT_ENCODING)
             return None
         except Exception as err:
-            _LOGGER.error(f'Error occurred: {err}')
+            _LOGGER.exception(f'X0020 - Error occurred: {err}')
             return None
 
     def getActiveApplication(self):
-        try:
-            apps = self._callSkyWebSocket(WS_CURRENT_APPS)
-            return next(a for a in apps['apps'] if a['status'] == self.APP_STATUS_VISIBLE)['appId']
-        except Exception as err:
-            return self.APP_EPG
-
+        apps = self._callSkyWebSocket(WS_CURRENT_APPS)
+        return next(a for a in apps['apps'] if a['status'] == self.APP_STATUS_VISIBLE)['appId']
 
     def powerStatus(self) -> str:
         if self._soapControlURl is None:
@@ -193,7 +190,7 @@ class SkyRemote:
             result.update({'programmeuuid': programme['programmeuuid']})
             return result
         except Exception as err:
-            _LOGGER.error(err)
+            _LOGGER.exception(f'X0030 - Error occurred: {err}')
             return result
         
     def getCurrentMedia(self):
@@ -214,6 +211,7 @@ class SkyRemote:
                         result.update({'imageUrl': IMAGE_URL_BASE.format(str(programme['programmeuuid']))})
                     else:
                         result.update({'imageUrl': CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
+                    programme.pop('programmeuuid')
                     result.update(programme)
                 elif (PVR in currentURI):
                     # Recorded content
@@ -252,13 +250,13 @@ class SkyRemote:
         if isinstance(sequence, list):
             for item in sequence:
                 if item not in self.commands:
-                    _LOGGER.error('Invalid command: {}'.format(item))
+                    _LOGGER.error('E0010 - Invalid command: {}'.format(item))
                     break
                 self.sendCommand(self.commands[item.casefold()])
                 time.sleep(0.5)
         else:
             if sequence not in self.commands:
-                _LOGGER.error('Invalid command: {}'.format(sequence))
+                _LOGGER.error('E0020 - Invalid command: {0}'.format(sequence))
             else:
                 self.sendCommand(self.commands[sequence])    
 
@@ -267,14 +265,14 @@ class SkyRemote:
 
         try:
             client=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        except socket.error as msg:
-            _LOGGER.error('Failed to create socket. Error code: %s , Error message : %s' % (str(msg[0]), msg[1]))
+        except socket.error as err:
+            _LOGGER.exception('X0040 - Failed to create socket when sending command. Error code: %s , Error message : %s' % (str(err[0]), err[1]))
             return
 
         try:
             client.connect((self._host, self._port))
         except Exception as err:
-            _LOGGER.error("Failed to connect to client")
+            _LOGGER.exception(f'X0050 - Failed to connect to client when sending command: {err}')
             return
 
         l=12
@@ -295,7 +293,7 @@ class SkyRemote:
                 break
 
             if time.time() > timeout:
-                _LOGGER.error("timeout error")
+                _LOGGER.error('E0030 - Timeout error sending command: {0}'.format(str(code)))
                 break
             
 class SkyWebSocket(WebSocketClient):

@@ -83,8 +83,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     }
 )
 
-LOGGER = logging.getLogger(__name__)
-
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the SkyQ platform."""
     player = SkyQDevice(
@@ -118,7 +116,7 @@ class SkyQDevice(MediaPlayerDevice):
             
         self._source_names = sources or {}
 
-        # LOGGER.warning(generate_switches_for_channels)
+        # _LOGGER.warning(generate_switches_for_channels)
         if (generate_switches_for_channels):
             swMaker = SwitchMaker(name, room, config_directory)
             for ch in [*self._source_names.keys()]:
@@ -219,7 +217,7 @@ class SkyQDevice(MediaPlayerDevice):
         self._title = None
 
         activeApp = self._client.getActiveApplication()
-        # LOGGER.warning('Active APP: ' + str(activeApp))
+        # _LOGGER.warning('Active APP: ' + str(activeApp))
         
         if (activeApp == SkyRemote.APP_EPG):
             currentProgramme = self._client.getCurrentMedia()
