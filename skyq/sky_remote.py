@@ -169,24 +169,23 @@ class SkyRemote:
 
     def _getCurrentLiveTVProgramme(self, sid):
         try:
-            result = { 'title': None, 'season': None, 'episode': None}
-            title = None
+            result = { 'title': None, 'season': None, 'episode': None, 'programmeuuid': None}
             season = None
             episode = None
             self._getEpgData(sid)
             epoch = datetime.utcfromtimestamp(0)
             timefromepoch = int((datetime.now() - epoch).total_seconds())
             programme = next(p for p in self.epgData['events'] if p['st'] <= timefromepoch and  p['st'] +  p['d'] >= timefromepoch)
-            title = programme['t']
             if 'episodenumber' in programme:
                 if programme['episodenumber'] > 0:
                     episode = programme['episodenumber']
             if 'seasonnumber' in programme:
                 if programme['seasonnumber'] > 0:
                     season = programme['seasonnumber']
-            result.update({'title': title})
+            result.update({'title': programme['t']})
             result.update({'season': season})
             result.update({'episode': episode})
+            result.update({'programmeuuid': programme['programmeuuid']})
             return result
         except Exception as err:
             print(err)
@@ -204,11 +203,12 @@ class SkyRemote:
                     channels = self.http_json(REST_CHANNEL_LIST)
                     channelNode = next(s for s in channels['services'] if s['sid'] == str(sid))
                     result.update({'imageUrl': None})
-                    channel = channelNode['t']
+                    result.update({'channel': channelNode['t']})
                     programme = self._getCurrentLiveTVProgramme(sid)
-                    #programme = self._getCurrentLiveTVProgramme(channel)
-                    result.update({'channel': channel})
-                    result.update({'imageUrl': CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
+                    if not (programme['programmeuuid'] is None):
+                        result.update({'imageUrl': IMAGE_URL_BASE.format(str(programme['programmeuuid']))})
+                    else:
+                        result.update({'imageUrl': CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
                     result.update(programme)
                 elif (PVR in currentURI):
                     # Recorded content
@@ -216,8 +216,6 @@ class SkyRemote:
                     recording = self.http_json(REST_RECORDING_DETAILS.format(pvrId))
                     result.update({'channel': recording['details']['cn']})
                     result.update({'title': recording['details']['t']})
-                    #if (title.startswith('New: ')):
-                    #    result.udpate({'title': title[5:]})
                     if ('seasonnumber' in recording['details'] and 'episodenumber' in recording['details']):
                         result.update({'season':  recording['details']['seasonnumber']})
                         result.update({'episode': recording['details']['episodenumber'] })
