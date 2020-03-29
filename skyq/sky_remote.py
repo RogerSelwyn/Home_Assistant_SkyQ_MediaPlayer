@@ -86,12 +86,8 @@ class SkyRemote:
         self.lastEpgUrl = None
 
     def http_json(self, path, headers=None) -> str:
-        try:
-            response = requests.get(self.REST_BASE_URL.format(self._host, self._jsonport, path), timeout=self.TIMEOUT, headers=headers)
-            return json.loads(response.content)
-        except Exception as err:
-            _LOGGER.exception(f'X0060 - Other error occurred: {err}')
-            return {}
+        response = requests.get(self.REST_BASE_URL.format(self._host, self._jsonport, path), timeout=self.TIMEOUT, headers=headers)
+        return json.loads(response.content)
     
     def _getSoapControlURL(self, descriptionIndex):
         try:
@@ -115,7 +111,7 @@ class SkyRemote:
                 return {'url':SOAP_CONTROL_BASE_URL.format(self._host, playService['controlURL']), 'status': 'OK'}
             return {'url': None, 'status': 'Not Found'}
         except (requests.exceptions.Timeout) as err:
-            _LOGGER.exception(f'X0080 - Timeout error: {err}')
+            _LOGGER.debug(f'D0030 - Control URL not accessible: {descriptionUrl}')
             return {'url': None, 'status': 'Error'}
         except (requests.exceptions.ConnectionError) as err:
             _LOGGER.exception(f'X0070 - Connection error: {err}')
@@ -149,6 +145,7 @@ class SkyRemote:
                 return json.loads(client.data.decode(DEFAULT_ENCODING), encoding=DEFAULT_ENCODING)
             return None
         except (AttributeError) as err:
+            _LOGGER.debug(f'D0010 - Attribute Error occurred: {err}')
             return None
         except Exception as err:
             _LOGGER.exception(f'X0020 - Error occurred: {err}')
@@ -167,10 +164,15 @@ class SkyRemote:
     def powerStatus(self) -> str:
         if self._soapControlURL is None:
             return 'Powered Off'
-        output = self.http_json(self.REST_PATH_INFO)
-        if ('activeStandby' in output and output['activeStandby'] is False):
-            return 'On'
-        return 'Off'
+        try:
+            output = self.http_json(self.REST_PATH_INFO)
+            if ('activeStandby' in output and output['activeStandby'] is False):
+                return 'On'
+            return 'Off'
+        except Exception as err:
+            _LOGGER.debug(f'D0020 - Device has control URL but is disconnected: {err}')
+            return 'Off'
+
 
     def _getEpgData(self, sid):
         queryDate = date.today().strftime("%Y%m%d")
