@@ -79,18 +79,15 @@ class SkyRemote:
         self._port=port
         self._jsonport = jsonport
         url_index = 0
-        self._soapControlURl = None
-        while self._soapControlURl is None and url_index < 3:
-            self._soapControlURl = self._getSoapControlURL(url_index)['url']
+        self._soapControlURL = None
+        while self._soapControlURL is None and url_index < 3:
+            self._soapControlURL = self._getSoapControlURL(url_index)['url']
             url_index += 1
         self.lastEpgUrl = None
 
     def http_json(self, path, headers=None) -> str:
-        try:
-            response = requests.get(self.REST_BASE_URL.format(self._host, self._jsonport, path), timeout=self.TIMEOUT, headers=headers)
-            return json.loads(response.content)
-        except Exception as err:
-            return {}
+        response = requests.get(self.REST_BASE_URL.format(self._host, self._jsonport, path), timeout=self.TIMEOUT, headers=headers)
+        return json.loads(response.content)
     
     def _getSoapControlURL(self, descriptionIndex):
         try:
@@ -113,24 +110,28 @@ class SkyRemote:
                     return {'url': None, 'status': 'Not Found'}
                 return {'url':SOAP_CONTROL_BASE_URL.format(self._host, playService['controlURL']), 'status': 'OK'}
             return {'url': None, 'status': 'Not Found'}
-        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+        except (requests.exceptions.Timeout) as err:
+            _LOGGER.debug(f'D0030 - Control URL not accessible: {descriptionUrl}')
+            return {'url': None, 'status': 'Error'}
+        except (requests.exceptions.ConnectionError) as err:
+            _LOGGER.exception(f'X0070 - Connection error: {err}')
             return {'url': None, 'status': 'Error'}
         except Exception as err:
-            _LOGGER.error(f'Other error occurred: {err}')
+            _LOGGER.exception(f'X0010 - Other error occurred: {err}')
             return {'url': None, 'status': 'Error'}
             
     def _callSkySOAPService(self, method):
         try:
             payload = SOAP_PAYLOAD.format(method)
             headers = {'Content-Type': 'text/xml; charset="utf-8"', 'SOAPACTION': SOAP_ACTION.format(method)}
-            resp = requests.post(self._soapControlURl, headers=headers, data=payload, verify=True, timeout=self.TIMEOUT)
+            resp = requests.post(self._soapControlURL, headers=headers, data=payload, verify=True, timeout=self.TIMEOUT)
             if resp.status_code == HTTPStatus.OK:
                 xml = resp.text
                 return xmltodict.parse(xml)['s:Envelope']['s:Body'][SOAP_RESPONSE.format(method)]
             return None
         except requests.exceptions.RequestException as err:
-                # self._connfail = CONNFAILCOUNT
-                return None
+            # self._connfail = CONNFAILCOUNT
+            return None
 
     def _callSkyWebSocket(self, method):
         try:
@@ -143,25 +144,35 @@ class SkyRemote:
             if client.data is not None:
                 return json.loads(client.data.decode(DEFAULT_ENCODING), encoding=DEFAULT_ENCODING)
             return None
+        except (AttributeError) as err:
+            _LOGGER.debug(f'D0010 - Attribute Error occurred: {err}')
+            return None
         except Exception as err:
-            _LOGGER.error(f'Error occurred: {err}')
+            _LOGGER.exception(f'X0020 - Error occurred: {err}')
             return None
 
     def getActiveApplication(self):
         try:
             apps = self._callSkyWebSocket(WS_CURRENT_APPS)
+            if (apps is None):
+                return self.APP_EPG 
             return next(a for a in apps['apps'] if a['status'] == self.APP_STATUS_VISIBLE)['appId']
         except Exception as err:
             return self.APP_EPG
-
+        
 
     def powerStatus(self) -> str:
-        if self._soapControlURl is None:
+        if self._soapControlURL is None:
             return 'Powered Off'
-        output = self.http_json(self.REST_PATH_INFO)
-        if ('activeStandby' in output and output['activeStandby'] is False):
-            return 'On'
-        return 'Off'
+        try:
+            output = self.http_json(self.REST_PATH_INFO)
+            if ('activeStandby' in output and output['activeStandby'] is False):
+                return 'On'
+            return 'Off'
+        except Exception as err:
+            _LOGGER.debug(f'D0020 - Device has control URL but is disconnected: {err}')
+            return 'Off'
+
 
     def _getEpgData(self, sid):
         queryDate = date.today().strftime("%Y%m%d")
@@ -193,7 +204,7 @@ class SkyRemote:
             result.update({'programmeuuid': programme['programmeuuid']})
             return result
         except Exception as err:
-            _LOGGER.error(err)
+            _LOGGER.exception(f'X0030 - Error occurred: {err}')
             return result
         
     def getCurrentMedia(self):
@@ -214,6 +225,7 @@ class SkyRemote:
                         result.update({'imageUrl': IMAGE_URL_BASE.format(str(programme['programmeuuid']))})
                     else:
                         result.update({'imageUrl': CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
+                    programme.pop('programmeuuid')
                     result.update(programme)
                 elif (PVR in currentURI):
                     # Recorded content
@@ -252,13 +264,13 @@ class SkyRemote:
         if isinstance(sequence, list):
             for item in sequence:
                 if item not in self.commands:
-                    _LOGGER.error('Invalid command: {}'.format(item))
+                    _LOGGER.error('E0010 - Invalid command: {}'.format(item))
                     break
                 self.sendCommand(self.commands[item.casefold()])
                 time.sleep(0.5)
         else:
             if sequence not in self.commands:
-                _LOGGER.error('Invalid command: {}'.format(sequence))
+                _LOGGER.error('E0020 - Invalid command: {0}'.format(sequence))
             else:
                 self.sendCommand(self.commands[sequence])    
 
@@ -267,14 +279,14 @@ class SkyRemote:
 
         try:
             client=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        except socket.error as msg:
-            _LOGGER.error('Failed to create socket. Error code: %s , Error message : %s' % (str(msg[0]), msg[1]))
+        except socket.error as err:
+            _LOGGER.exception('X0040 - Failed to create socket when sending command. Error code: %s , Error message : %s' % (str(err[0]), err[1]))
             return
 
         try:
             client.connect((self._host, self._port))
         except Exception as err:
-            _LOGGER.error("Failed to connect to client")
+            _LOGGER.exception(f'X0050 - Failed to connect to client when sending command: {err}')
             return
 
         l=12
@@ -295,7 +307,7 @@ class SkyRemote:
                 break
 
             if time.time() > timeout:
-                _LOGGER.error("timeout error")
+                _LOGGER.error('E0030 - Timeout error sending command: {0}'.format(str(code)))
                 break
             
 class SkyWebSocket(WebSocketClient):
