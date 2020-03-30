@@ -74,12 +74,8 @@ class SkyRemote:
     APP_VEVO_TITLE = 'Vevo'
     APP_STATUS_VISIBLE = 'VISIBLE'
 
-    def __init__(self, host, logo_url, port=49160, jsonport=9006):
+    def __init__(self, host, port=49160, jsonport=9006):
         self._host=host
-        if logo_url != '':
-            self._logo_url=logo_url
-        else:
-            self._logo_url=CLOUDFRONT_IMAGE_URL_BASE
         self._port=port
         self._jsonport = jsonport
         url_index = 0
@@ -214,7 +210,7 @@ class SkyRemote:
             _LOGGER.exception(f'X0030 - Error occurred: {err}')
             return result
         
-    def getCurrentMedia(self, disable_live_tv=False):
+    def getCurrentMedia(self):
         result = { 'channel': None, 'imageUrl': None, 'title': None, 'season': None, 'episode': None}
         response = self._callSkySOAPService(UPNP_GET_MEDIA_INFO)
         if (response is not None):
@@ -227,13 +223,13 @@ class SkyRemote:
                     channelNode = next(s for s in channels['services'] if s['sid'] == str(sid))
                     result.update({'imageUrl': None})
                     result.update({'channel': channelNode['t']})
-                    result.update({'imageUrl': self._logo_url.format(sid)})
-                    if not disable_live_tv:
-                        programme = self._getCurrentLiveTVProgramme(sid)
-                        if not (programme['programmeuuid'] is None):
-                            result.update({'imageUrl': IMAGE_URL_BASE.format(str(programme['programmeuuid']))})
-                        programme.pop('programmeuuid')
-                        result.update(programme)
+                    programme = self._getCurrentLiveTVProgramme(sid)
+                    if not (programme['programmeuuid'] is None):
+                        result.update({'imageUrl': IMAGE_URL_BASE.format(str(programme['programmeuuid']))})
+                    else: 
+                        result.update({'imageUrl': CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
+                    programme.pop('programmeuuid')
+                    result.update(programme)
                 elif (PVR in currentURI):
                     # Recorded content
                     pvrId = "P"+currentURI[11:]

@@ -47,8 +47,6 @@ CONF_ROOM = "room"
 CONF_DIR = "config_directory"
 CONF_GEN_SWITCH = "generate_switches_for_channels"
 CONF_OUTPUT_PROGRAMME_IMAGE = "output_programme_image"
-CONF_LOGO_URL = "logo_url"
-CONF_DISABLE_LIVETV = "disable_live_tv"
 
 DEFAULT_NAME = "SkyQ Box"
 
@@ -82,8 +80,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_DIR, default='/config/'): cv.string,
         vol.Optional(CONF_GEN_SWITCH, default=False): cv.boolean,
         vol.Optional(CONF_OUTPUT_PROGRAMME_IMAGE, default=True): cv.boolean,
-        vol.Optional(CONF_LOGO_URL, default=''): cv.string,
-        vol.Optional(CONF_DISABLE_LIVETV, default=False): cv.boolean,
     }
 )
 
@@ -98,26 +94,22 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         config.get(CONF_GEN_SWITCH),
         config.get(CONF_DIR),
         config.get(CONF_OUTPUT_PROGRAMME_IMAGE),
-        config.get(CONF_LOGO_URL),
-        config.get(CONF_DISABLE_LIVETV)
         )
     add_entities([player])
 
 
 class SkyQDevice(MediaPlayerDevice):
     """Representation of a SkyQ Box"""
-    def __init__(self, hass, name, host, sources, room, generate_switches_for_channels, config_directory, output_programme_image, logo_url, disable_live_tv):
+    def __init__(self, hass, name, host, sources, room, generate_switches_for_channels, config_directory, output_programme_image):
         self.hass = hass
         self._name = name
         self._host = host
-        self._client = SkyRemote(host, logo_url)
+        self._client = SkyRemote(host)
         self._current_source = None
         self._current_source_id = None
         self._state = STATE_OFF
         self._power = STATE_OFF
         self._enabled_features = ENABLED_FEATURES
-        self._logo_url = logo_url
-        self._disable_live_tv = disable_live_tv
         
         if not (output_programme_image):
             self._enabled_features = FEATURE_BASIC
@@ -228,7 +220,7 @@ class SkyQDevice(MediaPlayerDevice):
         # _LOGGER.warning('Active APP: ' + str(activeApp))
         
         if (activeApp == SkyRemote.APP_EPG):
-            currentProgramme = self._client.getCurrentMedia(self._disable_live_tv)
+            currentProgramme = self._client.getCurrentMedia()
             self.channel = currentProgramme.get('channel')
             self.episode = currentProgramme.get('episode')
             if(self._enabled_features & FEATURE_IMAGE):
