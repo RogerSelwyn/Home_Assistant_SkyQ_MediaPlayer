@@ -148,10 +148,10 @@ class SkyRemote:
             return None
         except (AttributeError) as err:
             _LOGGER.debug(f'D0010 - Attribute Error occurred: {err}')
-            print(f'D0010 - Attribute Error occurred: {err}')
             return None
         except (TimeoutError) as err:
             _LOGGER.debug(f'D0040 - Websocket call failed: {method}')
+            print(f'D0040 - Websocket call failed: {method}')
             return {'url': None, 'status': 'Error'}
         except Exception as err:
             _LOGGER.exception(f'X0020 - Error occurred: {err}')
@@ -197,6 +197,8 @@ class SkyRemote:
             self._getEpgData(sid)
             epoch = datetime.utcfromtimestamp(0)
             timefromepoch = int((datetime.now() - epoch).total_seconds())
+            print(f"Timefromepoch: {timefromepoch}")
+            print(f"epgdata: {self.epgData['events']}")
             programme = next(p for p in self.epgData['events'] if p['st'] <= timefromepoch and  p['st'] +  p['d'] >= timefromepoch)
             if 'episodenumber' in programme:
                 if programme['episodenumber'] > 0:
