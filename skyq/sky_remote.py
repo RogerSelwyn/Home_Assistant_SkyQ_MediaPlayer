@@ -197,6 +197,7 @@ class SkyRemote:
             self._getEpgData(sid)
             epoch = datetime.utcfromtimestamp(0)
             timefromepoch = int((datetime.now() - epoch).total_seconds())
+            print(f"SID: {sid}")
             print(f"Timefromepoch: {timefromepoch}")
             print(f"epgdata: {self.epgData['events']}")
             programme = next(p for p in self.epgData['events'] if p['st'] <= timefromepoch and  p['st'] +  p['d'] >= timefromepoch)
