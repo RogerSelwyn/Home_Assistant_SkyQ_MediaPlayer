@@ -135,7 +135,9 @@ class SkyRemote:
 
     def _callSkyWebSocket(self, method):
         try:
+            print(f"url: {WS_BASE_URL.format(self._host, method)}")
             client = SkyWebSocket(WS_BASE_URL.format(self._host, method))
+            print(f"Client: {client}")
             client.connect()
             timeout = datetime.now() + timedelta(0, 5)
             while client.data is None and datetime.now() < timeout:
@@ -146,7 +148,11 @@ class SkyRemote:
             return None
         except (AttributeError) as err:
             _LOGGER.debug(f'D0010 - Attribute Error occurred: {err}')
+            print(f'D0010 - Attribute Error occurred: {err}')
             return None
+        except (TimeoutError) as err:
+            _LOGGER.debug(f'D0040 - Websocket call failed: {method}')
+            return {'url': None, 'status': 'Error'}
         except Exception as err:
             _LOGGER.exception(f'X0020 - Error occurred: {err}')
             return None
