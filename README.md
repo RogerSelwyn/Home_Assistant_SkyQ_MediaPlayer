@@ -3,7 +3,9 @@
 
 # Custom Component for SkyQ Integration for Home Assistant
 
-The skyq platform allows you to control a SkyQ set top box.
+The skyq platform allows you to control a SkyQ set top box. 
+
+**Note:** Whilst it will pull back information for UK boxes for current channel and live programme, it will not for non-UK boxes (unless they happen to use the same data sources, which is unlikely). If there is sufficient interest I can add a config option to disable it trying to retrieve live TV info, so that the integration does not error. However, in my opinion it then becomes a very limited integration
 
 There is currently support for the following device types within Home Assistant:
 

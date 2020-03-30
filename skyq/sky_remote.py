@@ -147,6 +147,9 @@ class SkyRemote:
         except (AttributeError) as err:
             _LOGGER.debug(f'D0010 - Attribute Error occurred: {err}')
             return None
+        except (TimeoutError) as err:
+            _LOGGER.debug(f'D0040 - Websocket call failed: {method}')
+            return {'url': None, 'status': 'Error'}
         except Exception as err:
             _LOGGER.exception(f'X0020 - Error occurred: {err}')
             return None
@@ -223,7 +226,7 @@ class SkyRemote:
                     programme = self._getCurrentLiveTVProgramme(sid)
                     if not (programme['programmeuuid'] is None):
                         result.update({'imageUrl': IMAGE_URL_BASE.format(str(programme['programmeuuid']))})
-                    else:
+                    else: 
                         result.update({'imageUrl': CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
                     programme.pop('programmeuuid')
                     result.update(programme)
