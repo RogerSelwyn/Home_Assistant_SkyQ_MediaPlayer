@@ -74,8 +74,12 @@ class SkyRemote:
     APP_VEVO_TITLE = 'Vevo'
     APP_STATUS_VISIBLE = 'VISIBLE'
 
-    def __init__(self, host, port=49160, jsonport=9006):
+    def __init__(self, host, logo_url, port=49160, jsonport=9006):
         self._host=host
+        if logo_url != '':
+            self._logo_url=logo_url
+        else:
+            self._logo_url=CLOUDFRONT_IMAGE_URL_BASE
         self._port=port
         self._jsonport = jsonport
         url_index = 0
@@ -135,9 +139,7 @@ class SkyRemote:
 
     def _callSkyWebSocket(self, method):
         try:
-            print(f"url: {WS_BASE_URL.format(self._host, method)}")
             client = SkyWebSocket(WS_BASE_URL.format(self._host, method))
-            print(f"Client: {client}")
             client.connect()
             timeout = datetime.now() + timedelta(0, 5)
             while client.data is None and datetime.now() < timeout:
@@ -151,7 +153,6 @@ class SkyRemote:
             return None
         except (TimeoutError) as err:
             _LOGGER.debug(f'D0040 - Websocket call failed: {method}')
-            print(f'D0040 - Websocket call failed: {method}')
             return {'url': None, 'status': 'Error'}
         except Exception as err:
             _LOGGER.exception(f'X0020 - Error occurred: {err}')
@@ -197,9 +198,6 @@ class SkyRemote:
             self._getEpgData(sid)
             epoch = datetime.utcfromtimestamp(0)
             timefromepoch = int((datetime.now() - epoch).total_seconds())
-            print(f"SID: {sid}")
-            print(f"Timefromepoch: {timefromepoch}")
-            print(f"epgdata: {self.epgData['events']}")
             programme = next(p for p in self.epgData['events'] if p['st'] <= timefromepoch and  p['st'] +  p['d'] >= timefromepoch)
             if 'episodenumber' in programme:
                 if programme['episodenumber'] > 0:
@@ -216,7 +214,7 @@ class SkyRemote:
             _LOGGER.exception(f'X0030 - Error occurred: {err}')
             return result
         
-    def getCurrentMedia(self):
+    def getCurrentMedia(self, disable_live_tv=False):
         result = { 'channel': None, 'imageUrl': None, 'title': None, 'season': None, 'episode': None}
         response = self._callSkySOAPService(UPNP_GET_MEDIA_INFO)
         if (response is not None):
@@ -229,13 +227,13 @@ class SkyRemote:
                     channelNode = next(s for s in channels['services'] if s['sid'] == str(sid))
                     result.update({'imageUrl': None})
                     result.update({'channel': channelNode['t']})
-                    programme = self._getCurrentLiveTVProgramme(sid)
-                    if not (programme['programmeuuid'] is None):
-                        result.update({'imageUrl': IMAGE_URL_BASE.format(str(programme['programmeuuid']))})
-                    else:
-                        result.update({'imageUrl': CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
-                    programme.pop('programmeuuid')
-                    result.update(programme)
+                    result.update({'imageUrl': self._logo_url.format(sid)})
+                    if not disable_live_tv:
+                        programme = self._getCurrentLiveTVProgramme(sid)
+                        if not (programme['programmeuuid'] is None):
+                            result.update({'imageUrl': IMAGE_URL_BASE.format(str(programme['programmeuuid']))})
+                        programme.pop('programmeuuid')
+                        result.update(programme)
                 elif (PVR in currentURI):
                     # Recorded content
                     pvrId = "P"+currentURI[11:]
