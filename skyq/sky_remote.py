@@ -5,6 +5,7 @@ import requests
 import json
 import xmltodict
 import logging
+import traceback
 
 from http import HTTPStatus
 from ws4py.client.threadedclient import WebSocketClient
@@ -168,12 +169,12 @@ class SkyRemote:
         if self._soapControlURL is None:
             return 'Powered Off'
         try:
-            output = self.http_json(self.REST_PATH_INFO)
+            output = self.http_json(self.REST_PATH_INFO )
             if ('activeStandby' in output and output['activeStandby'] is False):
                 return 'On'
             return 'Off'
         except Exception as err:
-            _LOGGER.debug(f'D0020 - Device has control URL but is disconnected: {err}')
+            _LOGGER.debug(f'D0020 - Device has control URL but is disconnected: {traceback.format_exception()}')
             return 'Off'
 
 
