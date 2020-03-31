@@ -16,7 +16,7 @@ _LOGGER = logging.getLogger(__name__)
 # SOAP/UPnP Constants
 SKY_PLAY_URN = "urn:nds-com:serviceId:SkyPlay"
 SKYControl = "SkyControl"
-SOAP_ACTION = '"urn:schemas-nds-com:service:SkyPlay:2#{0}"'
+SOAP_ACTION = """urn:schemas-nds-com:service:SkyPlay:2#{0}"""
 SOAP_CONTROL_BASE_URL = "http://{0}:49153{1}"
 SOAP_DESCRIPTION_BASE_URL = "http://{0}:49153/description{1}.xml"
 SOAP_PAYLOAD = """<s:Envelope xmlns:s='http://schemas.xmlsoap.org/soap/envelope/' s:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'>
