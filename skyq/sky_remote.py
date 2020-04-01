@@ -182,8 +182,7 @@ class SkyRemote:
                 "Content-Type": 'text/xml; charset="utf-8"',
                 "SOAPACTION": SOAP_ACTION.format(method),
             }
-            print(headers)
-            resp = requests.post(
+           resp = requests.post(
                 self._soapControlURL,
                 headers=headers,
                 data=payload,
