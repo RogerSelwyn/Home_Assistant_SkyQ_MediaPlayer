@@ -241,10 +241,11 @@ class SkyRemote:
             if "activeStandby" in output and output["activeStandby"] is False:
                 return "On"
             return "Off"
-        except Exception:
-            _LOGGER.debug(
-                f"D0020 - Device has control URL but is disconnected: {traceback.format_exc()}"
-            )
+        except (requests.exceptions.ConnectTimeout) as err:
+            # _LOGGER.debug(f"D0020 - Device has control URL but is disconnected: {err}")
+            return "Off"
+        except Exception as err:
+            _LOGGER.exception(f"X0060 - Error occurred: {err}")
             return "Off"
 
     def _getEpgData(self, sid):
