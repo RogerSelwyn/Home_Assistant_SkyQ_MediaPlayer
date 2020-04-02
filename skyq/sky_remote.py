@@ -283,6 +283,7 @@ class SkyRemote:
                 for p in self.epgData["events"]
                 if p["st"] <= timefromepoch and p["st"] + p["d"] >= timefromepoch
             )
+            _LOGGER.debug(f"SID: {sid}, Programme: {programme}")
             if "episodenumber" in programme:
                 if programme["episodenumber"] > 0:
                     episode = programme["episodenumber"]
