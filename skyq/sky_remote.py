@@ -273,8 +273,6 @@ class SkyRemote:
                 "episode": None,
                 "programmeuuid": None,
             }
-            season = None
-            episode = None
             self._getEpgData(sid)
             epoch = datetime.utcfromtimestamp(0)
             timefromepoch = int((datetime.now() - epoch).total_seconds())
@@ -283,17 +281,15 @@ class SkyRemote:
                 for p in self.epgData["events"]
                 if p["st"] <= timefromepoch and p["st"] + p["d"] >= timefromepoch
             )
-            _LOGGER.debug(f"SID: {sid}, Programme: {programme}")
+            result.update({"title": programme["t"]})
             if "episodenumber" in programme:
                 if programme["episodenumber"] > 0:
-                    episode = programme["episodenumber"]
+                    result.update({"episode": programme["episodenumber"]})
             if "seasonnumber" in programme:
                 if programme["seasonnumber"] > 0:
-                    season = programme["seasonnumber"]
-            result.update({"title": programme["t"]})
-            result.update({"season": season})
-            result.update({"episode": episode})
-            result.update({"programmeuuid": programme["programmeuuid"]})
+                    result.update({"season": programme["seasonnumber"]})
+            if "programmeuuid" in programme:
+                result.update({"programmeuuid": programme["programmeuuid"]})
             return result
         except Exception as err:
             _LOGGER.exception(f"X0030 - Error occurred: {err}")
