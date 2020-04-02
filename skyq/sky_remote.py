@@ -241,7 +241,10 @@ class SkyRemote:
             if "activeStandby" in output and output["activeStandby"] is False:
                 return "On"
             return "Off"
-        except (requests.exceptions.ConnectTimeout) as err:
+        except (
+            requests.exceptions.ConnectTimeout,
+            requests.exceptions.ReadTimeout,
+        ) as err:
             # _LOGGER.debug(f"D0020 - Device has control URL but connection request time out: {err}")
             return "Off"
         except (requests.exceptions.ConnectionError) as err:
