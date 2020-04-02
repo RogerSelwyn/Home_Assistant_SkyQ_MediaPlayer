@@ -242,7 +242,12 @@ class SkyRemote:
                 return "On"
             return "Off"
         except (requests.exceptions.ConnectTimeout) as err:
-            # _LOGGER.debug(f"D0020 - Device has control URL but is disconnected: {err}")
+            # _LOGGER.debug(f"D0020 - Device has control URL but connection request time out: {err}")
+            return "Off"
+        except (requests.exceptions.ConnectionError) as err:
+            _LOGGER.debug(
+                f"D0050 - Device has control URL but connection request failed: {err}"
+            )
             return "Off"
         except Exception as err:
             _LOGGER.exception(f"X0060 - Error occurred: {err}")
