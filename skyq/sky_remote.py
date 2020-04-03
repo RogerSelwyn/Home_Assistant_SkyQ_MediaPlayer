@@ -118,10 +118,11 @@ class SkyRemote:
     APP_VEVO_TITLE = "Vevo"
     APP_STATUS_VISIBLE = "VISIBLE"
 
-    def __init__(self, host, port=49160, jsonport=9006):
+    def __init__(self, host, port=49160, jsonport=9006, get_live_tv=True):
         self._host = host
         self._port = port
         self._jsonport = jsonport
+        self._get_live_tv = get_live_tv
         url_index = 0
         self._soapControlURL = None
         while self._soapControlURL is None and url_index < 3:
@@ -290,6 +291,8 @@ class SkyRemote:
                     result.update({"season": programme["seasonnumber"]})
             if "programmeuuid" in programme:
                 result.update({"programmeuuid": programme["programmeuuid"]})
+            else:
+                _LOGGER.debug(f"D0060 - No prgrammeuuid: {programme}")
             return result
         except Exception as err:
             _LOGGER.exception(f"X0030 - Error occurred: {err}")
@@ -316,21 +319,22 @@ class SkyRemote:
                     )
                     result.update({"imageUrl": None})
                     result.update({"channel": channelNode["t"]})
-                    programme = self._getCurrentLiveTVProgramme(sid)
-                    if not (programme["programmeuuid"] is None):
-                        result.update(
-                            {
-                                "imageUrl": IMAGE_URL_BASE.format(
-                                    str(programme["programmeuuid"])
-                                )
-                            }
-                        )
-                    else:
-                        result.update(
-                            {"imageUrl": CLOUDFRONT_IMAGE_URL_BASE.format(sid)}
-                        )
-                    programme.pop("programmeuuid")
-                    result.update(programme)
+                    if self._get_live_tv:
+                        programme = self._getCurrentLiveTVProgramme(sid)
+                        if not (programme["programmeuuid"] is None):
+                            result.update(
+                                {
+                                    "imageUrl": IMAGE_URL_BASE.format(
+                                        str(programme["programmeuuid"])
+                                    )
+                                }
+                            )
+                        else:
+                            result.update(
+                                {"imageUrl": CLOUDFRONT_IMAGE_URL_BASE.format(sid)}
+                            )
+                        programme.pop("programmeuuid")
+                        result.update(programme)
                 elif PVR in currentURI:
                     # Recorded content
                     pvrId = "P" + currentURI[11:]

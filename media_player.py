@@ -35,10 +35,10 @@ from homeassistant.const import (
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.script import Script
 
-SKY_STATE_NO_MEDIA_PRESENT = 'NO_MEDIA_PRESENT'
-SKY_STATE_PLAYING = 'PLAYING'
-SKY_STATE_PAUSED = 'PAUSED_PLAYBACK'
-SKY_STATE_OFF = 'OFF'
+SKY_STATE_NO_MEDIA_PRESENT = "NO_MEDIA_PRESENT"
+SKY_STATE_PLAYING = "PLAYING"
+SKY_STATE_PAUSED = "PAUSED_PLAYBACK"
+SKY_STATE_OFF = "OFF"
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -47,6 +47,7 @@ CONF_ROOM = "room"
 CONF_DIR = "config_directory"
 CONF_GEN_SWITCH = "generate_switches_for_channels"
 CONF_OUTPUT_PROGRAMME_IMAGE = "output_programme_image"
+CONF_GET_LIVETV = "get_live_tv"
 
 DEFAULT_NAME = "SkyQ Box"
 
@@ -66,22 +67,21 @@ FEATURE_BASIC = 1
 FEATURE_IMAGE = 2
 
 
-ENABLED_FEATURES = (
-    FEATURE_BASIC
-    | FEATURE_IMAGE
-)
+ENABLED_FEATURES = FEATURE_BASIC | FEATURE_IMAGE
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
         vol.Required(CONF_SOURCES, default={}): {cv.string: cv.string},
         vol.Required(CONF_HOST): cv.string,
         vol.Required(CONF_NAME): cv.string,
-        vol.Optional(CONF_ROOM, default='Default Room'): cv.string,
-        vol.Optional(CONF_DIR, default='/config/'): cv.string,
+        vol.Optional(CONF_ROOM, default="Default Room"): cv.string,
+        vol.Optional(CONF_DIR, default="/config/"): cv.string,
         vol.Optional(CONF_GEN_SWITCH, default=False): cv.boolean,
         vol.Optional(CONF_OUTPUT_PROGRAMME_IMAGE, default=True): cv.boolean,
+        vol.Optional(CONF_GET_LIVETV, default=True): cv.boolean,
     }
 )
+
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the SkyQ platform."""
@@ -94,34 +94,48 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         config.get(CONF_GEN_SWITCH),
         config.get(CONF_DIR),
         config.get(CONF_OUTPUT_PROGRAMME_IMAGE),
-        )
+        config.get(CONF_GET_LIVETV),
+    )
     add_entities([player])
 
 
 class SkyQDevice(MediaPlayerDevice):
     """Representation of a SkyQ Box"""
-    def __init__(self, hass, name, host, sources, room, generate_switches_for_channels, config_directory, output_programme_image):
+
+    def __init__(
+        self,
+        hass,
+        name,
+        host,
+        sources,
+        room,
+        generate_switches_for_channels,
+        config_directory,
+        output_programme_image,
+        get_live_tv,
+    ):
         self.hass = hass
         self._name = name
         self._host = host
-        self._client = SkyRemote(host)
+        self._get_live_tv = get_live_tv
+        self._client = SkyRemote(host, get_live_tv=self._get_live_tv)
         self._current_source = None
         self._current_source_id = None
         self._state = STATE_OFF
         self._power = STATE_OFF
         self._enabled_features = ENABLED_FEATURES
-        
+
         if not (output_programme_image):
             self._enabled_features = FEATURE_BASIC
-            
+
         self._source_names = sources or {}
 
         # _LOGGER.warning(generate_switches_for_channels)
-        if (generate_switches_for_channels):
+        if generate_switches_for_channels:
             swMaker = SwitchMaker(name, room, config_directory)
             for ch in [*self._source_names.keys()]:
                 swMaker.addChannel(ch)
-            swMaker.closeFile()  
+            swMaker.closeFile()
         self._title = None
         self.channel = None
         self.episode = None
@@ -138,7 +152,7 @@ class SkyQDevice(MediaPlayerDevice):
 
     @property
     def should_poll(self):
-    # Device should be polled.
+        # Device should be polled.
         return True
 
     @property
@@ -189,18 +203,18 @@ class SkyQDevice(MediaPlayerDevice):
 
     def update(self):
         """Get the latest data and update device state."""
-        
+
         self._updateState()
         if self._power != STATE_OFF:
             self._updateCurrentProgramme()
-        
+
     def _updateState(self):
-        if (self._client.powerStatus() == 'On'):
-            if(self._power is not STATE_PLAYING):
+        if self._client.powerStatus() == "On":
+            if self._power is not STATE_PLAYING:
                 self._state = STATE_PLAYING
                 self._power = STATE_PLAYING
             # this checks is flakey during channel changes, so only used for pause checks if we know its on
-            if(self._client.getCurrentState() == SkyRemote.SKY_STATE_PAUSED):
+            if self._client.getCurrentState() == SkyRemote.SKY_STATE_PAUSED:
                 self._state = STATE_PAUSED
             else:
                 self._state = STATE_PLAYING
@@ -218,47 +232,47 @@ class SkyQDevice(MediaPlayerDevice):
 
         activeApp = self._client.getActiveApplication()
         # _LOGGER.warning('Active APP: ' + str(activeApp))
-        
-        if (activeApp == SkyRemote.APP_EPG):
+
+        if activeApp == SkyRemote.APP_EPG:
             currentProgramme = self._client.getCurrentMedia()
-            self.channel = currentProgramme.get('channel')
-            self.episode = currentProgramme.get('episode')
-            if(self._enabled_features & FEATURE_IMAGE):
-               self.imageUrl = currentProgramme.get('imageUrl')
+            self.channel = currentProgramme.get("channel")
+            self.episode = currentProgramme.get("episode")
+            if self._enabled_features & FEATURE_IMAGE:
+                self.imageUrl = currentProgramme.get("imageUrl")
             self.isTvShow = False
-            self.season = currentProgramme.get('season')
-            self._title = currentProgramme.get('title')
-        elif(activeApp == SkyRemote.APP_YOUTUBE):
+            self.season = currentProgramme.get("season")
+            self._title = currentProgramme.get("title")
+        elif activeApp == SkyRemote.APP_YOUTUBE:
             # self._state = STATE_PLAYING
             self._title = SkyRemote.APP_YOUTUBE_TITLE
-        elif(activeApp == SkyRemote.APP_VEVO):
+        elif activeApp == SkyRemote.APP_VEVO:
             # self._state = STATE_PLAYING
             self._title = SkyRemote.APP_VEVO_TITLE
         else:
             # self._state = STATE_PLAYING
             self._title = activeApp
 
-
     def turn_off(self):
-        if (self._client.powerStatus() == 'On'):
-             self._client.press('power')
+        if self._client.powerStatus() == "On":
+            self._client.press("power")
+
     def turn_on(self):
-        if (self._client.powerStatus() == 'Off'):
-             self._client.press(['home', 'dismiss'])
+        if self._client.powerStatus() == "Off":
+            self._client.press(["home", "dismiss"])
 
     def media_play(self):
-        self._client.press('play')
+        self._client.press("play")
         self._state = STATE_PLAYING
 
     def media_pause(self):
-        self._client.press('pause')
+        self._client.press("pause")
         self._state = STATE_PAUSED
 
     def media_next_track(self):
-        self._client.press('fastforward')
+        self._client.press("fastforward")
 
     def media_previous_track(self):
-        self._client.press('rewind')
+        self._client.press("rewind")
 
     def select_source(self, source):
-        self._client.press(self._source_names.get(source).split(','))
+        self._client.press(self._source_names.get(source).split(","))
