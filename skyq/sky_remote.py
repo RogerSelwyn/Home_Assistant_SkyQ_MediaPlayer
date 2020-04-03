@@ -118,7 +118,7 @@ class SkyRemote:
     APP_VEVO_TITLE = "Vevo"
     APP_STATUS_VISIBLE = "VISIBLE"
 
-    def __init__(self, host, port=49160, jsonport=9006, get_live_tv=True):
+    def __init__(self, host, get_live_tv, country, port=49160, jsonport=9006):
         self._host = host
         self._port = port
         self._jsonport = jsonport

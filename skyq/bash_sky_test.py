@@ -10,9 +10,9 @@ if len(sys.argv) == 3:
     get_live_tv = True
     if sys.argv[2] == "False":
         get_live_tv = False
-    sky = sky_remote.SkyRemote(sys.argv[1], get_live_tv=get_live_tv)
+    sky = sky_remote.SkyRemote(sys.argv[1], get_live_tv=get_live_tv, country="UK")
 else:
-    sky = sky_remote.SkyRemote(sys.argv[1])
+    sky = sky_remote.SkyRemote(sys.argv[1], get_live_tv=True, country="UK")
 
 print("----------- Power status")
 print(sky.powerStatus())
