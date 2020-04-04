@@ -226,7 +226,7 @@ class SkyRemote:
             _LOGGER.debug(f"D0010 - Attribute Error occurred: {err}")
             return None
         except (TimeoutError) as err:
-            _LOGGER.warning(f"W0040 - Websocket call failed: {method}")
+            _LOGGER.warning(f"W0030 - Websocket call failed: {method}")
             return {"url": None, "status": "Error"}
         except Exception as err:
             _LOGGER.exception(f"X0020 - Error occurred: {err}")
@@ -254,12 +254,12 @@ class SkyRemote:
         except (
             requests.exceptions.ConnectTimeout,
             requests.exceptions.ReadTimeout,
-        ) as err:
-            # _LOGGER.warning(f"W0010 - Device has control URL but connection request time out: {err}")
+        ):
+            # _LOGGER.info(f"I0010 - Device has control URL but connection request time out")
             return "Off"
-        except (requests.exceptions.ConnectionError) as err:
-            _LOGGER.warning(
-                f"W0020 - Device has control URL but connection request failed: {err}"
+        except (requests.exceptions.ConnectionError):
+            _LOGGER.info(
+                f"I0020 - Device has control URL but connection request failed"
             )
             return "Off"
         except Exception as err:
@@ -302,6 +302,11 @@ class SkyRemote:
                 result.update({"programmeuuid": programme["programmeuuid"]})
             else:
                 _LOGGER.debug(f"D0020 - No prgrammeuuid: {programme}")
+            return result
+        except StopIteration as err:
+            _LOGGER.warning(
+                f"W0010 - Programme data not found. Do you need to set 'get_live_tv' to False?"
+            )
             return result
         except Exception as err:
             _LOGGER.exception(f"X0030 - Error occurred: {err}")
