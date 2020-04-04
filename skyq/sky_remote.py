@@ -112,11 +112,24 @@ class SkyRemote:
 
     # Application Constants
     APP_EPG = "com.bskyb.epgui"
-    APP_YOUTUBE = "YouTube"
-    APP_YOUTUBE_TITLE = "YouTube"
-    APP_VEVO = "com.bskyb.vevo"
-    APP_VEVO_TITLE = "Vevo"
     APP_STATUS_VISIBLE = "VISIBLE"
+
+    APP_TITLES = {
+        "com.bskyb.vevo": "Vevo",
+        "com.spotify.spotify.tvv2": "Spotify"
+    }
+    APP_LOGOS = {
+        "youtube": "youtube",
+        "youtubekids": "youtubekids",
+        "netflix": "netflix",
+        "vevo": "vevo",
+        "disneyplus": "disneyplus",
+        "iplayer": "bbciplayer",
+        "spotify": "spotify",
+    }
+
+    APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
+
 
     def __init__(self, host, get_live_tv, country, port=49160, jsonport=9006):
         self._host = host

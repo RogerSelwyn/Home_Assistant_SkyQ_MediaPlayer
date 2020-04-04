@@ -249,15 +249,18 @@ class SkyQDevice(MediaPlayerDevice):
             self.isTvShow = False
             self.season = currentProgramme.get("season")
             self._title = currentProgramme.get("title")
-        elif activeApp == SkyRemote.APP_YOUTUBE:
+        elif activeApp.casefold() in SkyRemote.APP_TITLES:
             # self._state = STATE_PLAYING
-            self._title = SkyRemote.APP_YOUTUBE_TITLE
-        elif activeApp == SkyRemote.APP_VEVO:
-            # self._state = STATE_PLAYING
-            self._title = SkyRemote.APP_VEVO_TITLE
+            self._title = SkyRemote.APP_TITLES[activeApp.casefold()]
         else:
             # self._state = STATE_PLAYING
             self._title = activeApp
+
+        if self._enabled_features & FEATURE_IMAGE:
+            if self._title.casefold() in SkyRemote.APP_LOGOS:
+                self.imageUrl = SkyRemote.APP_IMAGE_URL_BASE.format(
+                    SkyRemote.APP_LOGOS[self._title.casefold()]
+                )
 
     def turn_off(self):
         if self._client.powerStatus() == "On":
