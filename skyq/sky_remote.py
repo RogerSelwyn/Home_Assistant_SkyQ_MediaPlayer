@@ -286,6 +286,11 @@ class SkyRemote:
             self._getEpgData(sid)
             epoch = datetime.utcfromtimestamp(0)
             timefromepoch = int((datetime.utcnow() - epoch).total_seconds())
+            if len(self.epgData["events"]) == 0:
+                _LOGGER.warning(
+                    f"W0010 - Programme data not found. Do you need to set 'get_live_tv' to False?"
+                )
+                return result
             programme = next(
                 p
                 for p in self.epgData["events"]
@@ -302,11 +307,6 @@ class SkyRemote:
                 result.update({"programmeuuid": programme["programmeuuid"]})
             else:
                 _LOGGER.debug(f"D0020 - No prgrammeuuid: {programme}")
-            return result
-        except StopIteration as err:
-            _LOGGER.warning(
-                f"W0010 - Programme data not found. Do you need to set 'get_live_tv' to False?"
-            )
             return result
         except Exception as err:
             _LOGGER.exception(f"X0030 - Error occurred: {err}")
