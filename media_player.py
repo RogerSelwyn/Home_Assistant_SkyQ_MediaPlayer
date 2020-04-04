@@ -257,9 +257,9 @@ class SkyQDevice(MediaPlayerDevice):
             self._title = activeApp
 
         if self._enabled_features & FEATURE_IMAGE:
-            if self._title.casefold() in SkyRemote.APP_LOGOS:
+            if activeApp.casefold() in SkyRemote.APP_LOGOS:
                 self.imageUrl = SkyRemote.APP_IMAGE_URL_BASE.format(
-                    SkyRemote.APP_LOGOS[self._title.casefold()]
+                    SkyRemote.APP_LOGOS[activeApp.casefold()]
                 )
 
     def turn_off(self):
