@@ -9,7 +9,7 @@ import traceback
 
 from http import HTTPStatus
 from ws4py.client.threadedclient import WebSocketClient
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -118,7 +118,7 @@ class SkyRemote:
     APP_VEVO_TITLE = "Vevo"
     APP_STATUS_VISIBLE = "VISIBLE"
 
-    def __init__(self, host, port=49160, jsonport=9006, get_live_tv=True):
+    def __init__(self, host, get_live_tv, country, port=49160, jsonport=9006):
         self._host = host
         self._port = port
         self._jsonport = jsonport
@@ -258,7 +258,7 @@ class SkyRemote:
             return "Off"
 
     def _getEpgData(self, sid):
-        queryDate = date.today().strftime("%Y%m%d")
+        queryDate = datetime.utcnow().strftime("%Y%m%d")
         epgUrl = awkTvUrlBase.format(queryDate, sid)
         if self.lastEpgUrl is None or self.lastEpgUrl != epgUrl:
             resp = requests.get(epgUrl)
@@ -276,7 +276,7 @@ class SkyRemote:
             }
             self._getEpgData(sid)
             epoch = datetime.utcfromtimestamp(0)
-            timefromepoch = int((datetime.now() - epoch).total_seconds())
+            timefromepoch = int((datetime.utcnow() - epoch).total_seconds())
             programme = next(
                 p
                 for p in self.epgData["events"]
