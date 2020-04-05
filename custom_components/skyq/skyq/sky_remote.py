@@ -354,7 +354,7 @@ class SkyRemote:
                         s for s in channels["services"] if s["sid"] == str(sid)
                     )
                     result.update({"imageUrl": None})
-                    result.update({"channel": channelNode["t"]})
+                    result.update({"channel": "📡 " + channelNode["t"]})
                     if self._live_tv:
                         programme = self._getCurrentLiveTVProgramme(sid)
                         if not (programme["programmeuuid"] is None):
@@ -376,7 +376,7 @@ class SkyRemote:
                     # Recorded content
                     pvrId = "P" + currentURI[11:]
                     recording = self.http_json(REST_RECORDING_DETAILS.format(pvrId))
-                    result.update({"channel": recording["details"]["cn"] + " 🎞"})
+                    result.update({"channel": "🎞" + recording["details"]["cn"]})
                     result.update({"title": recording["details"]["t"]})
                     if (
                         "seasonnumber" in recording["details"]
