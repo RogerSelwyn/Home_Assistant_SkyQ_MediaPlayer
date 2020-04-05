@@ -12,7 +12,7 @@
 
 {% endif %}
 
-[![maintained](https://img.shields.io/maintenance/yes/2020.svg](#)
+[![maintained](https://img.shields.io/maintenance/yes/2020.svg)](#)
 [![maintainer](https://img.shields.io/badge/maintainer-%20%40RogerSelwyn-blue.svg)](#)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 [![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg)](https://community.home-assistant.io/t/custom-component-skyq-media-player/140306)
@@ -26,6 +26,20 @@ The skyq platform allows you to control a SkyQ set top box.
 There is currently support for the following device types within Home Assistant:
 
 - Media Player
+
+## Screenshots
+_Component showing current TV or recording with default media control_
+
+![Component showing current TV or recording with default media control](screenshots/skyq1.png)
+
+_Component showing application with default media control_
+
+![Component showing application with default media control](screenshots/skyq_2.png)
+
+_Component showing current TV or recording with Mini Media Player_
+
+![Component showing current TV or recording with Mini Media Player](screenshots/skyq3.png)
+
 
 ## Installation
 
