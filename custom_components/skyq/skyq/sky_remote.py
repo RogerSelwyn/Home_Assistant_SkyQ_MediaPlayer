@@ -376,7 +376,7 @@ class SkyRemote:
                     # Recorded content
                     pvrId = "P" + currentURI[11:]
                     recording = self.http_json(REST_RECORDING_DETAILS.format(pvrId))
-                    result.update({"channel": recording["details"]["cn"]})
+                    result.update({"channel": recording["details"]["cn"] + " 🎞"})
                     result.update({"title": recording["details"]["t"]})
                     if (
                         "seasonnumber" in recording["details"]
