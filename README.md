@@ -45,7 +45,7 @@ media_player:
  - platform:  skyq
    name: SkyQ Living Room
    host: 192.168.0.10
-   get_live_tv: True
+   live_tv: True
    sources:
       SkyOne: '1,0,6'
       SkyNews: '5,0,1'
@@ -72,7 +72,7 @@ The name you would like to give to the SkyQ set top box.
 **output_programme_image** _(boolean)(Optional)_ Default True
 Enables you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing.
 
-**get_live_tv** _(boolean)(Optional)_ Default True
+**live_tv** _(boolean)(Optional)_ Default True
 Enables you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from awk.epgsky.com.
 
 ### Sources
