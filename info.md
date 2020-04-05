@@ -43,9 +43,10 @@ _Component showing current TV or recording with Mini Media Player_
 
 ## Installation
 
-To begin with it is recommended you ensure your SkyQ set top box or boxes have static IP addresses.
+You can use HACS or install the component manually:
 
-Download the custom component in to your folder <config_directory>/custom_components/skyq
+- Put the files from `/custom_components/skyq/` in your folder `<config directory>/custom_components/skyq/`
+- Put the files from `/www/community/skyq/` in your folder `<config directory>/www/community/skyq/`
 
 # Media Player Configuration
 
