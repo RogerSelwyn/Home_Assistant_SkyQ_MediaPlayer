@@ -119,19 +119,19 @@ class SkyRemote:
         "youtube": "youtube",
         "youtubekids": "youtubekids",
         "netflix": "netflix",
-        "com.bskyb.vevo": "vevo",
+        "vevo": "vevo",
         "disneyplus": "disneyplus",
         "iplayer": "bbciplayer",
-        "com.spotify.spotify.tvv2": "spotify",
+        "spotify": "spotify",
     }
 
     APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
 
-    def __init__(self, host, get_live_tv, country, port=49160, jsonport=9006):
+    def __init__(self, host, live_tv, country, port=49160, jsonport=9006):
         self._host = host
         self._port = port
         self._jsonport = jsonport
-        self._get_live_tv = get_live_tv
+        self._live_tv = live_tv
         url_index = 0
         self._soapControlURL = None
         while self._soapControlURL is None and url_index < 3:
@@ -234,14 +234,36 @@ class SkyRemote:
 
     def getActiveApplication(self):
         try:
+            result = {
+                "activeApp": self.APP_EPG,
+                "appImageURL": None,
+                "appTitle": self.APP_EPG,
+            }
             apps = self._callSkyWebSocket(WS_CURRENT_APPS)
             if apps is None:
-                return self.APP_EPG
-            return next(
+                return result
+            app = next(
                 a for a in apps["apps"] if a["status"] == self.APP_STATUS_VISIBLE
             )["appId"]
+            result.update({"activeApp": app})
+
+            apptitle = app
+            if app.casefold() in self.APP_TITLES:
+                apptitle = self.APP_TITLES[app.casefold()]
+            result.update({"appTitle": apptitle})
+
+            if apptitle.casefold() in self.APP_LOGOS:
+                result.update(
+                    {
+                        "appImageURL": self.APP_IMAGE_URL_BASE.format(
+                            self.APP_LOGOS[apptitle.casefold()]
+                        )
+                    }
+                )
+
+            return result
         except Exception:
-            return self.APP_EPG
+            return result
 
     def powerStatus(self) -> str:
         if self._soapControlURL is None:
@@ -288,7 +310,7 @@ class SkyRemote:
             timefromepoch = int((datetime.utcnow() - epoch).total_seconds())
             if len(self.epgData["events"]) == 0:
                 _LOGGER.warning(
-                    f"W0010 - Programme data not found. Do you need to set 'get_live_tv' to False?"
+                    f"W0010 - Programme data not found. Do you need to set 'live_tv' to False?"
                 )
                 return result
             programme = next(
@@ -333,7 +355,7 @@ class SkyRemote:
                     )
                     result.update({"imageUrl": None})
                     result.update({"channel": channelNode["t"]})
-                    if self._get_live_tv:
+                    if self._live_tv:
                         programme = self._getCurrentLiveTVProgramme(sid)
                         if not (programme["programmeuuid"] is None):
                             result.update(

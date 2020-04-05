@@ -7,12 +7,12 @@ import sys
 # example: ./bash_sky_test.py 192.168.0.9
 # Note: you may need to modify top line change python3 to python, depending on OS/setup. this is works for me on my mac
 if len(sys.argv) == 3:
-    get_live_tv = True
+    live_tv = True
     if sys.argv[2] == "False":
-        get_live_tv = False
-    sky = sky_remote.SkyRemote(sys.argv[1], get_live_tv=get_live_tv, country="UK")
+        live_tv = False
+    sky = sky_remote.SkyRemote(sys.argv[1], live_tv=live_tv, country="UK")
 else:
-    sky = sky_remote.SkyRemote(sys.argv[1], get_live_tv=True, country="UK")
+    sky = sky_remote.SkyRemote(sys.argv[1], live_tv=True, country="UK")
 
 print("----------- Power status")
 print(sky.powerStatus())
