@@ -354,7 +354,7 @@ class SkyRemote:
                         s for s in channels["services"] if s["sid"] == str(sid)
                     )
                     result.update({"imageUrl": None})
-                    result.update({"channel": "📡 " + channelNode["t"]})
+                    result.update({"channel": "🛰 " + channelNode["t"]})
                     if self._live_tv:
                         programme = self._getCurrentLiveTVProgramme(sid)
                         if not (programme["programmeuuid"] is None):
