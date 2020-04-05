@@ -12,10 +12,10 @@
 
 {% endif %}
 
-[![maintained](https://img.shields.io/maintenance/yes/2020.svg?style=for-the-badge)](#)
-[![maintainer](https://img.shields.io/badge/maintainer-%20%40RogerSelwyn-blue.svg?style=for-the-badge)](#)
+[![maintained](https://img.shields.io/maintenance/yes/2020.svg](#)
+[![maintainer](https://img.shields.io/badge/maintainer-%20%40RogerSelwyn-blue.svg)](#)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
-[![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge)](https://community.home-assistant.io/t/custom-component-skyq-media-player/140306)
+[![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg)](https://community.home-assistant.io/t/custom-component-skyq-media-player/140306)
 
 # Custom Component for SkyQ Integration for Home Assistant
 
