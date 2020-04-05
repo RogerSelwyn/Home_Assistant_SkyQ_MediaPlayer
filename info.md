@@ -13,7 +13,7 @@
 {% endif %}
 
 [![maintained](https://img.shields.io/maintenance/yes/2020.svg)](#)
-[![maintainer](https://img.shields.io/badge/maintainer-%20%40RogerSelwyn-blue.svg)](#)
+[![maintainer](https://img.shields.io/badge/maintainer-%20%40RogerSelwyn-blue.svg)](https://github.com/RogerSelwyn)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 [![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg)](https://community.home-assistant.io/t/custom-component-skyq-media-player/140306)
 
@@ -31,21 +31,24 @@ There is currently support for the following device types within Home Assistant:
 
 _Component showing current TV or recording with default media control_
 
-![Component showing current TV or recording with default media control](screenshots/skyq_1.png)
+<img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/hacs/screenshots/skyq_1.png">
 
 _Component showing application with default media control_
 
-![Component showing application with default media control](screenshots/skyq_2.png)
+<img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/hacs/screenshots/skyq_2.png">
 
 _Component showing current TV or recording with Mini Media Player_
 
-![Component showing current TV or recording with Mini Media Player](screenshots/skyq_3.png)
+<img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/hacs/screenshots/skyq_3.png">
 
 ## Installation
 
-You can use HACS or install the component manually:
+You can use HACS by adding this reposity as a custom Integration repository in HACS settings, or install the component manually:
 
 - Put the files from `/custom_components/skyq/` in your folder `<config directory>/custom_components/skyq/`
+
+For either install methid you must also:
+
 - Put the files from `/www/community/skyq/` in your folder `<config directory>/www/community/skyq/`
 
 # Media Player Configuration
@@ -57,7 +60,7 @@ media_player:
  - platform:  skyq
    name: SkyQ Living Room
    host: 192.168.0.10
-   get_live_tv: True
+   live_tv: True
    sources:
       SkyOne: '1,0,6'
       SkyNews: '5,0,1'
@@ -84,7 +87,7 @@ The name you would like to give to the SkyQ set top box.
 **output_programme_image** _(boolean)(Optional)_ Default True
 Enables you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing.
 
-**get_live_tv** _(boolean)(Optional)_ Default True
+**live_tv** _(boolean)(Optional)_ Default True
 Enables you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from awk.epgsky.com.
 
 ### Sources
