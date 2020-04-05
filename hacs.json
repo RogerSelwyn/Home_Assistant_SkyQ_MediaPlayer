@@ -1,0 +1,6 @@
+{
+  "name": "SkyQ",
+  "homeassistant": "0.107",
+  "content_in_root": false,
+  "domains": ["media_player"]
+}
