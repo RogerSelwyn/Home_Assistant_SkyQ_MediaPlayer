@@ -17,7 +17,12 @@ else:
 print("----------- Power status")
 print(sky.powerStatus())
 print("----------- Current Media")
-print(str(sky.getCurrentMedia()))
+currentMedia = sky.getCurrentMedia()
+print(currentMedia)
+if currentMedia["live"]:
+    print("----------- Current Live TV")
+    print(sky.getCurrentLiveTVProgramme(currentMedia["sid"]))
+
 print("----------- Active Application")
 print(str(sky.getActiveApplication()))
 

@@ -244,14 +244,26 @@ class SkyQDevice(MediaPlayerDevice):
         app = self._client.getActiveApplication()
         # _LOGGER.warning('Active APP: ' + str(activeApp))
         if app["activeApp"] == SkyRemote.APP_EPG:
-            currentProgramme = self._client.getCurrentMedia()
-            self.channel = currentProgramme.get("channel")
-            self.episode = currentProgramme.get("episode")
-            if self._enabled_features & FEATURE_IMAGE:
-                self.imageUrl = currentProgramme.get("imageUrl")
+            currentMedia = self._client.getCurrentMedia()
+            self.channel = currentMedia.get("channel")
             self.isTvShow = False
-            self.season = currentProgramme.get("season")
-            self._title = currentProgramme.get("title")
+            if currentMedia["live"]:
+                if self._live_tv:
+                    currentProgramme = self._client.getCurrentLiveTVProgramme(
+                        currentMedia["sid"]
+                    )
+                    self.episode = currentProgramme.get("episode")
+                    self.season = currentProgramme.get("season")
+                    self._title = currentProgramme.get("title")
+                    if self._enabled_features & FEATURE_IMAGE:
+                        self.imageUrl = currentProgramme.get("imageUrl")
+            else:
+                self.episode = currentMedia.get("episode")
+                self.season = currentMedia.get("season")
+                self._title = currentMedia.get("title")
+                if self._enabled_features & FEATURE_IMAGE:
+                    self.imageUrl = currentMedia.get("imageUrl")
+
         else:
             # self._state = STATE_PLAYING
             self._title = app["appTitle"]

@@ -297,14 +297,9 @@ class SkyRemote:
                 self.epgData = resp.json()["schedule"][0]
                 self.lastEpgUrl = epgUrl
 
-    def _getCurrentLiveTVProgramme(self, sid):
+    def getCurrentLiveTVProgramme(self, sid):
         try:
-            result = {
-                "title": None,
-                "season": None,
-                "episode": None,
-                "programmeuuid": None,
-            }
+            result = {"title": None, "season": None, "episode": None, "imageUrl": None}
             self._getEpgData(sid)
             epoch = datetime.utcfromtimestamp(0)
             timefromepoch = int((datetime.utcnow() - epoch).total_seconds())
@@ -326,7 +321,8 @@ class SkyRemote:
                 if programme["seasonnumber"] > 0:
                     result.update({"season": programme["seasonnumber"]})
             if "programmeuuid" in programme:
-                result.update({"programmeuuid": programme["programmeuuid"]})
+                programmeuuid = str(programme["programmeuuid"])
+                result.update({"imageUrl": IMAGE_URL_BASE.format(programmeuuid)})
             else:
                 _LOGGER.debug(f"D0020 - No prgrammeuuid: {programme}")
             return result
@@ -341,6 +337,8 @@ class SkyRemote:
             "title": None,
             "season": None,
             "episode": None,
+            "sid": None,
+            "live": False,
         }
         response = self._callSkySOAPService(UPNP_GET_MEDIA_INFO)
         if response is not None:
@@ -349,29 +347,14 @@ class SkyRemote:
                 if XSI in currentURI:
                     # Live content
                     sid = int(currentURI[6:], 16)
+                    result.update({"sid": sid, "live": True})
                     channels = self.http_json(REST_CHANNEL_LIST)
                     channelNode = next(
                         s for s in channels["services"] if s["sid"] == str(sid)
                     )
                     result.update({"imageUrl": None})
                     result.update({"channel": "🛰 " + channelNode["t"]})
-                    if self._live_tv:
-                        programme = self._getCurrentLiveTVProgramme(sid)
-                        if not (programme["programmeuuid"] is None):
-                            result.update(
-                                {
-                                    "imageUrl": IMAGE_URL_BASE.format(
-                                        str(programme["programmeuuid"])
-                                    )
-                                }
-                            )
-                        else:
-                            result.update(
-                                {"imageUrl": CLOUDFRONT_IMAGE_URL_BASE.format(sid)}
-                            )
-                        programme.pop("programmeuuid")
-                        result.update(programme)
-
+                    result.update({"imageUrl": CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
                 elif PVR in currentURI:
                     # Recorded content
                     pvrId = "P" + currentURI[11:]

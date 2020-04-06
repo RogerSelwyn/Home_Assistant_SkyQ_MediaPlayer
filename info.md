@@ -47,7 +47,7 @@ You can use HACS by adding this reposity as a custom Integration repository in H
 
 - Put the files from `/custom_components/skyq/` in your folder `<config directory>/custom_components/skyq/`
 
-For either install methid you must also:
+For either install method you must also:
 
 - Put the files from `/www/community/skyq/` in your folder `<config directory>/www/community/skyq/`
 
