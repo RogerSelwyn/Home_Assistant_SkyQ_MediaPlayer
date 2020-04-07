@@ -115,23 +115,13 @@ class SkyRemote:
     APP_STATUS_VISIBLE = "VISIBLE"
 
     APP_TITLES = {"com.bskyb.vevo": "Vevo", "com.spotify.spotify.tvv2": "Spotify"}
-    APP_LOGOS = {
-        "youtube": "youtube",
-        "youtubekids": "youtubekids",
-        "netflix": "netflix",
-        "vevo": "vevo",
-        "disneyplus": "disneyplus",
-        "iplayer": "bbciplayer",
-        "spotify": "spotify",
-    }
 
     APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
 
-    def __init__(self, host, live_tv, country, port=49160, jsonport=9006):
+    def __init__(self, host, country, port=49160, jsonport=9006):
         self._host = host
         self._port = port
         self._jsonport = jsonport
-        self._live_tv = live_tv
         url_index = 0
         self._soapControlURL = None
         while self._soapControlURL is None and url_index < 3:
@@ -252,14 +242,8 @@ class SkyRemote:
                 apptitle = self.APP_TITLES[app.casefold()]
             result.update({"appTitle": apptitle})
 
-            if apptitle.casefold() in self.APP_LOGOS:
-                result.update(
-                    {
-                        "appImageURL": self.APP_IMAGE_URL_BASE.format(
-                            self.APP_LOGOS[apptitle.casefold()]
-                        )
-                    }
-                )
+            appImageURL = self.APP_IMAGE_URL_BASE.format(apptitle.casefold())
+            result.update({"appImageURL": appImageURL})
 
             return result
         except Exception:

@@ -86,6 +86,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     }
 )
 
+RESPONSE_OK = 200
+
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the SkyQ platform."""
@@ -129,12 +131,18 @@ class SkyQDevice(MediaPlayerDevice):
         if not get_live_tv:
             self._live_tv = get_live_tv
         self._country = country
-        self._client = SkyRemote(host, live_tv=self._live_tv, country=self._country)
+        self._client = SkyRemote(host, country=self._country)
         self._current_source = None
         self._current_source_id = None
         self._state = STATE_OFF
         self._power = STATE_OFF
         self._enabled_features = ENABLED_FEATURES
+        self._title = None
+        self.channel = None
+        self.episode = None
+        self.imageUrl = None
+        self.season = None
+        self.skyq_type = None
 
         if not (output_programme_image):
             self._enabled_features = FEATURE_BASIC
@@ -147,11 +155,6 @@ class SkyQDevice(MediaPlayerDevice):
             for ch in [*self._source_names.keys()]:
                 swMaker.addChannel(ch)
             swMaker.closeFile()
-        self._title = None
-        self.channel = None
-        self.episode = None
-        self.imageUrl = None
-        self.season = None
 
     @property
     def supported_features(self):
@@ -212,6 +215,16 @@ class SkyQDevice(MediaPlayerDevice):
         """Episode of current playing media (TV Show only)."""
         return self.episode
 
+    @property
+    def device_state_attributes(self):
+        """Return entity specific state attributes."""
+        attributes = {}
+
+        if self._power != STATE_OFF:
+            attributes["skyq_media_type"] = self.skyq_type
+
+        return attributes
+
     def update(self):
         """Get the latest data and update device state."""
 
@@ -248,6 +261,7 @@ class SkyQDevice(MediaPlayerDevice):
             self.channel = currentMedia.get("channel")
             self.isTvShow = False
             if currentMedia["live"]:
+                self.skyq_type = "live"
                 if self._live_tv:
                     currentProgramme = self._client.getCurrentLiveTVProgramme(
                         currentMedia["sid"]
@@ -258,6 +272,7 @@ class SkyQDevice(MediaPlayerDevice):
                     if self._enabled_features & FEATURE_IMAGE:
                         self.imageUrl = currentProgramme.get("imageUrl")
             else:
+                self.skyq_type = "pvr"
                 self.episode = currentMedia.get("episode")
                 self.season = currentMedia.get("season")
                 self._title = currentMedia.get("title")
@@ -265,11 +280,17 @@ class SkyQDevice(MediaPlayerDevice):
                     self.imageUrl = currentMedia.get("imageUrl")
 
         else:
+            self.skyq_type = "app"
             # self._state = STATE_PLAYING
             self._title = app["appTitle"]
 
         if self._enabled_features & FEATURE_IMAGE and self.imageUrl is None:
-            self.imageUrl = app["appImageURL"]
+            try:
+                resp = requests.head(self.hass.config.api.base_url + app["appImageURL"])
+                if resp.status_code == RESPONSE_OK:
+                    self.imageUrl = app["appImageURL"]
+            except Exception as err:
+                _LOGGER.exception(f"X0010M - Image file check failed: {err}")
 
     def turn_off(self):
         if self._client.powerStatus() == "On":
