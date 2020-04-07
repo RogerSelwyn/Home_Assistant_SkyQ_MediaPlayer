@@ -112,17 +112,26 @@ class SkyRemote:
 
     # Application Constants
     APP_EPG = "com.bskyb.epgui"
-    APP_YOUTUBE = "YouTube"
-    APP_YOUTUBE_TITLE = "YouTube"
-    APP_VEVO = "com.bskyb.vevo"
-    APP_VEVO_TITLE = "Vevo"
     APP_STATUS_VISIBLE = "VISIBLE"
 
-    def __init__(self, host, get_live_tv, country, port=49160, jsonport=9006):
+    APP_TITLES = {"com.bskyb.vevo": "Vevo", "com.spotify.spotify.tvv2": "Spotify"}
+    APP_LOGOS = {
+        "youtube": "youtube",
+        "youtubekids": "youtubekids",
+        "netflix": "netflix",
+        "vevo": "vevo",
+        "disneyplus": "disneyplus",
+        "iplayer": "bbciplayer",
+        "spotify": "spotify",
+    }
+
+    APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
+
+    def __init__(self, host, live_tv, country, port=49160, jsonport=9006):
         self._host = host
         self._port = port
         self._jsonport = jsonport
-        self._get_live_tv = get_live_tv
+        self._live_tv = live_tv
         url_index = 0
         self._soapControlURL = None
         while self._soapControlURL is None and url_index < 3:
@@ -217,7 +226,7 @@ class SkyRemote:
             _LOGGER.debug(f"D0010 - Attribute Error occurred: {err}")
             return None
         except (TimeoutError) as err:
-            _LOGGER.warning(f"W0040 - Websocket call failed: {method}")
+            _LOGGER.warning(f"W0030 - Websocket call failed: {method}")
             return {"url": None, "status": "Error"}
         except Exception as err:
             _LOGGER.exception(f"X0020 - Error occurred: {err}")
@@ -225,14 +234,36 @@ class SkyRemote:
 
     def getActiveApplication(self):
         try:
+            result = {
+                "activeApp": self.APP_EPG,
+                "appImageURL": None,
+                "appTitle": self.APP_EPG,
+            }
             apps = self._callSkyWebSocket(WS_CURRENT_APPS)
             if apps is None:
-                return self.APP_EPG
-            return next(
+                return result
+            app = next(
                 a for a in apps["apps"] if a["status"] == self.APP_STATUS_VISIBLE
             )["appId"]
+            result.update({"activeApp": app})
+
+            apptitle = app
+            if app.casefold() in self.APP_TITLES:
+                apptitle = self.APP_TITLES[app.casefold()]
+            result.update({"appTitle": apptitle})
+
+            if apptitle.casefold() in self.APP_LOGOS:
+                result.update(
+                    {
+                        "appImageURL": self.APP_IMAGE_URL_BASE.format(
+                            self.APP_LOGOS[apptitle.casefold()]
+                        )
+                    }
+                )
+
+            return result
         except Exception:
-            return self.APP_EPG
+            return result
 
     def powerStatus(self) -> str:
         if self._soapControlURL is None:
@@ -245,12 +276,12 @@ class SkyRemote:
         except (
             requests.exceptions.ConnectTimeout,
             requests.exceptions.ReadTimeout,
-        ) as err:
-            # _LOGGER.warning(f"W0010 - Device has control URL but connection request time out: {err}")
+        ):
+            # _LOGGER.info(f"I0010 - Device has control URL but connection request time out")
             return "Off"
-        except (requests.exceptions.ConnectionError) as err:
-            _LOGGER.warning(
-                f"W0020 - Device has control URL but connection request failed: {err}"
+        except (requests.exceptions.ConnectionError):
+            _LOGGER.info(
+                f"I0020 - Device has control URL but connection request failed"
             )
             return "Off"
         except Exception as err:
@@ -277,6 +308,11 @@ class SkyRemote:
             self._getEpgData(sid)
             epoch = datetime.utcfromtimestamp(0)
             timefromepoch = int((datetime.utcnow() - epoch).total_seconds())
+            if len(self.epgData["events"]) == 0:
+                _LOGGER.warning(
+                    f"W0010 - Programme data not found. Do you need to set 'live_tv' to False?"
+                )
+                return result
             programme = next(
                 p
                 for p in self.epgData["events"]
@@ -319,7 +355,7 @@ class SkyRemote:
                     )
                     result.update({"imageUrl": None})
                     result.update({"channel": channelNode["t"]})
-                    if self._get_live_tv:
+                    if self._live_tv:
                         programme = self._getCurrentLiveTVProgramme(sid)
                         if not (programme["programmeuuid"] is None):
                             result.update(
@@ -335,6 +371,7 @@ class SkyRemote:
                             )
                         programme.pop("programmeuuid")
                         result.update(programme)
+
                 elif PVR in currentURI:
                     # Recorded content
                     pvrId = "P" + currentURI[11:]

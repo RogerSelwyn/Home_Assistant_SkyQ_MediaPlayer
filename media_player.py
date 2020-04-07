@@ -48,6 +48,7 @@ CONF_DIR = "config_directory"
 CONF_GEN_SWITCH = "generate_switches_for_channels"
 CONF_OUTPUT_PROGRAMME_IMAGE = "output_programme_image"
 CONF_GET_LIVETV = "get_live_tv"
+CONF_LIVE_TV = "live_tv"
 CONF_COUNTRY = "country"
 
 DEFAULT_NAME = "SkyQ Box"
@@ -80,6 +81,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_GEN_SWITCH, default=False): cv.boolean,
         vol.Optional(CONF_OUTPUT_PROGRAMME_IMAGE, default=True): cv.boolean,
         vol.Optional(CONF_GET_LIVETV, default=True): cv.boolean,
+        vol.Optional(CONF_LIVE_TV, default=True): cv.boolean,
         vol.Optional(CONF_COUNTRY, default="UK"): cv.string,
     }
 )
@@ -97,6 +99,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         config.get(CONF_DIR),
         config.get(CONF_OUTPUT_PROGRAMME_IMAGE),
         config.get(CONF_GET_LIVETV),
+        config.get(CONF_LIVE_TV),
         config.get(CONF_COUNTRY),
     )
     add_entities([player])
@@ -116,16 +119,17 @@ class SkyQDevice(MediaPlayerDevice):
         config_directory,
         output_programme_image,
         get_live_tv,
+        live_tv,
         country,
     ):
         self.hass = hass
         self._name = name
         self._host = host
-        self._get_live_tv = get_live_tv
+        self._live_tv = live_tv
+        if not get_live_tv:
+            self._live_tv = get_live_tv
         self._country = country
-        self._client = SkyRemote(
-            host, get_live_tv=self._get_live_tv, country=self._country
-        )
+        self._client = SkyRemote(host, live_tv=self._live_tv, country=self._country)
         self._current_source = None
         self._current_source_id = None
         self._state = STATE_OFF
@@ -237,10 +241,9 @@ class SkyQDevice(MediaPlayerDevice):
         self.season = None
         self._title = None
 
-        activeApp = self._client.getActiveApplication()
+        app = self._client.getActiveApplication()
         # _LOGGER.warning('Active APP: ' + str(activeApp))
-
-        if activeApp == SkyRemote.APP_EPG:
+        if app["activeApp"] == SkyRemote.APP_EPG:
             currentProgramme = self._client.getCurrentMedia()
             self.channel = currentProgramme.get("channel")
             self.episode = currentProgramme.get("episode")
@@ -249,15 +252,12 @@ class SkyQDevice(MediaPlayerDevice):
             self.isTvShow = False
             self.season = currentProgramme.get("season")
             self._title = currentProgramme.get("title")
-        elif activeApp == SkyRemote.APP_YOUTUBE:
-            # self._state = STATE_PLAYING
-            self._title = SkyRemote.APP_YOUTUBE_TITLE
-        elif activeApp == SkyRemote.APP_VEVO:
-            # self._state = STATE_PLAYING
-            self._title = SkyRemote.APP_VEVO_TITLE
         else:
             # self._state = STATE_PLAYING
-            self._title = activeApp
+            self._title = app["appTitle"]
+
+        if self._enabled_features & FEATURE_IMAGE and self.imageUrl is None:
+            self.imageUrl = app["appImageURL"]
 
     def turn_off(self):
         if self._client.powerStatus() == "On":
