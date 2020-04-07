@@ -88,6 +88,12 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 
 RESPONSE_OK = 200
 
+SKYQ_ICONS = {
+    "app": "mdi:application",
+    "live": "mdi:satellite-variant",
+    "pvr": "mdi:movie-open",
+}
+
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the SkyQ platform."""
@@ -142,7 +148,8 @@ class SkyQDevice(MediaPlayerDevice):
         self.episode = None
         self.imageUrl = None
         self.season = None
-        self.skyq_type = None
+        self._skyq_type = None
+        self._skyq_icon = None
 
         if not (output_programme_image):
             self._enabled_features = FEATURE_BASIC
@@ -216,19 +223,26 @@ class SkyQDevice(MediaPlayerDevice):
         return self.episode
 
     @property
+    def icon(self):
+        """Entity icon."""
+        return self._skyq_icon
+
+    @property
     def device_state_attributes(self):
         """Return entity specific state attributes."""
         attributes = {}
-
-        if self._power != STATE_OFF:
-            attributes["skyq_media_type"] = self.skyq_type
-
+        attributes["skyq_media_type"] = self._skyq_type
         return attributes
 
     def update(self):
         """Get the latest data and update device state."""
 
+        self._skyq_icon = None
+
         self._updateState()
+
+        self._skyq_type = self._power
+
         if self._power != STATE_OFF:
             self._updateCurrentProgramme()
 
@@ -261,7 +275,7 @@ class SkyQDevice(MediaPlayerDevice):
             self.channel = currentMedia.get("channel")
             self.isTvShow = False
             if currentMedia["live"]:
-                self.skyq_type = "live"
+                self._skyq_type = "live"
                 if self._live_tv:
                     currentProgramme = self._client.getCurrentLiveTVProgramme(
                         currentMedia["sid"]
@@ -272,7 +286,7 @@ class SkyQDevice(MediaPlayerDevice):
                     if self._enabled_features & FEATURE_IMAGE:
                         self.imageUrl = currentProgramme.get("imageUrl")
             else:
-                self.skyq_type = "pvr"
+                self._skyq_type = "pvr"
                 self.episode = currentMedia.get("episode")
                 self.season = currentMedia.get("season")
                 self._title = currentMedia.get("title")
@@ -280,9 +294,11 @@ class SkyQDevice(MediaPlayerDevice):
                     self.imageUrl = currentMedia.get("imageUrl")
 
         else:
-            self.skyq_type = "app"
+            self._skyq_type = "app"
             # self._state = STATE_PLAYING
             self._title = app["appTitle"]
+
+        self._skyq_icon = SKYQ_ICONS[self._skyq_type]
 
         if self._enabled_features & FEATURE_IMAGE and self.imageUrl is None:
             try:

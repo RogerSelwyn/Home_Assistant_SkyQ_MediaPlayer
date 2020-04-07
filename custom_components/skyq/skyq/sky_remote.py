@@ -235,6 +235,7 @@ class SkyRemote:
             app = next(
                 a for a in apps["apps"] if a["status"] == self.APP_STATUS_VISIBLE
             )["appId"]
+
             result.update({"activeApp": app})
 
             apptitle = app
@@ -337,13 +338,13 @@ class SkyRemote:
                         s for s in channels["services"] if s["sid"] == str(sid)
                     )
                     result.update({"imageUrl": None})
-                    result.update({"channel": "🛰 " + channelNode["t"]})
+                    result.update({"channel": channelNode["t"]})
                     result.update({"imageUrl": CLOUDFRONT_IMAGE_URL_BASE.format(sid)})
                 elif PVR in currentURI:
                     # Recorded content
                     pvrId = "P" + currentURI[11:]
                     recording = self.http_json(REST_RECORDING_DETAILS.format(pvrId))
-                    result.update({"channel": "🎞" + recording["details"]["cn"]})
+                    result.update({"channel": recording["details"]["cn"]})
                     result.update({"title": recording["details"]["t"]})
                     if (
                         "seasonnumber" in recording["details"]
