@@ -29,7 +29,7 @@ There is currently support for the following device types within Home Assistant:
 
 ## Screenshots
 
-_Component showing current TV or recording with default media control_
+_Component showing current TV with default media control_
 
 <img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/hacs/screenshots/skyq_1.png">
 
@@ -37,7 +37,7 @@ _Component showing application with default media control_
 
 <img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/hacs/screenshots/skyq_2.png">
 
-_Component showing current TV or recording with Mini Media Player_
+_Component showing recording with Mini Media Player_
 
 <img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/hacs/screenshots/skyq_3.png">
 
