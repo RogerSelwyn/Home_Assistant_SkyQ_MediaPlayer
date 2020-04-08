@@ -52,6 +52,7 @@ CONF_LIVE_TV = "live_tv"
 CONF_COUNTRY = "country"
 
 DEFAULT_NAME = "SkyQ Box"
+DEVICE_CLASS = "tv"
 
 SUPPORT_SKYQ = (
     SUPPORT_TURN_OFF
@@ -91,6 +92,7 @@ RESPONSE_OK = 200
 SKYQ_ICONS = {
     "app": "mdi:application",
     "live": "mdi:satellite-variant",
+    "off": "mdi:television",
     "pvr": "mdi:movie-open",
 }
 
@@ -149,7 +151,7 @@ class SkyQDevice(MediaPlayerDevice):
         self.imageUrl = None
         self.season = None
         self._skyq_type = None
-        self._skyq_icon = None
+        self._skyq_icon = SKYQ_ICONS[STATE_OFF]
 
         if not (output_programme_image):
             self._enabled_features = FEATURE_BASIC
@@ -228,6 +230,11 @@ class SkyQDevice(MediaPlayerDevice):
         return self._skyq_icon
 
     @property
+    def device_class(self):
+        """Entity icon."""
+        return DEVICE_CLASS
+
+    @property
     def device_state_attributes(self):
         """Return entity specific state attributes."""
         attributes = {}
@@ -237,7 +244,7 @@ class SkyQDevice(MediaPlayerDevice):
     def update(self):
         """Get the latest data and update device state."""
 
-        self._skyq_icon = None
+        self._skyq_icon = SKYQ_ICONS[STATE_OFF]
 
         self._updateState()
 
@@ -245,6 +252,8 @@ class SkyQDevice(MediaPlayerDevice):
 
         if self._power != STATE_OFF:
             self._updateCurrentProgramme()
+        else:
+            self._skyq_icon = SKYQ_ICONS[self._skyq_type]
 
     def _updateState(self):
         if self._client.powerStatus() == "On":
