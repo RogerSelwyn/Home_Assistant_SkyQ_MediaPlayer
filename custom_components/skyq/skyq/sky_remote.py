@@ -51,8 +51,9 @@ IMAGE_URL_BASE = "https://images.metadata.sky.com/pd-image/{0}/16-9/1788"
 CLOUDFRONT_IMAGE_URL_BASE = "https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/600/600/skychb{0}.png"
 PVR = "pvr"
 XSI = "xsi"
-
 awkTvUrlBase = "http://awk.epgsky.com/hawk/linear/schedule/{0}/{1}"
+
+PAST_END_OF_EPG = "past end of epg"
 
 
 class SkyRemote:
@@ -114,10 +115,6 @@ class SkyRemote:
     APP_EPG = "com.bskyb.epgui"
     APP_STATUS_VISIBLE = "VISIBLE"
 
-    APP_TITLES = {"com.bskyb.vevo": "Vevo", "com.spotify.spotify.tvv2": "Spotify"}
-
-    APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
-
     def __init__(self, host, country, port=49160, jsonport=9006):
         self._host = host
         self._port = port
@@ -166,13 +163,15 @@ class SkyRemote:
                 }
             return {"url": None, "status": "Not Found"}
         except (requests.exceptions.Timeout) as err:
-            _LOGGER.warning(f"W0020 - Control URL not accessible: {descriptionUrl}")
+            _LOGGER.warning(
+                f"W0020 - Control URL not accessible: {self._host} : {descriptionUrl}"
+            )
             return {"url": None, "status": "Error"}
         except (requests.exceptions.ConnectionError) as err:
-            _LOGGER.exception(f"X0070 - Connection error: {err}")
+            _LOGGER.exception(f"X0070 - Connection error: {self._host} : {err}")
             return {"url": None, "status": "Error"}
         except Exception as err:
-            _LOGGER.exception(f"X0010 - Other error occurred: {err}")
+            _LOGGER.exception(f"X0010 - Other error occurred: {self._host} : {err}")
             return {"url": None, "status": "Error"}
 
     def _callSkySOAPService(self, method):
@@ -196,7 +195,6 @@ class SkyRemote:
                 ]
             return None
         except requests.exceptions.RequestException:
-            # self._connfail = CONNFAILCOUNT
             return None
 
     def _callSkyWebSocket(self, method):
@@ -213,22 +211,18 @@ class SkyRemote:
                 )
             return None
         except (AttributeError) as err:
-            _LOGGER.debug(f"D0010 - Attribute Error occurred: {err}")
+            _LOGGER.debug(f"D0010 - Attribute Error occurred: {self._host} : {err}")
             return None
         except (TimeoutError) as err:
-            _LOGGER.warning(f"W0030 - Websocket call failed: {method}")
+            _LOGGER.warning(f"W0030 - Websocket call failed: {self._host} : {method}")
             return {"url": None, "status": "Error"}
         except Exception as err:
-            _LOGGER.exception(f"X0020 - Error occurred: {err}")
+            _LOGGER.exception(f"X0020 - Error occurred: {self._host} : {err}")
             return None
 
     def getActiveApplication(self):
         try:
-            result = {
-                "activeApp": self.APP_EPG,
-                "appImageURL": None,
-                "appTitle": self.APP_EPG,
-            }
+            result = self.APP_EPG
             apps = self._callSkyWebSocket(WS_CURRENT_APPS)
             if apps is None:
                 return result
@@ -236,15 +230,8 @@ class SkyRemote:
                 a for a in apps["apps"] if a["status"] == self.APP_STATUS_VISIBLE
             )["appId"]
 
-            result.update({"activeApp": app})
-
-            apptitle = app
-            if app.casefold() in self.APP_TITLES:
-                apptitle = self.APP_TITLES[app.casefold()]
-            result.update({"appTitle": apptitle})
-
-            appImageURL = self.APP_IMAGE_URL_BASE.format(apptitle.casefold())
-            result.update({"appImageURL": appImageURL})
+            # app = "com.roku"
+            result = app
 
             return result
         except Exception:
@@ -262,42 +249,55 @@ class SkyRemote:
             requests.exceptions.ConnectTimeout,
             requests.exceptions.ReadTimeout,
         ):
-            # _LOGGER.info(f"I0010 - Device has control URL but connection request time out")
             return "Off"
         except (requests.exceptions.ConnectionError):
             _LOGGER.info(
-                f"I0020 - Device has control URL but connection request failed"
+                f"I0010 - Device has control URL but connection request failed: {self._host}"
             )
             return "Off"
         except Exception as err:
-            _LOGGER.exception(f"X0060 - Error occurred: {err}")
+            _LOGGER.exception(f"X0060 - Error occurred: {self._host} : {err}")
             return "Off"
 
-    def _getEpgData(self, sid):
-        queryDate = datetime.utcnow().strftime("%Y%m%d")
-        epgUrl = awkTvUrlBase.format(queryDate, sid)
+    def getEpgData(self, sid, queryDate):
+        queryDateStr = queryDate.strftime("%Y%m%d")
+        epgUrl = awkTvUrlBase.format(queryDateStr, sid)
         if self.lastEpgUrl is None or self.lastEpgUrl != epgUrl:
             resp = requests.get(epgUrl)
             if resp.status_code == RESPONSE_OK:
                 self.epgData = resp.json()["schedule"][0]
                 self.lastEpgUrl = epgUrl
 
-    def getCurrentLiveTVProgramme(self, sid):
+    def _getProgrammeFromEpg(self, sid, queryDate, timefromepoch):
+        self.getEpgData(sid, queryDate)
+        if len(self.epgData["events"]) == 0:
+            _LOGGER.warning(
+                f"W0010 - Programme data not found. Do you need to set 'live_tv' to False?"
+            )
+            return None
+
         try:
-            result = {"title": None, "season": None, "episode": None, "imageUrl": None}
-            self._getEpgData(sid)
-            epoch = datetime.utcfromtimestamp(0)
-            timefromepoch = int((datetime.utcnow() - epoch).total_seconds())
-            if len(self.epgData["events"]) == 0:
-                _LOGGER.warning(
-                    f"W0010 - Programme data not found. Do you need to set 'live_tv' to False?"
-                )
-                return result
             programme = next(
                 p
                 for p in self.epgData["events"]
                 if p["st"] <= timefromepoch and p["st"] + p["d"] >= timefromepoch
             )
+            return programme
+
+        except StopIteration:
+            return PAST_END_OF_EPG
+
+    def getCurrentLiveTVProgramme(self, sid):
+        try:
+            result = {"title": None, "season": None, "episode": None, "imageUrl": None}
+            queryDate = datetime.utcnow()
+            epoch = datetime.utcfromtimestamp(0)
+            timefromepoch = int((queryDate - epoch).total_seconds())
+            programme = self._getProgrammeFromEpg(sid, queryDate, timefromepoch)
+            if programme == PAST_END_OF_EPG:
+                programme = self._getProgrammeFromEpg(
+                    sid, datetime.utcnow() + timedelta(days=1), timefromepoch
+                )
             result.update({"title": programme["t"]})
             if "episodenumber" in programme:
                 if programme["episodenumber"] > 0:
@@ -309,10 +309,12 @@ class SkyRemote:
                 programmeuuid = str(programme["programmeuuid"])
                 result.update({"imageUrl": IMAGE_URL_BASE.format(programmeuuid)})
             else:
-                _LOGGER.debug(f"D0020 - No prgrammeuuid: {programme}")
+                _LOGGER.info(
+                    f"I0020 - No programmeuuid: {self._host} : {sid} : {programme}"
+                )
             return result
         except Exception as err:
-            _LOGGER.exception(f"X0030 - Error occurred: {err}")
+            _LOGGER.exception(f"X0030 - Error occurred: {self._host} : {err}")
             return result
 
     def getCurrentMedia(self):
@@ -379,13 +381,17 @@ class SkyRemote:
         if isinstance(sequence, list):
             for item in sequence:
                 if item not in self.commands:
-                    _LOGGER.error("E0010 - Invalid command: {}".format(item))
+                    _LOGGER.error(
+                        "E0010 - Invalid command: {self._host} : {0}".format(item)
+                    )
                     break
                 self.sendCommand(self.commands[item.casefold()])
                 time.sleep(0.5)
         else:
             if sequence not in self.commands:
-                _LOGGER.error("E0020 - Invalid command: {0}".format(sequence))
+                _LOGGER.error(
+                    "E0020 - Invalid command: {self._host} : {0}".format(sequence)
+                )
             else:
                 self.sendCommand(self.commands[sequence])
 
@@ -398,7 +404,7 @@ class SkyRemote:
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error as err:
             _LOGGER.exception(
-                f"X0040 - Failed to create socket when sending command. {err}"
+                f"X0040 - Failed to create socket when sending command: {self._host} : {err}"
             )
             return
 
@@ -406,7 +412,7 @@ class SkyRemote:
             client.connect((self._host, self._port))
         except Exception as err:
             _LOGGER.exception(
-                f"X0050 - Failed to connect to client when sending command: {err}"
+                f"X0050 - Failed to connect to client when sending command: {self._host} : {err}"
             )
             return
 
@@ -429,7 +435,9 @@ class SkyRemote:
 
             if time.time() > timeout:
                 _LOGGER.error(
-                    "E0030 - Timeout error sending command: {0}".format(str(code))
+                    "E0030 - Timeout error sending command: {self._host} : {0}".format(
+                        str(code)
+                    )
                 )
                 break
 

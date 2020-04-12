@@ -95,6 +95,12 @@ SKYQ_ICONS = {
     "off": "mdi:television",
     "pvr": "mdi:movie-open",
 }
+APP_TITLES = {
+    "com.bskyb.vevo": "Vevo",
+    "com.spotify.spotify.tvv2": "Spotify",
+    "com.roku": "Roku",
+}
+APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
 
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
@@ -158,7 +164,6 @@ class SkyQDevice(MediaPlayerDevice):
 
         self._source_names = sources or {}
 
-        # _LOGGER.warning(generate_switches_for_channels)
         if generate_switches_for_channels:
             swMaker = SwitchMaker(name, room, config_directory)
             for ch in [*self._source_names.keys()]:
@@ -231,7 +236,7 @@ class SkyQDevice(MediaPlayerDevice):
 
     @property
     def device_class(self):
-        """Entity icon."""
+        """Entity class."""
         return DEVICE_CLASS
 
     @property
@@ -278,10 +283,15 @@ class SkyQDevice(MediaPlayerDevice):
         self._title = None
 
         app = self._client.getActiveApplication()
-        # _LOGGER.warning('Active APP: ' + str(activeApp))
-        if app["activeApp"] == SkyRemote.APP_EPG:
+        appTitle = app
+        if appTitle.casefold() in APP_TITLES:
+            appTitle = APP_TITLES[appTitle.casefold()]
+
+        if app == SkyRemote.APP_EPG:
             currentMedia = self._client.getCurrentMedia()
             self.channel = currentMedia.get("channel")
+            if self._enabled_features & FEATURE_IMAGE:
+                self.imageUrl = currentMedia["imageUrl"]
             self.isTvShow = False
             if currentMedia["live"]:
                 self._skyq_type = "live"
@@ -292,8 +302,11 @@ class SkyQDevice(MediaPlayerDevice):
                     self.episode = currentProgramme.get("episode")
                     self.season = currentProgramme.get("season")
                     self._title = currentProgramme.get("title")
-                    if self._enabled_features & FEATURE_IMAGE:
-                        self.imageUrl = currentProgramme.get("imageUrl")
+                    if (
+                        self._enabled_features & FEATURE_IMAGE
+                        and currentProgramme["imageUrl"]
+                    ):
+                        self.imageUrl = currentProgramme["imageUrl"]
             else:
                 self._skyq_type = "pvr"
                 self.episode = currentMedia.get("episode")
@@ -304,18 +317,20 @@ class SkyQDevice(MediaPlayerDevice):
 
         else:
             self._skyq_type = "app"
-            # self._state = STATE_PLAYING
-            self._title = app["appTitle"]
+            self._title = appTitle
 
         self._skyq_icon = SKYQ_ICONS[self._skyq_type]
 
-        if self._enabled_features & FEATURE_IMAGE and self.imageUrl is None:
+        if self._enabled_features & FEATURE_IMAGE and not self.imageUrl:
             try:
-                resp = requests.head(self.hass.config.api.base_url + app["appImageURL"])
+                appImageURL = APP_IMAGE_URL_BASE.format(appTitle.casefold())
+                resp = requests.head(self.hass.config.api.base_url + appImageURL)
                 if resp.status_code == RESPONSE_OK:
-                    self.imageUrl = app["appImageURL"]
+                    self.imageUrl = appImageURL
             except Exception as err:
-                _LOGGER.exception(f"X0010M - Image file check failed: {err}")
+                _LOGGER.exception(
+                    f"X0010M - Image file check failed: {appImageURL} : {err}"
+                )
 
     def turn_off(self):
         if self._client.powerStatus() == "On":
