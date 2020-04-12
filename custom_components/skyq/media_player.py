@@ -6,7 +6,7 @@ import socket
 import time
 
 
-from custom_components.skyq.skyq.sky_remote import SkyRemote
+from pyskyqremote.skyq_remote import SkyQRemote
 from custom_components.skyq.util.config_gen import SwitchMaker
 
 import voluptuous as vol
@@ -99,6 +99,7 @@ APP_TITLES = {
     "com.bskyb.vevo": "Vevo",
     "com.spotify.spotify.tvv2": "Spotify",
     "com.roku": "Roku",
+    "com.bskyb.epgui": "EPG",
 }
 APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
 
@@ -145,7 +146,7 @@ class SkyQDevice(MediaPlayerDevice):
         if not get_live_tv:
             self._live_tv = get_live_tv
         self._country = country
-        self._client = SkyRemote(host, country=self._country)
+        self._client = SkyQRemote(host, country=self._country)
         self._current_source = None
         self._current_source_id = None
         self._state = STATE_OFF
@@ -266,7 +267,7 @@ class SkyQDevice(MediaPlayerDevice):
                 self._state = STATE_PLAYING
                 self._power = STATE_PLAYING
             # this checks is flakey during channel changes, so only used for pause checks if we know its on
-            if self._client.getCurrentState() == SkyRemote.SKY_STATE_PAUSED:
+            if self._client.getCurrentState() == SkyQRemote.SKY_STATE_PAUSED:
                 self._state = STATE_PAUSED
             else:
                 self._state = STATE_PLAYING
@@ -287,7 +288,7 @@ class SkyQDevice(MediaPlayerDevice):
         if appTitle.casefold() in APP_TITLES:
             appTitle = APP_TITLES[appTitle.casefold()]
 
-        if app == SkyRemote.APP_EPG:
+        if app == SkyQRemote.APP_EPG:
             currentMedia = self._client.getCurrentMedia()
             self.channel = currentMedia.get("channel")
             if self._enabled_features & FEATURE_IMAGE:
@@ -327,6 +328,8 @@ class SkyQDevice(MediaPlayerDevice):
                 resp = requests.head(self.hass.config.api.base_url + appImageURL)
                 if resp.status_code == RESPONSE_OK:
                     self.imageUrl = appImageURL
+            except (requests.exceptions.ConnectionError) as err:
+                _LOGGER.info(f"I0010M - Image file check failed: {appImageURL} : {err}")
             except Exception as err:
                 _LOGGER.exception(
                     f"X0010M - Image file check failed: {appImageURL} : {err}"

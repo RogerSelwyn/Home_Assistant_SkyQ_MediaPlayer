@@ -4,5 +4,5 @@
   "documentation": "",
   "dependencies": [],
   "codeowners": [],
-  "requirements": ["xmltodict==0.12.0", "ws4py==0.5.1"]
+  "requirements": ["pyskyqremote==0.1.0"]
 }
