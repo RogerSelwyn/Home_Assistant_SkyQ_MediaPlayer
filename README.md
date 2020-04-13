@@ -25,7 +25,7 @@ _Component showing application with default media control_
 
 <img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/master/screenshots/skyq_2.png">
 
-_Component showing recording with Mini Media Player_
+_Component showing recording with [Mini Media Player](https://github.com/kalkih/mini-media-player)_
 
 <img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/master/screenshots/skyq_3.png">
 
