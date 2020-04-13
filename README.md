@@ -27,7 +27,7 @@ _Component showing application with default media control_
 
 _Component showing recording with Mini Media Player_
 
-<img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/master/screenshots/kyq_3.png">
+<img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/master/screenshots/skyq_3.png">
 
 ## Installation
 
