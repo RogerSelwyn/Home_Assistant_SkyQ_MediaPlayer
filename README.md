@@ -49,6 +49,7 @@ media_player:
    name: SkyQ Living Room
    host: 192.168.0.10
    live_tv: True
+   country: "UK"
    sources:
       SkyOne: '1,0,6'
       SkyNews: '5,0,1'
@@ -77,6 +78,9 @@ Enables you to disable returning images when watching recorded programmes. Usefu
 
 **live_tv** _(boolean)(Optional)_ Default True
 Enables you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from awk.epgsky.com.
+
+**country** _(string)(Optional)_ Default "UK"
+Enables to switch to another country. Currently onlu UK and IT are supported.
 
 ### Sources
 
