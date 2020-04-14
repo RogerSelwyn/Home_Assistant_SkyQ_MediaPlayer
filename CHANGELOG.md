@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.0 (14/04/2020)
+- [Pass Channel number back in support of countries](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2c13d3940fb2ec18267ae6c2dace285d1831aef9) - @RogerSelwyn
+- [Update info.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/61177f65be86cdefc29587e1799bff1af8f715af) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/da3234d0952b0791cbb5ac025764fae479cbc17f) - @RogerSelwyn
+
 ## v2.0.0 (13/04/2020)
 - Release to master - @RogerSelwyn
 
