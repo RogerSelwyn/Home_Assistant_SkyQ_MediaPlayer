@@ -298,7 +298,7 @@ class SkyQDevice(MediaPlayerDevice):
                 self._skyq_type = "live"
                 if self._live_tv:
                     currentProgramme = self._client.getCurrentLiveTVProgramme(
-                        currentMedia["sid"]
+                        currentMedia["sid"], currentMedia["channelno"]
                     )
                     self.episode = currentProgramme.get("episode")
                     self.season = currentProgramme.get("season")
