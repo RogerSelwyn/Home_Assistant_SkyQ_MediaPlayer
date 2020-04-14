@@ -80,7 +80,7 @@ Enables you to disable returning images when watching recorded programmes. Usefu
 Enables you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from awk.epgsky.com.
 
 **country** _(string)(Optional)_ Default "UK"
-Enables to switch to another country. Currently onlu UK and IT are supported.
+Enables to switch to another country. Currently only UK and IT are supported.
 
 ### Sources
 
