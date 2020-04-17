@@ -146,7 +146,7 @@ class SkyQDevice(MediaPlayerDevice):
         if not get_live_tv:
             self._live_tv = get_live_tv
         self._country = country
-        self._client = SkyQRemote(host, country=self._country)
+        self._remote = SkyQRemote(host, country=self._country)
         self._current_source = None
         self._current_source_id = None
         self._state = STATE_OFF
@@ -262,12 +262,12 @@ class SkyQDevice(MediaPlayerDevice):
             self._skyq_icon = SKYQ_ICONS[self._skyq_type]
 
     def _updateState(self):
-        if self._client.powerStatus() == "On":
+        if self._remote.powerStatus() == "On":
             if self._power is not STATE_PLAYING:
                 self._state = STATE_PLAYING
                 self._power = STATE_PLAYING
             # this checks is flakey during channel changes, so only used for pause checks if we know its on
-            if self._client.getCurrentState() == SkyQRemote.SKY_STATE_PAUSED:
+            if self._remote.getCurrentState() == SkyQRemote.SKY_STATE_PAUSED:
                 self._state = STATE_PAUSED
             else:
                 self._state = STATE_PLAYING
@@ -283,13 +283,13 @@ class SkyQDevice(MediaPlayerDevice):
         self.season = None
         self._title = None
 
-        app = self._client.getActiveApplication()
+        app = self._remote.getActiveApplication()
         appTitle = app
         if appTitle.casefold() in APP_TITLES:
             appTitle = APP_TITLES[appTitle.casefold()]
 
         if app == SkyQRemote.APP_EPG:
-            currentMedia = self._client.getCurrentMedia()
+            currentMedia = self._remote.getCurrentMedia()
             self.channel = currentMedia.get("channel")
             if self._enabled_features & FEATURE_IMAGE:
                 self.imageUrl = currentMedia["imageUrl"]
@@ -297,8 +297,8 @@ class SkyQDevice(MediaPlayerDevice):
             if currentMedia["live"]:
                 self._skyq_type = "live"
                 if self._live_tv:
-                    currentProgramme = self._client.getCurrentLiveTVProgramme(
-                        currentMedia["sid"], currentMedia["channelno"]
+                    currentProgramme = self._remote.getCurrentLiveTVProgramme(
+                        currentMedia["sid"]
                     )
                     self.episode = currentProgramme.get("episode")
                     self.season = currentProgramme.get("season")
@@ -336,26 +336,26 @@ class SkyQDevice(MediaPlayerDevice):
                 )
 
     def turn_off(self):
-        if self._client.powerStatus() == "On":
-            self._client.press("power")
+        if self._remote.powerStatus() == "On":
+            self._remote.press("power")
 
     def turn_on(self):
-        if self._client.powerStatus() == "Off":
-            self._client.press(["home", "dismiss"])
+        if self._remote.powerStatus() == "Off":
+            self._remote.press(["home", "dismiss"])
 
     def media_play(self):
-        self._client.press("play")
+        self._remote.press("play")
         self._state = STATE_PLAYING
 
     def media_pause(self):
-        self._client.press("pause")
+        self._remote.press("pause")
         self._state = STATE_PAUSED
 
     def media_next_track(self):
-        self._client.press("fastforward")
+        self._remote.press("fastforward")
 
     def media_previous_track(self):
-        self._client.press("rewind")
+        self._remote.press("rewind")
 
     def select_source(self, source):
-        self._client.press(self._source_names.get(source).split(","))
+        self._remote.press(self._source_names.get(source).split(","))
