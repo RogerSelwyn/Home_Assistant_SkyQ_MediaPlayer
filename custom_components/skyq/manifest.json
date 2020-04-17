@@ -4,5 +4,5 @@
   "documentation": "",
   "dependencies": [],
   "codeowners": [],
-  "requirements": ["pyskyqremote==0.2.3"]
+  "requirements": ["pyskyqremote==0.2.4"]
 }
