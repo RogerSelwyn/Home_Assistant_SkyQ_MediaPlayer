@@ -6,7 +6,7 @@
 {% endif %}
 
 {% if prerelease %}
-**This is a Beta version!**
+### NB!: This is a Beta version!
 
 <br>
 
