@@ -1,9 +1,5 @@
 import logging
-import math
 import requests
-import json
-import socket
-import time
 
 
 from pyskyqremote.skyq_remote import SkyQRemote
@@ -11,7 +7,6 @@ from custom_components.skyq.util.config_gen import SwitchMaker
 
 import voluptuous as vol
 
-from homeassistant import util
 from homeassistant.components.media_player import MediaPlayerDevice, PLATFORM_SCHEMA
 from homeassistant.components.media_player.const import (
     SUPPORT_PAUSE,
@@ -33,12 +28,6 @@ from homeassistant.const import (
     STATE_PLAYING,
 )
 import homeassistant.helpers.config_validation as cv
-from homeassistant.helpers.script import Script
-
-SKY_STATE_NO_MEDIA_PRESENT = "NO_MEDIA_PRESENT"
-SKY_STATE_PLAYING = "PLAYING"
-SKY_STATE_PAUSED = "PAUSED_PLAYBACK"
-SKY_STATE_OFF = "OFF"
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -146,9 +135,7 @@ class SkyQDevice(MediaPlayerDevice):
         if not get_live_tv:
             self._live_tv = get_live_tv
         self._country = country
-        self._remote = SkyQRemote(host, country=self._country)
-        self._current_source = None
-        self._current_source_id = None
+        self._remote = SkyQRemote(self._host, country=self._country)
         self._state = STATE_OFF
         self._power = STATE_OFF
         self._enabled_features = ENABLED_FEATURES
@@ -211,13 +198,11 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def media_series_title(self):
         """Return the title of the series of current playing media."""
-        # return self._title if self.isTvShow else None
         return self._title if self.channel is not None else None
 
     @property
     def media_title(self):
         """Title of current playing media."""
-        # return self._title if not self.isTvShow else self.channel
         return self.channel if self.channel is not None else self._title
 
     @property
@@ -262,7 +247,7 @@ class SkyQDevice(MediaPlayerDevice):
             self._skyq_icon = SKYQ_ICONS[self._skyq_type]
 
     def _updateState(self):
-        if self._remote.powerStatus() == "On":
+        if self._remote.powerStatus() == self._remote.SKY_STATE_ON:
             if self._power is not STATE_PLAYING:
                 self._state = STATE_PLAYING
                 self._power = STATE_PLAYING
@@ -279,7 +264,6 @@ class SkyQDevice(MediaPlayerDevice):
         self.channel = None
         self.episode = None
         self.imageUrl = None
-        self.isTvShow = False
         self.season = None
         self._title = None
 
@@ -293,7 +277,6 @@ class SkyQDevice(MediaPlayerDevice):
             self.channel = currentMedia.get("channel")
             if self._enabled_features & FEATURE_IMAGE:
                 self.imageUrl = currentMedia["imageUrl"]
-            self.isTvShow = False
             if currentMedia["live"]:
                 self._skyq_type = "live"
                 if self._live_tv:
@@ -336,7 +319,7 @@ class SkyQDevice(MediaPlayerDevice):
                 )
 
     def turn_off(self):
-        if self._remote.powerStatus() == "On":
+        if self._remote.powerStatus() == self._remote.SKY_STATE_ON:
             self._remote.press("power")
 
     def turn_on(self):
