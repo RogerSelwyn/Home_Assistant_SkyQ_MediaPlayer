@@ -1,13 +1,13 @@
 # Changelog
 
-## v2.1.2 (17/04/2020) *(Pre-release)*
+## v2.1.2 (17/04/2020)
 - [Bump pyskyqremote to 0.2.4](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8f5b2f5e42e7ae31e2fb9a2451a5b7e10c9901dc) - @RogerSelwyn
 - [Updatd to match pyskyqremote simplification](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b624a02a22602b54cccbd8b56ecb7ae88e45568c) - @RogerSelwyn
 
-## v2.1.1 (16/04/2020) *(Pre-release)*
+## v2.1.1 (16/04/2020) *(Beta)*
 - [Bump pyskyqremote to 0.2.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2fa957a91b91d57b25ad5391b1060c58be2ce6c4) - @RogerSelwyn
 
-## v2.1.0 (15/04/2020) *(Pre-release)*
+## v2.1.0 (15/04/2020) *(Beta)*
 - [Bump pyskyqremote to 0.2.1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5fefd8b02a0989805bba429bfa1323838418f508) - @RogerSelwyn
 - [Updated skyq_remote version](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/873d8085de4d212f4efa65b8c6aacf672bf743ba) - @RogerSelwyn
 - [Pass Channel number back in support of countries](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2c13d3940fb2ec18267ae6c2dace285d1831aef9) - @RogerSelwyn
