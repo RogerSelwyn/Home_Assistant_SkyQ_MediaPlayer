@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.3 (17/04/2020)
+- [Removed redundant get_live_tv](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0ec065843dcd0b0cd75c1d1d0bb27f00b15ef3e1) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.5](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5dff1aecbc54f70ad24529ece52c13e5c61ddab0) - @RogerSelwyn
+- [Tidy up unused code](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/44a33ce6138108526c145c0f3a82f40a89b367c4) - @RogerSelwyn
+
 ## v2.1.2 (17/04/2020)
 - [Bump pyskyqremote to 0.2.4](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8f5b2f5e42e7ae31e2fb9a2451a5b7e10c9901dc) - @RogerSelwyn
 - [Updated to match pyskyqremote simplification](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b624a02a22602b54cccbd8b56ecb7ae88e45568c) - @RogerSelwyn
