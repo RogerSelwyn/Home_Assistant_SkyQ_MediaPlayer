@@ -36,7 +36,6 @@ CONF_ROOM = "room"
 CONF_DIR = "config_directory"
 CONF_GEN_SWITCH = "generate_switches_for_channels"
 CONF_OUTPUT_PROGRAMME_IMAGE = "output_programme_image"
-CONF_GET_LIVETV = "get_live_tv"
 CONF_LIVE_TV = "live_tv"
 CONF_COUNTRY = "country"
 
@@ -70,7 +69,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_DIR, default="/config/"): cv.string,
         vol.Optional(CONF_GEN_SWITCH, default=False): cv.boolean,
         vol.Optional(CONF_OUTPUT_PROGRAMME_IMAGE, default=True): cv.boolean,
-        vol.Optional(CONF_GET_LIVETV, default=True): cv.boolean,
         vol.Optional(CONF_LIVE_TV, default=True): cv.boolean,
         vol.Optional(CONF_COUNTRY, default="UK"): cv.string,
     }
@@ -104,7 +102,6 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         config.get(CONF_GEN_SWITCH),
         config.get(CONF_DIR),
         config.get(CONF_OUTPUT_PROGRAMME_IMAGE),
-        config.get(CONF_GET_LIVETV),
         config.get(CONF_LIVE_TV),
         config.get(CONF_COUNTRY),
     )
@@ -124,7 +121,6 @@ class SkyQDevice(MediaPlayerDevice):
         generate_switches_for_channels,
         config_directory,
         output_programme_image,
-        get_live_tv,
         live_tv,
         country,
     ):
@@ -132,8 +128,6 @@ class SkyQDevice(MediaPlayerDevice):
         self._name = name
         self._host = host
         self._live_tv = live_tv
-        if not get_live_tv:
-            self._live_tv = get_live_tv
         self._country = country
         self._remote = SkyQRemote(self._host, country=self._country)
         self._state = STATE_OFF
