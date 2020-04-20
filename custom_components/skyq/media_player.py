@@ -128,7 +128,7 @@ class SkyQDevice(MediaPlayerDevice):
         self._name = name
         self._host = host
         self._live_tv = live_tv
-        self._country = country
+        self._country = country.casefold()
         self._remote = SkyQRemote(self._host, country=self._country)
         self._state = STATE_OFF
         self._enabled_features = ENABLED_FEATURES
@@ -140,6 +140,7 @@ class SkyQDevice(MediaPlayerDevice):
         self._skyq_type = None
         self._skyq_icon = SKYQ_ICONS[STATE_OFF]
         self._lastAppTitle = None
+        self._appImageUrl = None
 
         if not (output_programme_image):
             self._enabled_features = FEATURE_BASIC
@@ -326,21 +327,24 @@ class SkyQDevice(MediaPlayerDevice):
 
     def _getAppImageUrl(self, appTitle):
         if appTitle == self._lastAppTitle:
-            return None
+            return self._appImageUrl
 
         self._lastAppTitle = appTitle
+        self._appImageUrl = None
+
         appImageUrl = APP_IMAGE_URL_BASE.format(appTitle.casefold())
 
         try:
             resp = requests.head(self.hass.config.api.base_url + appImageUrl)
             if resp.status_code == RESPONSE_OK:
-                return appImageUrl
-            return None
+                self._appImageUrl = appImageUrl
+
+            return self._appImageUrl
         except (requests.exceptions.ConnectionError) as err:
             _LOGGER.info(f"I0010M - Image file check failed: {appImageUrl} : {err}")
-            return None
+            return self._appImageUrl
         except Exception as err:
             _LOGGER.exception(
                 f"X0010M - Image file check failed: {appImageUrl} : {err}"
             )
-            return None
+            return self._appImageUrl
