@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.1.4 (20/04/2020) Beta
+## v2.1.4 (20/04/2020) *(Beta)*
 - [Fixed unable to Power On](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b1498bfc64de59f754bcf948ca0cd411ffc541e5) - @RogerSelwyn
 
 ## v2.1.3 (17/04/2020)
