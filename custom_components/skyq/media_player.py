@@ -177,6 +177,9 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def media_image_url(self):
         """Image url of current playing media."""
+        _LOGGER.debug(
+            f"Image: {self.imageUrl} : Features: {self._enabled_features} : {self._enabled_features & FEATURE_IMAGE}"
+        )
         return self.imageUrl if self._enabled_features & FEATURE_IMAGE else None
 
     @property
