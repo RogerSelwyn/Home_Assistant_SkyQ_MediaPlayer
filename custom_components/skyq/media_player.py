@@ -131,7 +131,6 @@ class SkyQDevice(MediaPlayerDevice):
         self._country = country
         self._remote = SkyQRemote(self._host, country=self._country)
         self._state = STATE_OFF
-        self._power = STATE_OFF
         self._enabled_features = ENABLED_FEATURES
         self._title = None
         self.channel = None
@@ -140,6 +139,7 @@ class SkyQDevice(MediaPlayerDevice):
         self.season = None
         self._skyq_type = None
         self._skyq_icon = SKYQ_ICONS[STATE_OFF]
+        self._lastAppTitle = None
 
         if not (output_programme_image):
             self._enabled_features = FEATURE_BASIC
@@ -177,7 +177,7 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def media_image_url(self):
         """Image url of current playing media."""
-        return self.imageUrl
+        return self.imageUrl if self._enabled_features & FEATURE_IMAGE else None
 
     @property
     def media_channel(self):
@@ -228,96 +228,25 @@ class SkyQDevice(MediaPlayerDevice):
 
     def update(self):
         """Get the latest data and update device state."""
-
-        self._skyq_icon = SKYQ_ICONS[STATE_OFF]
-
-        self._updateState()
-
-        self._skyq_type = self._power
-
-        if self._power != STATE_OFF:
-            self._updateCurrentProgramme()
-        else:
-            self._skyq_icon = SKYQ_ICONS[self._skyq_type]
-
-    def _updateState(self):
-        if self._remote.powerStatus() == self._remote.SKY_STATE_ON:
-            if self._power is not STATE_PLAYING:
-                self._state = STATE_PLAYING
-                self._power = STATE_PLAYING
-            # this checks is flakey during channel changes, so only used for pause checks if we know its on
-            if self._remote.getCurrentState() == SkyQRemote.SKY_STATE_PAUSED:
-                self._state = STATE_PAUSED
-            else:
-                self._state = STATE_PLAYING
-        else:
-            self._power = STATE_OFF
-            self._state = STATE_OFF
-
-    def _updateCurrentProgramme(self):
         self.channel = None
         self.episode = None
         self.imageUrl = None
         self.season = None
         self._title = None
 
-        app = self._remote.getActiveApplication()
-        appTitle = app
-        if appTitle.casefold() in APP_TITLES:
-            appTitle = APP_TITLES[appTitle.casefold()]
+        self._updateState()
 
-        if app == SkyQRemote.APP_EPG:
-            currentMedia = self._remote.getCurrentMedia()
-            self.channel = currentMedia.get("channel")
-            if self._enabled_features & FEATURE_IMAGE:
-                self.imageUrl = currentMedia["imageUrl"]
-            if currentMedia["live"]:
-                self._skyq_type = "live"
-                if self._live_tv:
-                    currentProgramme = self._remote.getCurrentLiveTVProgramme(
-                        currentMedia["sid"]
-                    )
-                    self.episode = currentProgramme.get("episode")
-                    self.season = currentProgramme.get("season")
-                    self._title = currentProgramme.get("title")
-                    if (
-                        self._enabled_features & FEATURE_IMAGE
-                        and currentProgramme["imageUrl"]
-                    ):
-                        self.imageUrl = currentProgramme["imageUrl"]
-            else:
-                self._skyq_type = "pvr"
-                self.episode = currentMedia.get("episode")
-                self.season = currentMedia.get("season")
-                self._title = currentMedia.get("title")
-                if self._enabled_features & FEATURE_IMAGE:
-                    self.imageUrl = currentMedia.get("imageUrl")
-
-        else:
-            self._skyq_type = "app"
-            self._title = appTitle
+        if self._state != STATE_OFF:
+            self._updateCurrentProgramme()
 
         self._skyq_icon = SKYQ_ICONS[self._skyq_type]
-
-        if self._enabled_features & FEATURE_IMAGE and not self.imageUrl:
-            try:
-                appImageURL = APP_IMAGE_URL_BASE.format(appTitle.casefold())
-                resp = requests.head(self.hass.config.api.base_url + appImageURL)
-                if resp.status_code == RESPONSE_OK:
-                    self.imageUrl = appImageURL
-            except (requests.exceptions.ConnectionError) as err:
-                _LOGGER.info(f"I0010M - Image file check failed: {appImageURL} : {err}")
-            except Exception as err:
-                _LOGGER.exception(
-                    f"X0010M - Image file check failed: {appImageURL} : {err}"
-                )
 
     def turn_off(self):
         if self._remote.powerStatus() == self._remote.SKY_STATE_ON:
             self._remote.press("power")
 
     def turn_on(self):
-        if self._remote.powerStatus() == "Off":
+        if self._remote.powerStatus() == self._remote.SKY_STATE_OFF:
             self._remote.press(["home", "dismiss"])
 
     def media_play(self):
@@ -336,3 +265,74 @@ class SkyQDevice(MediaPlayerDevice):
 
     def select_source(self, source):
         self._remote.press(self._source_names.get(source).split(","))
+
+    def _updateState(self):
+        if self._remote.powerStatus() == self._remote.SKY_STATE_ON:
+            self._state = STATE_PLAYING
+            # this checks is flakey during channel changes, so only used for pause checks if we know its on
+            if self._remote.getCurrentState() == SkyQRemote.SKY_STATE_PAUSED:
+                self._state = STATE_PAUSED
+            else:
+                self._state = STATE_PLAYING
+        else:
+            self._skyq_type = STATE_OFF
+            self._state = STATE_OFF
+
+    def _updateCurrentProgramme(self):
+
+        app = self._remote.getActiveApplication()
+        appTitle = app
+        if appTitle.casefold() in APP_TITLES:
+            appTitle = APP_TITLES[appTitle.casefold()]
+
+        if app == SkyQRemote.APP_EPG:
+            currentMedia = self._remote.getCurrentMedia()
+            self.channel = currentMedia["channel"]
+            self.imageUrl = currentMedia["imageUrl"]
+            if currentMedia["live"]:
+                self._skyq_type = "live"
+                if self._live_tv:
+                    currentProgramme = self._remote.getCurrentLiveTVProgramme(
+                        currentMedia["sid"]
+                    )
+                    self.episode = currentProgramme["episode"]
+                    self.season = currentProgramme["season"]
+                    self._title = currentProgramme["title"]
+                    if currentProgramme["imageUrl"]:
+                        self.imageUrl = currentProgramme["imageUrl"]
+            else:
+                self._skyq_type = "pvr"
+                self.episode = currentMedia["episode"]
+                self.season = currentMedia["season"]
+                self._title = currentMedia["title"]
+                self.imageUrl = currentMedia["imageUrl"]
+
+        else:
+            self._skyq_type = "app"
+            self._title = appTitle
+
+        if not self.imageUrl:
+            appImageUrl = self._getAppImageUrl(appTitle)
+            if appImageUrl:
+                self.imageUrl = self._getAppImageUrl(appTitle)
+
+    def _getAppImageUrl(self, appTitle):
+        if appTitle == self._lastAppTitle:
+            return None
+
+        self._lastAppTitle = appTitle
+        appImageUrl = APP_IMAGE_URL_BASE.format(appTitle.casefold())
+
+        try:
+            resp = requests.head(self.hass.config.api.base_url + appImageUrl)
+            if resp.status_code == RESPONSE_OK:
+                return appImageUrl
+            return None
+        except (requests.exceptions.ConnectionError) as err:
+            _LOGGER.info(f"I0010M - Image file check failed: {appImageUrl} : {err}")
+            return None
+        except Exception as err:
+            _LOGGER.exception(
+                f"X0010M - Image file check failed: {appImageUrl} : {err}"
+            )
+            return None
