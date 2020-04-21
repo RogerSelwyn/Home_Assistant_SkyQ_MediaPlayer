@@ -4,6 +4,7 @@
 [![maintainer](https://img.shields.io/badge/maintainer-%20%40RogerSelwyn-blue.svg)](https://github.com/RogerSelwyn)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 [![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg)](https://community.home-assistant.io/t/custom-component-skyq-media-player/140306)
+![Validate with hassfest](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/workflows/Validate%20with%20hassfest/badge.svg)
 
 # SkyQ component for Home Assistant
 
