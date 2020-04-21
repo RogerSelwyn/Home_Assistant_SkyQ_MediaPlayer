@@ -1,7 +1,9 @@
 # Changelog
 
-## v2.1.4 (20/04/2020) *(Beta)*
+## v2.1.4 (21/04/2020)
 - [Fixed unable to Power On](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b1498bfc64de59f754bcf948ca0cd411ffc541e5) - @RogerSelwyn
+- [Fixed app image not showing](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/1df7aae08a6992ab264baad3e24fd1b5708e6a29) - @RogerSelwyn
+
 
 ## v2.1.3 (17/04/2020)
 - [Removed redundant get_live_tv](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0ec065843dcd0b0cd75c1d1d0bb27f00b15ef3e1) - @RogerSelwyn
