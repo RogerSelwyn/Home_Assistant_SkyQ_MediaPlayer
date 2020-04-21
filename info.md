@@ -21,7 +21,7 @@
 
 The skyq platform allows you to control a SkyQ set top box.
 
-**Note:** Whilst it will pull back information for UK boxes for current channel and live programme, it will not for non-UK boxes (unless they happen to use the same data sources, which is unlikely). If there is sufficient interest I can add a config option to disable it trying to retrieve live TV info, so that the integration does not error. However, in my opinion it then becomes a very limited integration
+**Note:** Whilst it will pull back information for UK boxes for current channel and live programme, it will do this for a ver limited set of countries (currently UK and IT). If you are in an unsupported country, or don't want this information set 'live_tv' to False in yoru config.
 
 There is currently support for the following device types within Home Assistant:
 
@@ -61,6 +61,7 @@ media_player:
    name: SkyQ Living Room
    host: 192.168.0.10
    live_tv: True
+   country: "UK"
    sources:
       SkyOne: '1,0,6'
       SkyNews: '5,0,1'
@@ -89,6 +90,9 @@ Enables you to disable returning images when watching recorded programmes. Usefu
 
 **live_tv** _(boolean)(Optional)_ Default True
 Enables you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from awk.epgsky.com.
+
+**country** _(string)(Optional)_ Default "UK"
+Enables to switch to another country. Currently only UK and IT are supported.
 
 ### Sources
 
