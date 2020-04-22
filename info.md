@@ -129,13 +129,6 @@ Usage based on google home: _“turn on <source name / channel name> in the ”_
 Generate switches for each item listed in source.
 The files will be generated in <config folder>/skyq<room>.yaml
 
-**config_directory** _(string)(Optional)_ Default '/config/'
-The location of your configuration folder.
-
-The correct path required if generate_switches_for_channels is set to True to enable output generation of yaml files to the correct location
-
-Hassbian default would be - config_directory: '/home/homeassistant/.homeassistant/' or '/config/' for hassio
-
 **room**
 _(string)(Optional)_ Default 'Default Room'
 The room where the SkyQ set top box is located.
@@ -153,7 +146,6 @@ media_player:
       SkyOne: '1,0,6'
       SkyNews: '5,0,1'
    room: Living Room
-   config_directory: '/home/homeassistant/.homeassistant/'
    generate_switches_for_channels: true
 ```
 
