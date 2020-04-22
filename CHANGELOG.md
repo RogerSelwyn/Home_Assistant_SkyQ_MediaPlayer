@@ -1,9 +1,12 @@
 # Changelog
 
 ## v2.1.5 (22/04/2020) *(Beta)*
-- [Bump pyskyqremote to 0.2.6](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a290202b05fca88d48d58e47ccf921aef9040d4e) - @RogerSelwyn
-- [Added validation with hassfest](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fba495f585f4b02d609906e87031b8383e93134d) - @RogerSelwyn
-- [Add issue templates](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/24c5e1bdbd189a8ba8dc443f8a82a4ba4a0b15b2) - @RogerSelwyn
+- [Update in line with flake8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7fe2c9d828656766a0dd025cd50e3ccfa14a70f6) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.6](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f7ffa4668f9a65e87e0bd3bdc78beb58f54ea5ab) - @RogerSelwyn
+- [Update to include link to documentation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a290202b05fca88d48d58e47ccf921aef9040d4e) - @RogerSelwyn
+- [Added validation via hassfest](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fba495f585f4b02d609906e87031b8383e93134d) - @RogerSelwyn
+- [Added issue templates](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/24c5e1bdbd189a8ba8dc443f8a82a4ba4a0b15b2) - @RogerSelwyn
+
 
 ## v2.1.4 (21/04/2020)
 - [Fixed unable to Power On](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b1498bfc64de59f754bcf948ca0cd411ffc541e5) - @RogerSelwyn
