@@ -1,3 +1,4 @@
+"""The skyq platform allows you to control a SkyQ set top box."""
 import logging
 import requests
 
@@ -109,7 +110,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
 
 class SkyQDevice(MediaPlayerDevice):
-    """Representation of a SkyQ Box"""
+    """Representation of a SkyQ Box."""
 
     def __init__(
         self,
@@ -124,6 +125,7 @@ class SkyQDevice(MediaPlayerDevice):
         live_tv,
         country,
     ):
+        """Initialise the SkyQRemote."""
         self.hass = hass
         self._name = name
         self._host = host
@@ -155,15 +157,17 @@ class SkyQDevice(MediaPlayerDevice):
 
     @property
     def supported_features(self):
+        """Get the supported features."""
         return SUPPORT_SKYQ
 
     @property
     def name(self):
+        """Get the name of the devices."""
         return self._name
 
     @property
     def should_poll(self):
-        # Device should be polled.
+        """Device should be polled."""
         return True
 
     @property
@@ -173,6 +177,7 @@ class SkyQDevice(MediaPlayerDevice):
 
     @property
     def source_list(self):
+        """Get the list of sources for the device."""
         return [*self._source_names.keys()]
 
     @property
@@ -182,7 +187,7 @@ class SkyQDevice(MediaPlayerDevice):
 
     @property
     def media_channel(self):
-        """Channel currently playing"""
+        """Channel currently playing."""
         return self.channel
 
     @property
@@ -192,7 +197,7 @@ class SkyQDevice(MediaPlayerDevice):
 
     @property
     def media_series_title(self):
-        """Return the title of the series of current playing media."""
+        """Get the title of the series of current playing media."""
         return self._title if self.channel is not None else None
 
     @property
@@ -243,28 +248,35 @@ class SkyQDevice(MediaPlayerDevice):
         self._skyq_icon = SKYQ_ICONS[self._skyq_type]
 
     def turn_off(self):
+        """Turn SkyQ box off."""
         if self._remote.powerStatus() == self._remote.SKY_STATE_ON:
             self._remote.press("power")
 
     def turn_on(self):
+        """Tuen SkyQ box on."""
         if self._remote.powerStatus() == self._remote.SKY_STATE_OFF:
             self._remote.press(["home", "dismiss"])
 
     def media_play(self):
+        """Play the current media item."""
         self._remote.press("play")
         self._state = STATE_PLAYING
 
     def media_pause(self):
+        """Pause teh current media item."""
         self._remote.press("pause")
         self._state = STATE_PAUSED
 
     def media_next_track(self):
+        """Fast forward the current media item."""
         self._remote.press("fastforward")
 
     def media_previous_track(self):
+        """Rewind the current media item."""
         self._remote.press("rewind")
 
     def select_source(self, source):
+        """Select the specified source."""
         self._remote.press(self._source_names.get(source).split(","))
 
     def _updateState(self):
