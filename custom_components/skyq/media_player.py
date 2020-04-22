@@ -67,7 +67,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Required(CONF_HOST): cv.string,
         vol.Required(CONF_NAME): cv.string,
         vol.Optional(CONF_ROOM, default="Default Room"): cv.string,
-        vol.Optional(CONF_DIR, default="/config/"): cv.string,
+        vol.Optional(CONF_DIR, default="(deprecated)"): cv.string,
         vol.Optional(CONF_GEN_SWITCH, default=False): cv.boolean,
         vol.Optional(CONF_OUTPUT_PROGRAMME_IMAGE, default=True): cv.boolean,
         vol.Optional(CONF_LIVE_TV, default=True): cv.boolean,
@@ -150,10 +150,15 @@ class SkyQDevice(MediaPlayerDevice):
         self._source_names = sources or {}
 
         if generate_switches_for_channels:
-            swMaker = SwitchMaker(name, room, config_directory)
+            swMaker = SwitchMaker(hass, name, room)
             for ch in [*self._source_names.keys()]:
                 swMaker.addChannel(ch)
             swMaker.closeFile()
+
+        if config_directory != "(deprecated)":
+            _LOGGER.warning(
+                f"Use of 'config_directory' is deprecated since it is no longer required. You set it to {config_directory}."
+            )
 
     @property
     def supported_features(self):
