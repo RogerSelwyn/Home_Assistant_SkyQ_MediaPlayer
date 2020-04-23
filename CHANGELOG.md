@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.1.5 (22/04/2020) *(Beta)*
+## v2.1.5 (23/04/2020)
 - [Update in line with flake8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7fe2c9d828656766a0dd025cd50e3ccfa14a70f6) - @RogerSelwyn
 - [Bump pyskyqremote to 0.2.6](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f7ffa4668f9a65e87e0bd3bdc78beb58f54ea5ab) - @RogerSelwyn
 - [Update to include link to documentation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a290202b05fca88d48d58e47ccf921aef9040d4e) - @RogerSelwyn
