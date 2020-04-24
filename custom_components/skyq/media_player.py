@@ -58,9 +58,11 @@ SUPPORT_SKYQ = (
 
 FEATURE_BASIC = 1
 FEATURE_IMAGE = 2
+FEATURE_LIVE_TV = 4
+FEATURE_SWITCHES = 8
 
 
-ENABLED_FEATURES = FEATURE_BASIC | FEATURE_IMAGE
+ENABLED_FEATURES = FEATURE_BASIC | FEATURE_IMAGE | FEATURE_LIVE_TV | FEATURE_SWITCHES
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
@@ -130,17 +132,16 @@ class SkyQDevice(MediaPlayerDevice):
         test_channel,
     ):
         """Initialise the SkyQRemote."""
-        self.hass = hass
+        self._hass = hass
         self._name = name
         self._host = host
-        self._live_tv = live_tv
         self._state = STATE_OFF
         self._enabled_features = ENABLED_FEATURES
         self._title = None
-        self.channel = None
-        self.episode = None
-        self.imageUrl = None
-        self.season = None
+        self._channel = None
+        self._episode = None
+        self._imageUrl = None
+        self._season = None
         self._skyq_type = None
         self._skyq_icon = SKYQ_ICONS[STATE_OFF]
         self._lastAppTitle = None
@@ -154,11 +155,17 @@ class SkyQDevice(MediaPlayerDevice):
         self._remote = SkyQRemote(self._host, self._overrideCountry, self._test_channel)
 
         if not (output_programme_image):
-            self._enabled_features = FEATURE_BASIC
+            self._enabled_features ^= FEATURE_IMAGE
+
+        if not (live_tv):
+            self._enabled_features ^= FEATURE_LIVE_TV
+
+        if not (generate_switches_for_channels):
+            self._enabled_features ^= FEATURE_SWITCHES
 
         self._source_names = sources or {}
 
-        if generate_switches_for_channels:
+        if self._enabled_features & FEATURE_SWITCHES:
             swMaker = SwitchMaker(hass, name, room)
             for ch in [*self._source_names.keys()]:
                 swMaker.addChannel(ch)
@@ -207,12 +214,12 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def media_image_url(self):
         """Image url of current playing media."""
-        return self.imageUrl if self._enabled_features & FEATURE_IMAGE else None
+        return self._imageUrl if self._enabled_features & FEATURE_IMAGE else None
 
     @property
     def media_channel(self):
         """Channel currently playing."""
-        return self.channel
+        return self._channel
 
     @property
     def media_content_type(self):
@@ -222,22 +229,22 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def media_series_title(self):
         """Get the title of the series of current playing media."""
-        return self._title if self.channel is not None else None
+        return self._title if self._channel is not None else None
 
     @property
     def media_title(self):
         """Title of current playing media."""
-        return self.channel if self.channel is not None else self._title
+        return self._channel if self._channel is not None else self._title
 
     @property
     def media_season(self):
         """Season of current playing media (TV Show only)."""
-        return self.season
+        return self._season
 
     @property
     def media_episode(self):
         """Episode of current playing media (TV Show only)."""
-        return self.episode
+        return self._episode
 
     @property
     def icon(self):
@@ -258,10 +265,10 @@ class SkyQDevice(MediaPlayerDevice):
 
     def update(self):
         """Get the latest data and update device state."""
-        self.channel = None
-        self.episode = None
-        self.imageUrl = None
-        self.season = None
+        self._channel = None
+        self._episode = None
+        self._imageUrl = None
+        self._season = None
         self._title = None
 
         self._updateState()
@@ -324,34 +331,34 @@ class SkyQDevice(MediaPlayerDevice):
 
         if app == SkyQRemote.APP_EPG:
             currentMedia = self._remote.getCurrentMedia()
-            self.channel = currentMedia["channel"]
-            self.imageUrl = currentMedia["imageUrl"]
+            self._channel = currentMedia["channel"]
+            self._imageUrl = currentMedia["imageUrl"]
             if currentMedia["live"]:
                 self._skyq_type = "live"
-                if self._live_tv:
+                if self._enabled_features & FEATURE_LIVE_TV:
                     currentProgramme = self._remote.getCurrentLiveTVProgramme(
                         currentMedia["sid"]
                     )
-                    self.episode = currentProgramme["episode"]
-                    self.season = currentProgramme["season"]
+                    self._episode = currentProgramme["episode"]
+                    self._season = currentProgramme["season"]
                     self._title = currentProgramme["title"]
                     if currentProgramme["imageUrl"]:
-                        self.imageUrl = currentProgramme["imageUrl"]
+                        self._imageUrl = currentProgramme["imageUrl"]
             else:
                 self._skyq_type = "pvr"
-                self.episode = currentMedia["episode"]
-                self.season = currentMedia["season"]
+                self._episode = currentMedia["episode"]
+                self._season = currentMedia["season"]
                 self._title = currentMedia["title"]
-                self.imageUrl = currentMedia["imageUrl"]
+                self._imageUrl = currentMedia["imageUrl"]
 
         else:
             self._skyq_type = "app"
             self._title = appTitle
 
-        if not self.imageUrl:
+        if not self._imageUrl:
             appImageUrl = self._getAppImageUrl(appTitle)
             if appImageUrl:
-                self.imageUrl = self._getAppImageUrl(appTitle)
+                self._imageUrl = self._getAppImageUrl(appTitle)
 
     def _getAppImageUrl(self, appTitle):
         if appTitle == self._lastAppTitle:
@@ -363,7 +370,7 @@ class SkyQDevice(MediaPlayerDevice):
         appImageUrl = APP_IMAGE_URL_BASE.format(appTitle.casefold())
 
         try:
-            resp = requests.head(self.hass.config.api.base_url + appImageUrl)
+            resp = requests.head(self._hass.config.api.base_url + appImageUrl)
             if resp.status_code == RESPONSE_OK:
                 self._appImageUrl = appImageUrl
 

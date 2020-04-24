@@ -2,9 +2,6 @@
 """To support easy usage with other home assistant integrations, e.g. google home"""
 
 
-ROOT = "/home/homeassistant/.homeassistant/"
-
-
 class SwitchMaker:
     """The Switchmaker Class."""
 
@@ -12,10 +9,13 @@ class SwitchMaker:
         """Initialise the Switcmaker."""
         self._name = name
         self._room = room
-        ROOT = hass.config.config_dir
-        if ROOT[-1] != "/":
-            ROOT += "/"
-        self._f = open(ROOT + "skyq" + self._room.replace(" ", "") + ".yaml", "w+")
+        self._root = hass.config.config_dir
+
+        if self._root[-1] != "/":
+            self._root += "/"
+        self._f = open(
+            self._root + "skyq" + self._room.replace(" ", "") + ".yaml", "w+"
+        )
         self._f.write(
             "    skyq_pause"
             + self._room.replace(" ", "").lower()
