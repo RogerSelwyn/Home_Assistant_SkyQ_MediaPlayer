@@ -168,7 +168,7 @@ class SkyQDevice(MediaPlayerDevice):
         if self._enabled_features & FEATURE_SWITCHES:
             swMaker = SwitchMaker(hass, name, room)
             for ch in [*self._source_names.keys()]:
-                swMaker.addChannel(ch)
+                swMaker.addSwitch(ch, ch, "select_source", True)
             swMaker.closeFile()
 
         if config_directory != "(deprecated)":
