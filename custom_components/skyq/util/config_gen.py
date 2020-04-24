@@ -23,7 +23,8 @@ class SwitchMaker:
 
         for ch in channels:
             self._addSwitch(ch, ch, "select_source", True)
-        self._closeFile()
+
+        self._f.close()
 
     def _addSwitch(self, switch, friendly_name, service, source=False):
         """Add switch to switches."""
@@ -59,7 +60,3 @@ class SwitchMaker:
             + "      turn_off:\n"
             + "        service: script.placeholder\n"
         )
-
-    def _closeFile(self):
-        """Close the file."""
-        self._f.close()
