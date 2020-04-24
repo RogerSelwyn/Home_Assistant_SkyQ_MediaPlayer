@@ -5,7 +5,7 @@
 class SwitchMaker:
     """The Switchmaker Class."""
 
-    def __init__(self, hass, name, room):
+    def __init__(self, hass, name, room, channels):
         """Initialise the Switcmaker."""
         self._name = name
         self._room = room
@@ -16,12 +16,16 @@ class SwitchMaker:
         self._f = open(
             self._root + "skyq" + self._room.replace(" ", "") + ".yaml", "w+"
         )
-        self.addSwitch("pause", "pause", "media_pause")
-        self.addSwitch("play", "play", "media_play")
-        self.addSwitch("ff", "fastforward", "media_next_track")
-        self.addSwitch("rw", "rewind", "media_previous_track")
+        self._addSwitch("pause", "pause", "media_pause")
+        self._addSwitch("play", "play", "media_play")
+        self._addSwitch("ff", "fastforward", "media_next_track")
+        self._addSwitch("rw", "rewind", "media_previous_track")
 
-    def addSwitch(self, switch, friendly_name, service, source=False):
+        for ch in channels:
+            self._addSwitch(ch, ch, "select_source", True)
+        self._closeFile()
+
+    def _addSwitch(self, switch, friendly_name, service, source=False):
         """Add switch to switches."""
         switch_name = (
             "skyq_"
@@ -56,6 +60,6 @@ class SwitchMaker:
             + "        service: script.placeholder\n"
         )
 
-    def closeFile(self):
+    def _closeFile(self):
         """Close the file."""
         self._f.close()

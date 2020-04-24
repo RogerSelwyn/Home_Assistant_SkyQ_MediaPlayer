@@ -163,14 +163,6 @@ class SkyQDevice(MediaPlayerDevice):
         if not (generate_switches_for_channels):
             self._enabled_features ^= FEATURE_SWITCHES
 
-        self._source_names = sources or {}
-
-        if self._enabled_features & FEATURE_SWITCHES:
-            swMaker = SwitchMaker(hass, name, room)
-            for ch in [*self._source_names.keys()]:
-                swMaker.addSwitch(ch, ch, "select_source", True)
-            swMaker.closeFile()
-
         if config_directory != "(deprecated)":
             _LOGGER.warning(
                 f"Use of 'config_directory' is deprecated since it is no longer required. You set it to {config_directory}."
@@ -185,6 +177,11 @@ class SkyQDevice(MediaPlayerDevice):
             _LOGGER.warning(
                 f"Please change country 'uk' to 'GBR' in you configuration."
             )
+
+        self._source_names = sources or {}
+
+        if self._enabled_features & FEATURE_SWITCHES:
+            SwitchMaker(hass, name, room, [*self._source_names.keys()])
 
     @property
     def supported_features(self):
