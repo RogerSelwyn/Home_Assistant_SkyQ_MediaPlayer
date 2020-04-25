@@ -25,6 +25,7 @@ from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
     STATE_OFF,
+    STATE_UNKNOWN,
     STATE_PAUSED,
     STATE_PLAYING,
 )
@@ -74,7 +75,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_GEN_SWITCH, default=False): cv.boolean,
         vol.Optional(CONF_OUTPUT_PROGRAMME_IMAGE, default=True): cv.boolean,
         vol.Optional(CONF_LIVE_TV, default=True): cv.boolean,
-        vol.Optional(CONF_COUNTRY, default="GBR"): cv.string,
+        vol.Optional(CONF_COUNTRY, default="(default)"): cv.string,
         vol.Optional(CONF_TEST_CHANNEL, default="(test)"): cv.string,
     }
 )
@@ -84,8 +85,9 @@ RESPONSE_OK = 200
 SKYQ_ICONS = {
     "app": "mdi:application",
     "live": "mdi:satellite-variant",
-    "off": "mdi:television",
+    STATE_OFF: "mdi:television",
     "pvr": "mdi:movie-open",
+    STATE_UNKNOWN: "mdi:alert-circle-outline",
 }
 APP_TITLES = {
     "com.bskyb.vevo": "Vevo",
@@ -142,10 +144,12 @@ class SkyQDevice(MediaPlayerDevice):
         self._episode = None
         self._imageUrl = None
         self._season = None
-        self._skyq_type = None
-        self._skyq_icon = SKYQ_ICONS[STATE_OFF]
+        self._skyq_type = STATE_OFF
         self._lastAppTitle = None
         self._appImageUrl = None
+
+        if country == "(default)":
+            country = None
         self._overrideCountry = country
 
         self._test_channel = None
@@ -153,6 +157,9 @@ class SkyQDevice(MediaPlayerDevice):
             self._test_channel = test_channel
 
         self._remote = SkyQRemote(self._host, self._overrideCountry, self._test_channel)
+
+        if self._remote.deviceSetup:
+            self._state = STATE_OFF
 
         if not (output_programme_image):
             self._enabled_features ^= FEATURE_IMAGE
@@ -167,16 +174,17 @@ class SkyQDevice(MediaPlayerDevice):
             _LOGGER.warning(
                 f"Use of 'config_directory' is deprecated since it is no longer required. You set it to {config_directory}."
             )
-        if self._overrideCountry.casefold() == "it":
-            self._overrideCountry = "ITA"
-            _LOGGER.warning(
-                f"Please change country 'it' to 'ITA' in you configuration."
-            )
-        if self._overrideCountry.casefold() == "uk":
-            self._overrideCountry = "GBR"
-            _LOGGER.warning(
-                f"Please change country 'uk' to 'GBR' in you configuration."
-            )
+        if self._overrideCountry:
+            if self._overrideCountry.casefold() == "it":
+                self._overrideCountry = "ITA"
+                _LOGGER.warning(
+                    f"Please change country 'it' to 'ITA' in you configuration."
+                )
+            if self._overrideCountry.casefold() == "uk":
+                self._overrideCountry = "GBR"
+                _LOGGER.warning(
+                    f"Please change country 'uk' to 'GBR' in you configuration."
+                )
 
         self._source_names = sources or {}
 
@@ -221,7 +229,7 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def media_content_type(self):
         """Content type of current playing media."""
-        return MEDIA_TYPE_TVSHOW
+        return MEDIA_TYPE_TVSHOW if self.state != STATE_UNKNOWN else None
 
     @property
     def media_series_title(self):
@@ -246,7 +254,7 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def icon(self):
         """Entity icon."""
-        return self._skyq_icon
+        return SKYQ_ICONS[self._skyq_type]
 
     @property
     def device_class(self):
@@ -270,10 +278,8 @@ class SkyQDevice(MediaPlayerDevice):
 
         self._updateState()
 
-        if self._state != STATE_OFF:
+        if self._state != STATE_UNKNOWN and self._state != STATE_OFF:
             self._updateCurrentProgramme()
-
-        self._skyq_icon = SKYQ_ICONS[self._skyq_type]
 
     def turn_off(self):
         """Turn SkyQ box off."""
@@ -281,8 +287,8 @@ class SkyQDevice(MediaPlayerDevice):
             self._remote.press("power")
 
     def turn_on(self):
-        """Tuen SkyQ box on."""
-        if self._remote.powerStatus() == self._remote.SKY_STATE_OFF:
+        """Turn SkyQ box on."""
+        if self._remote.powerStatus() == self._remote.SKY_STATE_STANDBY:
             self._remote.press(["home", "dismiss"])
 
     def media_play(self):
@@ -308,15 +314,19 @@ class SkyQDevice(MediaPlayerDevice):
         self._remote.press(self._source_names.get(source).split(","))
 
     def _updateState(self):
-        if self._remote.powerStatus() == self._remote.SKY_STATE_ON:
+        powerState = self._remote.powerStatus()
+        if powerState == self._remote.SKY_STATE_ON:
             self._state = STATE_PLAYING
             # this checks is flakey during channel changes, so only used for pause checks if we know its on
             if self._remote.getCurrentState() == SkyQRemote.SKY_STATE_PAUSED:
                 self._state = STATE_PAUSED
             else:
                 self._state = STATE_PLAYING
-        else:
+        elif powerState == self._remote.SKY_STATE_STANDBY:
             self._skyq_type = STATE_OFF
+            self._state = STATE_OFF
+        else:
+            self._skyq_type = STATE_UNKNOWN
             self._state = STATE_OFF
 
     def _updateCurrentProgramme(self):
