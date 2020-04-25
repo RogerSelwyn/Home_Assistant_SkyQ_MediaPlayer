@@ -1,6 +1,6 @@
 """The skyq platform allows you to control a SkyQ set top box."""
 import logging
-import requests
+import requests 
 
 
 from pyskyqremote.skyq_remote import SkyQRemote
