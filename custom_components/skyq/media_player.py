@@ -1,6 +1,6 @@
 """The skyq platform allows you to control a SkyQ set top box."""
 import logging
-import requests 
+import requests
 
 
 from pyskyqremote.skyq_remote import SkyQRemote
@@ -157,9 +157,6 @@ class SkyQDevice(MediaPlayerDevice):
             self._test_channel = test_channel
 
         self._remote = SkyQRemote(self._host, self._overrideCountry, self._test_channel)
-
-        if self._remote.deviceSetup:
-            self._state = STATE_OFF
 
         if not (output_programme_image):
             self._enabled_features ^= FEATURE_IMAGE
