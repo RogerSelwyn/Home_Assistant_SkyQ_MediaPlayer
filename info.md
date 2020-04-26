@@ -71,33 +71,34 @@ media_player:
 ## Configuration variables
 
 media_player:
-**platform** (string)(Required)
+
+**platform** (string)(Required)  
 Must be set to skyq
 
-**host** _(string)(Required)_
+**host** _(string)(Required)_  
 The IP of the SkyQ set top box, e.g., 192.168.0.10.
 
-**name** _(string)(Required)_
+**name** _(string)(Required)_  
 The name you would like to give to the SkyQ set top box.
 
-**sources** _(list)(Required)_
+**sources** _(list)(Required)_  
 List of channels or other commands that will appear in the source selection.
 
-**name** _(string)(Required)_
+**name** _(string)(Required)_  
 The name you would like to give to the SkyQ set top box.
 
-**output_programme_image** _(boolean)(Optional)_ Default True
+**output_programme_image** _(boolean)(Optional)_ Default True  
 Enables you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing.
 
-**live_tv** _(boolean)(Optional)_ Default True
+**live_tv** _(boolean)(Optional)_ Default True  
 Enables you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from awk.epgsky.com.
 
-**country** _(string)(Optional)_ Default "UK"
-Enables to switch to another country. Currently only UK and IT are supported.
+**country** _(string)(Optional)_ Default _Empty_  
+Overrides the detected country from the SkyQ box. Currently supports "GBR" and "ITA".
 
 ### Sources
 
-To configure sources, set as
+To configure sources, set as:
 
 ```
 <YourChanneName> : ‘<button>,<button>,<button>’.
@@ -105,13 +106,10 @@ To configure sources, set as
 
 ### Supported buttons
 
-sky, power, tvguide or home, boxoffice, search, sidebar, up, down, left, right, select, channelup, channeldown, i, dismiss, text, help,
-
-play, pause, rewind, fastforward, stop, record
-
-red, green, yellow, blue
-
-0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+- sky, power, tvguide or home, boxoffice, search, sidebar, up, down, left, right, select, channelup, channeldown, i, dismiss, text, help, 
+- play, pause, rewind, fastforward, stop, record
+- red, green, yellow, blue
+- 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
 ### Next/Previous Buttons
 
@@ -125,12 +123,11 @@ Usage based on google home: _“turn on <source name / channel name> in the ”_
 
 ## Configuration
 
-**generate_switches_for_channels** _(boolean)(Optional)_ Default False
+**generate_switches_for_channels** _(boolean)(Optional)_ Default False  
 Generate switches for each item listed in source.
 The files will be generated in <config folder>/skyq<room>.yaml
 
-**room**
-_(string)(Optional)_ Default 'Default Room'
+**room**_(string)(Optional)_ Default 'Default Room'  
 The room where the SkyQ set top box is located.
 
 Avoid using [ ] in the name: or room: of your device. This field is required if you have more than one SkyQ box being configured with switches
