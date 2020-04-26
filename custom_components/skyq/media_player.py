@@ -1,26 +1,10 @@
 """The skyq platform allows you to control a SkyQ set top box."""
 import logging
 import requests
-
-
-from pyskyqremote.skyq_remote import SkyQRemote
-from custom_components.skyq.util.config_gen import SwitchMaker
-
 import voluptuous as vol
 
 from homeassistant.components.media_player import MediaPlayerDevice, PLATFORM_SCHEMA
-from homeassistant.components.media_player.const import (
-    SUPPORT_PAUSE,
-    SUPPORT_PLAY,
-    SUPPORT_TURN_OFF,
-    SUPPORT_TURN_ON,
-    SUPPORT_NEXT_TRACK,
-    SUPPORT_PREVIOUS_TRACK,
-    SUPPORT_SELECT_SOURCE,
-    SUPPORT_STOP,
-    SUPPORT_SEEK,
-    MEDIA_TYPE_TVSHOW,
-)
+from homeassistant.components.media_player.const import MEDIA_TYPE_TVSHOW
 from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
@@ -31,37 +15,30 @@ from homeassistant.const import (
 )
 import homeassistant.helpers.config_validation as cv
 
-_LOGGER = logging.getLogger(__name__)
-
-CONF_SOURCES = "sources"
-CONF_ROOM = "room"
-CONF_DIR = "config_directory"
-CONF_GEN_SWITCH = "generate_switches_for_channels"
-CONF_OUTPUT_PROGRAMME_IMAGE = "output_programme_image"
-CONF_LIVE_TV = "live_tv"
-CONF_COUNTRY = "country"
-CONF_TEST_CHANNEL = "test_channel"
-
-DEFAULT_NAME = "SkyQ Box"
-DEVICE_CLASS = "tv"
-
-SUPPORT_SKYQ = (
-    SUPPORT_TURN_OFF
-    | SUPPORT_PAUSE
-    | SUPPORT_TURN_ON
-    | SUPPORT_PLAY
-    | SUPPORT_NEXT_TRACK
-    | SUPPORT_PREVIOUS_TRACK
-    | SUPPORT_SELECT_SOURCE
-    | SUPPORT_STOP
-    | SUPPORT_SEEK
+from pyskyqremote.skyq_remote import SkyQRemote
+from custom_components.skyq.util.config_gen import SwitchMaker
+from .const import (
+    SUPPORT_SKYQ,
+    CONF_SOURCES,
+    CONF_ROOM,
+    CONF_DIR,
+    CONF_GEN_SWITCH,
+    CONF_OUTPUT_PROGRAMME_IMAGE,
+    CONF_LIVE_TV,
+    CONF_COUNTRY,
+    CONF_TEST_CHANNEL,
+    DEVICE_CLASS,
+    FEATURE_BASIC,
+    FEATURE_IMAGE,
+    FEATURE_LIVE_TV,
+    FEATURE_SWITCHES,
+    SKYQ_ICONS,
+    APP_TITLES,
+    APP_IMAGE_URL_BASE,
+    RESPONSE_OK,
 )
 
-FEATURE_BASIC = 1
-FEATURE_IMAGE = 2
-FEATURE_LIVE_TV = 4
-FEATURE_SWITCHES = 8
-
+_LOGGER = logging.getLogger(__name__)
 
 ENABLED_FEATURES = FEATURE_BASIC | FEATURE_IMAGE | FEATURE_LIVE_TV | FEATURE_SWITCHES
 
@@ -79,23 +56,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_TEST_CHANNEL, default="(test)"): cv.string,
     }
 )
-
-RESPONSE_OK = 200
-
-SKYQ_ICONS = {
-    "app": "mdi:application",
-    "live": "mdi:satellite-variant",
-    STATE_OFF: "mdi:television",
-    "pvr": "mdi:movie-open",
-    STATE_UNKNOWN: "mdi:alert-circle-outline",
-}
-APP_TITLES = {
-    "com.bskyb.vevo": "Vevo",
-    "com.spotify.spotify.tvv2": "Spotify",
-    "com.roku": "Roku",
-    "com.bskyb.epgui": "EPG",
-}
-APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
 
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
