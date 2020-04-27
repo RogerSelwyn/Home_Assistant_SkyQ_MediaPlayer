@@ -1,5 +1,8 @@
-"""A utility function to generate yaml config for SkyQ media players."""
-"""To support easy usage with other home assistant integrations, e.g. google home"""
+"""
+A utility function to generate yaml config for SkyQ media players.
+
+To support easy usage with other home assistant integrations, e.g. google home
+"""
 
 
 class SwitchMaker:

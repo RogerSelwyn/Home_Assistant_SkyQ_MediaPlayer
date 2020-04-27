@@ -1,10 +1,9 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/rogerselwyn/home_assistant_skyq_mediaplayer/badge)](https://www.codefactor.io/repository/github/rogerselwyn/home_assistant_skyq_mediaplayer)
-
 [![maintained](https://img.shields.io/maintenance/yes/2020.svg)](#)
 [![maintainer](https://img.shields.io/badge/maintainer-%20%40RogerSelwyn-blue.svg)](https://github.com/RogerSelwyn)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 [![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg)](https://community.home-assistant.io/t/custom-component-skyq-media-player/140306)
 ![Validate with hassfest](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/workflows/Validate%20with%20hassfest/badge.svg)
+[![CodeFactor](https://www.codefactor.io/repository/github/rogerselwyn/home_assistant_skyq_mediaplayer/badge)](https://www.codefactor.io/repository/github/rogerselwyn/home_assistant_skyq_mediaplayer)
 
 # SkyQ component for Home Assistant
 
@@ -81,8 +80,8 @@ Enables you to disable returning images when watching recorded programmes. Usefu
 **live_tv** _(boolean)(Optional)_ Default True  
 Enables you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from awk.epgsky.com.
 
-**country** _(string)(Optional)_ Default "UK"  
-Enables to switch to another country. Currently only UK and IT are supported.
+**country** _(string)(Optional)_ Default _Empty_  
+Overrides the detected country from the SkyQ box. Currently supports "GBR" and "ITA".
 
 ### Sources
 

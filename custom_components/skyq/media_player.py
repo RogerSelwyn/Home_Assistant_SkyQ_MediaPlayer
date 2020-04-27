@@ -1,26 +1,10 @@
 """The skyq platform allows you to control a SkyQ set top box."""
 import logging
-import requests 
-
-
-from pyskyqremote.skyq_remote import SkyQRemote
-from custom_components.skyq.util.config_gen import SwitchMaker
-
+import requests
 import voluptuous as vol
 
 from homeassistant.components.media_player import MediaPlayerDevice, PLATFORM_SCHEMA
-from homeassistant.components.media_player.const import (
-    SUPPORT_PAUSE,
-    SUPPORT_PLAY,
-    SUPPORT_TURN_OFF,
-    SUPPORT_TURN_ON,
-    SUPPORT_NEXT_TRACK,
-    SUPPORT_PREVIOUS_TRACK,
-    SUPPORT_SELECT_SOURCE,
-    SUPPORT_STOP,
-    SUPPORT_SEEK,
-    MEDIA_TYPE_TVSHOW,
-)
+from homeassistant.components.media_player.const import MEDIA_TYPE_TVSHOW
 from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
@@ -31,37 +15,36 @@ from homeassistant.const import (
 )
 import homeassistant.helpers.config_validation as cv
 
-_LOGGER = logging.getLogger(__name__)
-
-CONF_SOURCES = "sources"
-CONF_ROOM = "room"
-CONF_DIR = "config_directory"
-CONF_GEN_SWITCH = "generate_switches_for_channels"
-CONF_OUTPUT_PROGRAMME_IMAGE = "output_programme_image"
-CONF_LIVE_TV = "live_tv"
-CONF_COUNTRY = "country"
-CONF_TEST_CHANNEL = "test_channel"
-
-DEFAULT_NAME = "SkyQ Box"
-DEVICE_CLASS = "tv"
-
-SUPPORT_SKYQ = (
-    SUPPORT_TURN_OFF
-    | SUPPORT_PAUSE
-    | SUPPORT_TURN_ON
-    | SUPPORT_PLAY
-    | SUPPORT_NEXT_TRACK
-    | SUPPORT_PREVIOUS_TRACK
-    | SUPPORT_SELECT_SOURCE
-    | SUPPORT_STOP
-    | SUPPORT_SEEK
+from pyskyqremote.skyq_remote import SkyQRemote
+from custom_components.skyq.util.config_gen import SwitchMaker
+from pyskyqremote.const import (
+    SKY_STATE_PAUSED,
+    SKY_STATE_STANDBY,
+    SKY_STATE_ON,
+    APP_EPG,
+)
+from .const import (
+    SUPPORT_SKYQ,
+    CONF_SOURCES,
+    CONF_ROOM,
+    CONF_DIR,
+    CONF_GEN_SWITCH,
+    CONF_OUTPUT_PROGRAMME_IMAGE,
+    CONF_LIVE_TV,
+    CONF_COUNTRY,
+    CONF_TEST_CHANNEL,
+    DEVICE_CLASS,
+    FEATURE_BASIC,
+    FEATURE_IMAGE,
+    FEATURE_LIVE_TV,
+    FEATURE_SWITCHES,
+    SKYQ_ICONS,
+    APP_TITLES,
+    APP_IMAGE_URL_BASE,
+    RESPONSE_OK,
 )
 
-FEATURE_BASIC = 1
-FEATURE_IMAGE = 2
-FEATURE_LIVE_TV = 4
-FEATURE_SWITCHES = 8
-
+_LOGGER = logging.getLogger(__name__)
 
 ENABLED_FEATURES = FEATURE_BASIC | FEATURE_IMAGE | FEATURE_LIVE_TV | FEATURE_SWITCHES
 
@@ -79,23 +62,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_TEST_CHANNEL, default="(test)"): cv.string,
     }
 )
-
-RESPONSE_OK = 200
-
-SKYQ_ICONS = {
-    "app": "mdi:application",
-    "live": "mdi:satellite-variant",
-    STATE_OFF: "mdi:television",
-    "pvr": "mdi:movie-open",
-    STATE_UNKNOWN: "mdi:alert-circle-outline",
-}
-APP_TITLES = {
-    "com.bskyb.vevo": "Vevo",
-    "com.spotify.spotify.tvv2": "Spotify",
-    "com.roku": "Roku",
-    "com.bskyb.epgui": "EPG",
-}
-APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
 
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
@@ -157,9 +123,6 @@ class SkyQDevice(MediaPlayerDevice):
             self._test_channel = test_channel
 
         self._remote = SkyQRemote(self._host, self._overrideCountry, self._test_channel)
-
-        if self._remote.deviceSetup:
-            self._state = STATE_OFF
 
         if not (output_programme_image):
             self._enabled_features ^= FEATURE_IMAGE
@@ -283,12 +246,12 @@ class SkyQDevice(MediaPlayerDevice):
 
     def turn_off(self):
         """Turn SkyQ box off."""
-        if self._remote.powerStatus() == self._remote.SKY_STATE_ON:
+        if self._remote.powerStatus() == SKY_STATE_ON:
             self._remote.press("power")
 
     def turn_on(self):
         """Turn SkyQ box on."""
-        if self._remote.powerStatus() == self._remote.SKY_STATE_STANDBY:
+        if self._remote.powerStatus() == SKY_STATE_STANDBY:
             self._remote.press(["home", "dismiss"])
 
     def media_play(self):
@@ -315,14 +278,14 @@ class SkyQDevice(MediaPlayerDevice):
 
     def _updateState(self):
         powerState = self._remote.powerStatus()
-        if powerState == self._remote.SKY_STATE_ON:
+        if powerState == SKY_STATE_ON:
             self._state = STATE_PLAYING
             # this checks is flakey during channel changes, so only used for pause checks if we know its on
-            if self._remote.getCurrentState() == SkyQRemote.SKY_STATE_PAUSED:
+            if self._remote.getCurrentState() == SKY_STATE_PAUSED:
                 self._state = STATE_PAUSED
             else:
                 self._state = STATE_PLAYING
-        elif powerState == self._remote.SKY_STATE_STANDBY:
+        elif powerState == SKY_STATE_STANDBY:
             self._skyq_type = STATE_OFF
             self._state = STATE_OFF
         else:
@@ -336,27 +299,29 @@ class SkyQDevice(MediaPlayerDevice):
         if appTitle.casefold() in APP_TITLES:
             appTitle = APP_TITLES[appTitle.casefold()]
 
-        if app == SkyQRemote.APP_EPG:
+        if app == APP_EPG:
             currentMedia = self._remote.getCurrentMedia()
-            self._channel = currentMedia["channel"]
-            self._imageUrl = currentMedia["imageUrl"]
-            if currentMedia["live"]:
+            if currentMedia.live:
+                self._channel = currentMedia.channel
+                self._imageUrl = currentMedia.imageUrl
                 self._skyq_type = "live"
                 if self._enabled_features & FEATURE_LIVE_TV:
                     currentProgramme = self._remote.getCurrentLiveTVProgramme(
-                        currentMedia["sid"]
+                        currentMedia.sid
                     )
-                    self._episode = currentProgramme["episode"]
-                    self._season = currentProgramme["season"]
-                    self._title = currentProgramme["title"]
-                    if currentProgramme["imageUrl"]:
-                        self._imageUrl = currentProgramme["imageUrl"]
+                    self._episode = currentProgramme.episode
+                    self._season = currentProgramme.season
+                    self._title = currentProgramme.title
+                    if currentProgramme.imageUrl:
+                        self._imageUrl = currentProgramme.imageUrl
             else:
+                recording = self._remote.getRecording(currentMedia.pvrId)
                 self._skyq_type = "pvr"
-                self._episode = currentMedia["episode"]
-                self._season = currentMedia["season"]
-                self._title = currentMedia["title"]
-                self._imageUrl = currentMedia["imageUrl"]
+                self._channel = recording.channel
+                self._episode = recording.episode
+                self._season = recording.season
+                self._title = recording.title
+                self._imageUrl = recording.imageUrl
 
         else:
             self._skyq_type = "app"
