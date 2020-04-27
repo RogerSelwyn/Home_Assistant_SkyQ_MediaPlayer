@@ -17,6 +17,12 @@ import homeassistant.helpers.config_validation as cv
 
 from pyskyqremote.skyq_remote import SkyQRemote
 from custom_components.skyq.util.config_gen import SwitchMaker
+from pyskyqremote.const import (
+    SKY_STATE_PAUSED,
+    SKY_STATE_STANDBY,
+    SKY_STATE_ON,
+    APP_EPG,
+)
 from .const import (
     SUPPORT_SKYQ,
     CONF_SOURCES,
@@ -240,12 +246,12 @@ class SkyQDevice(MediaPlayerDevice):
 
     def turn_off(self):
         """Turn SkyQ box off."""
-        if self._remote.powerStatus() == self._remote.SKY_STATE_ON:
+        if self._remote.powerStatus() == SKY_STATE_ON:
             self._remote.press("power")
 
     def turn_on(self):
         """Turn SkyQ box on."""
-        if self._remote.powerStatus() == self._remote.SKY_STATE_STANDBY:
+        if self._remote.powerStatus() == SKY_STATE_STANDBY:
             self._remote.press(["home", "dismiss"])
 
     def media_play(self):
@@ -272,14 +278,14 @@ class SkyQDevice(MediaPlayerDevice):
 
     def _updateState(self):
         powerState = self._remote.powerStatus()
-        if powerState == self._remote.SKY_STATE_ON:
+        if powerState == SKY_STATE_ON:
             self._state = STATE_PLAYING
             # this checks is flakey during channel changes, so only used for pause checks if we know its on
-            if self._remote.getCurrentState() == SkyQRemote.SKY_STATE_PAUSED:
+            if self._remote.getCurrentState() == SKY_STATE_PAUSED:
                 self._state = STATE_PAUSED
             else:
                 self._state = STATE_PLAYING
-        elif powerState == self._remote.SKY_STATE_STANDBY:
+        elif powerState == SKY_STATE_STANDBY:
             self._skyq_type = STATE_OFF
             self._state = STATE_OFF
         else:
@@ -293,27 +299,29 @@ class SkyQDevice(MediaPlayerDevice):
         if appTitle.casefold() in APP_TITLES:
             appTitle = APP_TITLES[appTitle.casefold()]
 
-        if app == SkyQRemote.APP_EPG:
+        if app == APP_EPG:
             currentMedia = self._remote.getCurrentMedia()
-            self._channel = currentMedia["channel"]
-            self._imageUrl = currentMedia["imageUrl"]
-            if currentMedia["live"]:
+            if currentMedia.live:
+                self._channel = currentMedia.channel
+                self._imageUrl = currentMedia.imageUrl
                 self._skyq_type = "live"
                 if self._enabled_features & FEATURE_LIVE_TV:
                     currentProgramme = self._remote.getCurrentLiveTVProgramme(
-                        currentMedia["sid"]
+                        currentMedia.sid
                     )
-                    self._episode = currentProgramme["episode"]
-                    self._season = currentProgramme["season"]
-                    self._title = currentProgramme["title"]
-                    if currentProgramme["imageUrl"]:
-                        self._imageUrl = currentProgramme["imageUrl"]
+                    self._episode = currentProgramme.episode
+                    self._season = currentProgramme.season
+                    self._title = currentProgramme.title
+                    if currentProgramme.imageUrl:
+                        self._imageUrl = currentProgramme.imageUrl
             else:
+                recording = self._remote.getRecording(currentMedia.pvrId)
                 self._skyq_type = "pvr"
-                self._episode = currentMedia["episode"]
-                self._season = currentMedia["season"]
-                self._title = currentMedia["title"]
-                self._imageUrl = currentMedia["imageUrl"]
+                self._channel = recording.channel
+                self._episode = recording.episode
+                self._season = recording.season
+                self._title = recording.title
+                self._imageUrl = recording.imageUrl
 
         else:
             self._skyq_type = "app"
