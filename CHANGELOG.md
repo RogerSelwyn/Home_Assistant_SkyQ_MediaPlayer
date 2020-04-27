@@ -1,15 +1,21 @@
 # Changelog
 
 ## v2.1.6 (27/04/2020) *(Beta2)*
+### Enhancements
+- [Remove need for country parameter](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/465f2db6ebc20a1ed720d2cf59ee58745cc8b614) - @RogerSelwyn
+
+### Fixed
+- [Handle switched off/standby devices](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bfec2f263776713b7c27352e50968c43b9756040) - @RogerSelwyn
+
+### Maintenance
 - [Bump pyskyqremote to 0.2.8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0cc9104bdc090cef9ef171e571cfce680dd7424b) - @RogerSelwyn
 - [Updated to simplify use of pyskyqremote](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9c94c2a08e1b57269c0ddcc56bd4e46fc67e22bd) - @RogerSelwyn
 - [Moved constants to const.py](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6281214d6393e100f6f237c7fe34f10afefacdc8) - @RogerSelwyn
-- [Handle switched off/standby devices](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bfec2f263776713b7c27352e50968c43b9756040) - @RogerSelwyn
 - [Tidied up unnecessary method](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5b438afb7b0a17e60db6670c899c43226f1cb132) - @RogerSelwyn
 - [Moved all switch generation into the utility script](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/497c1b5f48f25b4c2e3a935e229da8787014c9a9) - @RogerSelwyn
 - [Removed duplication in the config generator](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/42ce370a51e1b2a337874624714c6bf50d3fab02) - @RogerSelwyn
 - [Tidied up code in line with Python best practice](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a4f5847ccadeb5b55d876a5156cbca7bc26fc59e) - @RogerSelwyn
-- [Remove need for country paramater](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/465f2db6ebc20a1ed720d2cf59ee58745cc8b614) - @RogerSelwyn
+
 
 ## v2.1.5 (23/04/2020)
 - [Update in line with flake8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7fe2c9d828656766a0dd025cd50e3ccfa14a70f6) - @RogerSelwyn
