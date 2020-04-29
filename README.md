@@ -49,7 +49,6 @@ media_player:
    name: SkyQ Living Room
    host: 192.168.0.10
    live_tv: True
-   country: "UK"
    sources:
       SkyOne: '1,0,6'
       SkyNews: '5,0,1'
