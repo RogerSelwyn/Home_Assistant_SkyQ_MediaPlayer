@@ -309,11 +309,12 @@ class SkyQDevice(MediaPlayerDevice):
                     currentProgramme = self._remote.getCurrentLiveTVProgramme(
                         currentMedia.sid
                     )
-                    self._episode = currentProgramme.episode
-                    self._season = currentProgramme.season
-                    self._title = currentProgramme.title
-                    if currentProgramme.imageUrl:
-                        self._imageUrl = currentProgramme.imageUrl
+                    if currentProgramme:
+                        self._episode = currentProgramme.episode
+                        self._season = currentProgramme.season
+                        self._title = currentProgramme.title
+                        if currentProgramme.imageUrl:
+                            self._imageUrl = currentProgramme.imageUrl
             else:
                 recording = self._remote.getRecording(currentMedia.pvrId)
                 self._skyq_type = "pvr"
