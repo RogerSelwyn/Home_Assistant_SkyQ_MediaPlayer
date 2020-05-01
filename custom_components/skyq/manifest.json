@@ -4,5 +4,5 @@
   "documentation": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/master/README.md",
   "dependencies": [],
   "codeowners": [],
-  "requirements": ["pyskyqremote==0.2.10"]
+  "requirements": ["pyskyqremote==0.2.11"]
 }
