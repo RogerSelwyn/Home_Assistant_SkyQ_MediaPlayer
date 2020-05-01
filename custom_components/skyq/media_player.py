@@ -300,6 +300,18 @@ class SkyQDevice(MediaPlayerDevice):
             appTitle = APP_TITLES[appTitle.casefold()]
 
         if app == APP_EPG:
+            self._getCurrenMedia()
+        else:
+            self._skyq_type = "app"
+            self._title = appTitle
+
+        if not self._imageUrl:
+            appImageUrl = self._getAppImageUrl(appTitle)
+            if appImageUrl:
+                self._imageUrl = self._getAppImageUrl(appTitle)
+
+    def _getCurrenMedia(self):
+        try:
             currentMedia = self._remote.getCurrentMedia()
             if currentMedia.live:
                 self._channel = currentMedia.channel
@@ -318,20 +330,17 @@ class SkyQDevice(MediaPlayerDevice):
             else:
                 recording = self._remote.getRecording(currentMedia.pvrId)
                 self._skyq_type = "pvr"
-                self._channel = recording.channel
-                self._episode = recording.episode
-                self._season = recording.season
-                self._title = recording.title
-                self._imageUrl = recording.imageUrl
+                if recording:
+                    self._channel = recording.channel
+                    self._episode = recording.episode
+                    self._season = recording.season
+                    self._title = recording.title
+                    self._imageUrl = recording.imageUrl
 
-        else:
-            self._skyq_type = "app"
-            self._title = appTitle
-
-        if not self._imageUrl:
-            appImageUrl = self._getAppImageUrl(appTitle)
-            if appImageUrl:
-                self._imageUrl = self._getAppImageUrl(appTitle)
+        except Exception as err:
+            _LOGGER.exception(
+                f"X0020M - Current Media retrieval failed: {currentMedia} : {err}"
+            )
 
     def _getAppImageUrl(self, appTitle):
         if appTitle == self._lastAppTitle:
