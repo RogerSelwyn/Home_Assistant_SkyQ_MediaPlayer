@@ -45,6 +45,7 @@ FEATURE_LIVE_TV = 4
 FEATURE_SWITCHES = 8
 
 RESPONSE_OK = 200
+TIMEOUT = 2
 
 SKYQ_ICONS = {
     "app": "mdi:application",

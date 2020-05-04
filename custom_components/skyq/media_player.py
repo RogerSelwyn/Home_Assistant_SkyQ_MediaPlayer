@@ -1,7 +1,8 @@
 """The skyq platform allows you to control a SkyQ set top box."""
 import logging
-import requests
 import voluptuous as vol
+import asyncio
+import aiohttp
 
 from homeassistant.components.media_player import MediaPlayerDevice, PLATFORM_SCHEMA
 from homeassistant.components.media_player.const import MEDIA_TYPE_TVSHOW
@@ -14,17 +15,19 @@ from homeassistant.const import (
     STATE_PLAYING,
 )
 import homeassistant.helpers.config_validation as cv
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from pyskyqremote.skyq_remote import SkyQRemote
 from custom_components.skyq.util.config_gen import SwitchMaker
 from pyskyqremote.const import (
+    APP_EPG,
     SKY_STATE_PAUSED,
     SKY_STATE_STANDBY,
     SKY_STATE_ON,
-    APP_EPG,
 )
 from .const import (
-    SUPPORT_SKYQ,
+    APP_TITLES,
+    APP_IMAGE_URL_BASE,
     CONF_SOURCES,
     CONF_ROOM,
     CONF_DIR,
@@ -38,10 +41,10 @@ from .const import (
     FEATURE_IMAGE,
     FEATURE_LIVE_TV,
     FEATURE_SWITCHES,
-    SKYQ_ICONS,
-    APP_TITLES,
-    APP_IMAGE_URL_BASE,
     RESPONSE_OK,
+    SKYQ_ICONS,
+    SUPPORT_SKYQ,
+    TIMEOUT,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -64,7 +67,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 )
 
 
-def setup_platform(hass, config, add_entities, discovery_info=None):
+async def async_setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the SkyQ platform."""
     player = SkyQDevice(
         hass,
@@ -231,7 +234,7 @@ class SkyQDevice(MediaPlayerDevice):
         attributes["skyq_media_type"] = self._skyq_type
         return attributes
 
-    def update(self):
+    async def async_update(self):
         """Get the latest data and update device state."""
         self._channel = None
         self._episode = None
@@ -239,49 +242,58 @@ class SkyQDevice(MediaPlayerDevice):
         self._season = None
         self._title = None
 
-        self._updateState()
+        await self._async_updateState()
 
         if self._state != STATE_UNKNOWN and self._state != STATE_OFF:
-            self._updateCurrentProgramme()
+            await self._async_updateCurrentProgramme()
 
-    def turn_off(self):
+    async def async_turn_off(self):
         """Turn SkyQ box off."""
-        if self._remote.powerStatus() == SKY_STATE_ON:
-            self._remote.press("power")
+        powerStatus = await self.hass.async_add_executor_job(self._remote.powerStatus)
+        if powerStatus == SKY_STATE_ON:
+            await self.hass.async_add_executor_job(self._remote.press, "power")
 
-    def turn_on(self):
+    async def async_turn_on(self):
         """Turn SkyQ box on."""
-        if self._remote.powerStatus() == SKY_STATE_STANDBY:
-            self._remote.press(["home", "dismiss"])
+        powerStatus = await self.hass.async_add_executor_job(self._remote.powerStatus)
+        if powerStatus == SKY_STATE_STANDBY:
+            await self.hass.async_add_executor_job(
+                self._remote.press, ["home", "dismiss"]
+            )
 
-    def media_play(self):
+    async def async_media_play(self):
         """Play the current media item."""
-        self._remote.press("play")
+        await self.hass.async_add_executor_job(self._remote.press, "play")
         self._state = STATE_PLAYING
 
-    def media_pause(self):
-        """Pause teh current media item."""
-        self._remote.press("pause")
+    async def async_media_pause(self):
+        """Pause the current media item."""
+        await self.hass.async_add_executor_job(self._remote.press, "pause")
         self._state = STATE_PAUSED
 
-    def media_next_track(self):
+    async def async_media_next_track(self):
         """Fast forward the current media item."""
-        self._remote.press("fastforward")
+        await self.hass.async_add_executor_job(self._remote.press, "fastforward")
 
-    def media_previous_track(self):
+    async def async_media_previous_track(self):
         """Rewind the current media item."""
-        self._remote.press("rewind")
+        await self.hass.async_add_executor_job(self._remote.press, "rewind")
 
-    def select_source(self, source):
+    async def async_select_source(self, source):
         """Select the specified source."""
-        self._remote.press(self._source_names.get(source).split(","))
+        await self.hass.async_add_executor_job(
+            self._remote.press, self._source_names.get(source).split(",")
+        )
 
-    def _updateState(self):
-        powerState = self._remote.powerStatus()
+    async def _async_updateState(self):
+        powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)
         if powerState == SKY_STATE_ON:
             self._state = STATE_PLAYING
             # this checks is flakey during channel changes, so only used for pause checks if we know its on
-            if self._remote.getCurrentState() == SKY_STATE_PAUSED:
+            currentState = await self.hass.async_add_executor_job(
+                self._remote.getCurrentState
+            )
+            if currentState == SKY_STATE_PAUSED:
                 self._state = STATE_PAUSED
             else:
                 self._state = STATE_PLAYING
@@ -292,34 +304,37 @@ class SkyQDevice(MediaPlayerDevice):
             self._skyq_type = STATE_UNKNOWN
             self._state = STATE_OFF
 
-    def _updateCurrentProgramme(self):
+    async def _async_updateCurrentProgramme(self):
 
-        app = self._remote.getActiveApplication()
+        app = await self.hass.async_add_executor_job(self._remote.getActiveApplication)
         appTitle = app
         if appTitle.casefold() in APP_TITLES:
             appTitle = APP_TITLES[appTitle.casefold()]
 
         if app == APP_EPG:
-            self._getCurrenMedia()
+            await self._async_getCurrentMedia()
         else:
             self._skyq_type = "app"
             self._title = appTitle
 
         if not self._imageUrl:
-            appImageUrl = self._getAppImageUrl(appTitle)
+            appImageUrl = await self._async_getAppImageUrl(appTitle)
             if appImageUrl:
-                self._imageUrl = self._getAppImageUrl(appTitle)
+                self._imageUrl = appImageUrl
 
-    def _getCurrenMedia(self):
+    async def _async_getCurrentMedia(self):
         try:
-            currentMedia = self._remote.getCurrentMedia()
-            if currentMedia.live:
+            currentMedia = await self.hass.async_add_executor_job(
+                self._remote.getCurrentMedia
+            )
+
+            if currentMedia.live and currentMedia.sid:
                 self._channel = currentMedia.channel
                 self._imageUrl = currentMedia.imageUrl
                 self._skyq_type = "live"
                 if self._enabled_features & FEATURE_LIVE_TV:
-                    currentProgramme = self._remote.getCurrentLiveTVProgramme(
-                        currentMedia.sid
+                    currentProgramme = await self.hass.async_add_executor_job(
+                        self._remote.getCurrentLiveTVProgramme, currentMedia.sid
                     )
                     if currentProgramme:
                         self._episode = currentProgramme.episode
@@ -327,8 +342,10 @@ class SkyQDevice(MediaPlayerDevice):
                         self._title = currentProgramme.title
                         if currentProgramme.imageUrl:
                             self._imageUrl = currentProgramme.imageUrl
-            else:
-                recording = self._remote.getRecording(currentMedia.pvrId)
+            elif currentMedia.pvrId:
+                recording = await self.hass.async_add_executor_job(
+                    self._remote.getRecording, currentMedia.pvrId
+                )
                 self._skyq_type = "pvr"
                 if recording:
                     self._channel = recording.channel
@@ -342,7 +359,8 @@ class SkyQDevice(MediaPlayerDevice):
                 f"X0020M - Current Media retrieval failed: {currentMedia} : {err}"
             )
 
-    def _getAppImageUrl(self, appTitle):
+    async def _async_getAppImageUrl(self, appTitle):
+        """Check app image is present."""
         if appTitle == self._lastAppTitle:
             return self._appImageUrl
 
@@ -351,16 +369,21 @@ class SkyQDevice(MediaPlayerDevice):
 
         appImageUrl = APP_IMAGE_URL_BASE.format(appTitle.casefold())
 
-        try:
-            resp = requests.head(self._hass.config.api.base_url + appImageUrl)
-            if resp.status_code == RESPONSE_OK:
-                self._appImageUrl = appImageUrl
+        websession = async_get_clientsession(self._hass)
+        request_url = self._hass.config.api.base_url + appImageUrl
 
+        try:
+            async with getattr(websession, "head")(
+                request_url, timeout=TIMEOUT,
+            ) as response:
+                if response.status == RESPONSE_OK:
+                    self._appImageUrl = appImageUrl
+
+                return self._appImageUrl
+        except asyncio.TimeoutError as err:
+            _LOGGER.info(f"I0010M - Image file check timed out: {appImageUrl} : {err}")
             return self._appImageUrl
-        except (requests.exceptions.ConnectionError) as err:
-            _LOGGER.info(f"I0010M - Image file check failed: {appImageUrl} : {err}")
-            return self._appImageUrl
-        except Exception as err:
+        except aiohttp.ClientError as err:
             _LOGGER.exception(
                 f"X0010M - Image file check failed: {appImageUrl} : {err}"
             )
