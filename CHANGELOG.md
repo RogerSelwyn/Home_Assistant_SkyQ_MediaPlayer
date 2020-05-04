@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.1.6 (04/05/2020) *(Beta5)*
+## v2.1.6 (04/05/2020) *(Beta6)*
 ### Enhancements
 - [Remove need for country parameter](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/465f2db6ebc20a1ed720d2cf59ee58745cc8b614) - @RogerSelwyn
 - [Changed component to be async](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d3d2ebdf1688a7e81a2955a033b7df6f383c3fd2) - @RogerSelwyn
