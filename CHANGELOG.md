@@ -6,6 +6,7 @@
 - [Changed component to be async](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d3d2ebdf1688a7e81a2955a033b7df6f383c3fd2) - @RogerSelwyn
 
 ### Fixed
+- [Fixed device setup blocking I/O](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6cc24050c41ac6fd924ba963245544add2501639) - @RogerSelwyn
 - [Fixed issue with empty EPG](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/89ec0277f8dcd16e70bc1de9b0104d7b2fd40670) - @RogerSelwyn
 - [Handle switched off/standby devices](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bfec2f263776713b7c27352e50968c43b9756040) - @RogerSelwyn
 - [Fixed non-return of recording data](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3003805b989dda6a7ea020be2e929e0a82285550) - @RogerSelwyn
@@ -18,6 +19,7 @@
 - [Moved all switch generation into the utility script](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/497c1b5f48f25b4c2e3a935e229da8787014c9a9) - @RogerSelwyn
 - [Removed duplication in the config generator](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/42ce370a51e1b2a337874624714c6bf50d3fab02) - @RogerSelwyn
 - [Tidied up code in line with Python best practice](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a4f5847ccadeb5b55d876a5156cbca7bc26fc59e) - @RogerSelwyn
+
 
 ## v2.1.5 (23/04/2020)
 - [Update in line with flake8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7fe2c9d828656766a0dd025cd50e3ccfa14a70f6) - @RogerSelwyn
