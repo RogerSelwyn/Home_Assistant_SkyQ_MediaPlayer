@@ -1,8 +1,9 @@
 # Changelog
 
-## v2.1.6 (29/04/2020) *(Beta4)*
+## v2.1.6 (04/05/2020) *(Beta5)*
 ### Enhancements
 - [Remove need for country parameter](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/465f2db6ebc20a1ed720d2cf59ee58745cc8b614) - @RogerSelwyn
+- [Changed component to be async](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d3d2ebdf1688a7e81a2955a033b7df6f383c3fd2) - @RogerSelwyn
 
 ### Fixed
 - [Fixed issue with empty EPG](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/89ec0277f8dcd16e70bc1de9b0104d7b2fd40670) - @RogerSelwyn
@@ -10,7 +11,7 @@
 - [Fixed non-return of recording data](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3003805b989dda6a7ea020be2e929e0a82285550) - @RogerSelwyn
 
 ### Maintenance
-- [Bump pyskyqremote to 0.2.11](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/32a4056adadeda15de95c1a935793955382050e2) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.12](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cc365e8623c9863a4422d067e11b4cfb05b577d1) - @RogerSelwyn
 - [Updated to simplify use of pyskyqremote](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9c94c2a08e1b57269c0ddcc56bd4e46fc67e22bd) - @RogerSelwyn
 - [Moved constants to const.py](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6281214d6393e100f6f237c7fe34f10afefacdc8) - @RogerSelwyn
 - [Tidied up unnecessary method](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5b438afb7b0a17e60db6670c899c43226f1cb132) - @RogerSelwyn
