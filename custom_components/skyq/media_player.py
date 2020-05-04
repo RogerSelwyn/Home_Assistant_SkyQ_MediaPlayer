@@ -69,18 +69,44 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 
 async def async_setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the SkyQ platform."""
+    host = config.get(CONF_HOST)
+
+    country = config.get(CONF_COUNTRY)
+    if country == "(default)":
+        country = None
+    if country:
+        if country.casefold() == "it":
+            country = "ITA"
+            _LOGGER.warning(
+                f"Please change country 'it' to 'ITA' in your configuration."
+            )
+        if country.casefold() == "uk":
+            country = "GBR"
+            _LOGGER.warning(
+                f"Please change country 'uk' to 'GBR' in your configuration."
+            )
+
+    test_channel = config.get(CONF_TEST_CHANNEL)
+    if test_channel == "(test)":
+        test_channel = None
+
+    config_directory = config.get(CONF_DIR)
+    if config_directory != "(deprecated)":
+        _LOGGER.warning(
+            f"Use of 'config_directory' is deprecated since it is no longer required. You set it to {config_directory}."
+        )
+
+    remote = await hass.async_add_executor_job(SkyQRemote, host, country, test_channel)
+
     player = SkyQDevice(
         hass,
+        remote,
         config.get(CONF_NAME),
-        config.get(CONF_HOST),
         config.get(CONF_SOURCES),
         config.get(CONF_ROOM),
         config.get(CONF_GEN_SWITCH),
-        config.get(CONF_DIR),
         config.get(CONF_OUTPUT_PROGRAMME_IMAGE),
         config.get(CONF_LIVE_TV),
-        config.get(CONF_COUNTRY),
-        config.get(CONF_TEST_CHANNEL),
     )
     add_entities([player])
 
@@ -91,21 +117,17 @@ class SkyQDevice(MediaPlayerDevice):
     def __init__(
         self,
         hass,
+        remote,
         name,
-        host,
         sources,
         room,
         generate_switches_for_channels,
-        config_directory,
         output_programme_image,
         live_tv,
-        country,
-        test_channel,
     ):
         """Initialise the SkyQRemote."""
         self._hass = hass
         self._name = name
-        self._host = host
         self._state = STATE_OFF
         self._enabled_features = ENABLED_FEATURES
         self._title = None
@@ -116,16 +138,7 @@ class SkyQDevice(MediaPlayerDevice):
         self._skyq_type = STATE_OFF
         self._lastAppTitle = None
         self._appImageUrl = None
-
-        if country == "(default)":
-            country = None
-        self._overrideCountry = country
-
-        self._test_channel = None
-        if test_channel != "(test)":
-            self._test_channel = test_channel
-
-        self._remote = SkyQRemote(self._host, self._overrideCountry, self._test_channel)
+        self._remote = remote
 
         if not (output_programme_image):
             self._enabled_features ^= FEATURE_IMAGE
@@ -135,22 +148,6 @@ class SkyQDevice(MediaPlayerDevice):
 
         if not (generate_switches_for_channels):
             self._enabled_features ^= FEATURE_SWITCHES
-
-        if config_directory != "(deprecated)":
-            _LOGGER.warning(
-                f"Use of 'config_directory' is deprecated since it is no longer required. You set it to {config_directory}."
-            )
-        if self._overrideCountry:
-            if self._overrideCountry.casefold() == "it":
-                self._overrideCountry = "ITA"
-                _LOGGER.warning(
-                    f"Please change country 'it' to 'ITA' in you configuration."
-                )
-            if self._overrideCountry.casefold() == "uk":
-                self._overrideCountry = "GBR"
-                _LOGGER.warning(
-                    f"Please change country 'uk' to 'GBR' in you configuration."
-                )
 
         self._source_names = sources or {}
 
