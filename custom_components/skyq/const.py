@@ -37,6 +37,12 @@ CONF_LIVE_TV = "live_tv"
 CONF_COUNTRY = "country"
 CONF_TEST_CHANNEL = "test_channel"
 
+CONST_DEFAULT_ROOM = "Default Room"
+CONST_DEPRECATED = "(deprecated)"
+CONST_DEFAULT = "(default)"
+CONST_TEST = "(test)"
+CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
+
 DEVICE_CLASS = "tv"
 
 FEATURE_BASIC = 1
@@ -47,6 +53,9 @@ FEATURE_SWITCHES = 8
 RESPONSE_OK = 200
 TIMEOUT = 2
 
+SKYQ_APP = "app"
+SKYQ_LIVE = "live"
+SKYQ_PVR = "pvr"
 SKYQ_ICONS = {
     "app": "mdi:application",
     "live": "mdi:satellite-variant",

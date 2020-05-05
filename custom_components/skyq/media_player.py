@@ -5,7 +5,10 @@ import asyncio
 import aiohttp
 
 from homeassistant.components.media_player import MediaPlayerDevice, PLATFORM_SCHEMA
-from homeassistant.components.media_player.const import MEDIA_TYPE_TVSHOW
+from homeassistant.components.media_player.const import (
+    MEDIA_TYPE_TVSHOW,
+    MEDIA_TYPE_APP,
+)
 from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
@@ -36,12 +39,20 @@ from .const import (
     CONF_LIVE_TV,
     CONF_COUNTRY,
     CONF_TEST_CHANNEL,
+    CONST_DEFAULT,
+    CONST_DEFAULT_ROOM,
+    CONST_DEPRECATED,
+    CONST_SKYQ_MEDIA_TYPE,
+    CONST_TEST,
     DEVICE_CLASS,
     FEATURE_BASIC,
     FEATURE_IMAGE,
     FEATURE_LIVE_TV,
     FEATURE_SWITCHES,
     RESPONSE_OK,
+    SKYQ_APP,
+    SKYQ_LIVE,
+    SKYQ_PVR,
     SKYQ_ICONS,
     SUPPORT_SKYQ,
     TIMEOUT,
@@ -56,13 +67,13 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Required(CONF_SOURCES, default={}): {cv.string: cv.string},
         vol.Required(CONF_HOST): cv.string,
         vol.Required(CONF_NAME): cv.string,
-        vol.Optional(CONF_ROOM, default="Default Room"): cv.string,
-        vol.Optional(CONF_DIR, default="(deprecated)"): cv.string,
+        vol.Optional(CONF_ROOM, default=CONST_DEFAULT_ROOM): cv.string,
+        vol.Optional(CONF_DIR, default=CONST_DEPRECATED): cv.string,
         vol.Optional(CONF_GEN_SWITCH, default=False): cv.boolean,
         vol.Optional(CONF_OUTPUT_PROGRAMME_IMAGE, default=True): cv.boolean,
         vol.Optional(CONF_LIVE_TV, default=True): cv.boolean,
-        vol.Optional(CONF_COUNTRY, default="(default)"): cv.string,
-        vol.Optional(CONF_TEST_CHANNEL, default="(test)"): cv.string,
+        vol.Optional(CONF_COUNTRY, default=CONST_DEFAULT): cv.string,
+        vol.Optional(CONF_TEST_CHANNEL, default=CONST_TEST): cv.string,
     }
 )
 
@@ -72,7 +83,7 @@ async def async_setup_platform(hass, config, add_entities, discovery_info=None):
     host = config.get(CONF_HOST)
 
     country = config.get(CONF_COUNTRY)
-    if country == "(default)":
+    if country == CONST_DEFAULT:
         country = None
     if country:
         if country.casefold() == "it":
@@ -87,11 +98,11 @@ async def async_setup_platform(hass, config, add_entities, discovery_info=None):
             )
 
     test_channel = config.get(CONF_TEST_CHANNEL)
-    if test_channel == "(test)":
+    if test_channel == CONST_TEST:
         test_channel = None
 
     config_directory = config.get(CONF_DIR)
-    if config_directory != "(deprecated)":
+    if config_directory != CONST_DEPRECATED:
         _LOGGER.warning(
             f"Use of 'config_directory' is deprecated since it is no longer required. You set it to {config_directory}."
         )
@@ -134,6 +145,7 @@ class SkyQDevice(MediaPlayerDevice):
         self._channel = None
         self._episode = None
         self._imageUrl = None
+        self._imageRemotelyAccessible = False
         self._season = None
         self._skyq_type = STATE_OFF
         self._lastAppTitle = None
@@ -185,6 +197,11 @@ class SkyQDevice(MediaPlayerDevice):
         return self._imageUrl if self._enabled_features & FEATURE_IMAGE else None
 
     @property
+    def media_image_remotely_accessible(self):
+        """Is the media image available outside home network."""
+        return self._imageRemotelyAccessible
+
+    @property
     def media_channel(self):
         """Channel currently playing."""
         return self._channel
@@ -192,7 +209,12 @@ class SkyQDevice(MediaPlayerDevice):
     @property
     def media_content_type(self):
         """Content type of current playing media."""
-        return MEDIA_TYPE_TVSHOW if self.state != STATE_UNKNOWN else None
+        if self.state == STATE_UNKNOWN:
+            return None
+        if self._skyq_type == SKYQ_APP:
+            return MEDIA_TYPE_APP
+
+        return MEDIA_TYPE_TVSHOW
 
     @property
     def media_series_title(self):
@@ -228,7 +250,7 @@ class SkyQDevice(MediaPlayerDevice):
     def device_state_attributes(self):
         """Return entity specific state attributes."""
         attributes = {}
-        attributes["skyq_media_type"] = self._skyq_type
+        attributes[CONST_SKYQ_MEDIA_TYPE] = self._skyq_type
         return attributes
 
     async def async_update(self):
@@ -311,13 +333,15 @@ class SkyQDevice(MediaPlayerDevice):
         if app == APP_EPG:
             await self._async_getCurrentMedia()
         else:
-            self._skyq_type = "app"
+            self._skyq_type = SKYQ_APP
             self._title = appTitle
 
+        self._imageRemotelyAccessible = True
         if not self._imageUrl:
             appImageUrl = await self._async_getAppImageUrl(appTitle)
             if appImageUrl:
                 self._imageUrl = appImageUrl
+                self._imageRemotelyAccessible = False
 
     async def _async_getCurrentMedia(self):
         try:
@@ -328,7 +352,7 @@ class SkyQDevice(MediaPlayerDevice):
             if currentMedia.live and currentMedia.sid:
                 self._channel = currentMedia.channel
                 self._imageUrl = currentMedia.imageUrl
-                self._skyq_type = "live"
+                self._skyq_type = SKYQ_LIVE
                 if self._enabled_features & FEATURE_LIVE_TV:
                     currentProgramme = await self.hass.async_add_executor_job(
                         self._remote.getCurrentLiveTVProgramme, currentMedia.sid
@@ -343,7 +367,7 @@ class SkyQDevice(MediaPlayerDevice):
                 recording = await self.hass.async_add_executor_job(
                     self._remote.getRecording, currentMedia.pvrId
                 )
-                self._skyq_type = "pvr"
+                self._skyq_type = SKYQ_PVR
                 if recording:
                     self._channel = recording.channel
                     self._episode = recording.episode
