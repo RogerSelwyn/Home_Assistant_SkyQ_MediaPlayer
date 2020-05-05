@@ -12,10 +12,10 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+1. What were you doing/watching at the time ?
+2. What channel were you on?
+3. What time did the problem occur?
+4. Where are you (bear in mind component supports GBR/ITA at the moment)?
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
