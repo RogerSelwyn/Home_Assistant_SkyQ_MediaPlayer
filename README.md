@@ -9,7 +9,7 @@
 
 The skyq platform allows you to control a SkyQ set top box.
 
-**Note:** Whilst it will pull back information for UK boxes for current channel and live programme, it will do this for a ver limited set of countries (currently UK and IT). If you are in an unsupported country, or don't want this information set 'live_tv' to False in yoru config.
+**Note:** Whilst it will pull back information for UK boxes for current channel and live programme, it will do this for a very limited set of countries (currently UK, and any countries that use the same EPG/images, and Italy). If you are in an unsupported country, or don't want this information set 'live_tv' to False in your config.
 
 There is currently support for the following device types within Home Assistant:
 
@@ -80,7 +80,7 @@ Enables you to disable returning images when watching recorded programmes. Usefu
 Enables you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from awk.epgsky.com.
 
 **country** _(string)(Optional)_ Default _Empty_  
-Overrides the detected country from the SkyQ box. Currently supports "GBR" and "ITA".
+Overrides the detected country from the SkyQ box. Currently supports "GBR" and "ITA". In theory you shouldn't need to use this.
 
 ### Sources
 
