@@ -1,9 +1,10 @@
 # Changelog
 
-## v2.1.6 (04/05/2020) *(Beta6)*
+## v2.1.6 (06/05/2020) *(Beta7)*
 ### Enhancements
 - [Remove need for country parameter](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/465f2db6ebc20a1ed720d2cf59ee58745cc8b614) - @RogerSelwyn
 - [Changed component to be async](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d3d2ebdf1688a7e81a2955a033b7df6f383c3fd2) - @RogerSelwyn
+- [Updated to access images direct from source where possible](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/161308bbc9d524a0e9e168b95803ff59e28cc83f) - @RogerSelwyn
 
 ### Fixed
 - [Fixed device setup blocking I/O](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6cc24050c41ac6fd924ba963245544add2501639) - @RogerSelwyn
@@ -12,14 +13,14 @@
 - [Fixed non-return of recording data](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3003805b989dda6a7ea020be2e929e0a82285550) - @RogerSelwyn
 
 ### Maintenance
-- [Bump pyskyqremote to 0.2.12](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cc365e8623c9863a4422d067e11b4cfb05b577d1) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.13](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/42a3f23acd92cadd610d01840313526aa6483e67) - @RogerSelwyn
 - [Updated to simplify use of pyskyqremote](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9c94c2a08e1b57269c0ddcc56bd4e46fc67e22bd) - @RogerSelwyn
 - [Moved constants to const.py](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6281214d6393e100f6f237c7fe34f10afefacdc8) - @RogerSelwyn
 - [Tidied up unnecessary method](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5b438afb7b0a17e60db6670c899c43226f1cb132) - @RogerSelwyn
 - [Moved all switch generation into the utility script](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/497c1b5f48f25b4c2e3a935e229da8787014c9a9) - @RogerSelwyn
 - [Removed duplication in the config generator](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/42ce370a51e1b2a337874624714c6bf50d3fab02) - @RogerSelwyn
 - [Tidied up code in line with Python best practice](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a4f5847ccadeb5b55d876a5156cbca7bc26fc59e) - @RogerSelwyn
-
+- [Update bug_report.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/45b0291cacee84b6d8e1d1c05a62104008415ec1) - @RogerSelwyn
 
 ## v2.1.5 (23/04/2020)
 - [Update in line with flake8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7fe2c9d828656766a0dd025cd50e3ccfa14a70f6) - @RogerSelwyn
