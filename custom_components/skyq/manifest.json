@@ -1,8 +1,7 @@
 {
   "domain": "skyq",
   "name": "SkyQ",
-  "documentation": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/master/README.md",
-  "dependencies": [],
-  "codeowners": [],
+  "documentation": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer",
+  "codeowners": ["@rogerselwyn"],
   "requirements": ["pyskyqremote==0.2.13"]
 }
