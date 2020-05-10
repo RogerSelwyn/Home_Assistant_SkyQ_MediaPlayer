@@ -114,6 +114,17 @@ To configure sources, set as:
 
 The behaviour of the next and previous buttons is fastforward and rewind (multiple presses to increase speed, play to resume)
 
+### Sending Button Commands
+
+If you are using [Mini Media Player](https://github.com/kalkih/mini-media-player) or some other player that supports sending 'play_media' commands, you can configure this in the front-end rather than having to configure a source and then assigning it to a button. For example, the below will send the 'channelup' button command to the Sky box:
+
+```
+shortcuts:
+  buttons:
+    - icon: 'mdi:chevron-up'
+      id: channelup
+      type: command
+```
 # Switch Generation Helper
 
 A utility function has been created to generate yaml configuration for SkyQ enabled media players to support easy usage with other home assistant integrations, e.g. google home
