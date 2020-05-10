@@ -110,7 +110,7 @@ shortcuts:
   buttons:
     - icon: 'mdi:chevron-up'
       id: channelup
-      type: command
+      type: skyq
 ```
 # Switch Generation Helper
 
