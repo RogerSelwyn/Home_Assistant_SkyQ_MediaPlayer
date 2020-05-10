@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.7 (10/05/2020)
+### Enhancements
+- [Enabled commands to be sent via play_media](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/73729a12babc8d421b3cab6ed449414e52698e8a) - @RogerSelwyn
+
 ## v2.1.6 (10/05/2020)
 ### Enhancements
 - [Remove need for country parameter](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/465f2db6ebc20a1ed720d2cf59ee58745cc8b614) - @RogerSelwyn
