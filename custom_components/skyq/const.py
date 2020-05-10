@@ -17,6 +17,8 @@ from homeassistant.const import (
     STATE_UNKNOWN,
 )
 
+DOMAIN = "skyq"
+
 SUPPORT_SKYQ = (
     SUPPORT_TURN_OFF
     | SUPPORT_PAUSE
@@ -44,8 +46,6 @@ CONST_DEPRECATED = "(deprecated)"
 CONST_DEFAULT = "(default)"
 CONST_TEST = "(test)"
 CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
-
-CONST_COMMAND = "command"
 
 DEVICE_CLASS = "tv"
 

@@ -39,13 +39,13 @@ from .const import (
     CONF_LIVE_TV,
     CONF_COUNTRY,
     CONF_TEST_CHANNEL,
-    CONST_COMMAND,
     CONST_DEFAULT,
     CONST_DEFAULT_ROOM,
     CONST_DEPRECATED,
     CONST_SKYQ_MEDIA_TYPE,
     CONST_TEST,
     DEVICE_CLASS,
+    DOMAIN,
     FEATURE_BASIC,
     FEATURE_IMAGE,
     FEATURE_LIVE_TV,
@@ -307,7 +307,12 @@ class SkyQDevice(MediaPlayerDevice):
 
     async def async_play_media(self, media_id, media_type):
         """Perform a media action."""
-        if media_type == CONST_COMMAND:
+        if media_type.casefold() == DOMAIN or media_type.casefold() == "command":
+            if media_type.casefold() == "command":
+                _LOGGER.warning(
+                    f"Please use 'skyq' instead of 'command' as the type in your button."
+                )
+
             await self.hass.async_add_executor_job(
                 self._remote.press, media_id.casefold()
             )
