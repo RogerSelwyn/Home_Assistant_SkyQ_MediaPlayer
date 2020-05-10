@@ -39,6 +39,7 @@ from .const import (
     CONF_LIVE_TV,
     CONF_COUNTRY,
     CONF_TEST_CHANNEL,
+    CONST_COMMAND,
     CONST_DEFAULT,
     CONST_DEFAULT_ROOM,
     CONST_DEPRECATED,
@@ -303,6 +304,13 @@ class SkyQDevice(MediaPlayerDevice):
         await self.hass.async_add_executor_job(
             self._remote.press, self._source_names.get(source).split(",")
         )
+
+    async def async_play_media(self, media_id, media_type):
+        """Perform a media action."""
+        if media_type == CONST_COMMAND:
+            await self.hass.async_add_executor_job(
+                self._remote.press, media_id.casefold()
+            )
 
     async def _async_updateState(self):
         powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)

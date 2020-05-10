@@ -10,6 +10,7 @@ from homeassistant.components.media_player.const import (
     SUPPORT_SELECT_SOURCE,
     SUPPORT_STOP,
     SUPPORT_SEEK,
+    SUPPORT_PLAY_MEDIA,
 )
 from homeassistant.const import (
     STATE_OFF,
@@ -26,6 +27,7 @@ SUPPORT_SKYQ = (
     | SUPPORT_SELECT_SOURCE
     | SUPPORT_STOP
     | SUPPORT_SEEK
+    | SUPPORT_PLAY_MEDIA
 )
 
 CONF_SOURCES = "sources"
@@ -42,6 +44,8 @@ CONST_DEPRECATED = "(deprecated)"
 CONST_DEFAULT = "(default)"
 CONST_TEST = "(test)"
 CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
+
+CONST_COMMAND = "command"
 
 DEVICE_CLASS = "tv"
 
