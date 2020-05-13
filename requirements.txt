@@ -1,3 +1,3 @@
-aiohttp==3.6.1
+aiohttp==3.6.2
 pyskyqremote==0.2.13
 voluptuous==0.11.7
