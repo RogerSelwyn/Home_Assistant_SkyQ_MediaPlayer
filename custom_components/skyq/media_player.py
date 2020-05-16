@@ -3,6 +3,7 @@ import logging
 import voluptuous as vol
 import asyncio
 import aiohttp
+from datetime import timedelta
 
 try:
     from homeassistant.components.media_player import MediaPlayerEntity
@@ -19,6 +20,7 @@ from homeassistant.components.media_player.const import (
 from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
+    CONF_SCAN_INTERVAL,
     HTTP_OK,
     STATE_OFF,
     STATE_UNKNOWN,
@@ -71,6 +73,8 @@ from .const import (
     TIMEOUT,
 )
 
+SCAN_INTERVAL = timedelta(seconds=10)
+
 _LOGGER = logging.getLogger(__name__)
 
 ENABLED_FEATURES = FEATURE_BASIC | FEATURE_IMAGE | FEATURE_LIVE_TV | FEATURE_SWITCHES
@@ -87,6 +91,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_LIVE_TV, default=True): cv.boolean,
         vol.Optional(CONF_COUNTRY, default=CONST_DEFAULT): cv.string,
         vol.Optional(CONF_TEST_CHANNEL, default=CONST_TEST): cv.string,
+        vol.Optional(CONF_SCAN_INTERVAL, default=SCAN_INTERVAL): cv.time_period,
     }
 )
 
