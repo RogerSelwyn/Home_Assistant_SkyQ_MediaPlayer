@@ -27,6 +27,11 @@ from homeassistant.const import (
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
+try:
+    from homeassistant.helpers.network import get_url
+except ImportError:
+    pass
+
 from pyskyqremote.skyq_remote import SkyQRemote
 from custom_components.skyq.util.config_gen import SwitchMaker
 from pyskyqremote.const import (
@@ -411,7 +416,11 @@ class SkyQDevice(MediaPlayerEntity):
         appImageUrl = APP_IMAGE_URL_BASE.format(appTitle.casefold())
 
         websession = async_get_clientsession(self._hass)
-        request_url = self._hass.config.api.base_url + appImageUrl
+        try:
+            base_url = get_url(self.hass)
+        except NameError as err:
+            base_url = self._hass.config.api.base_url
+        request_url = base_url + appImageUrl
 
         try:
             async with getattr(websession, "head")(
