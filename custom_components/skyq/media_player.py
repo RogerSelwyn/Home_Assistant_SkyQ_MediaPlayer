@@ -150,7 +150,6 @@ class SkyQDevice(MediaPlayerEntity):
         live_tv,
     ):
         """Initialise the SkyQRemote."""
-        self._hass = hass
         self._name = name
         self._state = STATE_OFF
         self._enabled_features = ENABLED_FEATURES
@@ -415,11 +414,11 @@ class SkyQDevice(MediaPlayerEntity):
 
         appImageUrl = APP_IMAGE_URL_BASE.format(appTitle.casefold())
 
-        websession = async_get_clientsession(self._hass)
+        websession = async_get_clientsession(self.hass)
         try:
             base_url = get_url(self.hass)
-        except NameError as err:
-            base_url = self._hass.config.api.base_url
+        except NameError:
+            base_url = self.hass.config.api.base_url
         request_url = base_url + appImageUrl
 
         try:
