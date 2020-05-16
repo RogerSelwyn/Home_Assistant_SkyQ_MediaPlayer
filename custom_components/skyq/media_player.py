@@ -121,7 +121,7 @@ async def async_setup_platform(hass, config, add_entities, discovery_info=None):
         config.get(CONF_OUTPUT_PROGRAMME_IMAGE),
         config.get(CONF_LIVE_TV),
     )
-    add_entities([player])
+    add_entities([player], True)
 
 
 class SkyQDevice(MediaPlayerEntity):
