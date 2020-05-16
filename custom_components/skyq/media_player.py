@@ -4,7 +4,14 @@ import voluptuous as vol
 import asyncio
 import aiohttp
 
-from homeassistant.components.media_player import MediaPlayerDevice, PLATFORM_SCHEMA
+try:
+    from homeassistant.components.media_player import MediaPlayerEntity
+except ImportError:
+    from homeassistant.components.media_player import (
+        MediaPlayerDevice as MediaPlayerEntity,
+    )
+
+from homeassistant.components.media_player import PLATFORM_SCHEMA
 from homeassistant.components.media_player.const import (
     MEDIA_TYPE_TVSHOW,
     MEDIA_TYPE_APP,
@@ -123,7 +130,7 @@ async def async_setup_platform(hass, config, add_entities, discovery_info=None):
     add_entities([player])
 
 
-class SkyQDevice(MediaPlayerDevice):
+class SkyQDevice(MediaPlayerEntity):
     """Representation of a SkyQ Box."""
 
     def __init__(
