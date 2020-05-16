@@ -5,18 +5,11 @@ import asyncio
 import aiohttp
 from datetime import timedelta
 
-try:
-    from homeassistant.components.media_player import MediaPlayerEntity
-except ImportError:
-    from homeassistant.components.media_player import (
-        MediaPlayerDevice as MediaPlayerEntity,
-    )
+import homeassistant.helpers.config_validation as cv
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from homeassistant.components.media_player import PLATFORM_SCHEMA
-from homeassistant.components.media_player.const import (
-    MEDIA_TYPE_TVSHOW,
-    MEDIA_TYPE_APP,
-)
+# from homeassistant.exceptions import PlatformNotReady
+
 from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
@@ -27,21 +20,34 @@ from homeassistant.const import (
     STATE_PAUSED,
     STATE_PLAYING,
 )
-import homeassistant.helpers.config_validation as cv
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 try:
     from homeassistant.helpers.network import get_url
 except ImportError:
     pass
 
+from homeassistant.components.media_player import PLATFORM_SCHEMA
+from homeassistant.components.media_player.const import (
+    MEDIA_TYPE_TVSHOW,
+    MEDIA_TYPE_APP,
+)
+
+try:
+    from homeassistant.components.media_player import MediaPlayerEntity
+except ImportError:
+    from homeassistant.components.media_player import (
+        MediaPlayerDevice as MediaPlayerEntity,
+    )
+
+
 from pyskyqremote.skyq_remote import SkyQRemote
 from custom_components.skyq.util.config_gen import SwitchMaker
 from pyskyqremote.const import (
     APP_EPG,
+    SKY_STATE_ON,
+    SKY_STATE_OFF,
     SKY_STATE_PAUSED,
     SKY_STATE_STANDBY,
-    SKY_STATE_ON,
 )
 from .const import (
     APP_TITLES,
@@ -157,6 +163,7 @@ class SkyQDevice(MediaPlayerEntity):
         self._lastAppTitle = None
         self._appImageUrl = None
         self._remote = remote
+        self._available = True
 
         if not (output_programme_image):
             self._enabled_features ^= FEATURE_IMAGE
@@ -171,6 +178,10 @@ class SkyQDevice(MediaPlayerEntity):
 
         if self._enabled_features & FEATURE_SWITCHES:
             SwitchMaker(hass, name, room, [*self._source_names.keys()])
+
+        if not self._remote.deviceSetup:
+            self._available = False
+            _LOGGER.warning(f"W0010M - Device is not avaiable: {self._remote.host}")
 
     @property
     def supported_features(self):
@@ -253,6 +264,11 @@ class SkyQDevice(MediaPlayerEntity):
         return DEVICE_CLASS
 
     @property
+    def available(self):
+        """Entity class."""
+        return self._available
+
+    @property
     def device_state_attributes(self):
         """Return entity specific state attributes."""
         attributes = {}
@@ -319,6 +335,7 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def _async_updateState(self):
         powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)
+        self._setAvailability(powerState)
         if powerState == SKY_STATE_ON:
             self._state = STATE_PLAYING
             # this checks is flakey during channel changes, so only used for pause checks if we know its on
@@ -419,10 +436,19 @@ class SkyQDevice(MediaPlayerEntity):
 
                 return self._appImageUrl
         except asyncio.TimeoutError as err:
-            _LOGGER.info(f"I0010M - Image file check timed out: {appImageUrl} : {err}")
+            _LOGGER.info(f"I0030M - Image file check timed out: {appImageUrl} : {err}")
             return self._appImageUrl
         except aiohttp.ClientError as err:
             _LOGGER.exception(
                 f"X0010M - Image file check failed: {appImageUrl} : {err}"
             )
             return self._appImageUrl
+
+    def _setAvailability(self, powerStatus):
+        if powerStatus == SKY_STATE_OFF and self._available:
+            self._available = False
+            _LOGGER.info(f"I0010M - Device is not avaiable: {self._remote.host}")
+
+        if powerStatus != SKY_STATE_OFF and not self._available:
+            self._available = True
+            _LOGGER.info(f"I0020M - Device is now avaiable: {self._remote.host}")
