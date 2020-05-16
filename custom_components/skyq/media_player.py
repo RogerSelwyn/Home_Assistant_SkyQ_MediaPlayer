@@ -19,6 +19,7 @@ from homeassistant.components.media_player.const import (
 from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
+    HTTP_OK,
     STATE_OFF,
     STATE_UNKNOWN,
     STATE_PAUSED,
@@ -62,7 +63,6 @@ from .const import (
     FEATURE_IMAGE,
     FEATURE_LIVE_TV,
     FEATURE_SWITCHES,
-    RESPONSE_OK,
     SKYQ_APP,
     SKYQ_LIVE,
     SKYQ_PVR,
@@ -98,17 +98,6 @@ async def async_setup_platform(hass, config, add_entities, discovery_info=None):
     country = config.get(CONF_COUNTRY)
     if country == CONST_DEFAULT:
         country = None
-    if country:
-        if country.casefold() == "it":
-            country = "ITA"
-            _LOGGER.warning(
-                f"Please change country 'it' to 'ITA' in your configuration."
-            )
-        if country.casefold() == "uk":
-            country = "GBR"
-            _LOGGER.warning(
-                f"Please change country 'uk' to 'GBR' in your configuration."
-            )
 
     test_channel = config.get(CONF_TEST_CHANNEL)
     if test_channel == CONST_TEST:
@@ -318,12 +307,7 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def async_play_media(self, media_id, media_type):
         """Perform a media action."""
-        if media_type.casefold() == DOMAIN or media_type.casefold() == "command":
-            if media_type.casefold() == "command":
-                _LOGGER.warning(
-                    f"Please use 'skyq' instead of 'command' as the type in your button."
-                )
-
+        if media_type.casefold() == DOMAIN:
             await self.hass.async_add_executor_job(
                 self._remote.press, media_id.casefold()
             )
@@ -425,7 +409,7 @@ class SkyQDevice(MediaPlayerEntity):
             async with getattr(websession, "head")(
                 request_url, timeout=TIMEOUT,
             ) as response:
-                if response.status == RESPONSE_OK:
+                if response.status == HTTP_OK:
                     self._appImageUrl = appImageUrl
 
                 return self._appImageUrl
