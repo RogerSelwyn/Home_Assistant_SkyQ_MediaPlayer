@@ -1,5 +1,28 @@
 # Changelog
 
+## v2.1.8.beta (17/05/2020)
+
+### Enhancements
+- [Added link to issues in manifest](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/22ca72c4c9c6b8089e47dd9a7e2e8b1e51696f02) - @RogerSelwyn
+- [Added Unique_ID property](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c9dbaf98cd5c9d5996707637cd375dd79707c0f7) - @RogerSelwyn
+- [Added 'available' property](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d97919c0bd8c4cfd4d5b753d7cebcaecb5efbe53) - @RogerSelwyn
+- [Added 10 second scan_interval](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4e0891f7b73c880ba7183287ab1135452f4c9cfa) - @RogerSelwyn
+- [Changed to update entity at startup](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0ed9de33e90101d7edff01af406723da8a31e381) - @RogerSelwyn
+
+### Maintenance
+- [Bump pyskyqremote to 0.2.14](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/183c23790a0fe545f95346f1fd79195e178b9955) - @RogerSelwyn
+- [Removed deprecated code](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d20cbad11fa4226d1dacd3b21f157de1cf7d87fd) - @RogerSelwyn
+- [Removed storing hass as self._hass - unnecessary](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7d62304d89f756fd8f2f92e078f132ddfb849479) - @RogerSelwyn
+- [Changed to use get_url instead of base_url](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2658ccfa1b3c88fef66120a61fe0be7c7bcced13) - @RogerSelwyn
+- [Changed to use Entity instead of Device](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a4e25564d26baf96432df7e4212bcb897b3eb178) - @RogerSelwyn
+- [Add requirements to manifest](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5dbeaa1817e9b487bfbf615071b6cd7aa5eee7ff) - @RogerSelwyn
+- [Update info.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/540f4f2de4544bb12636692fe3ecde67cd9ccfd0) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bd01d3a3d28f301c785483a051d52f8a9271ea26) - @RogerSelwyn
+- [Create hacsvalidate.yaml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fb0a1c6a9c0a8b370c21c17757cedb5b66c1cc4c) - @RogerSelwyn
+- [Bump aiohttp from 3.6.1 to 3.6.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fa21acb6036e8e62987f8f75b8914900cf283921) - @dependabot-preview[bot]
+- [Remove tracking of homeassistant version](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6322855f7515588699b93bb958b369e442ef5c8d) - @RogerSelwyn
+- [Added requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5f54ced49f59ffd16c680f4778606c8711e58bca) - @RogerSelwyn
+
 ## v2.1.7 (10/05/2020)
 ### Enhancements
 - [Enabled commands to be sent via play_media](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/73729a12babc8d421b3cab6ed449414e52698e8a) - @RogerSelwyn
