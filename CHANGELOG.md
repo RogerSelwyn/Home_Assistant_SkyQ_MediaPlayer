@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.1.8.beta (17/05/2020)
+## v2.1.8.beta2 (17/05/2020)
 
 ### Enhancements
 - [Added link to issues in manifest](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/22ca72c4c9c6b8089e47dd9a7e2e8b1e51696f02) - @RogerSelwyn
@@ -10,7 +10,7 @@
 - [Changed to update entity at startup](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0ed9de33e90101d7edff01af406723da8a31e381) - @RogerSelwyn
 
 ### Maintenance
-- [Bump pyskyqremote to 0.2.14](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/183c23790a0fe545f95346f1fd79195e178b9955) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.15](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e6d1a5b565708312f3ac7bfd8324f0202dd4cfd1) - @RogerSelwyn
 - [Removed deprecated code](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d20cbad11fa4226d1dacd3b21f157de1cf7d87fd) - @RogerSelwyn
 - [Removed storing hass as self._hass - unnecessary](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7d62304d89f756fd8f2f92e078f132ddfb849479) - @RogerSelwyn
 - [Changed to use get_url instead of base_url](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2658ccfa1b3c88fef66120a61fe0be7c7bcced13) - @RogerSelwyn
