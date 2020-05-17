@@ -164,6 +164,7 @@ class SkyQDevice(MediaPlayerEntity):
         self._appImageUrl = None
         self._remote = remote
         self._available = True
+        self._unique_id = None
 
         if not (output_programme_image):
             self._enabled_features ^= FEATURE_IMAGE
@@ -265,8 +266,13 @@ class SkyQDevice(MediaPlayerEntity):
 
     @property
     def available(self):
-        """Entity class."""
+        """Entity availability."""
         return self._available
+
+    @property
+    def unique_id(self):
+        """Entity unique id."""
+        return self._unique_id
 
     @property
     def device_state_attributes(self):
@@ -335,7 +341,7 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def _async_updateState(self):
         powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)
-        self._setAvailability(powerState)
+        self._setDeviceInfo(powerState)
         if powerState == SKY_STATE_ON:
             self._state = STATE_PLAYING
             # this checks is flakey during channel changes, so only used for pause checks if we know its on
@@ -444,7 +450,7 @@ class SkyQDevice(MediaPlayerEntity):
             )
             return self._appImageUrl
 
-    def _setAvailability(self, powerStatus):
+    def _setDeviceInfo(self, powerStatus):
         if powerStatus == SKY_STATE_OFF and self._available:
             self._available = False
             _LOGGER.info(f"I0010M - Device is not avaiable: {self._remote.host}")
@@ -452,3 +458,8 @@ class SkyQDevice(MediaPlayerEntity):
         if powerStatus != SKY_STATE_OFF and not self._available:
             self._available = True
             _LOGGER.info(f"I0020M - Device is now avaiable: {self._remote.host}")
+
+        if self._remote.serialNumber:
+            self._unique_id = self._remote.country + "".join(
+                e for e in self._remote.serialNumber.casefold() if e.isalnum()
+            )
