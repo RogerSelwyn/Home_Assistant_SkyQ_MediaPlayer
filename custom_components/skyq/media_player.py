@@ -164,7 +164,9 @@ class SkyQDevice(MediaPlayerEntity):
         self._appImageUrl = None
         self._remote = remote
         self._available = True
+        self._startupSetup = True
         self._unique_id = None
+        self._deviceInfo = None
 
         if not (output_programme_image):
             self._enabled_features ^= FEATURE_IMAGE
@@ -182,7 +184,8 @@ class SkyQDevice(MediaPlayerEntity):
 
         if not self._remote.deviceSetup:
             self._available = False
-            _LOGGER.warning(f"W0010M - Device is not avaiable: {self._remote.host}")
+            self._startupSetup = False
+            _LOGGER.warning(f"W0010M - Device is not available: {self.name}")
 
     @property
     def supported_features(self):
@@ -270,6 +273,20 @@ class SkyQDevice(MediaPlayerEntity):
         return self._available
 
     @property
+    def device_info(self):
+        """Entity device information."""
+        device_info = None
+        if self._deviceInfo:
+            device_info = {
+                "identifiers": {(DOMAIN, self._deviceInfo.serialNumber)},
+                "name": self.name,
+                "manufacturer": self._deviceInfo.manufacturer,
+                "model": self._deviceInfo.hardwareModel,
+                "sw_version": f"{self._deviceInfo.ASVersion}:{self._deviceInfo.versionNumber}",
+            }
+        return device_info
+
+    @property
     def unique_id(self):
         """Entity unique id."""
         return self._unique_id
@@ -289,7 +306,11 @@ class SkyQDevice(MediaPlayerEntity):
         self._season = None
         self._title = None
 
-        await self._async_updateState()
+        if not self._deviceInfo:
+            await self._async_getDeviceInfo()
+
+        if self._deviceInfo:
+            await self._async_updateState()
 
         if self._state != STATE_UNKNOWN and self._state != STATE_OFF:
             await self._async_updateCurrentProgramme()
@@ -341,7 +362,7 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def _async_updateState(self):
         powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)
-        self._setDeviceInfo(powerState)
+        self._setPowerStatus(powerState)
         if powerState == SKY_STATE_ON:
             self._state = STATE_PLAYING
             # this checks is flakey during channel changes, so only used for pause checks if we know its on
@@ -450,16 +471,24 @@ class SkyQDevice(MediaPlayerEntity):
             )
             return self._appImageUrl
 
-    def _setDeviceInfo(self, powerStatus):
+    async def _async_getDeviceInfo(self):
+        self._deviceInfo = await self.hass.async_add_executor_job(
+            self._remote.getDeviceInformation
+        )
+        if self._deviceInfo and not self._unique_id:
+            self._unique_id = self._deviceInfo.epgCountryCode + "".join(
+                e for e in self._deviceInfo.serialNumber.casefold() if e.isalnum()
+            )
+
+    def _setPowerStatus(self, powerStatus):
         if powerStatus == SKY_STATE_OFF and self._available:
             self._available = False
-            _LOGGER.info(f"I0010M - Device is not avaiable: {self._remote.host}")
+            _LOGGER.info(f"I0010M - Device is not available: {self.name}")
 
         if powerStatus != SKY_STATE_OFF and not self._available:
             self._available = True
-            _LOGGER.info(f"I0020M - Device is now avaiable: {self._remote.host}")
-
-        if self._remote.serialNumber:
-            self._unique_id = self._remote.country + "".join(
-                e for e in self._remote.serialNumber.casefold() if e.isalnum()
-            )
+            if self._startupSetup:
+                _LOGGER.info(f"I0020M - Device is now available: {self.name}")
+            else:
+                self._startupSetup = True
+                _LOGGER.warning(f"W0020M - Device is now available: {self.name}")
