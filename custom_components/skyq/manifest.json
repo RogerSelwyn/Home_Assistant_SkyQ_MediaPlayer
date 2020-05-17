@@ -5,7 +5,7 @@
   "issue_tracker": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues",
   "codeowners": ["@rogerselwyn"],
   "requirements": [
-    "pyskyqremote==0.2.13",
+    "pyskyqremote==0.2.14",
     "aiohttp==3.6.2",
     "voluptuous==0.11.7"
   ],
