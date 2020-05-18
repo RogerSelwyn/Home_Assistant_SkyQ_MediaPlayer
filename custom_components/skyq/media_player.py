@@ -167,6 +167,7 @@ class SkyQDevice(MediaPlayerEntity):
         self._startupSetup = True
         self._unique_id = None
         self._deviceInfo = None
+        self._firstError = True
 
         if not (output_programme_image):
             self._enabled_features ^= FEATURE_IMAGE
@@ -434,7 +435,7 @@ class SkyQDevice(MediaPlayerEntity):
 
         except Exception as err:
             _LOGGER.exception(
-                f"X0020M - Current Media retrieval failed: {currentMedia} : {err}"
+                f"X0010M - Current Media retrieval failed: {currentMedia} : {err}"
             )
 
     async def _async_getAppImageUrl(self, appTitle):
@@ -442,7 +443,6 @@ class SkyQDevice(MediaPlayerEntity):
         if appTitle == self._lastAppTitle:
             return self._appImageUrl
 
-        self._lastAppTitle = appTitle
         self._appImageUrl = None
 
         appImageUrl = APP_IMAGE_URL_BASE.format(appTitle.casefold())
@@ -461,14 +461,28 @@ class SkyQDevice(MediaPlayerEntity):
                 if response.status == HTTP_OK:
                     self._appImageUrl = appImageUrl
 
+                self._lastAppTitle = appTitle
+
                 return self._appImageUrl
-        except asyncio.TimeoutError as err:
-            _LOGGER.info(f"I0030M - Image file check timed out: {appImageUrl} : {err}")
+        except aiohttp.client_exceptions.ClientConnectorError as err:
+            # This error when server is starting up and app running
+            if self._firstError:
+                self._firstError = False
+            else:
+                _LOGGER.exception(
+                    f"X0020M - Image file check failed: {request_url} : {err}"
+                )
+                self._lastAppTitle = appTitle
             return self._appImageUrl
-        except aiohttp.ClientError as err:
+        except asyncio.TimeoutError as err:
+            _LOGGER.info(f"I0030M - Image file check timed out: {request_url} : {err}")
+            self._lastAppTitle = appTitle
+            return self._appImageUrl
+        except (aiohttp.ClientError, Exception) as err:
             _LOGGER.exception(
-                f"X0010M - Image file check failed: {appImageUrl} : {err}"
+                f"X0030M - Image file check failed: {request_url} : {err}"
             )
+            self._lastAppTitle = appTitle
             return self._appImageUrl
 
     async def _async_getDeviceInfo(self):
