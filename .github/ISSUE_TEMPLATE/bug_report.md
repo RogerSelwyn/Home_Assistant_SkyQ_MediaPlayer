@@ -10,9 +10,6 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-1. What version of SkyQ component are you using?
-2. What was the last version where the problem was not shown?
-
 **To Reproduce**
 Steps to reproduce the behavior:
 1. What were you doing/watching at the time ?
@@ -25,6 +22,10 @@ A clear and concise description of what you expected to happen.
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
+
+**Component versions**
+1. What version of SkyQ component are you using?
+2. What was the last version where the problem was not shown?
 
 **Your config.yaml**
 ```yaml
