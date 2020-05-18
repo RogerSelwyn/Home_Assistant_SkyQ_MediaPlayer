@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.1.8.beta4 (17/05/2020)
+## v2.1.8.beta4 (18/05/2020)
 
 ### Enhancements
 - [Added link to issues in manifest](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/22ca72c4c9c6b8089e47dd9a7e2e8b1e51696f02) - @RogerSelwyn
