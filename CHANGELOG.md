@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.1.8.beta4 (18/05/2020)
+## v2.1.8 (21/05/2020)
 
 ### Enhancements
 - [Added link to issues in manifest](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/22ca72c4c9c6b8089e47dd9a7e2e8b1e51696f02) - @RogerSelwyn
@@ -10,7 +10,7 @@
 - [Changed to update entity at startup](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0ed9de33e90101d7edff01af406723da8a31e381) - @RogerSelwyn
 
 ### Maintenance
-- [Bump pyskyqremote to 0.2.17](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/df1bd38d41ea592f45d5efbbdc2fe0697023dd54) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.18](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a9bb53edc32e660648d66915c2be73eab59778ea) - @RogerSelwyn
 - [Fixed issue with app image check at startup](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/be9137b3d178068062a221ddf48f290f179bf831) - @RogerSelwyn
 - [Updated to use getDeviceInformation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/349e82cf9c8c71d419d926c5d0fc03edd22f97cb) - @RogerSelwyn
 - [Removed deprecated code](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d20cbad11fa4226d1dacd3b21f157de1cf7d87fd) - @RogerSelwyn
@@ -24,6 +24,7 @@
 - [Bump aiohttp from 3.6.1 to 3.6.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fa21acb6036e8e62987f8f75b8914900cf283921) - @dependabot-preview[bot]
 - [Remove tracking of homeassistant version](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6322855f7515588699b93bb958b369e442ef5c8d) - @RogerSelwyn
 - [Added requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5f54ced49f59ffd16c680f4778606c8711e58bca) - @RogerSelwyn
+- [Update bug_report.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0658e36ae9e0a2290bc531076c6557aed2bd11a5) - @RogerSelwyn
 
 ## v2.1.7 (10/05/2020)
 ### Enhancements
