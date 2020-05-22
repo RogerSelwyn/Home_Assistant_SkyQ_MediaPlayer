@@ -120,11 +120,13 @@ async def async_setup_platform(hass, config, add_entities, discovery_info=None):
             f"Use of 'config_directory' is deprecated since it is no longer required. You set it to {config_directory}."
         )
 
-    remote = await hass.async_add_executor_job(SkyQRemote, host, country, test_channel)
+    remote = await hass.async_add_executor_job(SkyQRemote, host)
 
     player = SkyQDevice(
         hass,
         remote,
+        test_channel,
+        country,
         config.get(CONF_NAME),
         config.get(CONF_SOURCES),
         config.get(CONF_ROOM),
@@ -142,6 +144,8 @@ class SkyQDevice(MediaPlayerEntity):
         self,
         hass,
         remote,
+        test_channel,
+        overrideCountry,
         name,
         sources,
         room,
@@ -153,6 +157,8 @@ class SkyQDevice(MediaPlayerEntity):
         self._name = name
         self._state = STATE_OFF
         self._enabled_features = ENABLED_FEATURES
+        self._test_channel = test_channel
+        self._overrideCountry = overrideCountry
         self._title = None
         self._channel = None
         self._episode = None
@@ -486,6 +492,9 @@ class SkyQDevice(MediaPlayerEntity):
             return self._appImageUrl
 
     async def _async_getDeviceInfo(self):
+        await self.hass.async_add_executor_job(
+            self._remote.setOverrides, self._overrideCountry, self._test_channel
+        )
         self._deviceInfo = await self.hass.async_add_executor_job(
             self._remote.getDeviceInformation
         )
