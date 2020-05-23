@@ -1,0 +1,44 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "This Sky Q box is already configured."
+    },
+    "error": {
+      "cannot_connect": "Failed to connect, invalid host."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "host": "Host",
+          "name": "Name"
+        },
+        "description": "Set up Sky Q integration. If you have problems with configuration go to: https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer \n\nEnsure that your Sky Q box is powered on.",
+        "title": "Sky Q"
+      }
+    }
+  },
+  "options": {
+    "error": {
+      "cannot_connect": "Failed to connect.",
+      "invalid_sources": "Custom sources string is invalid - should be JSON"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "channel_sources": "List of channel sources",
+          "sources": "Custom sources - read Github",
+          "output_programme_image": "Show programme image",
+          "generate_switches_for_channels": "Generate switches for channels",
+          "live_tv": "Show live TV details",
+          "room": "Optional room name - required for switches",
+          "country": "Override country"
+        },
+        "title": "Options for Sky Q"
+      },
+      "retry": {
+        "data": {},
+        "title": "Please restart Sky Q box and retry"
+      }
+    }
+  }
+}
