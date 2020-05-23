@@ -18,6 +18,8 @@ from homeassistant.const import (
 )
 
 DOMAIN = "skyq"
+SKYQREMOTE = "skyqremote"
+UNDO_UPDATE_LISTENER = "undo_update_listener"
 
 SUPPORT_SKYQ = (
     SUPPORT_TURN_OFF
@@ -33,6 +35,7 @@ SUPPORT_SKYQ = (
 )
 
 CONF_SOURCES = "sources"
+CONF_CHANNEL_SOURCES = "channel_sources"
 CONF_ROOM = "room"
 CONF_DIR = "config_directory"
 CONF_GEN_SWITCH = "generate_switches_for_channels"

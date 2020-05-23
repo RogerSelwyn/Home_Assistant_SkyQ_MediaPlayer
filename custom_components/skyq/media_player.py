@@ -53,6 +53,7 @@ from .const import (
     APP_TITLES,
     APP_IMAGE_URL_BASE,
     CONF_SOURCES,
+    CONF_CHANNEL_SOURCES,
     CONF_ROOM,
     CONF_DIR,
     CONF_GEN_SWITCH,
@@ -67,6 +68,7 @@ from .const import (
     CONST_TEST,
     DEVICE_CLASS,
     DOMAIN,
+    SKYQREMOTE,
     FEATURE_BASIC,
     FEATURE_IMAGE,
     FEATURE_LIVE_TV,
@@ -102,7 +104,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 )
 
 
-async def async_setup_platform(hass, config, add_entities, discovery_info=None):
+async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     """Set up the SkyQ platform."""
     host = config.get(CONF_HOST)
 
@@ -127,14 +129,45 @@ async def async_setup_platform(hass, config, add_entities, discovery_info=None):
         remote,
         test_channel,
         country,
+        None,
         config.get(CONF_NAME),
         config.get(CONF_SOURCES),
         config.get(CONF_ROOM),
         config.get(CONF_GEN_SWITCH),
         config.get(CONF_OUTPUT_PROGRAMME_IMAGE),
         config.get(CONF_LIVE_TV),
+        None,
     )
-    add_entities([player], True)
+    async_add_entities([player], True)
+
+
+async def async_setup_entry(hass, config_entry, async_add_entities):
+    """Set up a SKY Q entity."""
+    country = config_entry.options.get(CONF_COUNTRY, CONST_DEFAULT)
+    if country == CONST_DEFAULT:
+        country = None
+
+    test_channel = config_entry.options.get(CONF_TEST_CHANNEL, CONST_TEST)
+    if test_channel == CONST_TEST:
+        test_channel = None
+
+    remote = hass.data[DOMAIN][config_entry.entry_id][SKYQREMOTE]
+
+    player = SkyQDevice(
+        hass,
+        remote,
+        test_channel,
+        country,
+        config_entry.unique_id,
+        config_entry.data[CONF_NAME],
+        config_entry.options.get(CONF_SOURCES, {}),
+        config_entry.options.get(CONF_ROOM, CONST_DEFAULT_ROOM),
+        config_entry.options.get(CONF_GEN_SWITCH, False),
+        config_entry.options.get(CONF_OUTPUT_PROGRAMME_IMAGE, True),
+        config_entry.options.get(CONF_LIVE_TV, True),
+        config_entry.options.get(CONF_CHANNEL_SOURCES, {}),
+    )
+    async_add_entities([player], True)
 
 
 class SkyQDevice(MediaPlayerEntity):
@@ -146,12 +179,14 @@ class SkyQDevice(MediaPlayerEntity):
         remote,
         test_channel,
         overrideCountry,
+        unique_id,
         name,
         sources,
         room,
         generate_switches_for_channels,
         output_programme_image,
         live_tv,
+        channel_sources,
     ):
         """Initialise the SkyQRemote."""
         self._name = name
@@ -171,9 +206,10 @@ class SkyQDevice(MediaPlayerEntity):
         self._remote = remote
         self._available = True
         self._startupSetup = True
-        self._unique_id = None
+        self._unique_id = unique_id
         self._deviceInfo = None
         self._firstError = True
+        self._channel_list = None
 
         if not (output_programme_image):
             self._enabled_features ^= FEATURE_IMAGE
@@ -184,7 +220,9 @@ class SkyQDevice(MediaPlayerEntity):
         if not (generate_switches_for_channels):
             self._enabled_features ^= FEATURE_SWITCHES
 
-        self._source_names = sources or {}
+        self._source_names = sources or []
+        self._channel_sources = channel_sources or []
+        self._source_list = [*self._source_names.keys()] + self._channel_sources
 
         if self._enabled_features & FEATURE_SWITCHES:
             SwitchMaker(hass, name, room, [*self._source_names.keys()])
@@ -217,7 +255,7 @@ class SkyQDevice(MediaPlayerEntity):
     @property
     def source_list(self):
         """Get the list of sources for the device."""
-        return [*self._source_names.keys()]
+        return self._source_list
 
     @property
     def media_image_url(self):
@@ -356,9 +394,15 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def async_select_source(self, source):
         """Select the specified source."""
-        await self.hass.async_add_executor_job(
-            self._remote.press, self._source_names.get(source).split(",")
-        )
+        command = None
+        if source in self._source_names:
+            command = self._source_names.get(source).split(",")
+        else:
+            channel = next(c for c in self._channel_list if c.channelname == source)
+        if channel:
+            command = list(channel.channelno)
+        if command:
+            await self.hass.async_add_executor_job(self._remote.press, command)
 
     async def async_play_media(self, media_id, media_type):
         """Perform a media action."""
@@ -498,10 +542,25 @@ class SkyQDevice(MediaPlayerEntity):
         self._deviceInfo = await self.hass.async_add_executor_job(
             self._remote.getDeviceInformation
         )
-        if self._deviceInfo and not self._unique_id:
-            self._unique_id = self._deviceInfo.epgCountryCode + "".join(
-                e for e in self._deviceInfo.serialNumber.casefold() if e.isalnum()
-            )
+        if self._deviceInfo:
+            if not self._unique_id:
+                test = ""
+                if self._test_channel:
+                    test = "test"
+                self._unique_id = (
+                    test
+                    + self._deviceInfo.countryCode
+                    + "".join(
+                        e
+                        for e in self._deviceInfo.serialNumber.casefold()
+                        if e.isalnum()
+                    )
+                )
+            if not self._channel_list and len(self._channel_sources) > 0:
+                channelData = await self.hass.async_add_executor_job(
+                    self._remote.getChannelList
+                )
+                self._channel_list = channelData.channels
 
     def _setPowerStatus(self, powerStatus):
         if powerStatus == SKY_STATE_OFF and self._available:

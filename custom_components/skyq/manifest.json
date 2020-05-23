@@ -9,5 +9,6 @@
     "aiohttp==3.6.2",
     "voluptuous==0.11.7"
   ],
-  "quality_scale": "silver"
+  "quality_scale": "silver",
+  "config_flow": true
 }
