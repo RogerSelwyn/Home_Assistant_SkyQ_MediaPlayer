@@ -222,7 +222,10 @@ class SkyQDevice(MediaPlayerEntity):
 
         self._source_names = sources or []
         self._channel_sources = channel_sources or []
-        self._source_list = [*self._source_names.keys()] + self._channel_sources
+        self._source_list = []
+        if len(self._source_names) > 0:
+            self._source_list = [*self._source_names.keys()]
+        self._source_list += self._channel_sources
 
         if self._enabled_features & FEATURE_SWITCHES:
             SwitchMaker(hass, name, room, [*self._source_names.keys()])

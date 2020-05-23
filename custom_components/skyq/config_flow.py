@@ -127,8 +127,8 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                 self._channelList.append(channel.channelname)
 
             return await self.async_step_user()
-        else:
-            return await self.async_step_retry()
+
+        return await self.async_step_retry()
 
     async def async_step_user(self, user_input=None):
         """Handle a flow initialized by the user."""
