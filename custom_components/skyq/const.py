@@ -46,9 +46,6 @@ CONF_TEST_CHANNEL = "test_channel"
 CHANNEL_SOURCES_DISPLAY = "channel_sources_display"
 
 CONST_DEFAULT_ROOM = "Default Room"
-CONST_DEPRECATED = "(deprecated)"
-CONST_DEFAULT = "(default)"
-CONST_TEST = "(test)"
 CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
 
 DEVICE_CLASS = "tv"
