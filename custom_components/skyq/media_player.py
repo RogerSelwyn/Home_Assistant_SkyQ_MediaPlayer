@@ -113,9 +113,10 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         )
 
     unique_id = None
+    name = config.get(CONF_NAME)
 
     await _async_setup_platform_entry(
-        hass, config, async_add_entities, remote, unique_id, config.get(CONF_NAME),
+        hass, config, async_add_entities, remote, unique_id, name,
     )
 
 
@@ -123,13 +124,11 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up a SKY Q entity."""
     remote = hass.data[DOMAIN][config_entry.entry_id][SKYQREMOTE]
 
+    unique_id = config_entry.unique_id
+    name = config_entry.data[CONF_NAME]
+
     await _async_setup_platform_entry(
-        hass,
-        config_entry.options,
-        async_add_entities,
-        remote,
-        config_entry.unique_id,
-        config_entry.data[CONF_NAME],
+        hass, config_entry.options, async_add_entities, remote, unique_id, name,
     )
 
 
@@ -529,24 +528,19 @@ class SkyQDevice(MediaPlayerEntity):
             self._remote.getDeviceInformation
         )
         if self._deviceInfo:
-            if not self._unique_id:
-                test = ""
-                if self._test_channel:
-                    test = "test"
-                self._unique_id = (
-                    test
-                    + self._deviceInfo.countryCode
-                    + "".join(
-                        e
-                        for e in self._deviceInfo.serialNumber.casefold()
-                        if e.isalnum()
-                    )
-                )
+            self._setUniqueId()
+
             if not self._channel_list and len(self._channel_sources) > 0:
                 channelData = await self.hass.async_add_executor_job(
                     self._remote.getChannelList
                 )
                 self._channel_list = channelData.channels
+
+    def _setUniqueId(self):
+        if not self._unique_id:
+            self._unique_id = self._deviceInfo.epgCountryCode + "".join(
+                e for e in self._deviceInfo.serialNumber.casefold() if e.isalnum()
+            )
 
     def _setPowerStatus(self, powerStatus):
         if powerStatus == SKY_STATE_OFF and self._available:
