@@ -43,6 +43,7 @@ CONF_OUTPUT_PROGRAMME_IMAGE = "output_programme_image"
 CONF_LIVE_TV = "live_tv"
 CONF_COUNTRY = "country"
 CONF_TEST_CHANNEL = "test_channel"
+CHANNEL_SOURCES_DISPLAY = "channel_sources_display"
 
 CONST_DEFAULT_ROOM = "Default Room"
 CONST_DEPRECATED = "(deprecated)"

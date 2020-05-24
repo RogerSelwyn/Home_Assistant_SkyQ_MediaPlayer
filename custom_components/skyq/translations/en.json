@@ -25,7 +25,7 @@
     "step": {
       "user": {
         "data": {
-          "channel_sources": "List of channel sources",
+          "channel_sources_display": "List of channel sources",
           "sources": "Custom sources - read Github",
           "output_programme_image": "Show programme image",
           "generate_switches_for_channels": "Generate switches for channels",
