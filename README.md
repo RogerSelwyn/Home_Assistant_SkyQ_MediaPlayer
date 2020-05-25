@@ -5,7 +5,7 @@
 
 # Sky Q component for Home Assistant
 
-The skyq platform allows you to control a SkyQ set top box.
+The skyq platform allows you to control a Sky Q set top box.
 
 **Note:** Whilst it will pull back information for UK boxes for current channel and live programme, it will do this for a very limited set of countries (currently UK, and any countries that use the same EPG/images, plus Italy). If you are in an unsupported country, or don't want this information set 'live_tv' to False in your config.
 
