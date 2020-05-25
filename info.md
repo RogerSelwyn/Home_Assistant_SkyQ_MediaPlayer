@@ -12,11 +12,11 @@
 
 {% endif %}
 
-[![maintained](https://img.shields.io/maintenance/yes/2020.svg)](#) [![maintainer](https://img.shields.io/badge/maintainer-%20%40RogerSelwyn-blue.svg)](https://github.com/RogerSelwyn) [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs) [![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg)](https://community.home-assistant.io/t/custom-component-skyq-media-player/140306)
+![GitHub release](https://img.shields.io/github/v/release/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer) [![maintained](https://img.shields.io/maintenance/yes/2020.svg)](#) [![maintainer](https://img.shields.io/badge/maintainer-%20%40RogerSelwyn-blue.svg)](https://github.com/RogerSelwyn) [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs) [![Community Forum](https://img.shields.io/badge/community-forum-brightgreen.svg)](https://community.home-assistant.io/t/custom-component-skyq-media-player/140306)
 
-# SkyQ component for Home Assistant
+# Sky Q component for Home Assistant
 
-The skyq platform allows you to control a SkyQ set top box.
+The skyq platform allows you to control a Sky Q set top box.
 
 **Note:** Whilst it will pull back information for UK boxes for current channel and live programme, it will do this for a very limited set of countries (currently UK, and any countries that use the same EPG/images, plus Italy). If you are in an unsupported country, or don't want this information set 'live_tv' to False in your config.
 
@@ -78,9 +78,6 @@ The name you would like to give to the SkyQ set top box.
 
 **sources** _(list)(Required)_  
 List of channels or other commands that will appear in the source selection.
-
-**name** _(string)(Required)_  
-The name you would like to give to the SkyQ set top box.
 
 **output_programme_image** _(boolean)(Optional)_ Default True  
 Enables you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing.
