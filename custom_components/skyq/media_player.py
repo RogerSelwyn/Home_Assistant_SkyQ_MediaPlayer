@@ -383,9 +383,11 @@ class SkyQDevice(MediaPlayerEntity):
         if source in self._source_names:
             command = self._source_names.get(source).split(",")
         else:
-            channel = next(c for c in self._channel_list if c.channelname == source)
-            if channel:
+            try:
+                channel = next(c for c in self._channel_list if c.channelname == source)
                 command = list(channel.channelno)
+            except TypeError:
+                command = source
         if command:
             await self.hass.async_add_executor_job(self._remote.press, command)
 
