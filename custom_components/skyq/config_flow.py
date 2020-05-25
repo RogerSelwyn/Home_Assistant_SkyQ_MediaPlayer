@@ -4,6 +4,7 @@ import logging
 import re
 import json
 import voluptuous as vol
+import pycountry
 
 from homeassistant import config_entries, exceptions
 from homeassistant.core import callback
@@ -113,7 +114,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._room = config_entry.options.get(CONF_ROOM)
         self._gen_switch = config_entry.options.get(CONF_GEN_SWITCH, False)
         self._live_tv = config_entry.options.get(CONF_LIVE_TV, True)
-        self._country = config_entry.options.get(CONF_COUNTRY, CONST_DEFAULT)
+        self._country = self._convertCountry(
+            alpha_3=config_entry.options.get(CONF_COUNTRY, CONST_DEFAULT)
+        )
         self._output_programme_image = config_entry.options.get(
             CONF_OUTPUT_PROGRAMME_IMAGE, True
         )
@@ -125,7 +128,12 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._remote = self.hass.data[DOMAIN][self._config_entry.entry_id][SKYQREMOTE]
 
         s = set(KNOWN_COUNTRIES[country] for country in KNOWN_COUNTRIES)
-        self._country_list = [CONST_DEFAULT] + sorted(list(s))
+        countryNames = []
+        for alpha3 in s:
+            countryName = self._convertCountry(alpha_3=alpha3)
+            countryNames.append(countryName)
+
+        self._country_list = [CONST_DEFAULT] + sorted(countryNames)
 
         if self._remote.deviceSetup:
             channelData = await self.hass.async_add_executor_job(
@@ -179,6 +187,8 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             self._country = user_input.get(CONF_COUNTRY)
             if self._country == CONST_DEFAULT:
                 user_input.pop(CONF_COUNTRY)
+            else:
+                user_input[CONF_COUNTRY] = self._convertCountry(name=self._country)
 
             try:
                 self._sources = user_input.get(CONF_SOURCES)
@@ -225,6 +235,12 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         return self.async_show_form(
             step_id="retry", data_schema=vol.Schema({}), errors=errors,
         )
+
+    def _convertCountry(self, alpha_3=None, name=None):
+        if name:
+            return pycountry.countries.get(name=name).alpha_3
+        if alpha_3:
+            return pycountry.countries.get(alpha_3=alpha_3).name
 
 
 class CannotConnect(exceptions.HomeAssistantError):
