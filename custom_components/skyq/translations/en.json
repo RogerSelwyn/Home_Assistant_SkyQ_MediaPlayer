@@ -33,7 +33,8 @@
           "room": "Optional room name - required for switches",
           "country": "Override country"
         },
-        "title": "Options for Sky Q"
+        "title": "Sky Q",
+        "description": "Setup options for {name}"
       },
       "retry": {
         "data": {},

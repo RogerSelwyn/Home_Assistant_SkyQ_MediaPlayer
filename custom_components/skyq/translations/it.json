@@ -1,0 +1,45 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Questa casella Sky Q è già configurata.."
+    },
+    "error": {
+      "cannot_connect": "Impossibile connettersi, host non valido."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "host": "Host",
+          "name": "Nome"
+        },
+        "description": "Imposta l'integrazione Sky Q. In caso di problemi con la configurazione, visitare: https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer \n\nAccertarsi che la casella Sky Q sia accesa.",
+        "title": "Sky Q"
+      }
+    }
+  },
+  "options": {
+    "error": {
+      "cannot_connect": "Connessione fallita.",
+      "invalid_sources": "La stringa di origini personalizzate non è valida: deve essere JSON"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "channel_sources_display": "Elenco delle fonti del canale",
+          "sources": "Fonti personalizzate - leggi Github",
+          "output_programme_image": "Mostra immagine del programma",
+          "generate_switches_for_channels": "Genera switch per canali",
+          "live_tv": "Mostra i dettagli della TV in diretta",
+          "room": "Nome stanza opzionale - richiesto per gli interruttori",
+          "country": "Sostituisci paese"
+        },
+        "title": "Sky Q",
+        "description": "Opzioni di configurazione per {name}"
+      },
+      "retry": {
+        "data": {},
+        "title": "Riavvia la casella Sky Q e riprova"
+      }
+    }
+  }
+}
