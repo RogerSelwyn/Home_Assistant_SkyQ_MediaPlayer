@@ -103,6 +103,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
     def __init__(self, config_entry):
         """Initialize Sky Q options flow."""
+        self._name = config_entry.title
         self._config_entry = config_entry
         self._remote = None
         self._channel_sources = config_entry.options.get(CONF_CHANNEL_SOURCES, [])
@@ -114,9 +115,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._room = config_entry.options.get(CONF_ROOM)
         self._gen_switch = config_entry.options.get(CONF_GEN_SWITCH, False)
         self._live_tv = config_entry.options.get(CONF_LIVE_TV, True)
-        self._country = self._convertCountry(
-            alpha_3=config_entry.options.get(CONF_COUNTRY, CONST_DEFAULT)
-        )
+        self._country = config_entry.options.get(CONF_COUNTRY, CONST_DEFAULT)
+        if self._country != CONST_DEFAULT:
+            self._country = self._convertCountry(alpha_3=self._country)
         self._output_programme_image = config_entry.options.get(
             CONF_OUTPUT_PROGRAMME_IMAGE, True
         )
@@ -201,6 +202,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
         return self.async_show_form(
             step_id="user",
+            description_placeholders={CONF_NAME: self._name},
             data_schema=vol.Schema(
                 {
                     vol.Optional(
