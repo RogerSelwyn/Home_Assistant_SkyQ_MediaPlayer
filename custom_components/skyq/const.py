@@ -47,6 +47,7 @@ CHANNEL_SOURCES_DISPLAY = "channel_sources_display"
 
 CONST_DEFAULT_ROOM = "Default Room"
 CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
+CONST_DEFAULT = "Default"
 
 DEVICE_CLASS = "tv"
 
