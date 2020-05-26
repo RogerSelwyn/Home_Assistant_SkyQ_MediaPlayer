@@ -403,7 +403,7 @@ class SkyQDevice(MediaPlayerEntity):
         self._setPowerStatus(powerState)
         if powerState == SKY_STATE_ON:
             self._state = STATE_PLAYING
-            # this checks is flakey during channel changes, so only used for pause checks if we know its on
+            # This check is flakey during channel changes, so only used for pause checks if we know its on
             currentState = await self.hass.async_add_executor_job(
                 self._remote.getCurrentState
             )

@@ -3,6 +3,8 @@ import ipaddress
 import logging
 import re
 import json
+from operator import attrgetter
+
 import voluptuous as vol
 import pycountry
 
@@ -170,14 +172,22 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             self._channel_sources_display = user_input[CHANNEL_SOURCES_DISPLAY]
             user_input.pop(CHANNEL_SOURCES_DISPLAY)
             if len(self._channel_sources_display) > 0:
-                channel_sources = []
+                channelitems = []
                 for channel in self._channel_sources_display:
                     channelData = next(
                         c
                         for c in self._channel_list
                         if channel == CHANNEL_DISPLAY.format(c.channelno, c.channelname)
                     )
-                    channel_sources.append(channelData.channelname)
+                    channelitems.append(channelData)
+
+                channelnosorted = sorted(channelitems, key=attrgetter("channelno"))
+                channelsorted = sorted(
+                    channelnosorted, key=attrgetter("channeltype"), reverse=True
+                )
+                channel_sources = []
+                for c in channelsorted:
+                    channel_sources.append(c.channelname)
 
                 user_input[CONF_CHANNEL_SOURCES] = channel_sources
 
