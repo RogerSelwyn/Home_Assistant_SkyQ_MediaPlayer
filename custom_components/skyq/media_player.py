@@ -77,6 +77,7 @@ from .const import (
     SUPPORT_SKYQ,
     TIMEOUT,
 )
+from .utils import convert_sources
 
 SCAN_INTERVAL = timedelta(seconds=10)
 
@@ -135,6 +136,9 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 async def _async_setup_platform_entry(
     hass, config_item, async_add_entities, remote, unique_id, name
 ):
+    sources = config_item.get(CONF_SOURCES, {})
+    if type(sources) == list:
+        sources = convert_sources(sources_list=sources)
     player = SkyQDevice(
         hass,
         remote,
@@ -142,7 +146,7 @@ async def _async_setup_platform_entry(
         name,
         config_item.get(CONF_TEST_CHANNEL),
         config_item.get(CONF_COUNTRY),
-        config_item.get(CONF_SOURCES, {}),
+        sources,
         config_item.get(CONF_ROOM, CONST_DEFAULT_ROOM),
         config_item.get(CONF_GEN_SWITCH, False),
         config_item.get(CONF_OUTPUT_PROGRAMME_IMAGE, True),

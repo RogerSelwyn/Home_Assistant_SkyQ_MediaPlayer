@@ -24,19 +24,17 @@ from .const import (
     CONF_COUNTRY,
     CONF_SOURCES,
     CONST_DEFAULT,
+    DATA_SCHEMA,
     CHANNEL_SOURCES_DISPLAY,
+    CHANNEL_DISPLAY,
     DOMAIN,
     SKYQREMOTE,
 )
+from .utils import convert_sources_JSON
 from pyskyqremote.skyq_remote import SkyQRemote
 from pyskyqremote.const import KNOWN_COUNTRIES
 
-CHANNEL_DISPLAY = "{0} - {1}"
-
-DATA_SCHEMA = {
-    vol.Required(CONF_HOST): str,
-    vol.Required(CONF_NAME, default="Sky Q"): str,
-}
+SORT_CHANNELS = False
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -110,9 +108,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._remote = None
         self._channel_sources = config_entry.options.get(CONF_CHANNEL_SOURCES, [])
 
-        self._sources = json.dumps(config_entry.options.get(CONF_SOURCES))
-        if self._sources == "null":
-            self._sources = None
+        self._sources = convert_sources_JSON(
+            sources_list=config_entry.options.get(CONF_SOURCES)
+        )
 
         self._room = config_entry.options.get(CONF_ROOM)
         self._gen_switch = config_entry.options.get(CONF_GEN_SWITCH, False)
@@ -172,6 +170,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             self._channel_sources_display = user_input[CHANNEL_SOURCES_DISPLAY]
             user_input.pop(CHANNEL_SOURCES_DISPLAY)
             if len(self._channel_sources_display) > 0:
+
                 channelitems = []
                 for channel in self._channel_sources_display:
                     channelData = next(
@@ -181,13 +180,18 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                     )
                     channelitems.append(channelData)
 
-                channelnosorted = sorted(channelitems, key=attrgetter("channelno"))
-                channelsorted = sorted(
-                    channelnosorted, key=attrgetter("channeltype"), reverse=True
-                )
-                channel_sources = []
-                for c in channelsorted:
-                    channel_sources.append(c.channelname)
+                if SORT_CHANNELS:
+                    channelnosorted = sorted(channelitems, key=attrgetter("channelno"))
+                    channelsorted = sorted(
+                        channelnosorted, key=attrgetter("channeltype"), reverse=True
+                    )
+                    channel_sources = []
+                    for c in channelsorted:
+                        channel_sources.append(c.channelname)
+                else:
+                    channel_sources = []
+                    for c in channelitems:
+                        channel_sources.append(c.channelname)
 
                 user_input[CONF_CHANNEL_SOURCES] = channel_sources
 
@@ -204,10 +208,12 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             try:
                 self._sources = user_input.get(CONF_SOURCES)
                 if self._sources:
-                    user_input[CONF_SOURCES] = json.loads(self._sources)
+                    user_input[CONF_SOURCES] = convert_sources_JSON(
+                        sources_json=self._sources
+                    )
 
                 return self.async_create_entry(title="", data=user_input)
-            except Exception:
+            except json.decoder.JSONDecodeError:
                 errors["base"] = "invalid_sources"
 
         return self.async_show_form(
