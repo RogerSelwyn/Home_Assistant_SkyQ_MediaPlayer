@@ -157,7 +157,7 @@ async def _async_setup_platform_entry(
 
     if config.enabled_features & FEATURE_SWITCHES:
         SwitchMaker(
-            config_dir, name, config.room, config.sources,
+            config_dir, name, config.room, config.source_names,
         )
 
     player = SkyQDevice(remote, config,)
@@ -328,6 +328,7 @@ class SkyQDevice(MediaPlayerEntity):
         powerStatus = await self.hass.async_add_executor_job(self._remote.powerStatus)
         if powerStatus == SKY_STATE_ON:
             await self.hass.async_add_executor_job(self._remote.press, "power")
+            await self.async_update()
 
     async def async_turn_on(self):
         """Turn SkyQ box on."""
@@ -336,24 +337,29 @@ class SkyQDevice(MediaPlayerEntity):
             await self.hass.async_add_executor_job(
                 self._remote.press, ["home", "dismiss"]
             )
+            await self.async_update()
 
     async def async_media_play(self):
         """Play the current media item."""
         await self.hass.async_add_executor_job(self._remote.press, "play")
         self._state = STATE_PLAYING
+        self.async_write_ha_state()
 
     async def async_media_pause(self):
         """Pause the current media item."""
         await self.hass.async_add_executor_job(self._remote.press, "pause")
         self._state = STATE_PAUSED
+        self.async_write_ha_state()
 
     async def async_media_next_track(self):
         """Fast forward the current media item."""
         await self.hass.async_add_executor_job(self._remote.press, "fastforward")
+        await self.async_update()
 
     async def async_media_previous_track(self):
         """Rewind the current media item."""
         await self.hass.async_add_executor_job(self._remote.press, "rewind")
+        await self.async_update()
 
     async def async_select_source(self, source):
         """Select the specified source."""
@@ -364,10 +370,11 @@ class SkyQDevice(MediaPlayerEntity):
             try:
                 channel = next(c for c in self._channel_list if c.channelname == source)
                 command = list(channel.channelno)
-            except TypeError:
+            except (TypeError, StopIteration):
                 command = source
         if command:
             await self.hass.async_add_executor_job(self._remote.press, command)
+            await self.async_update()
 
     async def async_play_media(self, media_id, media_type):
         """Perform a media action."""
@@ -375,6 +382,7 @@ class SkyQDevice(MediaPlayerEntity):
             await self.hass.async_add_executor_job(
                 self._remote.press, media_id.casefold()
             )
+            await self.async_update()
 
     async def _async_updateState(self):
         powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)
@@ -560,7 +568,7 @@ class Config:
         self.room = room
         self.test_channel = test_channel
         self.overrideCountry = overrideCountry
-        self.sources = sources
+        self.source_names = sources
         self.output_programme_image = output_programme_image
         self.live = live_tv
         self.channel_sources = channel_sources or []
@@ -575,12 +583,12 @@ class Config:
         if not (generate_switches_for_channels):
             self.enabled_features ^= FEATURE_SWITCHES
 
-        if type(self.sources) == list:
-            self.sources = convert_sources(sources_list=self.sources)
-        elif not self.sources:
-            self.sources = []
+        if type(self.source_names) == list:
+            self.source_names = convert_sources(sources_list=self.source_names)
+        elif not self.source_names:
+            self.source_names = []
 
         self.source_list = []
-        if self.sources and len(self.sources) > 0:
-            self.source_list = [*self.sources.keys()]
+        if self.source_names and len(self.source_names) > 0:
+            self.source_list = [*self.source_names.keys()]
         self.source_list += self.channel_sources
