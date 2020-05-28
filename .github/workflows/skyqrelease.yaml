@@ -1,0 +1,28 @@
+name: Sky Q Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release_zip_file:
+    name: Prepare release asset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v1
+
+      # Pack the SkyQ dir as a zip and upload to the release
+      - name: ZIP SkyQ Dir
+        run: |
+          cd /home/runner/work/skyq/skyq/custom_components/skyq
+          zip skyq.zip -r ./
+      - name: Upload zip to release
+        uses: svenstaro/upload-release-action@v1-release
+
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: /home/runner/work/skyq/skyq/custom_components/skyq/skyq.zip
+          asset_name: skyq.zip
+          tag: ${{ github.ref }}
+          overwrite: true
