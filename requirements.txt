@@ -1,4 +1,4 @@
 aiohttp==3.6.2
-pyskyqremote==0.2.19b1
+pyskyqremote==0.2.19
 voluptuous==0.11.7
 pycountry==19.8.18
