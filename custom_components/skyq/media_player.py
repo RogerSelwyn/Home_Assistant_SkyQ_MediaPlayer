@@ -561,7 +561,7 @@ class Config:
         if not (generate_switches_for_channels):
             self.enabled_features ^= FEATURE_SWITCHES
 
-        if type(self.source_names) == list:
+        if isinstance(self.source_names, list):
             self.source_names = convert_sources(sources_list=self.source_names)
         elif not self.source_names:
             self.source_names = []
