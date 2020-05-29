@@ -1,4 +1,10 @@
 """Constants for SkyQ."""
+import voluptuous as vol
+
+from homeassistant.const import (
+    CONF_HOST,
+    CONF_NAME,
+)
 
 from homeassistant.components.media_player.const import (
     SUPPORT_PAUSE,
@@ -18,6 +24,8 @@ from homeassistant.const import (
 )
 
 DOMAIN = "skyq"
+SKYQREMOTE = "skyqremote"
+UNDO_UPDATE_LISTENER = "undo_update_listener"
 
 SUPPORT_SKYQ = (
     SUPPORT_TURN_OFF
@@ -33,6 +41,7 @@ SUPPORT_SKYQ = (
 )
 
 CONF_SOURCES = "sources"
+CONF_CHANNEL_SOURCES = "channel_sources"
 CONF_ROOM = "room"
 CONF_DIR = "config_directory"
 CONF_GEN_SWITCH = "generate_switches_for_channels"
@@ -40,12 +49,12 @@ CONF_OUTPUT_PROGRAMME_IMAGE = "output_programme_image"
 CONF_LIVE_TV = "live_tv"
 CONF_COUNTRY = "country"
 CONF_TEST_CHANNEL = "test_channel"
+CHANNEL_SOURCES_DISPLAY = "channel_sources_display"
+CHANNEL_DISPLAY = "{0} - {1}"
 
 CONST_DEFAULT_ROOM = "Default Room"
-CONST_DEPRECATED = "(deprecated)"
-CONST_DEFAULT = "(default)"
-CONST_TEST = "(test)"
 CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
+CONST_DEFAULT = "Default"
 
 DEVICE_CLASS = "tv"
 
@@ -73,3 +82,8 @@ APP_TITLES = {
     "com.bskyb.epgui": "EPG",
 }
 APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
+
+DATA_SCHEMA = {
+    vol.Required(CONF_HOST): str,
+    vol.Required(CONF_NAME, default="Sky Q"): str,
+}

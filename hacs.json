@@ -1,7 +1,9 @@
 {
   "name": "SkyQ",
+  "zip_release": true,
   "homeassistant": "0.107",
   "content_in_root": false,
   "domains": ["media_player"],
-  "iot_class": "Local Polling"
+  "iot_class": "Local Polling",
+  "filename": "skyq.zip"
 }
