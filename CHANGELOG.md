@@ -1,5 +1,38 @@
 # Changelog
 
+## v2.2.0 Beta 1 (29/05/2020)
+
+### Enhancements
+- [Updated to add config flow](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bef91ba6c56afbe232fd609067069ab30af05da8) - @RogerSelwyn
+- [Added Italian](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/57eeb69a4a2e2e30de49cd6575c6a0d64a908718) - @RogerSelwyn
+
+### Fixes
+- [Fixed source commands not working](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ff77726ea984cbd98485ce055066ed771b742cdf) - @RogerSelwyn
+- [Revert unique_id creation for YAML entities](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/38017f971d1918e904d2f44ea19c925e47786958) - @RogerSelwyn
+- [Fixed source_list creation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a8757448baf0f874dd3d06305ffe86e052e8ce94) - @RogerSelwyn
+
+### Maintenance 
+- [Bump pyskyqremote to 0.2.19](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4d99d851cd1357293ed92d9ff17c7ae684b15982) - @RogerSelwyn
+- [Moved schema to schema.py](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/976fba5825a44a709745150bb6bd1b2c01ca8488) - @RogerSelwyn
+- [Update hacs.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/04510f138c685aed98abfa4748c4370717c016bd) - @RogerSelwyn
+- [Change to zip file deploy](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/73a296bdda69f0c16670d8d6ebc9e93456f6c4bf) - @RogerSelwyn
+- [Create skyqrelease.yaml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d18dfdb42874f7e6481fe60554366f5ba66702eb) - @RogerSelwyn
+- [Added update of state after command](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3714174327f1e5b6c0a409c872a91a8d30652a2b) - @RogerSelwyn
+- [Code tidy up](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b3847184a27cd31cd3854b180fd199349d619b9a) - @RogerSelwyn
+- [Changed to keep channel/custom source order](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e2634fe8c7e4e63b8f51cf84392bc498f638bdfb) - @RogerSelwyn
+- [Changed to sort channel sources by number](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0c8b1f7e9fbf5eaf81842eb058d755b3e2db6d9b) - @RogerSelwyn
+- [Allow pass through of unknown sources](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/66dc7193db96db1ba202917c6eb69b53cd191bbe) - @RogerSelwyn
+- [Put entity name in title of Options dialogue](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/057757c431f7e6c68c16d268c536e05e25d47719) - @RogerSelwyn
+- [Display country code as country name](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6ea5ae16b29c81550d7b473894f43247145a2dde) - @RogerSelwyn
+- [Added valid countries to options drop down](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/402ed9ae82b0c37aef58c929873d305a5e9cd80a) - @RogerSelwyn
+- [Tidied up startup code](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/89f2fbfa9cc36c11712b99975f5da23e7b2691fa) - @RogerSelwyn
+- [Updated to display channel numbers in options](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8664a7c5a82dac285d9bdacb7a614e2f8d7443bb) - @RogerSelwyn
+- [Fixed issues with source storage](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/809add5888bff29dcde62ed163c9de2f04192826) - @RogerSelwyn
+- [Added english translaton](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/13426594bbfcc5aee10c12b4643a8f2085b05754) - @RogerSelwyn
+- [Corrected translations](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4c0b41196a1022c66a4e02ea1190923819ec6232) - @RogerSelwyn
+- [Added translation files](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d54f751428ed64a854c71d5476f89aebb002da61) - @RogerSelwyn
+- [Restructure in support of config flow](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7f123164e7b10ecc0300387921135e82e3b4b21e) - @RogerSelwyn
+
 ## v2.1.8 (21/05/2020)
 
 ### Enhancements
