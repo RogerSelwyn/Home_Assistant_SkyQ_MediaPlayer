@@ -15,14 +15,14 @@ jobs:
       # Pack the SkyQ dir as a zip and upload to the release
       - name: ZIP SkyQ Dir
         run: |
-          cd /home/runner/work/skyq/skyq/custom_components/skyq
+          cd /home/runner/work/Home_Assistant_SkyQ_MediaPlayer/Home_Assistant_SkyQ_MediaPlayer/custom_components/skyq
           zip skyq.zip -r ./
       - name: Upload zip to release
         uses: svenstaro/upload-release-action@v1-release
 
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/skyq/skyq/custom_components/skyq/skyq.zip
+          file: /home/runner/work/Home_Assistant_SkyQ_MediaPlayer/Home_Assistant_SkyQ_MediaPlayer/custom_components/skyq/skyq.zip
           asset_name: skyq.zip
           tag: ${{ github.ref }}
           overwrite: true
