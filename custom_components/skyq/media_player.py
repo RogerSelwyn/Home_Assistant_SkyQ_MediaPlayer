@@ -1,11 +1,8 @@
 """The skyq platform allows you to control a SkyQ set top box."""
 import logging
-import voluptuous as vol
 import asyncio
 import aiohttp
-from datetime import timedelta
 
-import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 # from homeassistant.exceptions import PlatformNotReady
@@ -13,7 +10,6 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
-    CONF_SCAN_INTERVAL,
     HTTP_OK,
     STATE_OFF,
     STATE_UNKNOWN,
@@ -26,7 +22,6 @@ try:
 except ImportError:
     pass
 
-from homeassistant.components.media_player import PLATFORM_SCHEMA
 from homeassistant.components.media_player.const import (
     MEDIA_TYPE_TVSHOW,
     MEDIA_TYPE_APP,
@@ -79,27 +74,10 @@ from .const import (
 )
 from .utils import convert_sources
 
-SCAN_INTERVAL = timedelta(seconds=10)
 
 _LOGGER = logging.getLogger(__name__)
 
 ENABLED_FEATURES = FEATURE_BASIC | FEATURE_IMAGE | FEATURE_LIVE_TV | FEATURE_SWITCHES
-
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
-    {
-        vol.Required(CONF_SOURCES, default={}): {cv.string: cv.string},
-        vol.Required(CONF_HOST): cv.string,
-        vol.Required(CONF_NAME): cv.string,
-        vol.Optional(CONF_ROOM, default=CONST_DEFAULT_ROOM): cv.string,
-        vol.Optional(CONF_DIR): cv.string,
-        vol.Optional(CONF_GEN_SWITCH, default=False): cv.boolean,
-        vol.Optional(CONF_OUTPUT_PROGRAMME_IMAGE, default=True): cv.boolean,
-        vol.Optional(CONF_LIVE_TV, default=True): cv.boolean,
-        vol.Optional(CONF_COUNTRY): cv.string,
-        vol.Optional(CONF_TEST_CHANNEL): cv.string,
-        vol.Optional(CONF_SCAN_INTERVAL, default=SCAN_INTERVAL): cv.time_period,
-    }
-)
 
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):

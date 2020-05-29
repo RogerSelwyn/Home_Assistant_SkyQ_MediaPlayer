@@ -24,12 +24,12 @@ from .const import (
     CONF_COUNTRY,
     CONF_SOURCES,
     CONST_DEFAULT,
-    DATA_SCHEMA,
     CHANNEL_SOURCES_DISPLAY,
     CHANNEL_DISPLAY,
     DOMAIN,
     SKYQREMOTE,
 )
+from .schema import DATA_SCHEMA
 from .utils import convert_sources_JSON
 from pyskyqremote.skyq_remote import SkyQRemote
 from pyskyqremote.const import KNOWN_COUNTRIES
