@@ -69,7 +69,6 @@ media_player:
 Items marked '#' are not used for UI based configuration
 
 
-
 | **YAML**                                        | **UI**                            | **Default** | **Details** |
 | ------------------------------------------------|-----------------------------------|:-----------:|-------------|
 | platform<br>_(string)(Required)_                | n/a                               |             |Must be set to skyq |
@@ -89,11 +88,20 @@ To configure sources, set as:
 ```
 {"<YourChanneName>": "<button>,<button>,<button>", "<YourChanneName2>": "<button>,<button>,<button>"}.
 ```
+Example 
+```
+{"BBC1HD": "1,1,5", "BBC2": "1,0,2"}
+```
 
 #### Via YAML
 
 ```
 <YourChanneName> : ‘<button>,<button>,<button>’.
+```
+Example 
+```
+  BBC1HD: '1,1,5'
+  BBC2: '1,0,2'
 ```
 
 ### Supported buttons
