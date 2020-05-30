@@ -20,7 +20,8 @@
   "options": {
     "error": {
       "cannot_connect": "Failed to connect.",
-      "invalid_sources": "Custom sources string is invalid - should be JSON"
+      "invalid_sources": "Custom sources string is invalid - should be JSON",
+      "invalid_command": "Command in Custom sources is invalid - please check GitHub"
     },
     "step": {
       "user": {

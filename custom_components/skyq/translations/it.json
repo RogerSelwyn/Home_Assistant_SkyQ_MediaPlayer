@@ -20,7 +20,8 @@
   "options": {
     "error": {
       "cannot_connect": "Connessione fallita.",
-      "invalid_sources": "La stringa di origini personalizzate non è valida: deve essere JSON"
+      "invalid_sources": "La stringa di origini personalizzate non è valida: deve essere JSON",
+      "invalid_command": "Il comando in Origini personalizzate non è valido - controlla GitHub"
     },
     "step": {
       "user": {

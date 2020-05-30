@@ -211,10 +211,14 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                     user_input[CONF_SOURCES] = convert_sources_JSON(
                         sources_json=self._sources
                     )
+                    for source in user_input[CONF_SOURCES]:
+                        self._validate_commands(source)
 
                 return self.async_create_entry(title="", data=user_input)
             except json.decoder.JSONDecodeError:
                 errors["base"] = "invalid_sources"
+            except InvalidCommand:
+                errors["base"] = "invalid_command"
 
         return self.async_show_form(
             step_id="user",
@@ -260,10 +264,16 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         if alpha_3:
             return pycountry.countries.get(alpha_3=alpha_3).name
 
+    def _validate_commands(self, source):
+        commands = source[1].split(",")
+        for command in commands:
+            if command not in SkyQRemote.commands:
+                raise InvalidCommand()
+
 
 class CannotConnect(exceptions.HomeAssistantError):
     """Error to indicate we cannot connect."""
 
 
-class AbortFlow(exceptions.HomeAssistantError):
+class InvalidCommand(exceptions.HomeAssistantError):
     """Error to indicate we cannot connect."""
