@@ -136,7 +136,7 @@ async def _async_setup_platform_entry(
 
     if config.enabled_features & FEATURE_SWITCHES:
         SwitchMaker(
-            config_dir, name, config.room, config.custom_sources,
+            config_dir, name, config.room, config.source_list,
         )
 
     player = SkyQDevice(remote, config,)

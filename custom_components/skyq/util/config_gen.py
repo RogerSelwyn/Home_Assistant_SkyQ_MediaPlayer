@@ -24,7 +24,8 @@ class SwitchMaker:
         self._addSwitch("ff", "fastforward", "media_next_track")
         self._addSwitch("rw", "rewind", "media_previous_track")
 
-        for ch in channels:
+        dedup_channels = list(dict.fromkeys(channels))
+        for ch in dedup_channels:
             self._addSwitch(ch, ch, "select_source", True)
 
         self._f.close()
