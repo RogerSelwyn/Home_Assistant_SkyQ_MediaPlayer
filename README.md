@@ -43,7 +43,7 @@ There are two methods of configuration, via the Homa Assistant Integrations UI d
 
 ## Integrations UI
 
-At Integrations page, click to add a new Integration and search for Sky Q. Sky Q will only be visible if you have previously installed via one of the methods above and have restarted Home Assistant.
+On the Integrations page, click to add a new Integration and search for Sky Q. Sky Q will only be visible if you have previously installed via one of the methods above and have restarted Home Assistant.
 
 You will be asked to enter a host (which must be contactable on your network and name). The name defaults to Sky Q. Assuming the Sky Q box is switched on and the details are correct a device and entity will be created and be useable. You can then configure other items by clicking on Options on the Sky Q Integration card. Details are below.
 
