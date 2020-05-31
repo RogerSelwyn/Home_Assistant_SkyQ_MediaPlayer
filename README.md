@@ -41,7 +41,7 @@ For either install method you must also:
 
 There are two methods of configuration, via the Homa Assistant Integrations UI dialogue or via YAML. You cannot use both for the same Sky Q box, please use one or the other. Previous YAML configurations are not migrated the UI method, please continue to use YAML, or delete YAML, reboot and add via UI.
 
-## Integrations UI
+## Integrations UI (from v2.2.0)
 
 On the Integrations page, click to add a new Integration and search for Sky Q. Sky Q will only be visible if you have previously installed via one of the methods above and have restarted Home Assistant.
 
