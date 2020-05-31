@@ -39,7 +39,7 @@ For either install method you must also:
 
 # Media Player Configuration
 
-There are two methods of configuration, via the Homa Assistant Integrations UI dialogue or via YAML. You cannot use both for the same Sky Q box, please use one or the other. Previous YAML configurations are not migrated the GUI method.
+There are two methods of configuration, via the Homa Assistant Integrations UI dialogue or via YAML. You cannot use both for the same Sky Q box, please use one or the other. Previous YAML configurations are not migrated the UI method, please continue to use YAML, or delete YAML, reboot and add via UI.
 
 ## Integrations UI
 
