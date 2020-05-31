@@ -2,6 +2,7 @@
 import logging
 import asyncio
 import aiohttp
+from dataclasses import dataclass, field, InitVar
 
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -127,15 +128,15 @@ async def _async_setup_platform_entry(
         config_item.get(CONF_TEST_CHANNEL),
         config_item.get(CONF_COUNTRY),
         config_item.get(CONF_SOURCES),
+        config_item.get(CONF_CHANNEL_SOURCES, []),
         config_item.get(CONF_GEN_SWITCH, False),
         config_item.get(CONF_OUTPUT_PROGRAMME_IMAGE, True),
         config_item.get(CONF_LIVE_TV, True),
-        config_item.get(CONF_CHANNEL_SOURCES, {}),
     )
 
     if config.enabled_features & FEATURE_SWITCHES:
         SwitchMaker(
-            config_dir, name, config.room, config.source_names,
+            config_dir, name, config.room, config.custom_sources,
         )
 
     player = SkyQDevice(remote, config,)
@@ -342,8 +343,8 @@ class SkyQDevice(MediaPlayerEntity):
     async def async_select_source(self, source):
         """Select the specified source."""
         command = None
-        if source in self._config.source_names:
-            command = self._config.source_names.get(source).split(",")
+        if source in self._config.custom_sources:
+            command = self._config.custom_sources.get(source).split(",")
         else:
             try:
                 channel = next(c for c in self._channel_list if c.channelname == source)
@@ -524,34 +525,27 @@ class SkyQDevice(MediaPlayerEntity):
                 _LOGGER.warning(f"W0020M - Device is now available: {self.name}")
 
 
+@dataclass
 class Config:
     """Sky Q configuration information."""
 
-    def __init__(
-        self,
-        unique_id,
-        name,
-        room,
-        test_channel,
-        overrideCountry,
-        sources,
-        generate_switches_for_channels,
-        output_programme_image,
-        live_tv,
-        channel_sources,
+    unique_id: str = field(init=True, repr=True, compare=True)
+    name: str = field(init=True, repr=True, compare=True)
+    room: str = field(init=True, repr=True, compare=True)
+    test_channel: str = field(init=True, repr=True, compare=True)
+    overrideCountry: str = field(init=True, repr=True, compare=True)
+    custom_sources: field(init=True, repr=False, compare=True)
+    channel_sources: list = field(init=True, repr=True, compare=True)
+    generate_switches_for_channels: InitVar[bool]
+    output_programme_image: InitVar[bool]
+    live_tv: InitVar[bool]
+    enabled_features: int = ENABLED_FEATURES
+    source_list = []
+
+    def __post_init__(
+        self, generate_switches_for_channels, output_programme_image, live_tv
     ):
         """Set up the config."""
-        self.unique_id = unique_id
-        self.name = name
-        self.room = room
-        self.test_channel = test_channel
-        self.overrideCountry = overrideCountry
-        self.source_names = sources
-        self.output_programme_image = output_programme_image
-        self.live = live_tv
-        self.channel_sources = channel_sources or []
-        self.enabled_features = ENABLED_FEATURES
-
         if not (output_programme_image):
             self.enabled_features ^= FEATURE_IMAGE
 
@@ -561,12 +555,11 @@ class Config:
         if not (generate_switches_for_channels):
             self.enabled_features ^= FEATURE_SWITCHES
 
-        if isinstance(self.source_names, list):
-            self.source_names = convert_sources(sources_list=self.source_names)
-        elif not self.source_names:
-            self.source_names = []
+        if isinstance(self.custom_sources, list):
+            self.custom_sources = convert_sources(sources_list=self.custom_sources)
+        elif not self.custom_sources:
+            self.custom_sources = []
 
-        self.source_list = []
-        if self.source_names and len(self.source_names) > 0:
-            self.source_list = [*self.source_names.keys()]
+        if self.custom_sources and len(self.custom_sources) > 0:
+            self.source_list = [*self.custom_sources.keys()]
         self.source_list += self.channel_sources
