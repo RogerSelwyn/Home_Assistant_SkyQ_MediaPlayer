@@ -9,6 +9,8 @@ The skyq platform allows you to control a Sky Q set top box.
 
 **Note:** Whilst it will pull back information for UK boxes for current channel and live programme, it will do this for a very limited set of countries (currently UK, and any countries that use the same EPG/images, plus Italy). If you are in an unsupported country, or don't want this information set 'live_tv' to False in your config.
 
+If you are able to supply details on where to reliably retrieve EPG information and images from, please raise a Feature Request with the relevant details and I'll look to include.
+
 There is currently support for the following device types within Home Assistant:
 
 - Media Player
@@ -39,11 +41,11 @@ For either install method you must also:
 
 # Media Player Configuration
 
-There are two methods of configuration, via the Homa Assistant Integrations UI dialogue or via YAML. You cannot use both for the same Sky Q box, please use one or the other. Previous YAML configurations are not migrated the GUI method.
+There are two methods of configuration, via the Homa Assistant Integrations UI dialogue or via YAML. You cannot use both for the same Sky Q box, please use one or the other. Previous YAML configurations are not migrated the UI method, please continue to use YAML, or delete YAML, reboot and add via UI.
 
-## Integrations UI
+## Integrations UI (from v2.2.0)
 
-At Integrations page, click to add a new Integration and search for Sky Q. Sky Q will only be visible if you have previously installed via one of the methods above and have restarted Home Assistant.
+On the Integrations page, click to add a new Integration and search for Sky Q. Sky Q will only be visible if you have previously installed via one of the methods above and have restarted Home Assistant.
 
 You will be asked to enter a host (which must be contactable on your network and name). The name defaults to Sky Q. Assuming the Sky Q box is switched on and the details are correct a device and entity will be created and be useable. You can then configure other items by clicking on Options on the Sky Q Integration card. Details are below.
 
@@ -66,17 +68,14 @@ media_player:
 
 ## Configuration variables
 
-Items marked '#' are not used for UI based configuration
-
-
 | **YAML**                                        | **UI**                            | **Default** | **Details** |
 | ------------------------------------------------|-----------------------------------|:-----------:|-------------|
 | platform<br>_(string)(Required)_                | n/a                               |             |Must be set to skyq |
 | host<br>_(string)(Required)_                    | Host                              |             | The IP of the SkyQ set top box, e.g., 192.168.0.10. |
 | name<br>_(string)(Required)_                    | Name                              |             | The name you would like to give to the SkyQ set top box. |
 | sources<br>_(list)(Optional)_                   | Custom Sources                    |  _Empty_    | List of channels or other commands that will appear in the source selection. |
-| output_programme_image<br>_(boolean)(Optional)_ |Show programme<br>image            | True        | Enables you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing. |
-| live_tv<br>_(boolean)(Optional)_                | Show live TV<br>details           | True        | Enables you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from awk.epgsky.com. |
+| output_programme_image<br>_(boolean)(Optional)_ |Show programme<br>image            | True        | Allows you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing. |
+| live_tv<br>_(boolean)(Optional)_                | Show live TV<br>details           | True        | Allowsyou to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from current known sources. |
 | country<br>_(string)(Optional)_                 | Generate switches<br>for channels | _Empty_     | Overrides the detected country from the SkyQ box. Currently supports "GBR" and "ITA". In theory you shouldn't need to use this. |
 
 ### Sources
