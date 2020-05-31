@@ -1,13 +1,16 @@
 # Changelog
 
-## v2.2.0 Beta 2 (31/05/2020)
+## v2.2.0 Beta 3 (31/05/2020)
 
 [![Downloads for this release](https://img.shields.io/github/downloads/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/v2.2.0.beta2/total.svg)](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/releases/v2.2.0.beta2)
+
+[![Downloads for this release](https://img.shields.io/github/downloads/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/v2.2.0.beta3/total.svg)](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/releases/v2.2.0.beta3)
 
 ### Enhancements
 - [Updated to add config flow](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bef91ba6c56afbe232fd609067069ab30af05da8) - @RogerSelwyn
 - [Added Italian](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/57eeb69a4a2e2e30de49cd6575c6a0d64a908718) - @RogerSelwyn
 - [Validate custom commands on setup](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/33646a013716694159e954a684b4e98ede3598f0) - @RogerSelwyn
+- [Generate switches for channel sources](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bcc4478445a12e9cf121db3d1efdb290a4a42802) - @RogerSelwyn
 
 ### Fixes
 - [Fixed source commands not working](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ff77726ea984cbd98485ce055066ed771b742cdf) - @RogerSelwyn
@@ -16,6 +19,7 @@
 
 ### Maintenance 
 - [Bump pyskyqremote to 0.2.19](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4d99d851cd1357293ed92d9ff17c7ae684b15982) - @RogerSelwyn
+- [Converted config to dataclass](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ee0defa63fcee101950e70e4ec2c9c1c87ca260f) - @RogerSelwyn
 - [Update hacs.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f84854a8cd27345124ee19514db01127fd4ab953) - @RogerSelwyn
 - [Moved schema to schema.py](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/976fba5825a44a709745150bb6bd1b2c01ca8488) - @RogerSelwyn
 - [Update hacs.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/04510f138c685aed98abfa4748c4370717c016bd) - @RogerSelwyn
