@@ -66,9 +66,6 @@ media_player:
 
 ## Configuration variables
 
-Items marked '#' are not used for UI based configuration
-
-
 | **YAML**                                        | **UI**                            | **Default** | **Details** |
 | ------------------------------------------------|-----------------------------------|:-----------:|-------------|
 | platform<br>_(string)(Required)_                | n/a                               |             |Must be set to skyq |
