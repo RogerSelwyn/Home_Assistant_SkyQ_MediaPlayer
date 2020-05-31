@@ -72,8 +72,8 @@ media_player:
 | host<br>_(string)(Required)_                    | Host                              |             | The IP of the SkyQ set top box, e.g., 192.168.0.10. |
 | name<br>_(string)(Required)_                    | Name                              |             | The name you would like to give to the SkyQ set top box. |
 | sources<br>_(list)(Optional)_                   | Custom Sources                    |  _Empty_    | List of channels or other commands that will appear in the source selection. |
-| output_programme_image<br>_(boolean)(Optional)_ |Show programme<br>image            | True        | Enables you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing. |
-| live_tv<br>_(boolean)(Optional)_                | Show live TV<br>details           | True        | Enables you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from awk.epgsky.com. |
+| output_programme_image<br>_(boolean)(Optional)_ |Show programme<br>image            | True        | Allows you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing. |
+| live_tv<br>_(boolean)(Optional)_                | Show live TV<br>details           | True        | Allowsyou to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from current known sources. |
 | country<br>_(string)(Optional)_                 | Generate switches<br>for channels | _Empty_     | Overrides the detected country from the SkyQ box. Currently supports "GBR" and "ITA". In theory you shouldn't need to use this. |
 
 ### Sources
