@@ -1,10 +1,13 @@
 # Changelog
 
-## v2.2.0 Beta 1 (29/05/2020)
+## v2.2.0 Beta 2 (31/05/2020)
+
+[![Downloads for this release](https://img.shields.io/github/downloads/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/v2.2.0.beta2/total.svg)](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/releases/v2.2.0.beta2)
 
 ### Enhancements
 - [Updated to add config flow](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bef91ba6c56afbe232fd609067069ab30af05da8) - @RogerSelwyn
 - [Added Italian](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/57eeb69a4a2e2e30de49cd6575c6a0d64a908718) - @RogerSelwyn
+- [Validate custom commands on setup](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/33646a013716694159e954a684b4e98ede3598f0) - @RogerSelwyn
 
 ### Fixes
 - [Fixed source commands not working](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ff77726ea984cbd98485ce055066ed771b742cdf) - @RogerSelwyn
@@ -13,6 +16,7 @@
 
 ### Maintenance 
 - [Bump pyskyqremote to 0.2.19](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4d99d851cd1357293ed92d9ff17c7ae684b15982) - @RogerSelwyn
+- [Update hacs.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f84854a8cd27345124ee19514db01127fd4ab953) - @RogerSelwyn
 - [Moved schema to schema.py](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/976fba5825a44a709745150bb6bd1b2c01ca8488) - @RogerSelwyn
 - [Update hacs.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/04510f138c685aed98abfa4748c4370717c016bd) - @RogerSelwyn
 - [Change to zip file deploy](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/73a296bdda69f0c16670d8d6ebc9e93456f6c4bf) - @RogerSelwyn
@@ -32,6 +36,7 @@
 - [Corrected translations](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4c0b41196a1022c66a4e02ea1190923819ec6232) - @RogerSelwyn
 - [Added translation files](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d54f751428ed64a854c71d5476f89aebb002da61) - @RogerSelwyn
 - [Restructure in support of config flow](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7f123164e7b10ecc0300387921135e82e3b4b21e) - @RogerSelwyn
+- [Minor code improvement](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f1fbbbc2f75147472cbf2a0e0d60e4aed71b7ef4) - @RogerSelwyn
 
 ## v2.1.8 (21/05/2020)
 
