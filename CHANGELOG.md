@@ -183,7 +183,7 @@
 ---
 
 ## v1.5.4 (05/04/2020)
-- Added Emoji] - @RogerSelwyn
+- Added Emoji - @RogerSelwyn
 
 ---
 
