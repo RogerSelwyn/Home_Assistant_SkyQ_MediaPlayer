@@ -1,8 +1,11 @@
 # Changelog
 
-## v2.2.0 (02/06/2020)
+## v2.2.1 (02/06/2020)
 
-[![Downloads for this release](https://img.shields.io/github/downloads/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/v2.2.0.beta3/total.svg)](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/releases/v2.2.0.beta3)
+### Fixes
+- [Fixed issue with channel list duplicates in config flow](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/36960b4961c6169fbc5d54d04dfc4aff009f767b) - @RogerSelwyn
+
+## v2.2.0 (02/06/2020)
 
 ### Enhancements
 - [Updated to add config flow](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bef91ba6c56afbe232fd609067069ab30af05da8) - @RogerSelwyn
