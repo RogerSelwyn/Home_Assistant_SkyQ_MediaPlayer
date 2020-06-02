@@ -133,12 +133,10 @@ Usage based on google home: _“turn on <source name / channel name> in the ”_
 
 ## Configuration
 
-**generate_switches_for_channels** _(boolean)(Optional)_ Default False  
-Generate switches for each item listed in source.
-The files will be generated in <config folder>/skyq<room>.yaml
-
-**room**_(string)(Optional)_ Default 'Default Room'  
-The room where the SkyQ set top box is located.
+| **YAML**                                        | **UI**                            | **Default** | **Details** |
+| ------------------------------------------------|-----------------------------------|:-----------:|-------------|
+| generate_switches_for_channels<br>_(boolean)(Optional)_ | Generate switches for channels | False | Generate switches for each item listed in source. The files will be generated in <config folder>/skyq<room>.yaml |
+|room<br>_(string)(Optional)_                    | Room name                         | Default Room | The room where the SkyQ set top box is located. |
 
 Avoid using [ ] in the name: or room: of your device. This field is required if you have more than one SkyQ box being configured with switches
 
@@ -161,5 +159,5 @@ To integrate these generated switch configuration files, add the generated yaml 
 ```
 switch:
 - platform: template
-  switches: !include  skyq<room*>.yaml
+  switches: !include  skyq<room>.yaml
 ```
