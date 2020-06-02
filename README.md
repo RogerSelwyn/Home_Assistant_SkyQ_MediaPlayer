@@ -99,8 +99,8 @@ Example
 ```
 Example 
 ```
-  BBC1HD: '1,1,5'
-  BBC2: '1,0,2'
+  BBC1HD: "1,1,5"
+  BBC2: "1,0,2"
 ```
 
 ### Supported buttons
