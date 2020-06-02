@@ -546,6 +546,9 @@ class Config:
         self, generate_switches_for_channels, output_programme_image, live_tv
     ):
         """Set up the config."""
+        self.enabled_features = ENABLED_FEATURES
+        self.source_list = []
+
         if not (output_programme_image):
             self.enabled_features ^= FEATURE_IMAGE
 
