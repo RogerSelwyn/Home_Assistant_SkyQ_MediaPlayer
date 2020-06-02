@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.2.0 Beta 3 (31/05/2020)
+## v2.2.0 (02/06/2020)
 
 [![Downloads for this release](https://img.shields.io/github/downloads/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/v2.2.0.beta3/total.svg)](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/releases/v2.2.0.beta3)
 
