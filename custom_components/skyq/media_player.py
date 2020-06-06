@@ -40,7 +40,6 @@ from pyskyqremote.skyq_remote import SkyQRemote
 from custom_components.skyq.util.config_gen import SwitchMaker
 from pyskyqremote.const import (
     APP_EPG,
-    PAST_END_OF_EPG,
     SKY_STATE_ON,
     SKY_STATE_OFF,
     SKY_STATE_PAUSED,
@@ -418,7 +417,7 @@ class SkyQDevice(MediaPlayerEntity):
                     currentProgramme = await self.hass.async_add_executor_job(
                         self._remote.getCurrentLiveTVProgramme, currentMedia.sid
                     )
-                    if currentProgramme != PAST_END_OF_EPG:
+                    if currentProgramme:
                         self._episode = currentProgramme.episode
                         self._season = currentProgramme.season
                         self._title = currentProgramme.title
