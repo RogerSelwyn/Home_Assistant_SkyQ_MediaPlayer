@@ -1,9 +1,11 @@
 # Changelog
 
-## v2.2.2 (05/06/2020)
+## v2.2.2 Beta 2 (06/06/2020)
+
 
 ### Fixes
-- [Bump pyskyqremote to 0.2.20](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c70850536a4bbd122105d20f2a85de668256a302) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.21b1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/40d9ebc103cb7661de09daccae866bc2ea716e97) - @RogerSelwyn
+- [Handle empy programme from pyskyqremote](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/90cd8d23ac7b3e0d53a7fad3465eb76950564772) - @RogerSelwyn
 - [Fixed issue with Italian EPG](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2146a7e1af08da84f3fd8814246c455daadeee2a) - @RogerSelwyn
 
 ## v2.2.1 (02/06/2020)
