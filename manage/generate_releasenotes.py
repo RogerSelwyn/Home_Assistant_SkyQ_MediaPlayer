@@ -3,7 +3,7 @@ import sys
 import json
 from github import Github
 
-REPOSITORY = "skyq"
+REPOSITORY = "Home_Assistant_SkyQ_MediaPlayer"
 
 BODY = """
 [![Downloads for this release](https://img.shields.io/github/downloads/rogerselwyn/{repository}/{version}/total.svg)](https://github.com/rogerselwyn/{repository}/releases/{version})
