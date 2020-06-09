@@ -12,6 +12,24 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v1
 
+      - name: Update requirements.txt
+        run: python3 /home/runner/work/Home_Assistant_SkyQ_MediaPlayer/Home_Assistant_SkyQ_MediaPlayer/manage/update_requirements.py
+      - name: switching from HTTPS to SSH
+        run: git remote set-url origin git@github.com:RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer.git
+      - name: check for changes
+        run: git status
+      - name: stage changed files
+        run: git add requirements.txt
+      - name: commit changed files
+        continue-on-error: true
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Auto update requirements.txt"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       # Pack the SkyQ dir as a zip and upload to the release
       - name: ZIP SkyQ Dir
         run: |
@@ -26,3 +44,23 @@ jobs:
           asset_name: skyq.zip
           tag: ${{ github.ref }}
           overwrite: true
+
+  releasenotes:
+    name: Prepare release notes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v1
+
+      - name: Enable version 3.7 of Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+
+      - name: Install requirements
+        run: |
+          python3 -m pip install setuptools wheel
+          python3 -m pip install -r /home/runner/work/Home_Assistant_SkyQ_MediaPlayer/Home_Assistant_SkyQ_MediaPlayer/requirements_release.txt
+
+      - name: Update release notes
+        run: python3 /home/runner/work/Home_Assistant_SkyQ_MediaPlayer/Home_Assistant_SkyQ_MediaPlayer/manage/generate_releasenotes.py --token ${{ secrets.GITHUB_TOKEN }} --release yes --tag ${{ github.ref }}

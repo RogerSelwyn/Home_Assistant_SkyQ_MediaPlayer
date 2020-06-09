@@ -6,8 +6,6 @@
   "codeowners": ["@rogerselwyn"],
   "requirements": [
     "pyskyqremote==0.2.21b2",
-    "aiohttp==3.6.2",
-    "voluptuous==0.11.7",
     "pycountry==19.8.18"
   ],
   "quality_scale": "silver",
