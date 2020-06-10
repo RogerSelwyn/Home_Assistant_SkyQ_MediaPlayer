@@ -19,24 +19,6 @@ CHANGES = """
 
 """
 
-COMMANDS = """
-***
-<details>
-  <summary>rogerselwyn Bot commands</summary>
-
-_Commands can only be issued by a user with write privileges to the repository._
-
-Command | Description
--- | --
-`@rogerselwyn-bot no` | Will close the issue, and not publish a new release.
-`@rogerselwyn-bot close` | Same as `@rogerselwyn-bot no`.
-`@rogerselwyn-bot yes` | Will create a new release and close the issue.
-`@rogerselwyn-bot LGTM` | Same as `@rogerselwyn-bot yes`.
-`@rogerselwyn-bot release x.xx.x` | Same as `@rogerselwyn-bot yes` but will change the release number to the one specified.
-
-</details>
-"""
-
 CHANGE = "- [{line}]({link}) - @{author}\n"
 NOCHANGE = "_No changes in this release._"
 
@@ -127,8 +109,7 @@ else:
             assignee="rogerselwyn",
             body=CHANGES.format(
                 repo_changes=repo_changes,
-            )
-            + COMMANDS,
+            ),
         )
     else:
         print("Not enough changes for a release.")
