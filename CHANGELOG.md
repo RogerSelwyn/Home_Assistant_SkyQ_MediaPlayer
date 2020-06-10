@@ -1,12 +1,19 @@
 # Changelog
 
-## v2.2.2 Beta 2 (06/06/2020)
+## v2.2.2 (10/06/2020)
 
+[![Downloads for this release](https://img.shields.io/github/downloads/rogerselwyn/Home_Assistant_SkyQ_MediaPlayer/v2.2.2/total.svg)](https://github.com/rogerselwyn/Home_Assistant_SkyQ_MediaPlayer/releases/v2.2.2)
 
 ### Fixes
-- [Bump pyskyqremote to 0.2.21b1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/40d9ebc103cb7661de09daccae866bc2ea716e97) - @RogerSelwyn
-- [Handle empy programme from pyskyqremote](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/90cd8d23ac7b3e0d53a7fad3465eb76950564772) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.21](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e475439497b2764de06b67c973a55258e4d42c5d) - @RogerSelwyn
 - [Fixed issue with Italian EPG](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2146a7e1af08da84f3fd8814246c455daadeee2a) - @RogerSelwyn
+- [Handle empy programme from pyskyqremote](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/90cd8d23ac7b3e0d53a7fad3465eb76950564772) - @RogerSelwyn
+
+### Maintenance
+- [Added automated updates](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/575023728b195ac456a950c64cf3acea945078bf) - @RogerSelwyn
+- [Corrected Repository](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/52f6c991a19b40341889427ba91a5c90d12d48ee) - @RogerSelwyn
+- [Remove commands](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f5a99c7d07bf39a5a64527afdbae0bc3602696a1) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/edaaa225e9ed340ae06595ecbba98bd8f9bd3866) - @actions-user
 
 ## v2.2.1 (02/06/2020)
 
