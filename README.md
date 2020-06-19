@@ -7,7 +7,7 @@
 
 The skyq platform allows you to control a Sky Q set top box.
 
-**Note:** Whilst it will pull back information for UK boxes for current channel and live programme, it will do this for a very limited set of countries (currently UK, and any countries that use the same EPG/images, plus Italy). If you are in an unsupported country, or don't want this information set 'live_tv' to False in your config.
+**Note:** Whilst it will pull back information for current channel and live programme, it will do this for a very limited set of countries (currently UK, and any countries that use the same EPG/images, plus Italy). If you are in an unsupported country, or don't want this information set 'live_tv' to False in your config.
 
 If you are able to supply details on where to reliably retrieve EPG information and images from, please raise a Feature Request with the relevant details and I'll look to include.
 
