@@ -31,7 +31,7 @@ _Component showing recording with [Mini Media Player](https://github.com/kalkih/
 
 ## Installation
 
-You can use HACS by adding this reposity as a custom Integration repository in HACS settings, or install the component manually:
+You can use HACS by adding this repository as a custom Integration repository in HACS settings, or install the component manually:
 
 - Put the files from `/custom_components/skyq/` in your folder `<config directory>/custom_components/skyq/`
 
