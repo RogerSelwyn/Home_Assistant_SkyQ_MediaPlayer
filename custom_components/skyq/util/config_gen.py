@@ -16,7 +16,9 @@ class SwitchMaker:
 
         if self._root[-1] != "/":
             self._root += "/"
-        self._f = open(self._root + "skyq" + self._room.replace(" ", "") + ".yaml", "w+")
+        self._f = open(
+            self._root + "skyq" + self._room.replace(" ", "") + ".yaml", "w+"
+        )
         self._addSwitch("pause", "pause", "media_pause")
         self._addSwitch("play", "play", "media_play")
         self._addSwitch("ff", "fastforward", "media_next_track")
@@ -31,7 +33,9 @@ class SwitchMaker:
     def _addSwitch(self, switch, friendly_name, service, source=False):
         """Add switch to switches."""
         switch_name = (
-            "skyq_" + switch.replace(" ", "").lower() + self._room.replace(" ", "").lower()
+            "skyq_"
+            + switch.replace(" ", "").lower()
+            + self._room.replace(" ", "").lower()
         )
         entity_id = "media_player." + self._name.replace(" ", "_").lower()
         source_name = ""

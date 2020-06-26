@@ -106,7 +106,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._remote = None
         self._channel_sources = config_entry.options.get(CONF_CHANNEL_SOURCES, [])
 
-        self._sources = convert_sources_JSON(sources_list=config_entry.options.get(CONF_SOURCES))
+        self._sources = convert_sources_JSON(
+            sources_list=config_entry.options.get(CONF_SOURCES)
+        )
 
         self._room = config_entry.options.get(CONF_ROOM)
         self._gen_switch = config_entry.options.get(CONF_GEN_SWITCH, False)
@@ -114,7 +116,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._country = config_entry.options.get(CONF_COUNTRY, CONST_DEFAULT)
         if self._country != CONST_DEFAULT:
             self._country = self._convertCountry(alpha_3=self._country)
-        self._output_programme_image = config_entry.options.get(CONF_OUTPUT_PROGRAMME_IMAGE, True)
+        self._output_programme_image = config_entry.options.get(
+            CONF_OUTPUT_PROGRAMME_IMAGE, True
+        )
         self._channelDisplay = []
         self._channel_list = []
 
@@ -131,7 +135,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._country_list = [CONST_DEFAULT] + sorted(countryNames)
 
         if self._remote.deviceSetup:
-            channelData = await self.hass.async_add_executor_job(self._remote.getChannelList)
+            channelData = await self.hass.async_add_executor_job(
+                self._remote.getChannelList
+            )
             self._channel_list = channelData.channels
 
             for channel in self._channel_list:
@@ -141,9 +147,13 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
             self._channel_sources_display = []
             for channel in self._channel_sources:
-                channelData = next(c for c in self._channel_list if c.channelname == channel)
+                channelData = next(
+                    c for c in self._channel_list if c.channelname == channel
+                )
                 self._channel_sources_display.append(
-                    CHANNEL_DISPLAY.format(channelData.channelno, channelData.channelname)
+                    CHANNEL_DISPLAY.format(
+                        channelData.channelno, channelData.channelname
+                    )
                 )
 
             return await self.async_step_user()
@@ -196,7 +206,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             try:
                 self._sources = user_input.get(CONF_SOURCES)
                 if self._sources:
-                    user_input[CONF_SOURCES] = convert_sources_JSON(sources_json=self._sources)
+                    user_input[CONF_SOURCES] = convert_sources_JSON(
+                        sources_json=self._sources
+                    )
                     for source in user_input[CONF_SOURCES]:
                         self._validate_commands(source)
 
@@ -215,12 +227,17 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                         CHANNEL_SOURCES_DISPLAY, default=self._channel_sources_display
                     ): cv.multi_select(self._channelDisplay),
                     vol.Optional(
-                        CONF_OUTPUT_PROGRAMME_IMAGE, default=self._output_programme_image,
+                        CONF_OUTPUT_PROGRAMME_IMAGE,
+                        default=self._output_programme_image,
                     ): bool,
                     vol.Optional(CONF_LIVE_TV, default=self._live_tv): bool,
                     vol.Optional(CONF_GEN_SWITCH, default=self._gen_switch): bool,
-                    vol.Optional(CONF_ROOM, description={"suggested_value": self._room}): str,
-                    vol.Optional(CONF_COUNTRY, default=self._country): vol.In(self._country_list),
+                    vol.Optional(
+                        CONF_ROOM, description={"suggested_value": self._room}
+                    ): str,
+                    vol.Optional(CONF_COUNTRY, default=self._country): vol.In(
+                        self._country_list
+                    ),
                     vol.Optional(
                         CONF_SOURCES, description={"suggested_value": self._sources}
                     ): str,
@@ -235,7 +252,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
         errors["base"] = "cannot_connect"
 
-        return self.async_show_form(step_id="retry", data_schema=vol.Schema({}), errors=errors,)
+        return self.async_show_form(
+            step_id="retry", data_schema=vol.Schema({}), errors=errors,
+        )
 
     def _convertCountry(self, alpha_3=None, name=None):
         if name:
