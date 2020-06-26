@@ -1,79 +1,74 @@
 """The skyq platform allows you to control a SkyQ set top box."""
-import logging
 import asyncio
+import logging
+from dataclasses import InitVar, dataclass, field
+
 import aiohttp
-from dataclasses import dataclass, field, InitVar
+from pyskyqremote.const import (
+    APP_EPG,
+    SKY_STATE_OFF,
+    SKY_STATE_ON,
+    SKY_STATE_PAUSED,
+    SKY_STATE_STANDBY,
+)
+from pyskyqremote.skyq_remote import SkyQRemote
 
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
-
-# from homeassistant.exceptions import PlatformNotReady
-
+from custom_components.skyq.util.config_gen import SwitchMaker
+from homeassistant.components.media_player.const import MEDIA_TYPE_APP, MEDIA_TYPE_TVSHOW
 from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
     HTTP_OK,
     STATE_OFF,
-    STATE_UNKNOWN,
     STATE_PAUSED,
     STATE_PLAYING,
+    STATE_UNKNOWN,
 )
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
+
+from .const import (
+    APP_IMAGE_URL_BASE,
+    APP_TITLES,
+    CONF_CHANNEL_SOURCES,
+    CONF_COUNTRY,
+    CONF_DIR,
+    CONF_GEN_SWITCH,
+    CONF_LIVE_TV,
+    CONF_OUTPUT_PROGRAMME_IMAGE,
+    CONF_ROOM,
+    CONF_SOURCES,
+    CONF_TEST_CHANNEL,
+    CONST_DEFAULT_ROOM,
+    CONST_SKYQ_MEDIA_TYPE,
+    DEVICE_CLASS,
+    DOMAIN,
+    FEATURE_BASIC,
+    FEATURE_IMAGE,
+    FEATURE_LIVE_TV,
+    FEATURE_SWITCHES,
+    SKYQ_APP,
+    SKYQ_ICONS,
+    SKYQ_LIVE,
+    SKYQ_PVR,
+    SKYQREMOTE,
+    SUPPORT_SKYQ,
+    TIMEOUT,
+)
+from .utils import convert_sources
+
+# from homeassistant.exceptions import PlatformNotReady
+
 
 try:
     from homeassistant.helpers.network import get_url
 except ImportError:
     pass
 
-from homeassistant.components.media_player.const import (
-    MEDIA_TYPE_TVSHOW,
-    MEDIA_TYPE_APP,
-)
 
 try:
     from homeassistant.components.media_player import MediaPlayerEntity
 except ImportError:
-    from homeassistant.components.media_player import (
-        MediaPlayerDevice as MediaPlayerEntity,
-    )
-
-
-from pyskyqremote.skyq_remote import SkyQRemote
-from custom_components.skyq.util.config_gen import SwitchMaker
-from pyskyqremote.const import (
-    APP_EPG,
-    SKY_STATE_ON,
-    SKY_STATE_OFF,
-    SKY_STATE_PAUSED,
-    SKY_STATE_STANDBY,
-)
-from .const import (
-    APP_TITLES,
-    APP_IMAGE_URL_BASE,
-    CONF_SOURCES,
-    CONF_CHANNEL_SOURCES,
-    CONF_ROOM,
-    CONF_DIR,
-    CONF_GEN_SWITCH,
-    CONF_OUTPUT_PROGRAMME_IMAGE,
-    CONF_LIVE_TV,
-    CONF_COUNTRY,
-    CONF_TEST_CHANNEL,
-    CONST_DEFAULT_ROOM,
-    CONST_SKYQ_MEDIA_TYPE,
-    DEVICE_CLASS,
-    DOMAIN,
-    SKYQREMOTE,
-    FEATURE_BASIC,
-    FEATURE_IMAGE,
-    FEATURE_LIVE_TV,
-    FEATURE_SWITCHES,
-    SKYQ_APP,
-    SKYQ_LIVE,
-    SKYQ_PVR,
-    SKYQ_ICONS,
-    SUPPORT_SKYQ,
-    TIMEOUT,
-)
-from .utils import convert_sources
+    from homeassistant.components.media_player import MediaPlayerDevice as MediaPlayerEntity
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -108,12 +103,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     name = config_entry.data[CONF_NAME]
 
     await _async_setup_platform_entry(
-        config_entry.options,
-        async_add_entities,
-        remote,
-        unique_id,
-        name,
-        hass.config.config_dir,
+        config_entry.options, async_add_entities, remote, unique_id, name, hass.config.config_dir,
     )
 
 
@@ -313,9 +303,7 @@ class SkyQDevice(MediaPlayerEntity):
         """Turn SkyQ box on."""
         powerStatus = await self.hass.async_add_executor_job(self._remote.powerStatus)
         if powerStatus == SKY_STATE_STANDBY:
-            await self.hass.async_add_executor_job(
-                self._remote.press, ["home", "dismiss"]
-            )
+            await self.hass.async_add_executor_job(self._remote.press, ["home", "dismiss"])
             await self.async_update()
 
     async def async_media_play(self):
@@ -358,9 +346,7 @@ class SkyQDevice(MediaPlayerEntity):
     async def async_play_media(self, media_id, media_type):
         """Perform a media action."""
         if media_type.casefold() == DOMAIN:
-            await self.hass.async_add_executor_job(
-                self._remote.press, media_id.casefold()
-            )
+            await self.hass.async_add_executor_job(self._remote.press, media_id.casefold())
             await self.async_update()
 
     async def _async_updateState(self):
@@ -369,9 +355,7 @@ class SkyQDevice(MediaPlayerEntity):
         if powerState == SKY_STATE_ON:
             self._state = STATE_PLAYING
             # This check is flakey during channel changes, so only used for pause checks if we know its on
-            currentState = await self.hass.async_add_executor_job(
-                self._remote.getCurrentState
-            )
+            currentState = await self.hass.async_add_executor_job(self._remote.getCurrentState)
             if currentState == SKY_STATE_PAUSED:
                 self._state = STATE_PAUSED
             else:
@@ -405,9 +389,7 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def _async_getCurrentMedia(self):
         try:
-            currentMedia = await self.hass.async_add_executor_job(
-                self._remote.getCurrentMedia
-            )
+            currentMedia = await self.hass.async_add_executor_job(self._remote.getCurrentMedia)
 
             if currentMedia.live and currentMedia.sid:
                 self._channel = currentMedia.channel
@@ -436,9 +418,7 @@ class SkyQDevice(MediaPlayerEntity):
                     self._imageUrl = recording.imageUrl
 
         except Exception as err:
-            _LOGGER.exception(
-                f"X0010M - Current Media retrieval failed: {currentMedia} : {err}"
-            )
+            _LOGGER.exception(f"X0010M - Current Media retrieval failed: {currentMedia} : {err}")
 
     async def _async_getAppImageUrl(self, appTitle):
         """Check app image is present."""
@@ -457,9 +437,7 @@ class SkyQDevice(MediaPlayerEntity):
         request_url = base_url + appImageUrl
 
         try:
-            async with getattr(websession, "head")(
-                request_url, timeout=TIMEOUT,
-            ) as response:
+            async with getattr(websession, "head")(request_url, timeout=TIMEOUT,) as response:
                 if response.status == HTTP_OK:
                     self._appImageUrl = appImageUrl
 
@@ -471,9 +449,7 @@ class SkyQDevice(MediaPlayerEntity):
             if self._firstError:
                 self._firstError = False
             else:
-                _LOGGER.exception(
-                    f"X0020M - Image file check failed: {request_url} : {err}"
-                )
+                _LOGGER.exception(f"X0020M - Image file check failed: {request_url} : {err}")
                 self._lastAppTitle = appTitle
             return self._appImageUrl
         except asyncio.TimeoutError as err:
@@ -481,17 +457,13 @@ class SkyQDevice(MediaPlayerEntity):
             self._lastAppTitle = appTitle
             return self._appImageUrl
         except (aiohttp.ClientError, Exception) as err:
-            _LOGGER.exception(
-                f"X0030M - Image file check failed: {request_url} : {err}"
-            )
+            _LOGGER.exception(f"X0030M - Image file check failed: {request_url} : {err}")
             self._lastAppTitle = appTitle
             return self._appImageUrl
 
     async def _async_getDeviceInfo(self):
         await self.hass.async_add_executor_job(
-            self._remote.setOverrides,
-            self._config.overrideCountry,
-            self._config.test_channel,
+            self._remote.setOverrides, self._config.overrideCountry, self._config.test_channel,
         )
         self._deviceInfo = await self.hass.async_add_executor_job(
             self._remote.getDeviceInformation
@@ -500,9 +472,7 @@ class SkyQDevice(MediaPlayerEntity):
             self._setUniqueId()
 
             if not self._channel_list and len(self._config.channel_sources) > 0:
-                channelData = await self.hass.async_add_executor_job(
-                    self._remote.getChannelList
-                )
+                channelData = await self.hass.async_add_executor_job(self._remote.getChannelList)
                 self._channel_list = channelData.channels
 
     def _setUniqueId(self):
@@ -542,9 +512,7 @@ class Config:
     enabled_features: int = None
     source_list = None
 
-    def __post_init__(
-        self, generate_switches_for_channels, output_programme_image, live_tv
-    ):
+    def __post_init__(self, generate_switches_for_channels, output_programme_image, live_tv):
         """Set up the config."""
         self.enabled_features = ENABLED_FEATURES
         self.source_list = []

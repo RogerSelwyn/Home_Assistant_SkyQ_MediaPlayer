@@ -1,8 +1,9 @@
 """Initialise."""
 import asyncio
 
-from homeassistant.const import CONF_HOST
 from pyskyqremote.skyq_remote import SkyQRemote
+
+from homeassistant.const import CONF_HOST
 
 from .const import DOMAIN, SKYQREMOTE, UNDO_UPDATE_LISTENER
 

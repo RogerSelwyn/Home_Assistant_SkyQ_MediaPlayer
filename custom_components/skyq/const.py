@@ -1,21 +1,18 @@
 """Constants for SkyQ."""
 
 from homeassistant.components.media_player.const import (
+    SUPPORT_NEXT_TRACK,
     SUPPORT_PAUSE,
     SUPPORT_PLAY,
-    SUPPORT_TURN_OFF,
-    SUPPORT_TURN_ON,
-    SUPPORT_NEXT_TRACK,
+    SUPPORT_PLAY_MEDIA,
     SUPPORT_PREVIOUS_TRACK,
+    SUPPORT_SEEK,
     SUPPORT_SELECT_SOURCE,
     SUPPORT_STOP,
-    SUPPORT_SEEK,
-    SUPPORT_PLAY_MEDIA,
+    SUPPORT_TURN_OFF,
+    SUPPORT_TURN_ON,
 )
-from homeassistant.const import (
-    STATE_OFF,
-    STATE_UNKNOWN,
-)
+from homeassistant.const import STATE_OFF, STATE_UNKNOWN
 
 DOMAIN = "skyq"
 SKYQREMOTE = "skyqremote"

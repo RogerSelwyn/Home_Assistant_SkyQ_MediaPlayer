@@ -1,24 +1,21 @@
 """Schema for Sk Q Integration."""
 
-import voluptuous as vol
 from datetime import timedelta
 
+import voluptuous as vol
+
 import homeassistant.helpers.config_validation as cv
-from homeassistant.const import (
-    CONF_HOST,
-    CONF_NAME,
-    CONF_SCAN_INTERVAL,
-)
 from homeassistant.components.media_player import PLATFORM_SCHEMA
+from homeassistant.const import CONF_HOST, CONF_NAME, CONF_SCAN_INTERVAL
 
 from .const import (
-    CONF_SOURCES,
-    CONF_ROOM,
+    CONF_COUNTRY,
     CONF_DIR,
     CONF_GEN_SWITCH,
-    CONF_OUTPUT_PROGRAMME_IMAGE,
     CONF_LIVE_TV,
-    CONF_COUNTRY,
+    CONF_OUTPUT_PROGRAMME_IMAGE,
+    CONF_ROOM,
+    CONF_SOURCES,
     CONF_TEST_CHANNEL,
     CONST_DEFAULT_ROOM,
 )
