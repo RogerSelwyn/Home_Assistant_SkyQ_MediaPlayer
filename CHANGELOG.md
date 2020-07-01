@@ -1,13 +1,23 @@
 # Changelog
 
-## v2.2.2 (10/06/2020)
+## v2.2.3 (21/07/2020)
 
-[![Downloads for this release](https://img.shields.io/github/downloads/rogerselwyn/Home_Assistant_SkyQ_MediaPlayer/v2.2.2/total.svg)](https://github.com/rogerselwyn/Home_Assistant_SkyQ_MediaPlayer/releases/v2.2.2)
+### Maintenance
+
+- [Create dependabot.yml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e272e8daeb511fd8a11477ab4aadec705fb65a96) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a042182930753e93c43546a7771d748724211411) - @RogerSelwyn
+- [Format with black and isort](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/994930dd05220e76303967b1f2a04a3253e7b568) - @RogerSelwyn
+- [Change line length for Black](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/609102f0d7b4e6df2124ab2a826427a3bd1568cf) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.23](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5b52235b430b58f2038fdf61c4d717f1227cfd04) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/526a7a71d4182401528bdef44180fc845671754a) - @actions-user
+- [Update generate_releasenotes.py](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/324b6038dea42569f8dd00f5956449f1fa3e9b99) - @RogerSelwyn
+
+## v2.2.2 (10/06/2020)
 
 ### Fixes
 - [Bump pyskyqremote to 0.2.21](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e475439497b2764de06b67c973a55258e4d42c5d) - @RogerSelwyn
 - [Fixed issue with Italian EPG](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2146a7e1af08da84f3fd8814246c455daadeee2a) - @RogerSelwyn
-- [Handle empy programme from pyskyqremote](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/90cd8d23ac7b3e0d53a7fad3465eb76950564772) - @RogerSelwyn
+- [Handle empty programme from pyskyqremote](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/90cd8d23ac7b3e0d53a7fad3465eb76950564772) - @RogerSelwyn
 
 ### Maintenance
 - [Added automated updates](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/575023728b195ac456a950c64cf3acea945078bf) - @RogerSelwyn
