@@ -97,7 +97,7 @@ if UPDATERELEASE == "yes":
             ),
             repository=REPOSITORY
         ),
-        prelease=True,
+        prerelease=True,
     )
 else:
     repo_changes = get_repo_commits(GITHUB, False)
