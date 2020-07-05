@@ -1,6 +1,14 @@
 # Changelog
 
-## v2.2.3 (21/07/2020)
+## v2.2.4 (05/07/2020)
+
+### Maintenance
+
+- [Delete info.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d626d5f58fc00096151fe846d503ffbdf232dd56) - @RogerSelwyn
+- [Bump pycountry to 20.7.3](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3b142529f1c4884fe9ad0c4e03eafe3c540af8bb) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ef26a3ef2d83e642c3339b317cdb124124922b43) - @actions-user
+
+## v2.2.3 (21/06/2020)
 
 ### Maintenance
 
