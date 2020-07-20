@@ -10,7 +10,7 @@ class SwitchMaker:
 
     def __init__(self, config_dir, name, room, channels):
         """Initialise the Switcmaker."""
-        self._name = name
+        self._name = name.replace(" ", "_").lower()
         self._room = room
         self._root = config_dir
 
@@ -32,12 +32,14 @@ class SwitchMaker:
 
     def _addSwitch(self, switch, friendly_name, service, source=False):
         """Add switch to switches."""
+        switch = switch.replace("'", "")
+        friendly_name = friendly_name.replace("'", "")
         switch_name = (
             "skyq_"
             + switch.replace(" ", "").lower()
             + self._room.replace(" ", "").lower()
         )
-        entity_id = "media_player." + self._name.replace(" ", "_").lower()
+        entity_id = "media_player." + self._name
         source_name = ""
         if source:
             source_name = "          source: '" + switch + "'\n"
