@@ -25,6 +25,7 @@ from .const import (
     CONF_OUTPUT_PROGRAMME_IMAGE,
     CONF_ROOM,
     CONF_SOURCES,
+    CONF_VOLUME_ENTITY,
     CONST_DEFAULT,
     DOMAIN,
     SKYQREMOTE,
@@ -111,6 +112,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         )
 
         self._room = config_entry.options.get(CONF_ROOM)
+        self._volume_entity = config_entry.options.get(CONF_VOLUME_ENTITY)
         self._gen_switch = config_entry.options.get(CONF_GEN_SWITCH, False)
         self._live_tv = config_entry.options.get(CONF_LIVE_TV, True)
         self._country = config_entry.options.get(CONF_COUNTRY, CONST_DEFAULT)
@@ -197,6 +199,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             self._live_tv = user_input.get(CONF_LIVE_TV)
             self._output_programme_image = user_input.get(CONF_OUTPUT_PROGRAMME_IMAGE)
             self._room = user_input.get(CONF_ROOM)
+            self._volume_entity = user_input.get(CONF_VOLUME_ENTITY)
             self._country = user_input.get(CONF_COUNTRY)
             if self._country == CONST_DEFAULT:
                 user_input.pop(CONF_COUNTRY)
@@ -238,6 +241,10 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                     vol.Optional(CONF_COUNTRY, default=self._country): vol.In(
                         self._country_list
                     ),
+                    vol.Optional(
+                        CONF_VOLUME_ENTITY,
+                        description={"suggested_value": self._volume_entity},
+                    ): str,
                     vol.Optional(
                         CONF_SOURCES, description={"suggested_value": self._sources}
                     ): str,

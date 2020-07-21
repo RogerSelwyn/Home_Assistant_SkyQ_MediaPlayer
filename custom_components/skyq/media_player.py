@@ -15,19 +15,41 @@ from pyskyqremote.skyq_remote import SkyQRemote
 
 from custom_components.skyq.util.config_gen import SwitchMaker
 from homeassistant.components.media_player.const import (
+    ATTR_MEDIA_VOLUME_LEVEL,
+    ATTR_MEDIA_VOLUME_MUTED,
     MEDIA_TYPE_APP,
     MEDIA_TYPE_TVSHOW,
+    SUPPORT_NEXT_TRACK,
+    SUPPORT_PAUSE,
+    SUPPORT_PLAY,
+    SUPPORT_PLAY_MEDIA,
+    SUPPORT_PREVIOUS_TRACK,
+    SUPPORT_SEEK,
+    SUPPORT_SELECT_SOURCE,
+    SUPPORT_STOP,
+    SUPPORT_TURN_OFF,
+    SUPPORT_TURN_ON,
+    SUPPORT_VOLUME_MUTE,
+    SUPPORT_VOLUME_SET,
+    SUPPORT_VOLUME_STEP,
 )
 from homeassistant.const import (
+    ATTR_ENTITY_ID,
+    ATTR_SUPPORTED_FEATURES,
     CONF_HOST,
     CONF_NAME,
     HTTP_OK,
+    SERVICE_VOLUME_DOWN,
+    SERVICE_VOLUME_MUTE,
+    SERVICE_VOLUME_SET,
+    SERVICE_VOLUME_UP,
     STATE_OFF,
     STATE_PAUSED,
     STATE_PLAYING,
     STATE_UNKNOWN,
 )
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.service import async_call_from_config
 
 from .const import (
     APP_IMAGE_URL_BASE,
@@ -41,6 +63,7 @@ from .const import (
     CONF_ROOM,
     CONF_SOURCES,
     CONF_TEST_CHANNEL,
+    CONF_VOLUME_ENTITY,
     CONST_DEFAULT_ROOM,
     CONST_SKYQ_MEDIA_TYPE,
     DEVICE_CLASS,
@@ -54,7 +77,6 @@ from .const import (
     SKYQ_LIVE,
     SKYQ_PVR,
     SKYQREMOTE,
-    SUPPORT_SKYQ,
     TIMEOUT,
 )
 from .utils import convert_sources
@@ -96,7 +118,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     name = config.get(CONF_NAME)
 
     await _async_setup_platform_entry(
-        config, async_add_entities, remote, unique_id, name, hass.config.config_dir
+        config, async_add_entities, remote, unique_id, name, hass.config.config_dir,
     )
 
 
@@ -125,6 +147,7 @@ async def _async_setup_platform_entry(
         unique_id,
         name,
         config_item.get(CONF_ROOM, CONST_DEFAULT_ROOM),
+        config_item.get(CONF_VOLUME_ENTITY, None),
         config_item.get(CONF_TEST_CHANNEL),
         config_item.get(CONF_COUNTRY),
         config_item.get(CONF_SOURCES),
@@ -152,6 +175,8 @@ class SkyQDevice(MediaPlayerEntity):
         """Initialise the SkyQRemote."""
         self._config = config
         self._unique_id = config.unique_id
+        self._volume_entity = config.volume_entity
+        self._volume_entity_supported_features = None
         self._state = STATE_OFF
         self._skyq_type = STATE_OFF
         self._title = None
@@ -167,17 +192,44 @@ class SkyQDevice(MediaPlayerEntity):
         self._startupSetup = True
         self._deviceInfo = None
         self._firstError = True
+        self._volume_entity_error = False
         self._channel_list = None
+        self._volume_level = 0
+        self._is_volume_muted = True
 
         if not self._remote.deviceSetup:
             self._available = False
             self._startupSetup = False
             _LOGGER.warning(f"W0010M - Device is not available: {self.name}")
 
+        self._supported_features = (
+            SUPPORT_TURN_OFF
+            | SUPPORT_PAUSE
+            | SUPPORT_TURN_ON
+            | SUPPORT_PLAY
+            | SUPPORT_NEXT_TRACK
+            | SUPPORT_PREVIOUS_TRACK
+            | SUPPORT_SELECT_SOURCE
+            | SUPPORT_STOP
+            | SUPPORT_SEEK
+            | SUPPORT_PLAY_MEDIA
+        )
+
     @property
     def supported_features(self):
         """Get the supported features."""
-        return SUPPORT_SKYQ
+        if self._volume_entity_supported_features:
+            if self._volume_entity_supported_features & SUPPORT_VOLUME_MUTE:
+                self._supported_features = (
+                    self._supported_features | SUPPORT_VOLUME_MUTE
+                )
+            if self._volume_entity_supported_features & SUPPORT_VOLUME_SET:
+                self._supported_features = self._supported_features | SUPPORT_VOLUME_SET
+            if self._volume_entity_supported_features & SUPPORT_VOLUME_STEP:
+                self._supported_features = (
+                    self._supported_features | SUPPORT_VOLUME_STEP
+                )
+        return self._supported_features
 
     @property
     def name(self):
@@ -285,6 +337,16 @@ class SkyQDevice(MediaPlayerEntity):
         attributes[CONST_SKYQ_MEDIA_TYPE] = self._skyq_type
         return attributes
 
+    @property
+    def volume_level(self):
+        """Volume level of entity specified in config."""
+        return self._volume_level
+
+    @property
+    def is_volume_muted(self):
+        """Boolean if volume is muted."""
+        return self._is_volume_muted
+
     async def async_update(self):
         """Get the latest data and update device state."""
         self._channel = None
@@ -301,6 +363,7 @@ class SkyQDevice(MediaPlayerEntity):
 
         if self._state != STATE_UNKNOWN and self._state != STATE_OFF:
             await self._async_updateCurrentProgramme()
+            await self._async_update_volume_state()
 
     async def async_turn_off(self):
         """Turn SkyQ box off."""
@@ -363,6 +426,37 @@ class SkyQDevice(MediaPlayerEntity):
             )
             await self.async_update()
 
+    async def async_mute_volume(self, mute):
+        """Mute the volume."""
+        data = {ATTR_ENTITY_ID: self._volume_entity, ATTR_MEDIA_VOLUME_MUTED: mute}
+        await self._async_call_service(SERVICE_VOLUME_MUTE, data)
+        return
+
+    async def async_set_volume_level(self, volume):
+        """Set volume level, range 0..1."""
+        data = {ATTR_ENTITY_ID: self._volume_entity, ATTR_MEDIA_VOLUME_LEVEL: volume}
+        await self._async_call_service(SERVICE_VOLUME_SET, data)
+        return
+
+    async def async_volume_up(self):
+        """Turn volume up for media player."""
+        data = {ATTR_ENTITY_ID: self._volume_entity}
+        await self._async_call_service(SERVICE_VOLUME_UP, data)
+
+    async def async_volume_down(self):
+        """Turn volume down for media player."""
+        data = {ATTR_ENTITY_ID: self._volume_entity}
+        await self._async_call_service(SERVICE_VOLUME_DOWN, data)
+
+    async def _async_call_service(self, service_name, variable_data=None):
+        service_data = {}
+        service_data["service"] = "media_player." + service_name
+        service_data["data"] = variable_data
+        await async_call_from_config(
+            self.hass, service_data, blocking=True, validate_config=False,
+        )
+        return
+
     async def _async_updateState(self):
         powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)
         self._setPowerStatus(powerState)
@@ -382,6 +476,35 @@ class SkyQDevice(MediaPlayerEntity):
         else:
             self._skyq_type = STATE_UNKNOWN
             self._state = STATE_OFF
+
+    async def _async_update_volume_state(self):
+        if not self._volume_entity:
+            return
+
+        try:
+            state_obj = self.hass.states.get(self._volume_entity)
+            if state_obj:
+                self._volume_level = state_obj.attributes.get(ATTR_MEDIA_VOLUME_LEVEL)
+                self._is_volume_muted = state_obj.attributes.get(
+                    ATTR_MEDIA_VOLUME_MUTED
+                )
+                self._volume_entity_supported_features = state_obj.attributes.get(
+                    ATTR_SUPPORTED_FEATURES
+                )
+                if self._volume_entity_error:
+                    _LOGGER.info(
+                        f"I0040M - Volume entity now exists: {self.name} - {self._volume_entity}"
+                    )
+                    self._volume_entity_error = False
+            else:
+                if not self._volume_entity_error:
+                    _LOGGER.warning(
+                        f"W0030M - Volume entity does not exist: {self.name} - {self._volume_entity}"
+                    )
+                    self._volume_entity_error = True
+            return
+        except (TypeError, ValueError):
+            return None
 
     async def _async_updateCurrentProgramme(self):
 
@@ -532,6 +655,7 @@ class Config:
     unique_id: str = field(init=True, repr=True, compare=True)
     name: str = field(init=True, repr=True, compare=True)
     room: str = field(init=True, repr=True, compare=True)
+    volume_entity: str = field(init=True, repr=True, compare=True)
     test_channel: str = field(init=True, repr=True, compare=True)
     overrideCountry: str = field(init=True, repr=True, compare=True)
     custom_sources: field(init=True, repr=False, compare=True)

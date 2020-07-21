@@ -1,35 +1,10 @@
 """Constants for SkyQ."""
 
-from homeassistant.components.media_player.const import (
-    SUPPORT_NEXT_TRACK,
-    SUPPORT_PAUSE,
-    SUPPORT_PLAY,
-    SUPPORT_PLAY_MEDIA,
-    SUPPORT_PREVIOUS_TRACK,
-    SUPPORT_SEEK,
-    SUPPORT_SELECT_SOURCE,
-    SUPPORT_STOP,
-    SUPPORT_TURN_OFF,
-    SUPPORT_TURN_ON,
-)
 from homeassistant.const import STATE_OFF, STATE_UNKNOWN
 
 DOMAIN = "skyq"
 SKYQREMOTE = "skyqremote"
 UNDO_UPDATE_LISTENER = "undo_update_listener"
-
-SUPPORT_SKYQ = (
-    SUPPORT_TURN_OFF
-    | SUPPORT_PAUSE
-    | SUPPORT_TURN_ON
-    | SUPPORT_PLAY
-    | SUPPORT_NEXT_TRACK
-    | SUPPORT_PREVIOUS_TRACK
-    | SUPPORT_SELECT_SOURCE
-    | SUPPORT_STOP
-    | SUPPORT_SEEK
-    | SUPPORT_PLAY_MEDIA
-)
 
 CONF_SOURCES = "sources"
 CONF_CHANNEL_SOURCES = "channel_sources"
@@ -40,6 +15,7 @@ CONF_OUTPUT_PROGRAMME_IMAGE = "output_programme_image"
 CONF_LIVE_TV = "live_tv"
 CONF_COUNTRY = "country"
 CONF_TEST_CHANNEL = "test_channel"
+CONF_VOLUME_ENTITY = "volume_entity"
 CHANNEL_SOURCES_DISPLAY = "channel_sources_display"
 CHANNEL_DISPLAY = "{0} - {1}"
 

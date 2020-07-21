@@ -17,6 +17,7 @@ from .const import (
     CONF_ROOM,
     CONF_SOURCES,
     CONF_TEST_CHANNEL,
+    CONF_VOLUME_ENTITY,
     CONST_DEFAULT_ROOM,
 )
 
@@ -35,6 +36,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_COUNTRY): cv.string,
         vol.Optional(CONF_TEST_CHANNEL): cv.string,
         vol.Optional(CONF_SCAN_INTERVAL, default=SCAN_INTERVAL): cv.time_period,
+        vol.Optional(CONF_VOLUME_ENTITY): cv.string,
     }
 )
 

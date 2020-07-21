@@ -32,7 +32,8 @@
           "generate_switches_for_channels": "Genera switch per canali",
           "live_tv": "Mostra i dettagli della TV in diretta",
           "room": "Nome stanza opzionale - richiesto per gli interruttori",
-          "country": "Sostituisci paese"
+          "country": "Sostituisci paese",
+          "volume_entity": "Entità di Media Player per controllare il volume di"
         },
         "title": "Sky Q",
         "description": "Opzioni di configurazione per {name}"

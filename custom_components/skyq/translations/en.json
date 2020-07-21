@@ -32,7 +32,8 @@
           "generate_switches_for_channels": "Generate switches for channels",
           "live_tv": "Show live TV details",
           "room": "Optional room name - required for switches",
-          "country": "Override country"
+          "country": "Override country",
+          "volume_entity": "Media Player entity to control volume of"
         },
         "title": "Sky Q",
         "description": "Setup options for {name}"
