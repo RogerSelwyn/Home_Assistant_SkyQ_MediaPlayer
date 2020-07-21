@@ -77,7 +77,7 @@ media_player:
 | output_programme_image<br>_(boolean)(Optional)_ |Show programme<br>image            | True        | Allows you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing. |
 | live_tv<br>_(boolean)(Optional)_                | Show live TV<br>details           | True        | Allowsyou to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from current known sources. |
 | country<br>_(string)(Optional)_                 | Override Country | _Empty_     | Overrides the detected country from the SkyQ box. Currently supports "GBR" and "ITA". In theory you shouldn't need to use this. |
-| volume_entity<br>_(string)(Optional)_        | Entity to control<br>volume of | _Empty_     | Specifies the entity for which volume control actions will be passed through to. No validation of the entity is done via the UI, warnings will show in the log if an invalid entity is used. |
+| volume_entity<br>_(string)(Optional)_        | Entity to control<br>volume of | _Empty_     | Specifies the entity for which volume control actions will be passed through to. No validation of the entity is done via the UI, warnings will show in the log if an invalid entity is used. Must be a media_player entity. |
 
 ### Sources
 
