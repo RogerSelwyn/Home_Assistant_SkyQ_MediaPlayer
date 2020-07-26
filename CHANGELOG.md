@@ -7,6 +7,7 @@
 ### Fixes
 - [Fix errors in switch generation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4e2a1fa5834ee58cc07deca731fceadddaa816dd) - @RogerSelwyn
 
+## v2.2.4 (05/07/2020)
 ### Maintenance
 
 - [Delete info.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d626d5f58fc00096151fe846d503ffbdf232dd56) - @RogerSelwyn
