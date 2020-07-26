@@ -2,10 +2,10 @@
 
 ## v2.3.0 (22/07/2020)
 ### Enhancements
-- [Fix errors in switch generation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4e2a1fa5834ee58cc07deca731fceadddaa816dd) - @RogerSelwyn
+- [Add ability to control volume on specified entity](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e12ddac34261eddec169d58b159638e12584a4ff) - @RogerSelwyn
 
 ### Fixes
-- [Add ability to control volume on specified entity](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e12ddac34261eddec169d58b159638e12584a4ff) - @RogerSelwyn## v2.2.4 (05/07/2020)
+- [Fix errors in switch generation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4e2a1fa5834ee58cc07deca731fceadddaa816dd) - @RogerSelwyn
 
 ### Maintenance
 
