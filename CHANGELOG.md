@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.3.1 (29/07/2020)
+### Fixes
+- [Bump pyskyqremote to 0.2.25](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8efc62701bfcc4800175231e56e8b61e91b001b7) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/1ff6a48257082108708a85209a9f7970f828fce6) - @actions-user
+
 ## v2.3.0 (22/07/2020)
 ### Enhancements
 - [Add ability to control volume on specified entity](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e12ddac34261eddec169d58b159638e12584a4ff) - @RogerSelwyn
