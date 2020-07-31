@@ -637,7 +637,7 @@ class SkyQDevice(MediaPlayerEntity):
     def _setPowerStatus(self, powerStatus):
         if powerStatus == SKY_STATE_OFF and self._available:
             self._available = False
-            _LOGGER.info(f"I0010M - Device is not available: {self.name}")
+            _LOGGER.error(f"E0010M - Device is not available: {self.name}")
 
         if powerStatus != SKY_STATE_OFF and not self._available:
             self._available = True
