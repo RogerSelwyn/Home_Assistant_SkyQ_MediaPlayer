@@ -458,24 +458,34 @@ class SkyQDevice(MediaPlayerEntity):
         return
 
     async def _async_updateState(self):
-        powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)
-        self._setPowerStatus(powerState)
-        if powerState == SKY_STATE_ON:
-            self._state = STATE_PLAYING
-            # This check is flakey during channel changes, so only used for pause checks if we know its on
-            currentState = await self.hass.async_add_executor_job(
-                self._remote.getCurrentState
-            )
-            if currentState == SKY_STATE_PAUSED:
-                self._state = STATE_PAUSED
-            else:
-                self._state = STATE_PLAYING
-        elif powerState == SKY_STATE_STANDBY:
-            self._skyq_type = STATE_OFF
-            self._state = STATE_OFF
-        else:
+        currentState = await self.hass.async_add_executor_job(
+            self._remote.getCurrentState
+        )
+        if currentState == SKY_STATE_OFF:
             self._skyq_type = STATE_UNKNOWN
             self._state = STATE_OFF
+            if self._available:
+                _LOGGER.error(f"E0010M - Device is not available: {self.name}")
+                self._available = False
+            return
+
+        if currentState != SKY_STATE_OFF and not self._available:
+            if self._startupSetup:
+                _LOGGER.info(f"I0020M - Device is now available: {self.name}")
+            else:
+                self._startupSetup = True
+                _LOGGER.warning(f"W0020M - Device is now available: {self.name}")
+
+        self._available = True
+        if currentState == SKY_STATE_STANDBY:
+            self._skyq_type = STATE_OFF
+            self._state = STATE_OFF
+            return
+
+        if currentState == SKY_STATE_PAUSED:
+            self._state = STATE_PAUSED
+        else:
+            self._state = STATE_PLAYING
 
     async def _async_update_volume_state(self):
         if not self._volume_entity:
