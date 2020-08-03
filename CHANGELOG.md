@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.3.2 (03/08/2020)
+### Enhancements
+- [Use enhancements in pyskyqremote to remove powerstate calls](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8a977f6d345c2ef45292a427ab0b61d0c693c56a) -  @RogerSelwyn
+
+### Maintenance
+- [Change minimum requirements for modules](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b2a0d0fa3c2a2872828eb5b5b5dcce1dc53db44f) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.26](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/781b3c2f5989e08c3e2257894cb9cbb10080b2d1) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/58b86465e49681bf6f6cda906571cf582a31684d) - @actions-user
+
+### Fixes
+- [Change device unavailable to error](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/236718b6795a9e420cc4615b4cdc6529f7bde9b7) - @RogerSelwyn
+
 ## v2.3.1 (29/07/2020)
 ### Fixes
 - [Bump pyskyqremote to 0.2.25](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8efc62701bfcc4800175231e56e8b61e91b001b7) - @RogerSelwyn
