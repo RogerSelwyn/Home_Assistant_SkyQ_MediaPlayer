@@ -194,8 +194,8 @@ class SkyQDevice(MediaPlayerEntity):
         self._firstError = True
         self._volume_entity_error = False
         self._channel_list = None
-        self._volume_level = 0
-        self._is_volume_muted = True
+        self._volume_level = None
+        self._is_volume_muted = None
 
         if not self._remote.deviceSetup:
             self._available = False
