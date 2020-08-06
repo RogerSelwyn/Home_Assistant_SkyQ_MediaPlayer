@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.3.3 (06/08/2020)
+### Fixes
+- [Fix showing volume properties incorrectly](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5f51a381a715f48b84fed05995756a97515c8ad1) - @RogerSelwyn
+
+### Maintenance
+- [Unconstrain pygithub](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e9c79706c3e0d93baaf331af78ac6f6cc0417cd6) - @RogerSelwyn
+
 ## v2.3.2 (03/08/2020)
 ### Enhancements
 - [Use enhancements in pyskyqremote to remove powerstate calls](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8a977f6d345c2ef45292a427ab0b61d0c693c56a) -  @RogerSelwyn
