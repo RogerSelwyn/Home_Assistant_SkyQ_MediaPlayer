@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.3.4 (06/08/2020)
+### Maintenance
+- [Bump pyskyqremote to 0.2.27](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6afc1e7ef1a5c003e4c011df5922145fc2701497) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/307db3154a58fe8ab03b9ad297beb664c91659d4) - @actions-user
+
 ## v2.3.3 (06/08/2020)
 ### Fixes
 - [Fix showing volume properties incorrectly](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5f51a381a715f48b84fed05995756a97515c8ad1) - @RogerSelwyn
