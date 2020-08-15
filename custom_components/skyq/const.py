@@ -43,9 +43,10 @@ SKYQ_ICONS = {
     STATE_UNKNOWN: "mdi:alert-circle-outline",
 }
 APP_TITLES = {
-    "com.bskyb.vevo": "Vevo",
-    "com.spotify.spotify.tvv2": "Spotify",
-    "com.roku": "Roku",
     "com.bskyb.epgui": "EPG",
+    "com.bskyb.vevo": "Vevo",
+    "com.roku": "Roku",
+    "com.spotify.spotify.tvv2": "Spotify",
+    "play.works": "PlayWorks",
 }
 APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
