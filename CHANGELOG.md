@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.3.6 (15/08/2020)
+### Fixes
+- [Fix excessive errors in log on startup](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a2be83406903e1e9e08489fd83bb7ac72e8a1a96) - @RogerSelwyn
+
 ## v2.3.5 (15/08/2020)
 ### Enhancements
 - [Add playworks logo and title](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9c6e943c6d61a79708dfd4b5396cd99beae7ce22) - @RogerSelwyn
