@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.3.5 (15/08/2020)
+### Enhancements
+- [Add playworks logo and title](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9c6e943c6d61a79708dfd4b5396cd99beae7ce22) - @RogerSelwyn
+
+### Fixes
+- [Re-include check for power status](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f5451151895378f8a555b6c115eb6681d4e0bc51) - @RogerSelwyn
+
 ## v2.3.4 (06/08/2020)
 ### Maintenance
 - [Bump pyskyqremote to 0.2.27](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6afc1e7ef1a5c003e4c011df5922145fc2701497) - @RogerSelwyn
