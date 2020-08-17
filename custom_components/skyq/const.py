@@ -44,6 +44,7 @@ SKYQ_ICONS = {
 }
 APP_TITLES = {
     "com.bskyb.epgui": "EPG",
+    "com.bskyb.news": "SkyNews",
     "com.bskyb.vevo": "Vevo",
     "com.roku": "Roku",
     "com.spotify.spotify.tvv2": "Spotify",
