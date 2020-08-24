@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.3.7 (24/08/2020)
+### Enhancements
+- [Add skynews logo](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f04f09adfab6c87d59be494cf007237616d3eb88) - @RogerSelwyn
+
+### Fixes
+- [Fix certificate errors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3c813094b784553e961b800147462ba24c9277ee) - @RogerSelwyn
+
 ## v2.3.6 (15/08/2020)
 ### Fixes
 - [Fix excessive errors in log on startup](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a2be83406903e1e9e08489fd83bb7ac72e8a1a96) - @RogerSelwyn
