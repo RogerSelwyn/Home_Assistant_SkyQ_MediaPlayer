@@ -49,6 +49,7 @@ from homeassistant.const import (
     STATE_UNKNOWN,
 )
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.network import get_url
 from homeassistant.helpers.service import async_call_from_config
 
 from .const import (
@@ -80,15 +81,6 @@ from .const import (
     TIMEOUT,
 )
 from .utils import convert_sources
-
-# from homeassistant.exceptions import PlatformNotReady
-
-
-try:
-    from homeassistant.helpers.network import get_url
-except ImportError:
-    pass
-
 
 try:
     from homeassistant.components.media_player import MediaPlayerEntity
@@ -196,6 +188,7 @@ class SkyQDevice(MediaPlayerEntity):
         self._channel_list = None
         self._volume_level = None
         self._is_volume_muted = None
+        self._use_internal = True
 
         if not self._remote.deviceSetup:
             self._available = False
@@ -574,23 +567,41 @@ class SkyQDevice(MediaPlayerEntity):
         appImageUrl = APP_IMAGE_URL_BASE.format(appTitle.casefold())
 
         websession = async_get_clientsession(self.hass)
-        try:
-            base_url = get_url(self.hass)
-        except NameError:
-            base_url = self.hass.config.api.base_url
+        base_url = get_url(self.hass)
         request_url = base_url + appImageUrl
 
+        if self._use_internal:
+            certok = await self._async_check_for_image(
+                websession, appTitle, appImageUrl, request_url
+            )
+        if not self._use_internal or not certok:
+            self._use_internal = False
+            base_url = get_url(self.hass, allow_internal=False)
+            request_url = base_url + appImageUrl
+            certok = await self._async_check_for_image(
+                websession, appTitle, request_url, request_url
+            )
+
+        return self._appImageUrl
+
+    async def _async_check_for_image(
+        self, websession, appTitle, appImageUrl, request_url
+    ):
+        certok = True
         try:
-            async with getattr(websession, "head")(
-                request_url, timeout=TIMEOUT,
-            ) as response:
+            response = await websession.head(request_url, timeout=TIMEOUT)
+            async with response:
                 if response.status == HTTP_OK:
                     self._appImageUrl = appImageUrl
 
                 self._lastAppTitle = appTitle
 
-                return self._appImageUrl
-        except aiohttp.client_exceptions.ClientConnectorError as err:
+        except (aiohttp.client_exceptions.ClientConnectorCertificateError):
+            certok = False
+        except (
+            aiohttp.client_exceptions.ClientConnectorError,
+            aiohttp.ClientError,
+        ) as err:
             # This error when server is starting up and app running
             if self._firstError:
                 self._firstError = False
@@ -599,17 +610,11 @@ class SkyQDevice(MediaPlayerEntity):
                     f"X0020M - Image file check failed: {request_url} : {err}"
                 )
                 self._lastAppTitle = appTitle
-            return self._appImageUrl
         except asyncio.TimeoutError as err:
             _LOGGER.info(f"I0030M - Image file check timed out: {request_url} : {err}")
             self._lastAppTitle = appTitle
-            return self._appImageUrl
-        except (aiohttp.ClientError, Exception) as err:
-            _LOGGER.exception(
-                f"X0030M - Image file check failed: {request_url} : {err}"
-            )
-            self._lastAppTitle = appTitle
-            return self._appImageUrl
+
+        return certok
 
     async def _async_getDeviceInfo(self):
         await self.hass.async_add_executor_job(
