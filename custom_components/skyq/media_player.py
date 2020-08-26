@@ -596,7 +596,10 @@ class SkyQDevice(MediaPlayerEntity):
 
                 self._lastAppTitle = appTitle
 
-        except (aiohttp.client_exceptions.ClientConnectorCertificateError):
+        except (aiohttp.client_exceptions.ClientConnectorCertificateError) as err:
+            _LOGGER.info(
+                f"I0040M - Image file check certificate error, routing externally: {request_url} : {err}"
+            )
             certok = False
         except (
             aiohttp.client_exceptions.ClientConnectorError,
