@@ -4,91 +4,40 @@ import logging
 from dataclasses import InitVar, dataclass, field
 
 import aiohttp
-from pyskyqremote.const import (
-    APP_EPG,
-    SKY_STATE_OFF,
-    SKY_STATE_ON,
-    SKY_STATE_PAUSED,
-    SKY_STATE_STANDBY,
-)
+from pyskyqremote.const import (APP_EPG, SKY_STATE_OFF, SKY_STATE_ON,
+                                SKY_STATE_PAUSED, SKY_STATE_STANDBY)
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from custom_components.skyq.util.config_gen import SwitchMaker
+from homeassistant.components.media_player import (BrowseMedia,
+                                                   MediaPlayerEntity)
 from homeassistant.components.media_player.const import (
-    ATTR_MEDIA_VOLUME_LEVEL,
-    ATTR_MEDIA_VOLUME_MUTED,
-    MEDIA_TYPE_APP,
-    MEDIA_TYPE_TVSHOW,
-    SUPPORT_NEXT_TRACK,
-    SUPPORT_PAUSE,
-    SUPPORT_PLAY,
-    SUPPORT_PLAY_MEDIA,
-    SUPPORT_PREVIOUS_TRACK,
-    SUPPORT_SEEK,
-    SUPPORT_SELECT_SOURCE,
-    SUPPORT_STOP,
-    SUPPORT_TURN_OFF,
-    SUPPORT_TURN_ON,
-    SUPPORT_VOLUME_MUTE,
-    SUPPORT_VOLUME_SET,
-    SUPPORT_VOLUME_STEP,
-)
-from homeassistant.const import (
-    ATTR_ENTITY_ID,
-    ATTR_SUPPORTED_FEATURES,
-    CONF_HOST,
-    CONF_NAME,
-    HTTP_OK,
-    SERVICE_VOLUME_DOWN,
-    SERVICE_VOLUME_MUTE,
-    SERVICE_VOLUME_SET,
-    SERVICE_VOLUME_UP,
-    STATE_OFF,
-    STATE_PAUSED,
-    STATE_PLAYING,
-    STATE_UNKNOWN,
-)
+    ATTR_MEDIA_VOLUME_LEVEL, ATTR_MEDIA_VOLUME_MUTED, MEDIA_CLASS_DIRECTORY,
+    MEDIA_CLASS_TV_SHOW, MEDIA_TYPE_APP, MEDIA_TYPE_TVSHOW,
+    SUPPORT_BROWSE_MEDIA, SUPPORT_NEXT_TRACK, SUPPORT_PAUSE, SUPPORT_PLAY,
+    SUPPORT_PLAY_MEDIA, SUPPORT_PREVIOUS_TRACK, SUPPORT_SEEK,
+    SUPPORT_SELECT_SOURCE, SUPPORT_STOP, SUPPORT_TURN_OFF, SUPPORT_TURN_ON,
+    SUPPORT_VOLUME_MUTE, SUPPORT_VOLUME_SET, SUPPORT_VOLUME_STEP)
+from homeassistant.components.media_player.errors import BrowseError
+from homeassistant.const import (ATTR_ENTITY_ID, ATTR_SUPPORTED_FEATURES,
+                                 CONF_HOST, CONF_NAME, HTTP_OK,
+                                 SERVICE_VOLUME_DOWN, SERVICE_VOLUME_MUTE,
+                                 SERVICE_VOLUME_SET, SERVICE_VOLUME_UP,
+                                 STATE_OFF, STATE_PAUSED, STATE_PLAYING,
+                                 STATE_UNKNOWN)
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.network import get_url
 from homeassistant.helpers.service import async_call_from_config
 
-from .const import (
-    APP_IMAGE_URL_BASE,
-    APP_TITLES,
-    CONF_CHANNEL_SOURCES,
-    CONF_COUNTRY,
-    CONF_DIR,
-    CONF_GEN_SWITCH,
-    CONF_LIVE_TV,
-    CONF_OUTPUT_PROGRAMME_IMAGE,
-    CONF_ROOM,
-    CONF_SOURCES,
-    CONF_TEST_CHANNEL,
-    CONF_VOLUME_ENTITY,
-    CONST_DEFAULT_ROOM,
-    CONST_SKYQ_MEDIA_TYPE,
-    DEVICE_CLASS,
-    DOMAIN,
-    FEATURE_BASIC,
-    FEATURE_IMAGE,
-    FEATURE_LIVE_TV,
-    FEATURE_SWITCHES,
-    SKYQ_APP,
-    SKYQ_ICONS,
-    SKYQ_LIVE,
-    SKYQ_PVR,
-    SKYQREMOTE,
-    TIMEOUT,
-)
+from .const import (APP_IMAGE_URL_BASE, APP_TITLES, CONF_CHANNEL_SOURCES,
+                    CONF_COUNTRY, CONF_DIR, CONF_GEN_SWITCH, CONF_LIVE_TV,
+                    CONF_OUTPUT_PROGRAMME_IMAGE, CONF_ROOM, CONF_SOURCES,
+                    CONF_TEST_CHANNEL, CONF_VOLUME_ENTITY, CONST_DEFAULT_ROOM,
+                    CONST_SKYQ_MEDIA_TYPE, DEVICE_CLASS, DOMAIN, DOMAINBROWSER,
+                    FEATURE_BASIC, FEATURE_IMAGE, FEATURE_LIVE_TV,
+                    FEATURE_SWITCHES, SKYQ_APP, SKYQ_ICONS, SKYQ_LIVE,
+                    SKYQ_PVR, SKYQREMOTE, TIMEOUT)
 from .utils import convert_sources
-
-try:
-    from homeassistant.components.media_player import MediaPlayerEntity
-except ImportError:
-    from homeassistant.components.media_player import (
-        MediaPlayerDevice as MediaPlayerEntity,
-    )
-
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -110,7 +59,12 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     name = config.get(CONF_NAME)
 
     await _async_setup_platform_entry(
-        config, async_add_entities, remote, unique_id, name, hass.config.config_dir,
+        config,
+        async_add_entities,
+        remote,
+        unique_id,
+        name,
+        hass.config.config_dir,
     )
 
 
@@ -151,10 +105,16 @@ async def _async_setup_platform_entry(
 
     if config.enabled_features & FEATURE_SWITCHES:
         SwitchMaker(
-            config_dir, name, config.room, config.source_list,
+            config_dir,
+            name,
+            config.room,
+            config.source_list,
         )
 
-    player = SkyQDevice(remote, config,)
+    player = SkyQDevice(
+        remote,
+        config,
+    )
     async_add_entities([player], True)
 
 
@@ -162,7 +122,9 @@ class SkyQDevice(MediaPlayerEntity):
     """Representation of a SkyQ Box."""
 
     def __init__(
-        self, remote, config,
+        self,
+        remote,
+        config,
     ):
         """Initialise the SkyQRemote."""
         self._config = config
@@ -197,14 +159,15 @@ class SkyQDevice(MediaPlayerEntity):
 
         self._supported_features = (
             SUPPORT_TURN_OFF
-            | SUPPORT_PAUSE
             | SUPPORT_TURN_ON
+            | SUPPORT_PAUSE
             | SUPPORT_PLAY
+            | SUPPORT_STOP
             | SUPPORT_NEXT_TRACK
             | SUPPORT_PREVIOUS_TRACK
             | SUPPORT_SELECT_SOURCE
-            | SUPPORT_STOP
             | SUPPORT_SEEK
+            | SUPPORT_BROWSE_MEDIA
             | SUPPORT_PLAY_MEDIA
         )
 
@@ -398,15 +361,7 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def async_select_source(self, source):
         """Select the specified source."""
-        command = None
-        if source in self._config.custom_sources:
-            command = self._config.custom_sources.get(source).split(",")
-        else:
-            try:
-                channel = next(c for c in self._channel_list if c.channelname == source)
-                command = list(channel.channelno)
-            except (TypeError, StopIteration):
-                command = source
+        command = self._get_command(source)
         if command:
             await self.hass.async_add_executor_job(self._remote.press, command)
             await self.async_update()
@@ -418,6 +373,8 @@ class SkyQDevice(MediaPlayerEntity):
                 self._remote.press, media_id.casefold()
             )
             await self.async_update()
+        if media_type.casefold() == DOMAINBROWSER:
+            await self.async_select_source(media_id)
 
     async def async_mute_volume(self, mute):
         """Mute the volume."""
@@ -441,12 +398,76 @@ class SkyQDevice(MediaPlayerEntity):
         data = {ATTR_ENTITY_ID: self._volume_entity}
         await self._async_call_service(SERVICE_VOLUME_DOWN, data)
 
+    async def async_browse_media(self, media_content_type=None, media_content_id=None):
+        """Implement the websocket media browsing helper."""
+        if media_content_id not in (None, "root", "channels"):
+            raise BrowseError(
+                f"Media not found: {media_content_type} / {media_content_id}"
+            )
+
+        channellist = await self._async_prepareChannels()
+        channels = [
+            BrowseMedia(
+                title=channel["channelname"],
+                media_class=MEDIA_CLASS_TV_SHOW,
+                media_content_id=channel["channelname"],
+                media_content_type=DOMAINBROWSER,
+                can_play=True,
+                can_expand=False,
+                thumbnail=channel["thumbnail"],
+            )
+            for channel in channellist
+        ]
+
+        library_info = BrowseMedia(
+            title="Root",
+            media_content_id="root",
+            media_content_type="library",
+            media_class=MEDIA_CLASS_DIRECTORY,
+            can_play=False,
+            can_expand=True,
+            children=channels,
+        )
+
+        return library_info
+
+    async def _async_prepareChannels(self):
+        channels = []
+        for source in self._config.source_list:
+            thumbnail = await self.hass.async_add_executor_job(
+                self._remote.getChannelImage, source
+            )
+            if not thumbnail:
+                thumbnail = await self._async_getAppImageUrl(source)
+
+            channel = {
+                "channelname": source,
+                "thumbnail": thumbnail,
+            }
+
+            channels.append(channel)
+        return channels
+
+    def _get_command(self, source):
+        """Select the specified source."""
+        if source in self._config.custom_sources:
+            return self._config.custom_sources.get(source).split(",")
+        else:
+            try:
+                channel = next(c for c in self._channel_list if c.channelname == source)
+                return list(channel.channelno)
+            except (TypeError, StopIteration):
+                return source
+
     async def _async_call_service(self, service_name, variable_data=None):
         service_data = {}
         service_data["service"] = "media_player." + service_name
         service_data["data"] = variable_data
         await async_call_from_config(
-            self.hass, service_data, blocking=True, validate_config=False,
+            self.hass,
+            service_data,
+            blocking=True,
+            validate_config=False,
         )
         return
 

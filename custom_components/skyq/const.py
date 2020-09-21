@@ -3,6 +3,7 @@
 from homeassistant.const import STATE_OFF, STATE_UNKNOWN
 
 DOMAIN = "skyq"
+DOMAINBROWSER = "skyq_browser"
 SKYQREMOTE = "skyqremote"
 UNDO_UPDATE_LISTENER = "undo_update_listener"
 
