@@ -218,8 +218,6 @@ class SkyQDevice(MediaPlayerEntity):
             | SUPPORT_SEEK
             | SUPPORT_PLAY_MEDIA
         )
-        if len(self._config.source_list) > 0:
-            self._supported_features = self._supported_features | SUPPORT_BROWSE_MEDIA
 
     @property
     def supported_features(self):
@@ -235,6 +233,12 @@ class SkyQDevice(MediaPlayerEntity):
                 self._supported_features = (
                     self._supported_features | SUPPORT_VOLUME_STEP
                 )
+        if len(self._config.source_list) > 0 and self.state not in (
+            STATE_OFF,
+            STATE_UNKNOWN,
+        ):
+            return self._supported_features | SUPPORT_BROWSE_MEDIA
+
         return self._supported_features
 
     @property
