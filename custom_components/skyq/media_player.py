@@ -4,39 +4,88 @@ import logging
 from dataclasses import InitVar, dataclass, field
 
 import aiohttp
-from pyskyqremote.const import (APP_EPG, SKY_STATE_OFF, SKY_STATE_ON,
-                                SKY_STATE_PAUSED, SKY_STATE_STANDBY)
+from pyskyqremote.const import (
+    APP_EPG,
+    SKY_STATE_OFF,
+    SKY_STATE_ON,
+    SKY_STATE_PAUSED,
+    SKY_STATE_STANDBY,
+)
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from custom_components.skyq.util.config_gen import SwitchMaker
-from homeassistant.components.media_player import (BrowseMedia,
-                                                   MediaPlayerEntity)
+from homeassistant.components.media_player import BrowseMedia, MediaPlayerEntity
 from homeassistant.components.media_player.const import (
-    ATTR_MEDIA_VOLUME_LEVEL, ATTR_MEDIA_VOLUME_MUTED, MEDIA_CLASS_DIRECTORY,
-    MEDIA_CLASS_TV_SHOW, MEDIA_TYPE_APP, MEDIA_TYPE_TVSHOW,
-    SUPPORT_BROWSE_MEDIA, SUPPORT_NEXT_TRACK, SUPPORT_PAUSE, SUPPORT_PLAY,
-    SUPPORT_PLAY_MEDIA, SUPPORT_PREVIOUS_TRACK, SUPPORT_SEEK,
-    SUPPORT_SELECT_SOURCE, SUPPORT_STOP, SUPPORT_TURN_OFF, SUPPORT_TURN_ON,
-    SUPPORT_VOLUME_MUTE, SUPPORT_VOLUME_SET, SUPPORT_VOLUME_STEP)
+    ATTR_MEDIA_VOLUME_LEVEL,
+    ATTR_MEDIA_VOLUME_MUTED,
+    MEDIA_CLASS_DIRECTORY,
+    MEDIA_CLASS_TV_SHOW,
+    MEDIA_TYPE_APP,
+    MEDIA_TYPE_TVSHOW,
+    SUPPORT_BROWSE_MEDIA,
+    SUPPORT_NEXT_TRACK,
+    SUPPORT_PAUSE,
+    SUPPORT_PLAY,
+    SUPPORT_PLAY_MEDIA,
+    SUPPORT_PREVIOUS_TRACK,
+    SUPPORT_SEEK,
+    SUPPORT_SELECT_SOURCE,
+    SUPPORT_STOP,
+    SUPPORT_TURN_OFF,
+    SUPPORT_TURN_ON,
+    SUPPORT_VOLUME_MUTE,
+    SUPPORT_VOLUME_SET,
+    SUPPORT_VOLUME_STEP,
+)
 from homeassistant.components.media_player.errors import BrowseError
-from homeassistant.const import (ATTR_ENTITY_ID, ATTR_SUPPORTED_FEATURES,
-                                 CONF_HOST, CONF_NAME, HTTP_OK,
-                                 SERVICE_VOLUME_DOWN, SERVICE_VOLUME_MUTE,
-                                 SERVICE_VOLUME_SET, SERVICE_VOLUME_UP,
-                                 STATE_OFF, STATE_PAUSED, STATE_PLAYING,
-                                 STATE_UNKNOWN)
+from homeassistant.const import (
+    ATTR_ENTITY_ID,
+    ATTR_SUPPORTED_FEATURES,
+    CONF_HOST,
+    CONF_NAME,
+    HTTP_OK,
+    SERVICE_VOLUME_DOWN,
+    SERVICE_VOLUME_MUTE,
+    SERVICE_VOLUME_SET,
+    SERVICE_VOLUME_UP,
+    STATE_OFF,
+    STATE_PAUSED,
+    STATE_PLAYING,
+    STATE_UNKNOWN,
+)
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.network import get_url
 from homeassistant.helpers.service import async_call_from_config
 
-from .const import (APP_IMAGE_URL_BASE, APP_TITLES, CONF_CHANNEL_SOURCES,
-                    CONF_COUNTRY, CONF_DIR, CONF_GEN_SWITCH, CONF_LIVE_TV,
-                    CONF_OUTPUT_PROGRAMME_IMAGE, CONF_ROOM, CONF_SOURCES,
-                    CONF_TEST_CHANNEL, CONF_VOLUME_ENTITY, CONST_DEFAULT_ROOM,
-                    CONST_SKYQ_MEDIA_TYPE, DEVICE_CLASS, DOMAIN, DOMAINBROWSER,
-                    FEATURE_BASIC, FEATURE_IMAGE, FEATURE_LIVE_TV,
-                    FEATURE_SWITCHES, SKYQ_APP, SKYQ_ICONS, SKYQ_LIVE,
-                    SKYQ_PVR, SKYQREMOTE, TIMEOUT)
+from .const import (
+    APP_IMAGE_URL_BASE,
+    APP_TITLES,
+    CONF_CHANNEL_SOURCES,
+    CONF_COUNTRY,
+    CONF_DIR,
+    CONF_GEN_SWITCH,
+    CONF_LIVE_TV,
+    CONF_OUTPUT_PROGRAMME_IMAGE,
+    CONF_ROOM,
+    CONF_SOURCES,
+    CONF_TEST_CHANNEL,
+    CONF_VOLUME_ENTITY,
+    CONST_DEFAULT_ROOM,
+    CONST_SKYQ_MEDIA_TYPE,
+    DEVICE_CLASS,
+    DOMAIN,
+    DOMAINBROWSER,
+    FEATURE_BASIC,
+    FEATURE_IMAGE,
+    FEATURE_LIVE_TV,
+    FEATURE_SWITCHES,
+    SKYQ_APP,
+    SKYQ_ICONS,
+    SKYQ_LIVE,
+    SKYQ_PVR,
+    SKYQREMOTE,
+    TIMEOUT,
+)
 from .utils import convert_sources
 
 _LOGGER = logging.getLogger(__name__)
@@ -167,9 +216,10 @@ class SkyQDevice(MediaPlayerEntity):
             | SUPPORT_PREVIOUS_TRACK
             | SUPPORT_SELECT_SOURCE
             | SUPPORT_SEEK
-            | SUPPORT_BROWSE_MEDIA
             | SUPPORT_PLAY_MEDIA
         )
+        if len(self._config.source_list) > 0:
+            self._supported_features = self._supported_features | SUPPORT_BROWSE_MEDIA
 
     @property
     def supported_features(self):
@@ -420,7 +470,7 @@ class SkyQDevice(MediaPlayerEntity):
         ]
 
         library_info = BrowseMedia(
-            title="Root",
+            title="Sky Q",
             media_content_id="root",
             media_content_type="library",
             media_class=MEDIA_CLASS_DIRECTORY,
