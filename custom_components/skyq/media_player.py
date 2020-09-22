@@ -2,6 +2,7 @@
 import asyncio
 import logging
 from dataclasses import InitVar, dataclass, field
+from datetime import datetime
 
 import aiohttp
 from pyskyqremote.const import (
@@ -486,26 +487,51 @@ class SkyQDevice(MediaPlayerEntity):
         return library_info
 
     async def _async_prepareChannels(self):
-        channels = []
-        for source in self._config.source_list:
-            command = self._get_command(source)
-            channelno = "".join(command)
-            channelInfo = await self.hass.async_add_executor_job(
-                self._remote.getChannelImage, channelno
+        self._channels = []
+        # for source in self._config.source_list:
+        #     channels.append(await self._async_get_channelInfo(source))
+        channels = await asyncio.gather(
+            *[
+                self._async_get_channelInfo(source)
+                for source in self._config.source_list
+            ]
+        )
+        return channels
+
+    async def _async_get_channelInfo(self, source):
+        command = self._get_command(source)
+        channelno = "".join(command)
+        channelInfo = await self.hass.async_add_executor_job(
+            self._remote.getChannelInfo, channelno
+        )
+        if not channelInfo:
+            channelInfo = {
+                "channelName": source,
+                "thumbnail": await self._async_getAppImageUrl(source),
+                "title": source,
+            }
+        else:
+            queryDate = datetime.utcnow()
+            programme = await self.hass.async_add_executor_job(
+                self._remote.getProgrammeFromEpg,
+                channelInfo.channelsid,
+                queryDate,
+                queryDate,
             )
-            if not channelInfo:
+            if not programme:
                 channelInfo = {
                     "channelName": source,
                     "thumbnail": await self._async_getAppImageUrl(source),
                     "title": source,
                 }
             else:
-                channelInfo["channelName"] = source
-                if channelInfo["title"]:
-                    channelInfo["title"] = f"{source} - {channelInfo['title']}"
+                channelInfo = {
+                    "channelName": source,
+                    "thumbnail": programme.imageUrl,
+                    "title": f"{source} - {programme.title}",
+                }
 
-            channels.append(channelInfo)
-        return channels
+        return channelInfo
 
     def _get_command(self, source):
         """Select the specified source."""
