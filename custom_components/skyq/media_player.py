@@ -462,9 +462,9 @@ class SkyQDevice(MediaPlayerEntity):
         channellist = await self._async_prepareChannels()
         channels = [
             BrowseMedia(
-                title=channel["channelname"],
+                title=channel["title"],
                 media_class=MEDIA_CLASS_TV_SHOW,
-                media_content_id=channel["channelname"],
+                media_content_id=channel["channelName"],
                 media_content_type=DOMAINBROWSER,
                 can_play=True,
                 can_expand=False,
@@ -488,18 +488,23 @@ class SkyQDevice(MediaPlayerEntity):
     async def _async_prepareChannels(self):
         channels = []
         for source in self._config.source_list:
-            thumbnail = await self.hass.async_add_executor_job(
-                self._remote.getChannelImage, source
+            command = self._get_command(source)
+            channelno = "".join(command)
+            channelInfo = await self.hass.async_add_executor_job(
+                self._remote.getChannelImage, channelno
             )
-            if not thumbnail:
-                thumbnail = await self._async_getAppImageUrl(source)
+            if not channelInfo:
+                channelInfo = {
+                    "channelName": source,
+                    "thumbnail": await self._async_getAppImageUrl(source),
+                    "title": source,
+                }
+            else:
+                channelInfo["channelName"] = source
+                if channelInfo["title"]:
+                    channelInfo["title"] = f"{source} - {channelInfo['title']}"
 
-            channel = {
-                "channelname": source,
-                "thumbnail": thumbnail,
-            }
-
-            channels.append(channel)
+            channels.append(channelInfo)
         return channels
 
     def _get_command(self, source):
