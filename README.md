@@ -29,6 +29,10 @@ _Component showing recording with [Mini Media Player](https://github.com/kalkih/
 
 <img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/master/screenshots/skyq_3.png">
 
+_Media Browser_
+
+<img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/master/screenshots/skyq_4.png">
+
 ## Installation
 
 You can use HACS by adding this repository as a custom Integration repository in HACS settings, or install the component manually:
@@ -126,6 +130,11 @@ shortcuts:
       id: channelup
       type: skyq
 ```
+
+## Media Browser
+
+Fetching data to support live programme information for the Media Browser is data intensive, so the information for upto 20 channels are cached to improve performance. The first media browser access per day will be slow (whilst the data is fetched), further accesses will utilise cached data. If the programme line up for a channel changes during the day, this will not be reflected in the media browser.
+
 # Switch Generation Helper
 
 A utility function has been created to generate yaml configuration for SkyQ enabled media players to support easy usage with other home assistant integrations, e.g. google home
