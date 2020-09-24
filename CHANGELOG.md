@@ -1,5 +1,21 @@
 # Changelog
 
+
+## v2.4.0 (24/09/2020)
+### Enhancements
+- [Add support for media browser](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ad71bf30dbfbdf3c8c3805bbe0a2dbbaa2e0018b) - @RogerSelwyn
+- [Change to use live info for browser](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c9986860a65d986097b8e3fba4ad71371d9ac77e) - @RogerSelwyn
+- [Rework retrieving data for browser](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fdbcb51096309e759a661ec45b71cc23b8b847a6) - @RogerSelwyn
+
+### Maintenance
+- [Add Information log message on certificate error](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/251af863512e40fe5ad575620c31c33aa0ac68dc) - @RogerSelwyn
+- [Update pyskyqremote to 0.2.30](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ceb5599ca782759d98ff61c8f71aaed784c40bb5) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/818b92c672e09070639f9cc1f5a999cf2bf4c7ca) - @actions-user
+
+### Fixes
+- [Disable browser when no sources](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/68d5afa121bb11f8d3436e0ed9df68c80caca8f8) - @RogerSelwyn
+- [Disable browser when switched off](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2fe10a48582db9250de92dd50422ce3548a273ec) - @RogerSelwyn 
+
 ## v2.3.7 (24/08/2020)
 ### Enhancements
 - [Add skynews logo](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f04f09adfab6c87d59be494cf007237616d3eb88) - @RogerSelwyn
