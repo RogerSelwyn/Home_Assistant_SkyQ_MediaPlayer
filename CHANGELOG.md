@@ -11,6 +11,9 @@
 - [Add Information log message on certificate error](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/251af863512e40fe5ad575620c31c33aa0ac68dc) - @RogerSelwyn
 - [Update pyskyqremote to 0.2.30](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ceb5599ca782759d98ff61c8f71aaed784c40bb5) - @RogerSelwyn
 - [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/818b92c672e09070639f9cc1f5a999cf2bf4c7ca) - @actions-user
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/34bc18e39035fc0cc426e1621782f529b47c25a5) - @RogerSelwyn
+- [Added media browser screenshot](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b2a44285c6885ec04046d09a1df0711e6d61501d) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c2355ae1060d8aac6d2c3cef8007942a8d9a6071) - @RogerSelwyn
 
 ### Fixes
 - [Disable browser when no sources](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/68d5afa121bb11f8d3436e0ed9df68c80caca8f8) - @RogerSelwyn
