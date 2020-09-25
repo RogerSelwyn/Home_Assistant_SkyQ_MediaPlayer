@@ -5,6 +5,7 @@ from dataclasses import InitVar, dataclass, field
 from datetime import datetime
 
 import aiohttp
+from pyskyqremote.classes.programme import Programme
 from pyskyqremote.const import (
     APP_EPG,
     SKY_STATE_OFF,
@@ -475,7 +476,7 @@ class SkyQDevice(MediaPlayerEntity):
         ]
 
         library_info = BrowseMedia(
-            title="Sky Q",
+            title=self.name,
             media_content_id="root",
             media_content_type="library",
             media_class=MEDIA_CLASS_DIRECTORY,
@@ -518,7 +519,7 @@ class SkyQDevice(MediaPlayerEntity):
                 queryDate,
                 queryDate,
             )
-            if not programme:
+            if not isinstance(programme, Programme):
                 channelInfo = {
                     "channelName": source,
                     "thumbnail": await self._async_getAppImageUrl(source),
