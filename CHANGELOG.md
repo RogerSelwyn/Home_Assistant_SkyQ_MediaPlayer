@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v2.4.1 (25/09/2020)
+### Fixes
+- [Fix issue with error when no programme found](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/970cae1c3bcb54a98fda7e2a8f2ef2645b7d891f) - @RogerSelwyn
+
 ## v2.4.0 (24/09/2020)
 ### Enhancements
 - [Add support for media browser](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ad71bf30dbfbdf3c8c3805bbe0a2dbbaa2e0018b) - @RogerSelwyn
