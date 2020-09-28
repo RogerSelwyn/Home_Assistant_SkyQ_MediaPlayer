@@ -1,24 +1,9 @@
 """The skyq platform allows you to control a SkyQ set top box."""
-import asyncio
 import logging
-from datetime import datetime
-
-import aiohttp
-from pyskyqremote.classes.programme import Programme
-from pyskyqremote.const import (
-    APP_EPG,
-    SKY_STATE_OFF,
-    SKY_STATE_ON,
-    SKY_STATE_PAUSED,
-    SKY_STATE_STANDBY,
-)
-from pyskyqremote.skyq_remote import SkyQRemote
 
 from custom_components.skyq.util.config_gen import SwitchMaker
-from homeassistant.components.media_player import BrowseMedia, MediaPlayerEntity
+from homeassistant.components.media_player import MediaPlayerEntity
 from homeassistant.components.media_player.const import (
-    MEDIA_CLASS_DIRECTORY,
-    MEDIA_CLASS_TV_SHOW,
     MEDIA_TYPE_APP,
     MEDIA_TYPE_TVSHOW,
     SUPPORT_BROWSE_MEDIA,
@@ -36,23 +21,27 @@ from homeassistant.components.media_player.const import (
     SUPPORT_VOLUME_SET,
     SUPPORT_VOLUME_STEP,
 )
-from homeassistant.components.media_player.errors import BrowseError
 from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
-    HTTP_OK,
     STATE_OFF,
     STATE_PAUSED,
     STATE_PLAYING,
     STATE_UNKNOWN,
 )
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.network import get_url
+from pyskyqremote.const import (
+    APP_EPG,
+    SKY_STATE_OFF,
+    SKY_STATE_ON,
+    SKY_STATE_PAUSED,
+    SKY_STATE_STANDBY,
+)
+from pyskyqremote.skyq_remote import SkyQRemote
 
 from .classes.config import Config
+from .classes.mediabrowser import Media_Browser
 from .classes.volumeentity import Volume_Entity
 from .const import (
-    APP_IMAGE_URL_BASE,
     APP_TITLES,
     CONF_CHANNEL_SOURCES,
     CONF_COUNTRY,
@@ -77,8 +66,8 @@ from .const import (
     SKYQ_LIVE,
     SKYQ_PVR,
     SKYQREMOTE,
-    TIMEOUT,
 )
+from .utils import App_Image_Url, get_command
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -169,6 +158,8 @@ class SkyQDevice(MediaPlayerEntity):
         self._config = config
         self._unique_id = config.unique_id
         self._volume_entity = Volume_Entity(config.volume_entity)
+        self._appImageUrl = App_Image_Url()
+        self._media_browser = Media_Browser(remote, config, self._appImageUrl)
         self._state = STATE_OFF
         self._skyq_type = STATE_OFF
         self._title = None
@@ -177,13 +168,10 @@ class SkyQDevice(MediaPlayerEntity):
         self._imageUrl = None
         self._imageRemotelyAccessible = False
         self._season = None
-        self._lastAppTitle = None
-        self._appImageUrl = None
         self._remote = remote
         self._available = True
         self._startupSetup = True
         self._deviceInfo = None
-        self._firstError = True
         self._channel_list = None
         self._use_internal = True
 
@@ -401,7 +389,7 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def async_select_source(self, source):
         """Select the specified source."""
-        command = self._get_command(source)
+        command = get_command(self._config.custom_sources, self._channel_list, source)
         if command:
             await self.hass.async_add_executor_job(self._remote.press, command)
             await self.async_update()
@@ -434,92 +422,9 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def async_browse_media(self, media_content_type=None, media_content_id=None):
         """Implement the websocket media browsing helper."""
-        if media_content_id not in (None, "root", "channels"):
-            raise BrowseError(
-                f"Media not found: {media_content_type} / {media_content_id}"
-            )
-
-        channellist = await self._async_prepareChannels()
-        channels = [
-            BrowseMedia(
-                title=channel["title"],
-                media_class=MEDIA_CLASS_TV_SHOW,
-                media_content_id=channel["channelName"],
-                media_content_type=DOMAINBROWSER,
-                can_play=True,
-                can_expand=False,
-                thumbnail=channel["thumbnail"],
-            )
-            for channel in channellist
-        ]
-
-        library_info = BrowseMedia(
-            title=self.name,
-            media_content_id="root",
-            media_content_type="library",
-            media_class=MEDIA_CLASS_DIRECTORY,
-            can_play=False,
-            can_expand=True,
-            children=channels,
+        return await self._media_browser.async_browse_media(
+            self.hass, self._channel_list, media_content_type, media_content_id
         )
-
-        return library_info
-
-    async def _async_prepareChannels(self):
-        self._channels = []
-        channels = await asyncio.gather(
-            *[
-                self._async_get_channelInfo(source)
-                for source in self._config.source_list
-            ]
-        )
-        return channels
-
-    async def _async_get_channelInfo(self, source):
-        command = self._get_command(source)
-        channelno = "".join(command)
-        channelInfo = await self.hass.async_add_executor_job(
-            self._remote.getChannelInfo, channelno
-        )
-        if not channelInfo:
-            channelInfo = {
-                "channelName": source,
-                "thumbnail": await self._async_getAppImageUrl(source),
-                "title": source,
-            }
-        else:
-            queryDate = datetime.utcnow()
-            programme = await self.hass.async_add_executor_job(
-                self._remote.getProgrammeFromEpg,
-                channelInfo.channelsid,
-                queryDate,
-                queryDate,
-            )
-            if not isinstance(programme, Programme):
-                channelInfo = {
-                    "channelName": source,
-                    "thumbnail": await self._async_getAppImageUrl(source),
-                    "title": source,
-                }
-            else:
-                channelInfo = {
-                    "channelName": source,
-                    "thumbnail": programme.imageUrl,
-                    "title": f"{source} - {programme.title}",
-                }
-
-        return channelInfo
-
-    def _get_command(self, source):
-        """Select the specified source."""
-        if source in self._config.custom_sources:
-            return self._config.custom_sources.get(source).split(",")
-
-        try:
-            channel = next(c for c in self._channel_list if c.channelname == source)
-            return list(channel.channelno)
-        except (TypeError, StopIteration):
-            return source
 
     async def _async_updateState(self):
         powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)
@@ -557,7 +462,9 @@ class SkyQDevice(MediaPlayerEntity):
 
         self._imageRemotelyAccessible = True
         if not self._imageUrl:
-            appImageUrl = await self._async_getAppImageUrl(appTitle)
+            appImageUrl = await self._appImageUrl.async_getAppImageUrl(
+                self.hass, appTitle
+            )
             if appImageUrl:
                 self._imageUrl = appImageUrl
                 self._imageRemotelyAccessible = False
@@ -598,68 +505,6 @@ class SkyQDevice(MediaPlayerEntity):
             _LOGGER.exception(
                 f"X0010M - Current Media retrieval failed: {currentMedia} : {err}"
             )
-
-    async def _async_getAppImageUrl(self, appTitle):
-        """Check app image is present."""
-        if appTitle == self._lastAppTitle:
-            return self._appImageUrl
-
-        self._appImageUrl = None
-
-        appImageUrl = APP_IMAGE_URL_BASE.format(appTitle.casefold())
-
-        websession = async_get_clientsession(self.hass)
-        base_url = get_url(self.hass)
-        request_url = base_url + appImageUrl
-
-        if self._use_internal:
-            certok = await self._async_check_for_image(
-                websession, appTitle, appImageUrl, request_url
-            )
-        if not self._use_internal or not certok:
-            self._use_internal = False
-            base_url = get_url(self.hass, allow_internal=False)
-            request_url = base_url + appImageUrl
-            certok = await self._async_check_for_image(
-                websession, appTitle, request_url, request_url
-            )
-
-        return self._appImageUrl
-
-    async def _async_check_for_image(
-        self, websession, appTitle, appImageUrl, request_url
-    ):
-        certok = True
-        try:
-            response = await websession.head(request_url, timeout=TIMEOUT)
-            async with response:
-                if response.status == HTTP_OK:
-                    self._appImageUrl = appImageUrl
-
-                self._lastAppTitle = appTitle
-
-        except (aiohttp.client_exceptions.ClientConnectorCertificateError) as err:
-            _LOGGER.info(
-                f"I0040M - Image file check certificate error, routing externally: {request_url} : {err}"
-            )
-            certok = False
-        except (
-            aiohttp.client_exceptions.ClientConnectorError,
-            aiohttp.ClientError,
-        ) as err:
-            # This error when server is starting up and app running
-            if self._firstError:
-                self._firstError = False
-            else:
-                _LOGGER.exception(
-                    f"X0020M - Image file check failed: {request_url} : {err}"
-                )
-                self._lastAppTitle = appTitle
-        except asyncio.TimeoutError as err:
-            _LOGGER.info(f"I0030M - Image file check timed out: {request_url} : {err}")
-            self._lastAppTitle = appTitle
-
-        return certok
 
     async def _async_getDeviceInfo(self):
         await self.hass.async_add_executor_job(
