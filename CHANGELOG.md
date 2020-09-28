@@ -1,6 +1,16 @@
 # Changelog
 
 
+## v2.4.2 (28/09/2020)
+### Fixes
+- [Fix error in async_play_media](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6646591a7ca6cba778ef19dfa7b17a3386792d83) - @RogerSelwyn
+
+### Maintenance
+- [Code improvement from Codefactor](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d82bbc7933cddcfa1cf1bc15afb334f74badf028) - @RogerSelwyn
+- [Break config out into class](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/81a6c21083036b54ddced8a6354fd85e56763f57) - @RogerSelwyn
+- [Break volume entity out into class](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/95302a5965fdf694b2ec1165ecf4436c68d93bbd) - @RogerSelwyn
+- [Break media browser out into a class](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/048c1378b8551bd9e38da4142a2c85308f8b52f9) - @RogerSelwyn
+
 ## v2.4.1 (25/09/2020)
 ### Fixes
 - [Fix issue with error when no programme found](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/970cae1c3bcb54a98fda7e2a8f2ef2645b7d891f) - @RogerSelwyn
