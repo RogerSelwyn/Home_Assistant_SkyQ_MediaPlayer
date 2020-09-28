@@ -82,6 +82,7 @@ class App_Image_Url:
         websession = async_get_clientsession(hass)
         base_url = get_url(hass)
         request_url = base_url + appImageUrl
+        certok = False
 
         if self._use_internal:
             certok = await self._async_check_for_image(

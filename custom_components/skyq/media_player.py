@@ -470,6 +470,7 @@ class SkyQDevice(MediaPlayerEntity):
                 self._imageRemotelyAccessible = False
 
     async def _async_getCurrentMedia(self):
+        currentMedia = None
         try:
             currentMedia = await self.hass.async_add_executor_job(
                 self._remote.getCurrentMedia
