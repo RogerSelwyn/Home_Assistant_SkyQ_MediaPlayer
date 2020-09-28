@@ -394,7 +394,7 @@ class SkyQDevice(MediaPlayerEntity):
             await self.hass.async_add_executor_job(self._remote.press, command)
             await self.async_update()
 
-    async def async_play_media(self, media_id, media_type):
+    async def async_play_media(self, media_id, media_type, **kwargs):
         """Perform a media action."""
         if media_type.casefold() == DOMAIN:
             await self.hass.async_add_executor_job(
