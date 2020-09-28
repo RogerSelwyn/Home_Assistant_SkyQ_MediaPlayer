@@ -17,8 +17,6 @@ from pyskyqremote.skyq_remote import SkyQRemote
 from custom_components.skyq.util.config_gen import SwitchMaker
 from homeassistant.components.media_player import BrowseMedia, MediaPlayerEntity
 from homeassistant.components.media_player.const import (
-    ATTR_MEDIA_VOLUME_LEVEL,
-    ATTR_MEDIA_VOLUME_MUTED,
     MEDIA_CLASS_DIRECTORY,
     MEDIA_CLASS_TV_SHOW,
     MEDIA_TYPE_APP,
@@ -40,15 +38,9 @@ from homeassistant.components.media_player.const import (
 )
 from homeassistant.components.media_player.errors import BrowseError
 from homeassistant.const import (
-    ATTR_ENTITY_ID,
-    ATTR_SUPPORTED_FEATURES,
     CONF_HOST,
     CONF_NAME,
     HTTP_OK,
-    SERVICE_VOLUME_DOWN,
-    SERVICE_VOLUME_MUTE,
-    SERVICE_VOLUME_SET,
-    SERVICE_VOLUME_UP,
     STATE_OFF,
     STATE_PAUSED,
     STATE_PLAYING,
@@ -56,9 +48,9 @@ from homeassistant.const import (
 )
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.network import get_url
-from homeassistant.helpers.service import async_call_from_config
 
 from .classes.config import Config
+from .classes.volumeentity import Volume_Entity
 from .const import (
     APP_IMAGE_URL_BASE,
     APP_TITLES,
@@ -176,8 +168,7 @@ class SkyQDevice(MediaPlayerEntity):
         """Initialise the SkyQRemote."""
         self._config = config
         self._unique_id = config.unique_id
-        self._volume_entity = config.volume_entity
-        self._volume_entity_supported_features = None
+        self._volume_entity = Volume_Entity(config.volume_entity)
         self._state = STATE_OFF
         self._skyq_type = STATE_OFF
         self._title = None
@@ -193,10 +184,7 @@ class SkyQDevice(MediaPlayerEntity):
         self._startupSetup = True
         self._deviceInfo = None
         self._firstError = True
-        self._volume_entity_error = False
         self._channel_list = None
-        self._volume_level = None
-        self._is_volume_muted = None
         self._use_internal = True
 
         if not self._remote.deviceSetup:
@@ -220,14 +208,14 @@ class SkyQDevice(MediaPlayerEntity):
     @property
     def supported_features(self):
         """Get the supported features."""
-        if self._volume_entity_supported_features:
-            if self._volume_entity_supported_features & SUPPORT_VOLUME_MUTE:
+        if self._volume_entity.supported_features:
+            if self._volume_entity.supported_features & SUPPORT_VOLUME_MUTE:
                 self._supported_features = (
                     self._supported_features | SUPPORT_VOLUME_MUTE
                 )
-            if self._volume_entity_supported_features & SUPPORT_VOLUME_SET:
+            if self._volume_entity.supported_features & SUPPORT_VOLUME_SET:
                 self._supported_features = self._supported_features | SUPPORT_VOLUME_SET
-            if self._volume_entity_supported_features & SUPPORT_VOLUME_STEP:
+            if self._volume_entity.supported_features & SUPPORT_VOLUME_STEP:
                 self._supported_features = (
                     self._supported_features | SUPPORT_VOLUME_STEP
                 )
@@ -348,12 +336,12 @@ class SkyQDevice(MediaPlayerEntity):
     @property
     def volume_level(self):
         """Volume level of entity specified in config."""
-        return self._volume_level
+        return self._volume_entity.volume_level
 
     @property
     def is_volume_muted(self):
         """Boolean if volume is muted."""
-        return self._is_volume_muted
+        return self._volume_entity.is_volume_muted
 
     async def async_update(self):
         """Get the latest data and update device state."""
@@ -371,7 +359,7 @@ class SkyQDevice(MediaPlayerEntity):
 
         if self._state != STATE_UNKNOWN and self._state != STATE_OFF:
             await self._async_updateCurrentProgramme()
-            await self._async_update_volume_state()
+            await self._volume_entity.async_update_volume_state(self.hass)
 
     async def async_turn_off(self):
         """Turn SkyQ box off."""
@@ -430,25 +418,19 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def async_mute_volume(self, mute):
         """Mute the volume."""
-        data = {ATTR_ENTITY_ID: self._volume_entity, ATTR_MEDIA_VOLUME_MUTED: mute}
-        await self._async_call_service(SERVICE_VOLUME_MUTE, data)
-        return
+        await self._volume_entity.async_mute_volume(self.hass, mute)
 
     async def async_set_volume_level(self, volume):
         """Set volume level, range 0..1."""
-        data = {ATTR_ENTITY_ID: self._volume_entity, ATTR_MEDIA_VOLUME_LEVEL: volume}
-        await self._async_call_service(SERVICE_VOLUME_SET, data)
-        return
+        await self._volume_entity.async_set_volume_level(self.hass, volume)
 
     async def async_volume_up(self):
         """Turn volume up for media player."""
-        data = {ATTR_ENTITY_ID: self._volume_entity}
-        await self._async_call_service(SERVICE_VOLUME_UP, data)
+        await self._volume_entity.async_volume_up(self.hass)
 
     async def async_volume_down(self):
         """Turn volume down for media player."""
-        data = {ATTR_ENTITY_ID: self._volume_entity}
-        await self._async_call_service(SERVICE_VOLUME_DOWN, data)
+        await self._volume_entity.async_volume_down(self.hass)
 
     async def async_browse_media(self, media_content_type=None, media_content_id=None):
         """Implement the websocket media browsing helper."""
@@ -485,8 +467,6 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def _async_prepareChannels(self):
         self._channels = []
-        # for source in self._config.source_list:
-        #     channels.append(await self._async_get_channelInfo(source))
         channels = await asyncio.gather(
             *[
                 self._async_get_channelInfo(source)
@@ -541,18 +521,6 @@ class SkyQDevice(MediaPlayerEntity):
         except (TypeError, StopIteration):
             return source
 
-    async def _async_call_service(self, service_name, variable_data=None):
-        service_data = {}
-        service_data["service"] = "media_player." + service_name
-        service_data["data"] = variable_data
-        await async_call_from_config(
-            self.hass,
-            service_data,
-            blocking=True,
-            validate_config=False,
-        )
-        return
-
     async def _async_updateState(self):
         powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)
         self._setPowerStatus(powerState)
@@ -573,35 +541,6 @@ class SkyQDevice(MediaPlayerEntity):
             self._state = STATE_PAUSED
         else:
             self._state = STATE_PLAYING
-
-    async def _async_update_volume_state(self):
-        if not self._volume_entity:
-            return
-
-        try:
-            state_obj = self.hass.states.get(self._volume_entity)
-            if state_obj:
-                self._volume_level = state_obj.attributes.get(ATTR_MEDIA_VOLUME_LEVEL)
-                self._is_volume_muted = state_obj.attributes.get(
-                    ATTR_MEDIA_VOLUME_MUTED
-                )
-                self._volume_entity_supported_features = state_obj.attributes.get(
-                    ATTR_SUPPORTED_FEATURES
-                )
-                if self._volume_entity_error:
-                    _LOGGER.info(
-                        f"I0040M - Volume entity now exists: {self.name} - {self._volume_entity}"
-                    )
-                    self._volume_entity_error = False
-            else:
-                if not self._volume_entity_error:
-                    _LOGGER.warning(
-                        f"W0030M - Volume entity does not exist: {self.name} - {self._volume_entity}"
-                    )
-                    self._volume_entity_error = True
-            return
-        except (TypeError, ValueError):
-            return None
 
     async def _async_updateCurrentProgramme(self):
 
@@ -732,19 +671,16 @@ class SkyQDevice(MediaPlayerEntity):
             self._remote.getDeviceInformation
         )
         if self._deviceInfo:
-            self._setUniqueId()
+            if not self._unique_id:
+                self._unique_id = self._deviceInfo.epgCountryCode + "".join(
+                    e for e in self._deviceInfo.serialNumber.casefold() if e.isalnum()
+                )
 
             if not self._channel_list and len(self._config.channel_sources) > 0:
                 channelData = await self.hass.async_add_executor_job(
                     self._remote.getChannelList
                 )
                 self._channel_list = channelData.channels
-
-    def _setUniqueId(self):
-        if not self._unique_id:
-            self._unique_id = self._deviceInfo.epgCountryCode + "".join(
-                e for e in self._deviceInfo.serialNumber.casefold() if e.isalnum()
-            )
 
     def _setPowerStatus(self, powerStatus):
         if powerStatus == SKY_STATE_OFF and self._available:
