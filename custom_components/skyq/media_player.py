@@ -538,12 +538,12 @@ class SkyQDevice(MediaPlayerEntity):
         """Select the specified source."""
         if source in self._config.custom_sources:
             return self._config.custom_sources.get(source).split(",")
-        else:
-            try:
-                channel = next(c for c in self._channel_list if c.channelname == source)
-                return list(channel.channelno)
-            except (TypeError, StopIteration):
-                return source
+
+        try:
+            channel = next(c for c in self._channel_list if c.channelname == source)
+            return list(channel.channelno)
+        except (TypeError, StopIteration):
+            return source
 
     async def _async_call_service(self, service_name, variable_data=None):
         service_data = {}
