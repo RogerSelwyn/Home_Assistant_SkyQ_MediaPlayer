@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v2.4.3 (30/09/2020)
+### Fixes
+- [Catch channel name that has been changed/removed](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a7109459363143a24db9ec88d5ff7f97f189407e) - @RogerSelwyn
+
 ## v2.4.2 (28/09/2020)
 ### Fixes
 - [Fix error in async_play_media](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6646591a7ca6cba778ef19dfa7b17a3386792d83) - @RogerSelwyn
