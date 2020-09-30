@@ -5,15 +5,14 @@ import logging
 import re
 from operator import attrgetter
 
+import homeassistant.helpers.config_validation as cv
 import pycountry
 import voluptuous as vol
-from pyskyqremote.const import KNOWN_COUNTRIES
-from pyskyqremote.skyq_remote import SkyQRemote
-
-import homeassistant.helpers.config_validation as cv
 from homeassistant import config_entries, exceptions
 from homeassistant.const import CONF_HOST, CONF_NAME
 from homeassistant.core import callback
+from pyskyqremote.const import KNOWN_COUNTRIES
+from pyskyqremote.skyq_remote import SkyQRemote
 
 from .const import (
     CHANNEL_DISPLAY,
@@ -149,14 +148,17 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
             self._channel_sources_display = []
             for channel in self._channel_sources:
-                channelData = next(
-                    c for c in self._channel_list if c.channelname == channel
-                )
-                self._channel_sources_display.append(
-                    CHANNEL_DISPLAY.format(
-                        channelData.channelno, channelData.channelname
+                try:
+                    channelData = next(
+                        c for c in self._channel_list if c.channelname == channel
                     )
-                )
+                    self._channel_sources_display.append(
+                        CHANNEL_DISPLAY.format(
+                            channelData.channelno, channelData.channelname
+                        )
+                    )
+                except StopIteration:
+                    pass
 
             return await self.async_step_user()
 
@@ -260,7 +262,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         errors["base"] = "cannot_connect"
 
         return self.async_show_form(
-            step_id="retry", data_schema=vol.Schema({}), errors=errors,
+            step_id="retry",
+            data_schema=vol.Schema({}),
+            errors=errors,
         )
 
     def _convertCountry(self, alpha_3=None, name=None):
