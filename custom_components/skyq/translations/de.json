@@ -1,0 +1,48 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Diese Sky Q-Box ist bereits konfiguriert."
+    },
+    "error": {
+      "cannot_connect": "Verbindung fehlgeschlagen, ungültiger Host."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "host": "Host",
+          "name": "Name"
+        },
+        "description": "Richten Sie die Sky Q-Integration ein. Wenn Sie Probleme mit der Konfiguration haben, gehen Sie zu: https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer \n \nStellen Sie sicher, dass Ihre Sky Q-Box eingeschaltet ist.",
+        "title": "Sky Q"
+      }
+    }
+  },
+  "options": {
+    "error": {
+      "cannot_connect": "Verbindung nicht möglich.",
+      "invalid_sources": "Die Zeichenfolge für benutzerdefinierte Quellen ist ungültig - sollte JSON sein",
+      "invalid_command": "Befehl in benutzerdefinierten Quellen ist ungültig - bitte überprüfen Sie GitHub"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "channel_sources_display": "Liste der Kanalquellen",
+          "sources": "Benutzerdefinierte Quellen - lesen Sie Github",
+          "output_programme_image": "Programmbild anzeigen",
+          "generate_switches_for_channels": "Generate switches for channels",
+          "live_tv": "Generieren Sie Schalter für Kanäle",
+          "room": "Optionaler Raumname - für Schalter erforderlich",
+          "country": "Land überschreiben",
+          "epg_cache_len": "EPG-Cache-Länge für Media Browser",
+          "volume_entity": "Media Player-Entität zur Steuerung der Lautstärke von"
+        },
+        "title": "Sky Q",
+        "description": "Setup-Optionen für {name}"
+      },
+      "retry": {
+        "data": {},
+        "title": "Bitte starten Sie die Sky Q-Box neu und versuchen Sie es erneut"
+      }
+    }
+  }
+}
