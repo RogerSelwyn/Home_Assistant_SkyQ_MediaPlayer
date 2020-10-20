@@ -33,6 +33,7 @@
           "live_tv": "Mostra i dettagli della TV in diretta",
           "room": "Nome stanza opzionale - richiesto per gli interruttori",
           "country": "Sostituisci paese",
+          "epg_cache_len": "Longitud de la caché de EPG para Media Browser",
           "volume_entity": "Entità di Media Player per controllare il volume di"
         },
         "title": "Sky Q",

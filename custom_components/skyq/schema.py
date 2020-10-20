@@ -2,15 +2,15 @@
 
 from datetime import timedelta
 
-import voluptuous as vol
-
 import homeassistant.helpers.config_validation as cv
+import voluptuous as vol
 from homeassistant.components.media_player import PLATFORM_SCHEMA
 from homeassistant.const import CONF_HOST, CONF_NAME, CONF_SCAN_INTERVAL
 
 from .const import (
     CONF_COUNTRY,
     CONF_DIR,
+    CONF_EPG_CACHE_LEN,
     CONF_GEN_SWITCH,
     CONF_LIVE_TV,
     CONF_OUTPUT_PROGRAMME_IMAGE,
@@ -18,6 +18,7 @@ from .const import (
     CONF_SOURCES,
     CONF_TEST_CHANNEL,
     CONF_VOLUME_ENTITY,
+    CONST_DEFAULT_EPGCACHELEN,
     CONST_DEFAULT_ROOM,
 )
 
@@ -37,6 +38,9 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_TEST_CHANNEL): cv.string,
         vol.Optional(CONF_SCAN_INTERVAL, default=SCAN_INTERVAL): cv.time_period,
         vol.Optional(CONF_VOLUME_ENTITY): cv.string,
+        vol.Optional(
+            CONF_EPG_CACHE_LEN, default=CONST_DEFAULT_EPGCACHELEN
+        ): cv.positive_int,
     }
 )
 

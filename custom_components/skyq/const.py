@@ -11,6 +11,7 @@ CONF_SOURCES = "sources"
 CONF_CHANNEL_SOURCES = "channel_sources"
 CONF_ROOM = "room"
 CONF_DIR = "config_directory"
+CONF_EPG_CACHE_LEN = "epg_cache_len"
 CONF_GEN_SWITCH = "generate_switches_for_channels"
 CONF_OUTPUT_PROGRAMME_IMAGE = "output_programme_image"
 CONF_LIVE_TV = "live_tv"
@@ -23,6 +24,8 @@ CHANNEL_DISPLAY = "{0} - {1}"
 CONST_DEFAULT_ROOM = "Default Room"
 CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
 CONST_DEFAULT = "Default"
+CONST_DEFAULT_EPGCACHELEN = 20
+LIST_EPGCACHELEN = [10, 20, 30, 50, 999]
 
 DEVICE_CLASS = "tv"
 

@@ -1,11 +1,16 @@
 """Initialise."""
 import asyncio
 
+from homeassistant.const import CONF_HOST
 from pyskyqremote.skyq_remote import SkyQRemote
 
-from homeassistant.const import CONF_HOST
-
-from .const import DOMAIN, SKYQREMOTE, UNDO_UPDATE_LISTENER
+from .const import (
+    CONF_EPG_CACHE_LEN,
+    CONST_DEFAULT_EPGCACHELEN,
+    DOMAIN,
+    SKYQREMOTE,
+    UNDO_UPDATE_LISTENER,
+)
 
 PLATFORMS = ["media_player"]
 
@@ -18,11 +23,14 @@ async def async_setup(hass, config):
 async def async_setup_entry(hass, config_entry):
     """Set up a config entry."""
     host = config_entry.data[CONF_HOST]
+    epg_cache_len = CONST_DEFAULT_EPGCACHELEN
+    if CONF_EPG_CACHE_LEN in config_entry.options:
+        epg_cache_len = config_entry.options[CONF_EPG_CACHE_LEN]
 
     undo_listener = config_entry.add_update_listener(update_listener)
 
     hass.data.setdefault(DOMAIN, {})
-    remote = await hass.async_add_executor_job(SkyQRemote, host)
+    remote = await hass.async_add_executor_job(SkyQRemote, host, epg_cache_len)
     hass.data[DOMAIN][config_entry.entry_id] = {
         SKYQREMOTE: remote,
         UNDO_UPDATE_LISTENER: undo_listener,

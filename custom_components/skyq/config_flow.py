@@ -19,6 +19,7 @@ from .const import (
     CHANNEL_SOURCES_DISPLAY,
     CONF_CHANNEL_SOURCES,
     CONF_COUNTRY,
+    CONF_EPG_CACHE_LEN,
     CONF_GEN_SWITCH,
     CONF_LIVE_TV,
     CONF_OUTPUT_PROGRAMME_IMAGE,
@@ -26,7 +27,9 @@ from .const import (
     CONF_SOURCES,
     CONF_VOLUME_ENTITY,
     CONST_DEFAULT,
+    CONST_DEFAULT_EPGCACHELEN,
     DOMAIN,
+    LIST_EPGCACHELEN,
     SKYQREMOTE,
 )
 from .schema import DATA_SCHEMA
@@ -120,6 +123,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._output_programme_image = config_entry.options.get(
             CONF_OUTPUT_PROGRAMME_IMAGE, True
         )
+        self._epg_cache_len = config_entry.options.get(
+            CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN
+        )
         self._channelDisplay = []
         self._channel_list = []
 
@@ -207,6 +213,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                 user_input.pop(CONF_COUNTRY)
             else:
                 user_input[CONF_COUNTRY] = self._convertCountry(name=self._country)
+            self._epg_cache_len = user_input.get(CONF_EPG_CACHE_LEN)
 
             try:
                 self._sources = user_input.get(CONF_SOURCES)
@@ -247,6 +254,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                         CONF_VOLUME_ENTITY,
                         description={"suggested_value": self._volume_entity},
                     ): str,
+                    vol.Optional(
+                        CONF_EPG_CACHE_LEN, default=self._epg_cache_len
+                    ): vol.In(LIST_EPGCACHELEN),
                     vol.Optional(
                         CONF_SOURCES, description={"suggested_value": self._sources}
                     ): str,

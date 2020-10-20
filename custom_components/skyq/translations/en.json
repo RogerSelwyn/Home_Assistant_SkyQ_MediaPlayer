@@ -33,6 +33,7 @@
           "live_tv": "Show live TV details",
           "room": "Optional room name - required for switches",
           "country": "Override country",
+          "epg_cache_len": "EPG cache length for Media Browser",
           "volume_entity": "Media Player entity to control volume of"
         },
         "title": "Sky Q",

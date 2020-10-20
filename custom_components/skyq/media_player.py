@@ -46,6 +46,7 @@ from .const import (
     CONF_CHANNEL_SOURCES,
     CONF_COUNTRY,
     CONF_DIR,
+    CONF_EPG_CACHE_LEN,
     CONF_GEN_SWITCH,
     CONF_LIVE_TV,
     CONF_OUTPUT_PROGRAMME_IMAGE,
@@ -53,6 +54,7 @@ from .const import (
     CONF_SOURCES,
     CONF_TEST_CHANNEL,
     CONF_VOLUME_ENTITY,
+    CONST_DEFAULT_EPGCACHELEN,
     CONST_DEFAULT_ROOM,
     CONST_SKYQ_MEDIA_TYPE,
     DEVICE_CLASS,
@@ -75,7 +77,8 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     """Set up the SkyQ platform."""
     host = config.get(CONF_HOST)
-    remote = await hass.async_add_executor_job(SkyQRemote, host)
+    epg_cache_len = config.get(CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN)
+    remote = await hass.async_add_executor_job(SkyQRemote, host, epg_cache_len)
 
     config_directory = config.get(CONF_DIR)
     if config_directory:
