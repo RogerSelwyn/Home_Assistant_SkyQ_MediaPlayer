@@ -1,6 +1,16 @@
 # Changelog
 
 
+## v2.4.4.beta1 (22/10/2020)
+### Enhancements
+- [Add German translations](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/affabcf771f06c8e4847a5bd84effa168c45d301) - @RogerSelwyn
+- [Add support for EPG Cache Length](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b9a8daf6045188a603397d35bbaa73604a5b388f) - @RogerSelwyn
+
+### Maintenance
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/909eb31f55f86ae4d98078b273ab69c7e83c0f4f) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2bd99a2c3134c85303c1df5fbef0ef30b52cc5ee) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/633c572a18269e94a4101cfacbb2891d196462c4) - @actions-user
+
 ## v2.4.3 (30/09/2020)
 ### Fixes
 - [Catch channel name that has been changed/removed](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a7109459363143a24db9ec88d5ff7f97f189407e) - @RogerSelwyn
