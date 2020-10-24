@@ -1,7 +1,7 @@
 # Changelog
 
 
-## v2.4.4.beta1 (22/10/2020)
+## v2.4.4 (24/10/2020)
 ### Enhancements
 - [Add German translations](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/affabcf771f06c8e4847a5bd84effa168c45d301) - @RogerSelwyn - Feature request - [#29](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/29)
 - [Add support for EPG Cache Length](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b9a8daf6045188a603397d35bbaa73604a5b388f) - @RogerSelwyn - Feature request - [#31](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/31)
