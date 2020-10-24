@@ -7,7 +7,7 @@
 
 The skyq platform allows you to control a Sky Q set top box.
 
-**Note:** Whilst it will pull back information for current channel and live programme, it will do this for a very limited set of countries (currently UK, and any countries that use the same EPG/images, plus Italy). If you are in an unsupported country, or don't want this information set 'live_tv' to False in your config.
+**Note:** Whilst it will pull back information for current channel and live programme, it will do this for a very limited set of countries (currently UK, and any countries that use the same EPG/images, plus Italy and Germany). If you are in an unsupported country, or don't want this information set 'live_tv' to False in your config.
 
 If you are able to supply details on where to reliably retrieve EPG information and images from, please raise a Feature Request with the relevant details and I'll look to include.
 
@@ -80,7 +80,7 @@ media_player:
 | sources<br>_(list)(Optional)_                   | Custom Sources                    |  _Empty_    | List of channels or other commands that will appear in the source selection. |
 | output_programme_image<br>_(boolean)(Optional)_ |Show programme<br>image            | True        | Allows you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing. |
 | live_tv<br>_(boolean)(Optional)_                | Show live TV<br>details           | True        | Allowsyou to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from current known sources. |
-| country<br>_(string)(Optional)_                 | Override Country | _Empty_     | Overrides the detected country from the SkyQ box. Currently supports "GBR" and "ITA". In theory you shouldn't need to use this. |
+| country<br>_(string)(Optional)_                 | Override Country | _Empty_     | Overrides the detected country from the SkyQ box. Currently supports "GBR", "ITA" and "DEU". In theory you shouldn't need to use this. |
 | volume_entity<br>_(string)(Optional)_        | Entity to control<br>volume of | _Empty_     | Specifies the entity for which volume control actions will be passed through to. No validation of the entity is done via the UI, warnings will show in the log if an invalid entity is used. Must be a media_player entity. e.g. media_player.braviatv|
 | epg_cache_len<br>_(integer)(Optional)_          | EPG Cache Length.                | 20           |Allows you to configure the number of EPG channels to cache for the media browser. Larger numbers will cause slower initial load per day and consume more memory. |
 
