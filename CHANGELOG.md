@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.4.5 (28/10/2020)
+### Enhancements
+- [Improve error reporting when no base URL set](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/edeb1918a13381b7d9b38d54f2cc4ed06407b58c) - @RogerSelwyn - [#35](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/35)
 
 ## v2.4.4 (24/10/2020)
 ### Enhancements
