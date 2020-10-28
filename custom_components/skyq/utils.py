@@ -7,7 +7,7 @@ import logging
 import aiohttp
 from homeassistant.const import HTTP_OK
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.network import get_url
+from homeassistant.helpers.network import NoURLAvailableError, get_url
 
 from .const import APP_IMAGE_URL_BASE, TIMEOUT
 
@@ -89,12 +89,17 @@ class App_Image_Url:
                 websession, appTitle, appImageUrl, request_url
             )
         if not self._use_internal or not certok:
-            self._use_internal = False
-            base_url = get_url(hass, allow_internal=False)
-            request_url = base_url + appImageUrl
-            certok = await self._async_check_for_image(
-                websession, appTitle, request_url, request_url
-            )
+            try:
+                base_url = get_url(hass, allow_internal=False)
+                self._use_internal = False
+                request_url = base_url + appImageUrl
+                certok = await self._async_check_for_image(
+                    websession, appTitle, request_url, request_url
+                )
+            except NoURLAvailableError:
+                _LOGGER.error(
+                    "E0010U - Base URL not found, have you configured them in HA General Settings?"
+                )
 
         return self._appImageUrl
 
@@ -112,7 +117,7 @@ class App_Image_Url:
 
         except (aiohttp.client_exceptions.ClientConnectorCertificateError) as err:
             _LOGGER.info(
-                f"I0040M - Image file check certificate error, routing externally: {request_url} : {err}"
+                f"I0010U - Image file check certificate error, routing externally: {request_url} : {err}"
             )
             certok = False
         except (
@@ -124,11 +129,11 @@ class App_Image_Url:
                 self._firstError = False
             else:
                 _LOGGER.exception(
-                    f"X0020M - Image file check failed: {request_url} : {err}"
+                    f"X0010U - Image file check failed: {request_url} : {err}"
                 )
                 self._lastAppTitle = appTitle
         except asyncio.TimeoutError as err:
-            _LOGGER.info(f"I0030M - Image file check timed out: {request_url} : {err}")
+            _LOGGER.info(f"I0020U - Image file check timed out: {request_url} : {err}")
             self._lastAppTitle = appTitle
 
         return certok
