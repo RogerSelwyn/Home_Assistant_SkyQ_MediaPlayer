@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.4.6 (02/11/2020)
+### Enhancements
+- [Reduce number of momentary disconnect errors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4bb5d35a93b02d8a76b3d8a300df80759e9c033e) - @RogerSelwyn
+
 ## v2.4.5 (28/10/2020)
 ### Enhancements
 - [Improve error reporting when no base URL set](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/edeb1918a13381b7d9b38d54f2cc4ed06407b58c) - @RogerSelwyn - [#35](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/35)
