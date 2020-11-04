@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.4.7 (04/11/2020)
+### Fixes
+- [Change Device Class to 'receiver'](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b45883d28cff9dc7da87915b9354ed9de58129a2) - @RogerSelwyn - [#36](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/36)
+- [Improve handling of unavailability errors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/01406f7ee385557905beca86e89142f6398c2bb9) - @RogerSelwyn
+
 ## v2.4.6 (02/11/2020)
 ### Enhancements
 - [Reduce number of momentary disconnect errors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4bb5d35a93b02d8a76b3d8a300df80759e9c033e) - @RogerSelwyn
