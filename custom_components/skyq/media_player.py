@@ -1,5 +1,6 @@
 """The skyq platform allows you to control a SkyQ set top box."""
 import logging
+from datetime import datetime, timedelta
 
 from custom_components.skyq.util.config_gen import SwitchMaker
 from homeassistant.components.media_player import MediaPlayerEntity
@@ -60,6 +61,7 @@ from .const import (
     DEVICE_CLASS,
     DOMAIN,
     DOMAINBROWSER,
+    ERROR_TIMEOUT,
     FEATURE_IMAGE,
     FEATURE_LIVE_TV,
     FEATURE_SWITCHES,
@@ -173,7 +175,7 @@ class SkyQDevice(MediaPlayerEntity):
         self._season = None
         self._remote = remote
         self._available = True
-        self._errorCount = 0
+        self._errorTime = None
         self._startupSetup = True
         self._deviceInfo = None
         self._channel_list = None
@@ -534,18 +536,24 @@ class SkyQDevice(MediaPlayerEntity):
 
     def _setPowerStatus(self, powerStatus):
         if powerStatus == SKY_STATE_OFF:
-            self._errorCount += 1
-            if self._errorCount == 1:
+            if not self._errorTime or datetime.now() < self._errorTime + timedelta(
+                seconds=ERROR_TIMEOUT
+            ):
+                if not self._errorTime:
+                    self._errorTime = datetime.now()
                 _LOGGER.debug(
-                    f"D0010M - Device is not available - 1st error: {self.name}"
+                    f"D0010M - Device is not available - {(datetime.now() - self._errorTime).seconds} Seconds: {self.name}"
                 )
-            elif self._errorCount == 2:
+            elif (
+                datetime.now() >= self._errorTime + timedelta(seconds=ERROR_TIMEOUT)
+                and self._available
+            ):
                 self._available = False
                 _LOGGER.error(f"E0010M - Device is not available: {self.name}")
 
         if powerStatus != SKY_STATE_OFF and not self._available:
             self._available = True
-            self._errorCount = 0
+            self._errorTime = None
             if self._startupSetup:
                 _LOGGER.info(f"I0020M - Device is now available: {self.name}")
             else:
