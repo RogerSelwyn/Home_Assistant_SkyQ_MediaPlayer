@@ -353,7 +353,7 @@ class SkyQDevice(MediaPlayerEntity):
 
         if self._state != STATE_UNKNOWN and self._state != STATE_OFF:
             await self._async_updateCurrentProgramme()
-            await self._volume_entity.async_update_volume_state(self.hass)
+            await self._volume_entity.async_update_volume_state(self.hass, self.name)
 
     async def async_turn_off(self):
         """Turn SkyQ box off."""

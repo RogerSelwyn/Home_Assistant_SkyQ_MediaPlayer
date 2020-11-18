@@ -30,7 +30,7 @@ class Volume_Entity:
         self._entity_name = volume_entity
         self._entity_name_error = False
 
-    async def async_update_volume_state(self, hass):
+    async def async_update_volume_state(self, hass, mpname):
         """Get the volume entity state."""
         if not self._entity_name:
             return
@@ -45,13 +45,13 @@ class Volume_Entity:
                 )
                 if self._entity_name_error:
                     _LOGGER.info(
-                        f"I0040M - Volume entity now exists: {self.name} - {self._entity_name}"
+                        f"I0010V - Volume entity now exists: {mpname} - {self._entity_name}"
                     )
                     self._entity_name_error = False
             else:
                 if not self._entity_name_error:
                     _LOGGER.warning(
-                        f"W0030M - Volume entity does not exist: {self.name} - {self._entity_name}"
+                        f"W0010V - Volume entity does not exist: {mpname} - {self._entity_name}"
                     )
                     self._entity_name_error = True
             return
