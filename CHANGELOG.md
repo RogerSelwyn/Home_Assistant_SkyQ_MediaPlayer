@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.4.8 (18/11/2020)
+### Enhancements
+- [Remove 'backup' when parsing Media Browser sources](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ac64dd48f1eebc8a4e7d6ad3f4e8be66320967fc) - @RogerSelwyn - [#37](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/37)
+
+### Fixes
+- [Fixed error messages failing](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/71ba2508048bf99bcd9c390f601fa33ea1698ce0) - @RogerSelwyn
+
+### Maintenance
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/22a501ab22bd7aad232b222a03ed8934a1750773) - @RogerSelwyn
+
 ## v2.4.7 (04/11/2020)
 ### Fixes
 - [Change Device Class to 'receiver'](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b45883d28cff9dc7da87915b9354ed9de58129a2) - @RogerSelwyn - [#36](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/36)
