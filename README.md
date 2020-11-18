@@ -39,13 +39,13 @@ You can use HACS by adding this repository as a custom Integration repository in
 
 - Put the files from `/custom_components/skyq/` in your folder `<config directory>/custom_components/skyq/`
 
-For either install method you must also:
+For either install method you must also if you want to get application images (such as Netflix):
 
 - Put the files from `/www/community/skyq/` in your folder `<config directory>/www/community/skyq/`
 
 # Media Player Configuration
 
-There are two methods of configuration, via the Homa Assistant Integrations UI dialogue or via YAML. You cannot use both for the same Sky Q box, please use one or the other. Previous YAML configurations are not migrated the UI method, please continue to use YAML, or delete YAML, reboot and add via UI.
+There are two methods of configuration, via the Homa Assistant Integrations UI dialogue or via YAML. You cannot use both for the same Sky Q box, please use one or the other. Previous YAML configurations are not migrated to the UI method, please continue to use YAML, or delete YAML, reboot and add via UI.
 
 ## Integrations UI (from v2.2.0)
 
