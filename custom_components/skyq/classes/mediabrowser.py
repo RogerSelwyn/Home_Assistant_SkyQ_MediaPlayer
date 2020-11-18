@@ -70,6 +70,8 @@ class Media_Browser:
 
     async def _async_get_channelInfo(self, hass, channel_list, source):
         command = get_command(self._config.custom_sources, channel_list, source)
+        if command[0] == "backup":
+            command.remove("backup")
         channelno = "".join(command)
         channelInfo = await hass.async_add_executor_job(
             self._remote.getChannelInfo, channelno
@@ -97,9 +99,10 @@ class Media_Browser:
                     "title": source,
                 }
             else:
+                imageUrl = programme.imageUrl or channelInfo.channelimageurl
                 channelInfo = {
                     "channelName": source,
-                    "thumbnail": programme.imageUrl,
+                    "thumbnail": imageUrl,
                     "title": f"{source} - {programme.title}",
                 }
 
