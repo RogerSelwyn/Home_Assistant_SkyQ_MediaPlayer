@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.4.9 (20/11/2020)
+### Maintenance
+
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/362994f954f45e293bd45119bce60a109b3d49ae) - @RogerSelwyn
+- [Add extra debugging to unavailability errors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e9648686be58884116e5c07b9c5d2317122796d6) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.33](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/af2257f33c7dfb032c6a38ac87d9eadb584e1afa) - @RogerSelwyn
+
 ## v2.4.8 (18/11/2020)
 ### Enhancements
 - [Remove 'backup' when parsing Media Browser sources](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ac64dd48f1eebc8a4e7d6ad3f4e8be66320967fc) - @RogerSelwyn - [#37](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/37)
