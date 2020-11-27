@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.4.9 (20/11/2020)
+## v2.4.9 (27/11/2020)
 ### Maintenance
 
 - [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/362994f954f45e293bd45119bce60a109b3d49ae) - @RogerSelwyn
