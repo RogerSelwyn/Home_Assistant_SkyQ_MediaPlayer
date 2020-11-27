@@ -551,11 +551,16 @@ class SkyQDevice(MediaPlayerEntity):
                 self._available = False
                 _LOGGER.error(f"E0010M - Device is not available: {self.name}")
 
-        if powerStatus != SKY_STATE_OFF and not self._available:
-            self._available = True
+        else:
+            if not self._available:
+                self._available = True
+                if self._startupSetup:
+                    _LOGGER.info(f"I0020M - Device is now available: {self.name}")
+                else:
+                    self._startupSetup = True
+                    _LOGGER.warning(f"W0020M - Device is now available: {self.name}")
+            elif self._errorTime:
+                _LOGGER.debug(
+                    f"D0020M - Device is now available - {(datetime.now() - self._errorTime).seconds} Seconds: {self.name}"
+                )
             self._errorTime = None
-            if self._startupSetup:
-                _LOGGER.info(f"I0020M - Device is now available: {self.name}")
-            else:
-                self._startupSetup = True
-                _LOGGER.warning(f"W0020M - Device is now available: {self.name}")
