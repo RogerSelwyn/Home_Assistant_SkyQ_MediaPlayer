@@ -5,72 +5,29 @@ from datetime import datetime, timedelta
 from custom_components.skyq.util.config_gen import SwitchMaker
 from homeassistant.components.media_player import MediaPlayerEntity
 from homeassistant.components.media_player.const import (
-    MEDIA_TYPE_APP,
-    MEDIA_TYPE_TVSHOW,
-    SUPPORT_BROWSE_MEDIA,
-    SUPPORT_NEXT_TRACK,
-    SUPPORT_PAUSE,
-    SUPPORT_PLAY,
-    SUPPORT_PLAY_MEDIA,
-    SUPPORT_PREVIOUS_TRACK,
-    SUPPORT_SEEK,
-    SUPPORT_SELECT_SOURCE,
-    SUPPORT_STOP,
-    SUPPORT_TURN_OFF,
-    SUPPORT_TURN_ON,
-    SUPPORT_VOLUME_MUTE,
-    SUPPORT_VOLUME_SET,
-    SUPPORT_VOLUME_STEP,
-)
-from homeassistant.const import (
-    CONF_HOST,
-    CONF_NAME,
-    STATE_OFF,
-    STATE_PAUSED,
-    STATE_PLAYING,
-    STATE_UNKNOWN,
-)
-from pyskyqremote.const import (
-    APP_EPG,
-    SKY_STATE_OFF,
-    SKY_STATE_ON,
-    SKY_STATE_PAUSED,
-    SKY_STATE_STANDBY,
-)
+    MEDIA_TYPE_APP, MEDIA_TYPE_TVSHOW, SUPPORT_BROWSE_MEDIA,
+    SUPPORT_NEXT_TRACK, SUPPORT_PAUSE, SUPPORT_PLAY, SUPPORT_PLAY_MEDIA,
+    SUPPORT_PREVIOUS_TRACK, SUPPORT_SEEK, SUPPORT_SELECT_SOURCE, SUPPORT_STOP,
+    SUPPORT_TURN_OFF, SUPPORT_TURN_ON, SUPPORT_VOLUME_MUTE, SUPPORT_VOLUME_SET,
+    SUPPORT_VOLUME_STEP)
+from homeassistant.const import (CONF_HOST, CONF_NAME, STATE_OFF, STATE_PAUSED,
+                                 STATE_PLAYING, STATE_UNKNOWN)
+from pyskyqremote.const import (APP_EPG, SKY_STATE_OFF, SKY_STATE_ON,
+                                SKY_STATE_PAUSED, SKY_STATE_STANDBY)
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .classes.config import Config
 from .classes.mediabrowser import Media_Browser
 from .classes.volumeentity import Volume_Entity
-from .const import (
-    APP_TITLES,
-    CONF_CHANNEL_SOURCES,
-    CONF_COUNTRY,
-    CONF_DIR,
-    CONF_EPG_CACHE_LEN,
-    CONF_GEN_SWITCH,
-    CONF_LIVE_TV,
-    CONF_OUTPUT_PROGRAMME_IMAGE,
-    CONF_ROOM,
-    CONF_SOURCES,
-    CONF_TEST_CHANNEL,
-    CONF_VOLUME_ENTITY,
-    CONST_DEFAULT_EPGCACHELEN,
-    CONST_DEFAULT_ROOM,
-    CONST_SKYQ_MEDIA_TYPE,
-    DEVICE_CLASS,
-    DOMAIN,
-    DOMAINBROWSER,
-    ERROR_TIMEOUT,
-    FEATURE_IMAGE,
-    FEATURE_LIVE_TV,
-    FEATURE_SWITCHES,
-    SKYQ_APP,
-    SKYQ_ICONS,
-    SKYQ_LIVE,
-    SKYQ_PVR,
-    SKYQREMOTE,
-)
+from .const import (APP_TITLES, CONF_CHANNEL_SOURCES, CONF_COUNTRY,
+                    CONF_EPG_CACHE_LEN, CONF_GEN_SWITCH, CONF_LIVE_TV,
+                    CONF_OUTPUT_PROGRAMME_IMAGE, CONF_ROOM, CONF_SOURCES,
+                    CONF_TEST_CHANNEL, CONF_VOLUME_ENTITY,
+                    CONST_DEFAULT_EPGCACHELEN, CONST_DEFAULT_ROOM,
+                    CONST_SKYQ_MEDIA_TYPE, DEVICE_CLASS, DOMAIN, DOMAINBROWSER,
+                    ERROR_TIMEOUT, FEATURE_IMAGE, FEATURE_LIVE_TV,
+                    FEATURE_SWITCHES, SKYQ_APP, SKYQ_ICONS, SKYQ_LIVE,
+                    SKYQ_PVR, SKYQREMOTE)
 from .utils import App_Image_Url, get_command
 
 _LOGGER = logging.getLogger(__name__)
@@ -81,12 +38,6 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     host = config.get(CONF_HOST)
     epg_cache_len = config.get(CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN)
     remote = await hass.async_add_executor_job(SkyQRemote, host, epg_cache_len)
-
-    config_directory = config.get(CONF_DIR)
-    if config_directory:
-        _LOGGER.warning(
-            f"Use of 'config_directory' is deprecated since it is no longer required. You set it to {config_directory}."
-        )
 
     unique_id = None
     name = config.get(CONF_NAME)
