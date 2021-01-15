@@ -8,9 +8,9 @@ To support easy usage with other home assistant integrations, e.g. google home
 class SwitchMaker:
     """The Switchmaker Class."""
 
-    def __init__(self, config_dir, name, room, channels):
-        """Initialise the Switcmaker."""
-        self._name = name.replace(" ", "_").lower()
+    def __init__(self, config_dir, entity_id, room, channels):
+        """Initialise the Switchmaker."""
+        self._entity_id = entity_id
         self._room = room
         self._root = config_dir
 
@@ -39,7 +39,6 @@ class SwitchMaker:
             + switch.replace(" ", "").lower()
             + self._room.replace(" ", "").lower()
         )
-        entity_id = "media_player." + self._name
         source_name = ""
         if source:
             source_name = "          source: '" + switch + "'\n"
@@ -60,7 +59,7 @@ class SwitchMaker:
             + "\n"
             + "        data:\n"
             + "          entity_id: "
-            + entity_id
+            + self._entity_id
             + "\n"
             + source_name
             + "      turn_off:\n"

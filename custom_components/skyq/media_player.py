@@ -5,29 +5,71 @@ from datetime import datetime, timedelta
 from custom_components.skyq.util.config_gen import SwitchMaker
 from homeassistant.components.media_player import MediaPlayerEntity
 from homeassistant.components.media_player.const import (
-    MEDIA_TYPE_APP, MEDIA_TYPE_TVSHOW, SUPPORT_BROWSE_MEDIA,
-    SUPPORT_NEXT_TRACK, SUPPORT_PAUSE, SUPPORT_PLAY, SUPPORT_PLAY_MEDIA,
-    SUPPORT_PREVIOUS_TRACK, SUPPORT_SEEK, SUPPORT_SELECT_SOURCE, SUPPORT_STOP,
-    SUPPORT_TURN_OFF, SUPPORT_TURN_ON, SUPPORT_VOLUME_MUTE, SUPPORT_VOLUME_SET,
-    SUPPORT_VOLUME_STEP)
-from homeassistant.const import (CONF_HOST, CONF_NAME, STATE_OFF, STATE_PAUSED,
-                                 STATE_PLAYING, STATE_UNKNOWN)
-from pyskyqremote.const import (APP_EPG, SKY_STATE_OFF, SKY_STATE_ON,
-                                SKY_STATE_PAUSED, SKY_STATE_STANDBY)
+    MEDIA_TYPE_APP,
+    MEDIA_TYPE_TVSHOW,
+    SUPPORT_BROWSE_MEDIA,
+    SUPPORT_NEXT_TRACK,
+    SUPPORT_PAUSE,
+    SUPPORT_PLAY,
+    SUPPORT_PLAY_MEDIA,
+    SUPPORT_PREVIOUS_TRACK,
+    SUPPORT_SEEK,
+    SUPPORT_SELECT_SOURCE,
+    SUPPORT_STOP,
+    SUPPORT_TURN_OFF,
+    SUPPORT_TURN_ON,
+    SUPPORT_VOLUME_MUTE,
+    SUPPORT_VOLUME_SET,
+    SUPPORT_VOLUME_STEP,
+)
+from homeassistant.const import (
+    CONF_HOST,
+    CONF_NAME,
+    STATE_OFF,
+    STATE_PAUSED,
+    STATE_PLAYING,
+    STATE_UNKNOWN,
+)
+from pyskyqremote.const import (
+    APP_EPG,
+    SKY_STATE_OFF,
+    SKY_STATE_ON,
+    SKY_STATE_PAUSED,
+    SKY_STATE_STANDBY,
+)
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .classes.config import Config
 from .classes.mediabrowser import Media_Browser
 from .classes.volumeentity import Volume_Entity
-from .const import (APP_TITLES, CONF_CHANNEL_SOURCES, CONF_COUNTRY,
-                    CONF_EPG_CACHE_LEN, CONF_GEN_SWITCH, CONF_LIVE_TV,
-                    CONF_OUTPUT_PROGRAMME_IMAGE, CONF_ROOM, CONF_SOURCES,
-                    CONF_TEST_CHANNEL, CONF_VOLUME_ENTITY,
-                    CONST_DEFAULT_EPGCACHELEN, CONST_DEFAULT_ROOM,
-                    CONST_SKYQ_MEDIA_TYPE, DEVICE_CLASS, DOMAIN, DOMAINBROWSER,
-                    ERROR_TIMEOUT, FEATURE_IMAGE, FEATURE_LIVE_TV,
-                    FEATURE_SWITCHES, SKYQ_APP, SKYQ_ICONS, SKYQ_LIVE,
-                    SKYQ_PVR, SKYQREMOTE)
+from .const import (
+    APP_TITLES,
+    CONF_CHANNEL_SOURCES,
+    CONF_COUNTRY,
+    CONF_EPG_CACHE_LEN,
+    CONF_GEN_SWITCH,
+    CONF_LIVE_TV,
+    CONF_OUTPUT_PROGRAMME_IMAGE,
+    CONF_ROOM,
+    CONF_SOURCES,
+    CONF_TEST_CHANNEL,
+    CONF_VOLUME_ENTITY,
+    CONST_DEFAULT_EPGCACHELEN,
+    CONST_DEFAULT_ROOM,
+    CONST_SKYQ_MEDIA_TYPE,
+    DEVICE_CLASS,
+    DOMAIN,
+    DOMAINBROWSER,
+    ERROR_TIMEOUT,
+    FEATURE_IMAGE,
+    FEATURE_LIVE_TV,
+    FEATURE_SWITCHES,
+    SKYQ_APP,
+    SKYQ_ICONS,
+    SKYQ_LIVE,
+    SKYQ_PVR,
+    SKYQREMOTE,
+)
 from .utils import App_Image_Url, get_command
 
 _LOGGER = logging.getLogger(__name__)
@@ -87,14 +129,6 @@ async def _async_setup_platform_entry(
         config_item.get(CONF_LIVE_TV, True),
     )
 
-    if config.enabled_features & FEATURE_SWITCHES:
-        SwitchMaker(
-            config_dir,
-            name,
-            config.room,
-            config.source_list,
-        )
-
     player = SkyQDevice(
         remote,
         config,
@@ -131,6 +165,7 @@ class SkyQDevice(MediaPlayerEntity):
         self._deviceInfo = None
         self._channel_list = None
         self._use_internal = True
+        self._switches_generated = False
 
         if not self._remote.deviceSetup:
             self._available = False
@@ -305,6 +340,16 @@ class SkyQDevice(MediaPlayerEntity):
         if self._state != STATE_UNKNOWN and self._state != STATE_OFF:
             await self._async_updateCurrentProgramme()
             await self._volume_entity.async_update_volume_state(self.hass, self.name)
+
+        if not self._switches_generated and self.entity_id:
+            self._switches_generated = True
+            if self._config.enabled_features & FEATURE_SWITCHES:
+                SwitchMaker(
+                    self.hass.config.config_dir,
+                    self.entity_id,
+                    self._config.room,
+                    self._config.source_list,
+                )
 
     async def async_turn_off(self):
         """Turn SkyQ box off."""
