@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.4.10 (15/01/2021)
+### Fixes
+- [Fix incorrect switch generation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/47f89727c0a968f46fb5dc60f4538e8db71dc377) - @RogerSelwyn - [#38](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/38) 
+
+### Maintenance
+- [Remove config_dir as config parameter](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/1d9499f630dbe618e28190e8dbb4385750b67800) - @RogerSelwyn
+- [Reduce timeout to 10 seconds](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5e232ed66499d9405d76f11f3ae7a06285a4b801) - @RogerSelwyn
+
 ## v2.4.9 (27/11/2020)
 ### Maintenance
 
