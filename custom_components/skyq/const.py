@@ -51,7 +51,10 @@ APP_TITLES = {
     "com.bskyb.news": "SkyNews",
     "com.bskyb.vevo": "Vevo",
     "com.roku": "Roku",
+    "com.skyita.DAZN": "DAZN",
     "com.spotify.spotify.tvv2": "Spotify",
+    "MediasetPlay": "MediasetPlay",
     "play.works": "PlayWorks",
+    "prime.video": "PrimeVideo",
 }
 APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
