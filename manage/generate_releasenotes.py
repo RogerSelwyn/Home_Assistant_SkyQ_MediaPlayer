@@ -75,7 +75,7 @@ def get_repo_commits(github, skip=True):
                 continue
             if "\n" in msg:
                 msg = msg.split("\n")[0]
-            author = commit.author.login if commit.author.login else None
+            author = commit.author.login if commit.author else None
             changes += CHANGE.format(
                 line=msg, link=commit.html_url, author=author
             )
