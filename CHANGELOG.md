@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.4.11 (17/01/2021)
+### Enhancements
+
+- [Add some apps](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a8fc1a8a96fc232d29095ff136b8b7ec035c05c3) - @a-maggioni - [#39](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/pull/39) 
+
+### Maintenance
+- [Shrink images file](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/959c07ee9a8233007061b836d77dd378652d9202) - @RogerSelwyn
+- [Update generate_releasenotes.py](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3f94f45c47432f475a53b51ae619a773a1ed4051) - @RogerSelwyn
+
 ## v2.4.10 (15/01/2021)
 ### Fixes
 - [Fix incorrect switch generation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/47f89727c0a968f46fb5dc60f4538e8db71dc377) - @RogerSelwyn - [#38](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/38) 
