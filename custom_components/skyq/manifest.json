@@ -6,5 +6,6 @@
   "codeowners": ["@rogerselwyn"],
   "requirements": ["pyskyqremote==0.2.34", "pycountry>=20.7.3"],
   "quality_scale": "silver",
-  "config_flow": true
+  "config_flow": true,
+  "version": "2.4.12"
 }
