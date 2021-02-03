@@ -1,6 +1,7 @@
 """The skyq platform allows you to control a SkyQ set top box."""
 import logging
 from datetime import datetime, timedelta
+from pathlib import Path
 
 from homeassistant.components.media_player import MediaPlayerEntity
 from homeassistant.components.media_player.const import (
@@ -43,6 +44,7 @@ from .classes.mediabrowser import Media_Browser
 from .classes.switchmaker import Switch_Maker
 from .classes.volumeentity import Volume_Entity
 from .const import (
+    APP_IMAGE_URL_BASE,
     APP_TITLES,
     CONF_CHANNEL_SOURCES,
     CONF_COUNTRY,
@@ -90,7 +92,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         remote,
         unique_id,
         name,
-        hass.config.config_dir,
+        hass,
     )
 
 
@@ -107,12 +109,12 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         remote,
         unique_id,
         name,
-        hass.config.config_dir,
+        hass,
     )
 
 
 async def _async_setup_platform_entry(
-    config_item, async_add_entities, remote, unique_id, name, config_dir
+    config_item, async_add_entities, remote, unique_id, name, hass
 ):
 
     config = Config(
@@ -134,6 +136,10 @@ async def _async_setup_platform_entry(
         config,
     )
     async_add_entities([player], True)
+
+    should_cache = False
+    files_path = Path(__file__).parent / "static"
+    hass.http.register_static_path(APP_IMAGE_URL_BASE, str(files_path), should_cache)
 
 
 class SkyQDevice(MediaPlayerEntity):

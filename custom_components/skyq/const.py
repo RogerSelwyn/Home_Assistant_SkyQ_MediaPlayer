@@ -57,4 +57,4 @@ APP_TITLES = {
     "play.works": "PlayWorks",
     "prime.video": "PrimeVideo",
 }
-APP_IMAGE_URL_BASE = "/local/community/skyq/{0}.png"
+APP_IMAGE_URL_BASE = "/api/" + DOMAIN + "/static"

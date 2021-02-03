@@ -77,7 +77,7 @@ class App_Image_Url:
 
         self._appImageUrl = None
 
-        appImageUrl = APP_IMAGE_URL_BASE.format(appTitle.casefold())
+        appImageUrl = APP_IMAGE_URL_BASE + f"/{appTitle.casefold()}.png"
 
         websession = async_get_clientsession(hass)
         base_url = get_url(hass)
