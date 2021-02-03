@@ -2,7 +2,6 @@
 import logging
 from datetime import datetime, timedelta
 
-from custom_components.skyq.util.config_gen import SwitchMaker
 from homeassistant.components.media_player import MediaPlayerEntity
 from homeassistant.components.media_player.const import (
     MEDIA_TYPE_APP,
@@ -41,6 +40,7 @@ from pyskyqremote.skyq_remote import SkyQRemote
 
 from .classes.config import Config
 from .classes.mediabrowser import Media_Browser
+from .classes.switchmaker import Switch_Maker
 from .classes.volumeentity import Volume_Entity
 from .const import (
     APP_TITLES,
@@ -344,7 +344,7 @@ class SkyQDevice(MediaPlayerEntity):
         if not self._switches_generated and self.entity_id:
             self._switches_generated = True
             if self._config.enabled_features & FEATURE_SWITCHES:
-                SwitchMaker(
+                Switch_Maker(
                     self.hass.config.config_dir,
                     self.entity_id,
                     self._config.room,

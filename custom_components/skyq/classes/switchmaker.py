@@ -5,7 +5,7 @@ To support easy usage with other home assistant integrations, e.g. google home
 """
 
 
-class SwitchMaker:
+class Switch_Maker:
     """The Switchmaker Class."""
 
     def __init__(self, config_dir, entity_id, room, channels):
