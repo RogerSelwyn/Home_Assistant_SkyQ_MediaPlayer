@@ -39,9 +39,11 @@ You can use HACS by adding this repository as a custom Integration repository in
 
 - Put the files from `/custom_components/skyq/` in your folder `<config directory>/custom_components/skyq/`
 
-For either install method you must also if you want to get application images (such as Netflix):
+If you wish to add to the provided application images (such as Netflix) place '.png' images names the same as the application in the following folder:
 
-- Put the files from `/www/community/skyq/` in your folder `<config directory>/www/community/skyq/`
+- `<config directory>/custom_components/skyq/static/`
+
+For channels where there is no EPG, this can also be utilised to provide a channel image. Place an image file in the same directory with the same name as your channel source name (e.g. raiuno.png).
 
 # Media Player Configuration
 
