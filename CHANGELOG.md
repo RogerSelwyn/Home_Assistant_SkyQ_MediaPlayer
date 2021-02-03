@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.5.0 (03/02/2021)
+### Enhancements
+- [Add version key](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/99f34c762bba9ecf906ad1f1ad20718da2cc214b) - @RogerSelwyn - [Developer blog](https://developers.home-assistant.io/blog/2021/01/29/custom-integration-changes)
+- [Move images to use /static/ path](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/1f04bb62fc556142652b6b161f8777811cc7a564) - @RogerSelwyn - [Developer blog](https://developers.home-assistant.io/blog/2021/01/29/custom-integration-changes)
+
+### Maintenance
+- [Move switchmaker into classes](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/dabe973b975ee1bea26dbc1b62196f0ad1ddb499) - @RogerSelwyn
+- [Bump to 2.5.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/07fe14fefdf5421ac8113b4eca249cc15290bf41) - @RogerSelwyn
+
 ## v2.4.12 (20/01/2021)
 ### Fixes
 - [Bump pyskyqremote to 0.2.34](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/90a3dc7962abf254d1601469bf68dbd2bc76d481) - @RogerSelwyn - #40 
