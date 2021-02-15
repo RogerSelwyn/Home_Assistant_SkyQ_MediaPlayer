@@ -15,6 +15,8 @@ There is currently support for the following device types within Home Assistant:
 
 - Media Player
 
+### [Buy Me A ~~Coffee~~ Beer 🍻](https://buymeacoffee.com/rogtp)
+
 ## Screenshots
 
 _Component showing current TV with default media control_
