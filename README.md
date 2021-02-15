@@ -16,6 +16,7 @@ There is currently support for the following device types within Home Assistant:
 - Media Player
 
 ### [Buy Me A ~~Coffee~~ Beer 🍻](https://buymeacoffee.com/rogtp)
+I work on this integration because I like things to work well for myself and others, and for it to deliver as much as is achievable with the API. Please don't feel you are obligated to donate, but of course it is appreciated.
 
 ## Screenshots
 
