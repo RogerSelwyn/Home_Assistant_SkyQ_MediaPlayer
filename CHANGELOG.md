@@ -4,7 +4,7 @@
 ### Fixes
 - [Fix pause not working in Apps](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/364fb4fb73cdacf3b1d5dfc3e3aafd84e1d5c3e9) - @RogerSelwyn - [#43](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/43) 
 
-### Maintennace
+### Maintenance
 - [Create stale.yml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3d474f6be36400830379372eae0da107aac4b150) - @RogerSelwyn
 - [Bump pyskyqremote to 0.2.35](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/03692ad082cf8e89f93e66eabeb68083bcb4776d) - @RogerSelwyn
 - [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a76a63d2a0549287a8ccd48c5afc0dd4308653ca) - @actions-user
