@@ -381,7 +381,7 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def async_media_pause(self):
         """Pause the current media item."""
-        await self.hass.async_add_executor_job(self._remote.press, "pause")
+        await self.hass.async_add_executor_job(self._remote.press, "play")
         self._state = STATE_PAUSED
         self.async_write_ha_state()
 
