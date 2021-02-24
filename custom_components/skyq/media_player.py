@@ -58,6 +58,7 @@ from .const import (
     CONF_VOLUME_ENTITY,
     CONST_DEFAULT_EPGCACHELEN,
     CONST_DEFAULT_ROOM,
+    CONST_SKYQ_CHANNELNO,
     CONST_SKYQ_MEDIA_TYPE,
     DEVICE_CLASS,
     DOMAIN,
@@ -158,6 +159,7 @@ class SkyQDevice(MediaPlayerEntity):
         self._media_browser = Media_Browser(remote, config, self._appImageUrl)
         self._state = STATE_OFF
         self._skyq_type = STATE_OFF
+        self._skyq_channelno = None
         self._title = None
         self._channel = None
         self._episode = None
@@ -317,6 +319,8 @@ class SkyQDevice(MediaPlayerEntity):
         """Return entity specific state attributes."""
         attributes = {}
         attributes[CONST_SKYQ_MEDIA_TYPE] = self._skyq_type
+        if self._skyq_channelno:
+            attributes[CONST_SKYQ_CHANNELNO] = self._skyq_channelno
         return attributes
 
     @property
@@ -332,6 +336,7 @@ class SkyQDevice(MediaPlayerEntity):
     async def async_update(self):
         """Get the latest data and update device state."""
         self._channel = None
+        self._skyq_channelno = None
         self._episode = None
         self._imageUrl = None
         self._season = None
@@ -486,6 +491,7 @@ class SkyQDevice(MediaPlayerEntity):
 
             if currentMedia.live and currentMedia.sid:
                 self._channel = currentMedia.channel
+                self._skyq_channelno = currentMedia.channelno
                 self._imageUrl = currentMedia.imageUrl
                 self._skyq_type = SKYQ_LIVE
                 if self._config.enabled_features & FEATURE_LIVE_TV:
@@ -505,6 +511,7 @@ class SkyQDevice(MediaPlayerEntity):
                 self._skyq_type = SKYQ_PVR
                 if recording:
                     self._channel = recording.channel
+                    self._skyq_channelno = None
                     self._episode = recording.episode
                     self._season = recording.season
                     self._title = recording.title
