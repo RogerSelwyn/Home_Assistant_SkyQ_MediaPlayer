@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.5.2 (24/02/2021)
+### Enhancements
+- [Add skyq_channelno state attribute](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/52b211b427ccaa0bf50f468d4527d9b038dee207) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.5.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/02726c4d83ba30325130fb67244ff806674140a2) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/eb58dd02355f7dd5d1940af9f80b837d32412614) - @actions-user
+
 ## v2.5.1 (20/02/2021)
 ### Fixes
 - [Fix pause not working in Apps](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/364fb4fb73cdacf3b1d5dfc3e3aafd84e1d5c3e9) - @RogerSelwyn - [#43](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/43) 
