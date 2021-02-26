@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.5.3 (26/02/2021)
+### Fixes
+- [Fix issue with non alpha chars in switch name](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7a2bf8bba3035a4a66c19b3f01f7c8ec3efa578e) - @RogerSelwyn - [#45](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/45)
+
+### Maintenance
+- [Update .gitignore](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f5dc72101a97ee51bd30020b763edfb6ba347161) - @RogerSelwyn
+- [Bump to v2.5.3](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f137a3fdc684b88c4ec938d4bd32969249f33df0) - @RogerSelwyn
+
 ## v2.5.2 (24/02/2021)
 ### Enhancements
 - [Add skyq_channelno state attribute](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/52b211b427ccaa0bf50f468d4527d9b038dee207) - @RogerSelwyn
