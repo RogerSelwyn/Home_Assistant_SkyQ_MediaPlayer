@@ -36,7 +36,11 @@ class Switch_Maker:
         friendly_name = friendly_name.replace("'", "")
         switch_name = (
             "skyq_"
-            + switch.replace(" ", "").lower()
+            + switch.replace(" ", "")
+            .replace("+", "_")
+            .replace(".", "")
+            .replace(":", "_")
+            .lower()
             + self._room.replace(" ", "").lower()
         )
         source_name = ""
