@@ -54,6 +54,7 @@ APP_TITLES = {
     "com.roku": "Roku",
     "com.skyita.DAZN": "DAZN",
     "com.spotify.spotify.tvv2": "Spotify",
+    "fiit.tv": "Fiit",
     "MediasetPlay": "MediasetPlay",
     "play.works": "PlayWorks",
     "prime.video": "PrimeVideo",
