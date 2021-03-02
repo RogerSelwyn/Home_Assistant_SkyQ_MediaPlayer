@@ -41,13 +41,6 @@ class Switch_Maker:
 
         self._f.close()
 
-    def _findAlias(self, friendly_name):
-        try:
-            alias = self._alias[friendly_name]
-        except KeyError:
-            alias = friendly_name
-        return alias
-
     def _addSwitch(self, switch, friendly_name, service, source=False):
         """Add switch to switches."""
         switch = switch.replace("'", "")
@@ -90,3 +83,10 @@ class Switch_Maker:
             + "      turn_off:\n"
             + "        service: script.placeholder\n"
         )
+
+    def _findAlias(self, friendly_name):
+        try:
+            alias = self._alias[friendly_name]
+        except KeyError:
+            alias = friendly_name
+        return alias
