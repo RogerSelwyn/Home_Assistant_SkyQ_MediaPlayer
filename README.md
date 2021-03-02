@@ -184,7 +184,7 @@ switch:
 
 ## Aliases
 
-Because the name of the channel may not always be what you want to use to talk to Google Home, it is possible to place an alias file in the root of your Home Assistant configuration. This needs to be called `skyqswitchalias.yaml`. It is also possible to use this to rename some of the default swithes, so you can change `play` to `engage` for example. The contents should be pairs of switchname and alias as below:
+Because the name of the channel may not always be what you want to use to talk to Google Home, it is possible to place an alias file in the root of your Home Assistant configuration. This needs to be called `skyqswitchalias.yaml`. It is also possible to use this to rename some of the default switches, so you can change `play` to `engage` for example. The contents should be pairs of switchname and alias as below:
 
 ```
 BBC One South: BBC South
