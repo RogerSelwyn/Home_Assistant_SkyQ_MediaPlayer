@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.5.4 (02/03/2021)
+### Enhancements
+- [Add Fiit app](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bd56350a461e4d7f39a2b2cf425fe1828e424874) - @TomBrien - [#47](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/pull/47)
+- [Add support for channel alias for friendly_name entries in switches.YAML](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/943fdf1d5147880cfa11db17f93fabf3ec5f873e) - @RogerSelwyn - [#33](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/33)
+
+### Fixes
+- [Fix readme typo](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/43c28386b33fb23f50974d17edc982d4d6b57fd3) - @TomBrien - [#48](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/pull/48)
+
+### Maintenance
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/21f773a9e84a0a41759be9f833def549f4841cd0) - @RogerSelwyn
+- [Bump to v2.5.4](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2ffd76e901c5358e96963d3a7d4574183607f882) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/592e0109b02944e3e10cefb93c0a670b9d6264d9) - @actions-user
+
 ## v2.5.3 (26/02/2021)
 ### Fixes
 - [Fix issue with non alpha chars in switch name](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7a2bf8bba3035a4a66c19b3f01f7c8ec3efa578e) - @RogerSelwyn - [#45](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/45)
