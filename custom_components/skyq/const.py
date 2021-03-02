@@ -21,6 +21,7 @@ CHANNEL_SOURCES_DISPLAY = "channel_sources_display"
 CHANNEL_DISPLAY = "{0} - {1}"
 
 CONST_DEFAULT_ROOM = "Default Room"
+CONST_ALIAS_FILENAME = "skyqswitchalias.yaml"
 CONST_SKYQ_CHANNELNO = "skyq_channelno"
 CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
 CONST_DEFAULT = "Default"

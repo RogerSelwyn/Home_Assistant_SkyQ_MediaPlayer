@@ -149,7 +149,7 @@ In custom sources, if you have 'backup' as your first command, then this will be
 
 A utility function has been created to generate yaml configuration for SkyQ enabled media players to support easy usage with other home assistant integrations, e.g. google home
 
-Usage based on google home: _“turn on <source name / channel name> in the ”_
+Usage based on Google home: _“turn on <source name / channel name> in the ”_
 
 ## Configuration
 
@@ -181,3 +181,18 @@ switch:
 - platform: template
   switches: !include  skyq<room>.yaml
 ```
+
+## Aliases
+
+Because the name of the channel may not always be what you want to use to talk to Google Home, it is possible to place an alias file in the root of your Home Assistant configuration. This needs to be called `skyqswitchalias.yaml`. It is also possible to use this to rename some of the default swithes, so you can change `play` to `engage` for example. The contents should be pairs of switchname and alias as below:
+
+```
+BBC One South: BBC South
+ComedyCentHD: Comedy Central HD
+SkySpMainEvHD: Sky Sports Main Event HD
+SkySp PL HD: Sky Sports Premier League HD
+SkyPremiereHD: Sky Premiere HD
+SkyFamilyHD: Sky Family HD
+play: engage
+```
+
