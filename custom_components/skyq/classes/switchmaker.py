@@ -43,7 +43,7 @@ class Switch_Maker:
 
     def _addSwitch(self, switch, friendly_name, service, source=False):
         """Add switch to switches."""
-        switch = switch.replace("'", "")
+        source_switch = switch.replace("'", "''")
         if self._alias:
             friendly_name = self._findAlias(friendly_name)
         else:
@@ -51,15 +51,18 @@ class Switch_Maker:
         switch_name = (
             "skyq_"
             + switch.replace(" ", "")
+            .replace("'", "")
             .replace("+", "_")
             .replace(".", "")
+            .replace("!", "")
             .replace(":", "_")
+            .replace("/", "_")
             .lower()
             + self._room.replace(" ", "").lower()
         )
         source_name = ""
         if source:
-            source_name = "          source: '" + switch + "'\n"
+            source_name = "          source: '" + source_switch + "'\n"
 
         self._f.write(
             "    "
