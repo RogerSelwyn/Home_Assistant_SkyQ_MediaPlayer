@@ -14,6 +14,8 @@ jobs:
 
       - name: Update requirements.txt
         run: python3 /home/runner/work/Home_Assistant_SkyQ_MediaPlayer/Home_Assistant_SkyQ_MediaPlayer/manage/update_requirements.py
+      - name: Update manifest.json
+        run: python3 /home/runner/work/Home_Assistant_SkyQ_MediaPlayer/Home_Assistant_SkyQ_MediaPlayer/manage/update_version.py --tag ${{ github.ref }}
       - name: switching from HTTPS to SSH
         run: git remote set-url origin git@github.com:RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer.git
       - name: check for changes
