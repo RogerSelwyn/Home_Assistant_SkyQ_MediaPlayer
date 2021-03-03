@@ -1,3 +1,2 @@
 pyskyqremote==0.2.36
 pycountry>=20.7.3
-pyyaml>=5.4.1
