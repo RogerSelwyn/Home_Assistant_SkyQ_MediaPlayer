@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.5.5 (03/03/2021)
+### Enhancements
+- [Update to handle more non-alpha characters in switchmaker](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fac4c1cbc613c1e49ca5bbb0d7657891df540656) - @RogerSelwyn - [#33](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/33)
+
+### Maintenance
+- [Re-organise switchmaker](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a0edc6c0d507a7cf0a1f76020c0102dd2b190dca) - @RogerSelwyn
+- [Bump to v2.5.5](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7a3d9861ed0ff12c012d248e4901890621eaa0e0) - @RogerSelwyn
+
 ## v2.5.4 (02/03/2021)
 ### Enhancements
 - [Add Fiit app](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bd56350a461e4d7f39a2b2cf425fe1828e424874) - @TomBrien - [#47](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/pull/47)
