@@ -49,7 +49,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
           tags: true
- 
       # Pack the SkyQ dir as a zip and upload to the release
       - name: ZIP SkyQ Dir
         run: |
