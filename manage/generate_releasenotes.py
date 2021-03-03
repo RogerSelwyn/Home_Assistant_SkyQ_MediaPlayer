@@ -1,19 +1,21 @@
+"""Create the release notes."""
 import re
 import sys
-import json
+
 from github import Github
 
 REPOSITORY = "Home_Assistant_SkyQ_MediaPlayer"
 
-BODY = """
-[![Downloads for this release](https://img.shields.io/github/downloads/rogerselwyn/{repository}/{version}/total.svg)](https://github.com/rogerselwyn/{repository}/releases/{version})
+BODY = """[![Downloads for this release](https://img.shields.io/github/downloads/rogerselwyn/{repository}/{version}/total.svg)](https://github.com/rogerselwyn/{repository}/releases/{version})
 
 {changes}
 
 """
 
 CHANGES = """
-## Sky Q changes
+### Enhancements
+### Fixes
+### Maintenance
 
 {repo_changes}
 
@@ -25,7 +27,7 @@ NOCHANGE = "_No changes in this release._"
 GITHUB = Github(sys.argv[2])
 
 
-def new_commits(repo, sha):
+def _new_commits(repo, sha):
     """Get new commits in repo."""
     from datetime import datetime
 
@@ -38,7 +40,7 @@ def new_commits(repo, sha):
     return reversed(list(commits)[:-1])
 
 
-def last_repo_release(github, skip=True):
+def _last_repo_release(github, skip=True):
     """Return last release."""
     repo = github.get_repo(f"rogerselwyn/{REPOSITORY}")
     tag_sha = None
@@ -59,10 +61,10 @@ def last_repo_release(github, skip=True):
     return data
 
 
-def get_repo_commits(github, skip=True):
+def _get_repo_commits(github, skip=True):
     changes = ""
     repo = github.get_repo(f"rogerselwyn/{REPOSITORY}")
-    commits = new_commits(repo, last_repo_release(github, skip)["tag_sha"])
+    commits = _new_commits(repo, _last_repo_release(github, skip)["tag_sha"])
 
     if not commits:
         changes = NOCHANGE
@@ -76,14 +78,12 @@ def get_repo_commits(github, skip=True):
             if "\n" in msg:
                 msg = msg.split("\n")[0]
             author = commit.author.login if commit.author else None
-            changes += CHANGE.format(
-                line=msg, link=commit.html_url, author=author
-            )
+            changes += CHANGE.format(line=msg, link=commit.html_url, author=author)
 
     return changes
 
 
-## Update release notes:
+# Update release notes:
 UPDATERELEASE = str(sys.argv[4])
 REPO = GITHUB.get_repo(f"rogerselwyn/{REPOSITORY}")
 if UPDATERELEASE == "yes":
@@ -94,16 +94,16 @@ if UPDATERELEASE == "yes":
         message=BODY.format(
             version=VERSION,
             changes=CHANGES.format(
-                repo_changes=get_repo_commits(GITHUB),
+                repo_changes=_get_repo_commits(GITHUB),
             ),
-            repository=REPOSITORY
+            repository=REPOSITORY,
         ),
         prerelease=True,
     )
 else:
-    repo_changes = get_repo_commits(GITHUB, False)
+    repo_changes = _get_repo_commits(GITHUB, False)
     if repo_changes != NOCHANGE:
-        VERSION = last_repo_release(GITHUB, False)["tag_name"]
+        VERSION = _last_repo_release(GITHUB, False)["tag_name"]
         VERSION = f"{VERSION[:-1]}{int(VERSION[-1])+1}"
         REPO.create_issue(
             title=f"Create release {VERSION}?",
