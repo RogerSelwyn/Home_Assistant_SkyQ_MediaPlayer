@@ -12,12 +12,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v1
 
-      - name: Update requirements.txt
-        run: python3 /home/runner/work/Home_Assistant_SkyQ_MediaPlayer/Home_Assistant_SkyQ_MediaPlayer/manage/update_requirements.py
-      - name: Update manifest.json
-        run: python3 /home/runner/work/Home_Assistant_SkyQ_MediaPlayer/Home_Assistant_SkyQ_MediaPlayer/manage/update_version.py --tag ${{ github.ref }}
       - name: switching from HTTPS to SSH
         run: git remote set-url origin git@github.com:RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer.git
+      - name: Update requirements.txt
+        run: python3 /home/runner/work/Home_Assistant_SkyQ_MediaPlayer/Home_Assistant_SkyQ_MediaPlayer/manage/update_requirements.py
       - name: check for changes
         run: git status
       - name: stage changed files
@@ -28,6 +26,18 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m "Auto update requirements.txt"
+      - name: Update manifest.json
+        run: python3 /home/runner/work/Home_Assistant_SkyQ_MediaPlayer/Home_Assistant_SkyQ_MediaPlayer/manage/update_version.py --tag ${{ github.ref }}
+      - name: check for changes
+        run: git status
+      - name: stage changed files
+        run: git add ./custom_components/skyq/manifest.json
+      - name: commit changed files
+        continue-on-error: true
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Auto update manifest.json"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
