@@ -38,15 +38,12 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m "Auto update manifest.json"
+          git tag -fa ${{ github.event.release.tag_name }} -m "Update version number"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Update commit
-        run: |
-          git tag -fa ${{ github.event.release.tag_name }} -m "Update version number"
-          git push -f --tags
-
+ 
       # Pack the SkyQ dir as a zip and upload to the release
       - name: ZIP SkyQ Dir
         run: |
