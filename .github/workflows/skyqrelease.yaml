@@ -38,7 +38,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m "Auto update manifest.json"
-          git tag -fa ${{ github.event.release.tag_name }} -m "Update version number"
+          git tag -fa ${{ github.event.release.tag_name }} -m "Update version number ${{ github.event.release.tag_name }}"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
