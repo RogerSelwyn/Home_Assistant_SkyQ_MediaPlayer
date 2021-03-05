@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.5.6 (05/03/2021)
+### Fixes
+- [Fix error generating switches when no alias file](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6726fc1313402db5404d2d0cd9c102d1ac0e9736) - @RogerSelwyn
+
+### Maintenance
+- [Update skyqrelease.yaml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/53ae7df20c3d25612ee3983467584651c91afc7a) - @RogerSelwyn
+- [Remove pyyaml since included in HASS](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8b9e8e62b764bd238aebca87fc852c4118782152) - @RogerSelwyn
+- [Tidy up release notes structure](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c220789eba54e5e8fbf27a7b1ff1d9f91cc4be6a) - @RogerSelwyn
+- [Add manifest update](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/155b62e766e491d27d8a71227695e5f53157e9fb) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2c5059761c83603796708ec494f01abf12299926) - @actions-user
+ 
 ## v2.5.5 (03/03/2021)
 ### Enhancements
 - [Update to handle more non-alpha characters in switchmaker](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fac4c1cbc613c1e49ca5bbb0d7657891df540656) - @RogerSelwyn - [#33](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/33)
