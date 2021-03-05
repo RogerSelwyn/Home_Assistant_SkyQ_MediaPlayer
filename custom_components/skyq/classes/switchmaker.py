@@ -18,6 +18,7 @@ class Switch_Maker:
         self._entity_id = entity_id
         self._room = room
         self._root = config_dir
+        self._alias = {}
 
         if self._root[-1] != "/":
             self._root += "/"
@@ -44,7 +45,7 @@ class Switch_Maker:
     def _addSwitch(self, switch, friendly_name, service, source=False):
         """Add switch to switches."""
         source_switch = switch.replace("'", "''")
-        if self._alias:
+        if len(self._alias) > 0:
             friendly_name = self._findAlias(friendly_name)
         else:
             friendly_name = friendly_name.replace("'", "")
