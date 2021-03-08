@@ -40,12 +40,14 @@ ERROR_TIMEOUT = 10
 
 SKYQ_APP = "app"
 SKYQ_LIVE = "live"
+SKYQ_LIVEREC = "liverecord"
 SKYQ_PVR = "pvr"
 SKYQ_ICONS = {
-    "app": "mdi:application",
-    "live": "mdi:satellite-variant",
+    SKYQ_APP: "mdi:application",
+    SKYQ_LIVE: "mdi:satellite-variant",
+    SKYQ_LIVEREC: "mdi:satellite-variant",
     STATE_OFF: "mdi:television",
-    "pvr": "mdi:movie-open",
+    SKYQ_PVR: "mdi:movie-open",
     STATE_UNKNOWN: "mdi:alert-circle-outline",
 }
 APP_TITLES = {

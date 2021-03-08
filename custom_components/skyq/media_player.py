@@ -70,6 +70,7 @@ from .const import (
     SKYQ_APP,
     SKYQ_ICONS,
     SKYQ_LIVE,
+    SKYQ_LIVEREC,
     SKYQ_PVR,
     SKYQREMOTE,
 )
@@ -504,13 +505,24 @@ class SkyQDevice(MediaPlayerEntity):
                         self._title = currentProgramme.title
                         if currentProgramme.imageUrl:
                             self._imageUrl = currentProgramme.imageUrl
+
+                        recordings = await self.hass.async_add_executor_job(
+                            self._remote.getRecordings, "RECORDING"
+                        )
+                        for recording in recordings.programmes:
+                            if (
+                                currentProgramme.programmeuuid
+                                == recording.programmeuuid
+                            ):
+                                self._skyq_type = SKYQ_LIVEREC
+
             elif currentMedia.pvrId:
                 recording = await self.hass.async_add_executor_job(
                     self._remote.getRecording, currentMedia.pvrId
                 )
                 self._skyq_type = SKYQ_PVR
                 if recording:
-                    self._channel = recording.channel
+                    self._channel = recording.channelname
                     self._skyq_channelno = None
                     self._episode = recording.episode
                     self._season = recording.season
