@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.5.7 (08/03/2021)
+### Enhancements
+- [Add indicator for live record](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/05f7364892201007a88fa9a04cea6497c0aae100) - @RogerSelwyn - #50 
+
+### Maintenance
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4812dfb9ec22b49cc6dd404178fd9c1c18a11365) - @actions-user
+- [Auto update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/dbdaef171a7909c50b7f759e9c694e7b740aca94) - @actions-user
+
 ## v2.5.6 (05/03/2021)
 ### Fixes
 - [Fix error generating switches when no alias file](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6726fc1313402db5404d2d0cd9c102d1ac0e9736) - @RogerSelwyn
