@@ -2,7 +2,7 @@
 
 ## v2.5.7 (08/03/2021)
 ### Enhancements
-- [Add indicator for live record](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/05f7364892201007a88fa9a04cea6497c0aae100) - @RogerSelwyn - #50 
+- [Add indicator for live record](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/05f7364892201007a88fa9a04cea6497c0aae100) - @RogerSelwyn - [#50](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/50) 
 
 ### Maintenance
 - [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4812dfb9ec22b49cc6dd404178fd9c1c18a11365) - @actions-user
