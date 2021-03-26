@@ -31,6 +31,7 @@
           "output_programme_image": "Mostra immagine del programma",
           "generate_switches_for_channels": "Genera switch per canali",
           "live_tv": "Mostra i dettagli della TV in diretta",
+          "get_live_record": "Ottieni lo stato della registrazione in tempo reale",
           "room": "Nome stanza opzionale - richiesto per gli interruttori",
           "country": "Sostituisci paese",
           "epg_cache_len": "Longitud de la caché de EPG para Media Browser",

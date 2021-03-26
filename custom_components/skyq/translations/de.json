@@ -31,6 +31,7 @@
           "output_programme_image": "Programmbild anzeigen",
           "generate_switches_for_channels": "Generate switches for channels",
           "live_tv": "Generieren Sie Schalter für Kanäle",
+          "get_live_record": "Erhalten Sie den Live-Aufzeichnungsstatus",
           "room": "Optionaler Raumname - für Schalter erforderlich",
           "country": "Land überschreiben",
           "epg_cache_len": "EPG-Cache-Länge für Media Browser",

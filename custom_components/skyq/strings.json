@@ -30,6 +30,7 @@
           "output_programme_image": "Show programme image",
           "generate_switches_for_channels": "Generate switches for channels",
           "live_tv": "Show live TV details",
+          "get_live_record": "Get live record status",
           "room": "Optional room name - required for switches",
           "country": "Override country",
           "epg_cache_len": "EPG cache length for Media Browser",

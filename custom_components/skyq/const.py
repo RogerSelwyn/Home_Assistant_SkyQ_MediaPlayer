@@ -17,6 +17,7 @@ CONF_LIVE_TV = "live_tv"
 CONF_COUNTRY = "country"
 CONF_TEST_CHANNEL = "test_channel"
 CONF_VOLUME_ENTITY = "volume_entity"
+CONF_GET_LIVE_RECORD = "get_live_record"
 CHANNEL_SOURCES_DISPLAY = "channel_sources_display"
 CHANNEL_DISPLAY = "{0} - {1}"
 
@@ -34,6 +35,7 @@ FEATURE_BASIC = 1
 FEATURE_IMAGE = 2
 FEATURE_LIVE_TV = 4
 FEATURE_SWITCHES = 8
+FEATURE_GET_LIVE_RECORD = 16
 
 TIMEOUT = 2
 ERROR_TIMEOUT = 10
@@ -45,7 +47,7 @@ SKYQ_PVR = "pvr"
 SKYQ_ICONS = {
     SKYQ_APP: "mdi:application",
     SKYQ_LIVE: "mdi:satellite-variant",
-    SKYQ_LIVEREC: "mdi:satellite-variant",
+    SKYQ_LIVEREC: "mdi:record-rec",
     STATE_OFF: "mdi:television",
     SKYQ_PVR: "mdi:movie-open",
     STATE_UNKNOWN: "mdi:alert-circle-outline",

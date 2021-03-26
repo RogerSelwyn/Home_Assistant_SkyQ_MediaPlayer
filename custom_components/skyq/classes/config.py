@@ -1,10 +1,22 @@
 """Config class definition for the skyq platform."""
 from dataclasses import InitVar, dataclass, field
 
-from ..const import FEATURE_BASIC, FEATURE_IMAGE, FEATURE_LIVE_TV, FEATURE_SWITCHES
+from ..const import (
+    FEATURE_BASIC,
+    FEATURE_GET_LIVE_RECORD,
+    FEATURE_IMAGE,
+    FEATURE_LIVE_TV,
+    FEATURE_SWITCHES,
+)
 from ..utils import convert_sources
 
-enabled_features = FEATURE_BASIC | FEATURE_IMAGE | FEATURE_LIVE_TV | FEATURE_SWITCHES
+enabled_features = (
+    FEATURE_BASIC
+    | FEATURE_IMAGE
+    | FEATURE_LIVE_TV
+    | FEATURE_SWITCHES
+    | FEATURE_GET_LIVE_RECORD
+)
 
 
 @dataclass
@@ -22,11 +34,16 @@ class Config:
     generate_switches_for_channels: InitVar[bool]
     output_programme_image: InitVar[bool]
     live_tv: InitVar[bool]
+    get_live_record: InitVar[bool]
     enabled_features: int = None
     source_list = None
 
     def __post_init__(
-        self, generate_switches_for_channels, output_programme_image, live_tv
+        self,
+        generate_switches_for_channels,
+        output_programme_image,
+        live_tv,
+        get_live_record,
     ):
         """Set up the config."""
         self.enabled_features = enabled_features
@@ -37,6 +54,9 @@ class Config:
 
         if not (live_tv):
             self.enabled_features ^= FEATURE_LIVE_TV
+
+        if not (get_live_record):
+            self.enabled_features ^= FEATURE_GET_LIVE_RECORD
 
         if not (generate_switches_for_channels):
             self.enabled_features ^= FEATURE_SWITCHES

@@ -50,6 +50,7 @@ from .const import (
     CONF_COUNTRY,
     CONF_EPG_CACHE_LEN,
     CONF_GEN_SWITCH,
+    CONF_GET_LIVE_RECORD,
     CONF_LIVE_TV,
     CONF_OUTPUT_PROGRAMME_IMAGE,
     CONF_ROOM,
@@ -64,6 +65,7 @@ from .const import (
     DOMAIN,
     DOMAINBROWSER,
     ERROR_TIMEOUT,
+    FEATURE_GET_LIVE_RECORD,
     FEATURE_IMAGE,
     FEATURE_LIVE_TV,
     FEATURE_SWITCHES,
@@ -131,6 +133,7 @@ async def _async_setup_platform_entry(
         config_item.get(CONF_GEN_SWITCH, False),
         config_item.get(CONF_OUTPUT_PROGRAMME_IMAGE, True),
         config_item.get(CONF_LIVE_TV, True),
+        config_item.get(CONF_GET_LIVE_RECORD, False),
     )
 
     player = SkyQDevice(
@@ -506,15 +509,16 @@ class SkyQDevice(MediaPlayerEntity):
                         if currentProgramme.imageUrl:
                             self._imageUrl = currentProgramme.imageUrl
 
-                        recordings = await self.hass.async_add_executor_job(
-                            self._remote.getRecordings, "RECORDING"
-                        )
-                        for recording in recordings.programmes:
-                            if (
-                                currentProgramme.programmeuuid
-                                == recording.programmeuuid
-                            ):
-                                self._skyq_type = SKYQ_LIVEREC
+                        if self._config.enabled_features & FEATURE_GET_LIVE_RECORD:
+                            recordings = await self.hass.async_add_executor_job(
+                                self._remote.getRecordings, "RECORDING"
+                            )
+                            for recording in recordings.programmes:
+                                if (
+                                    currentProgramme.programmeuuid
+                                    == recording.programmeuuid
+                                ):
+                                    self._skyq_type = SKYQ_LIVEREC
 
             elif currentMedia.pvrId:
                 recording = await self.hass.async_add_executor_job(
