@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.5.7 (26/03/2021)
+### Enhancements
+- [Add feature to enable/disable live record status](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e2baf6e8385c88dfc6d13caec991d6cb649b8c68) - @RogerSelwyn - [#51](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/51) 
+
+### Maintenance
+- [Update hacsvalidate.yaml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cce38fcdd54a845f6553388bb92221a6d46b8656) - @RogerSelwyn
+- [Delete hassfest.yaml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2c42dae79391e88305046beb6a13c38a281927d8) - @RogerSelwyn
+- [Rename validation action](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/63c8195503a0772e1176fe4e442bb6006fd4f6d2) - @RogerSelwyn
+- [Update pushpull.yaml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/650bcd608d4a6d39db05c221605a582c917b887f) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3c8e8ea0ecb5e41d084dcf52e379f1d6a4a99c4b) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.39](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/667b85114a0aa36620b85b46db53185d2b75dd85) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/008ace5c2cd2f1f78b9d83123ee90f80adebf96e) - @actions-user
+- [Auto update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f82195657d9cd472c4f86e8fd23df4bbeb5f57d1) - @actions-user
+
 ## v2.5.7 (08/03/2021)
 ### Enhancements
 - [Add indicator for live record](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/05f7364892201007a88fa9a04cea6497c0aae100) - @RogerSelwyn - [#50](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/50) 
