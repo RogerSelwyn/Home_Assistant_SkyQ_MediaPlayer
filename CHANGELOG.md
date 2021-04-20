@@ -1,6 +1,15 @@
 # Changelog
 
-## v2.5.7 (26/03/2021)
+## v2.5.9 (20/04/2021)
+### Fixes
+- [Fix device duplication for UI install after reboot during deep sleep](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/34a5df8c72ca680d5bfbc10cdda5e988dc395630) - @RogerSelwyn - [#53](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/53) 
+- [Bump pyskyqremote to 0.2.40](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/477cf215b8654e28939c38e239556c944c5bdcaf) - @RogerSelwyn
+
+### Maintenance
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b5413ea77ee39cb9fcd2bcee4430164f48bc7d51) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/1e6619321b22e399101e430b47ba9b9ce76aa2dc) - @actions-user
+
+## v2.5.8 (26/03/2021)
 ### Enhancements
 - [Add feature to enable/disable live record status](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e2baf6e8385c88dfc6d13caec991d6cb649b8c68) - @RogerSelwyn - [#51](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/51) 
 
