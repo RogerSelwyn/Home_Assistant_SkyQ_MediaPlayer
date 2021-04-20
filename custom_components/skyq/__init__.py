@@ -2,6 +2,7 @@
 import asyncio
 
 from homeassistant.const import CONF_HOST
+from homeassistant.exceptions import ConfigEntryNotReady
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .const import (
@@ -31,6 +32,9 @@ async def async_setup_entry(hass, config_entry):
 
     hass.data.setdefault(DOMAIN, {})
     remote = await hass.async_add_executor_job(SkyQRemote, host, epg_cache_len)
+    if not remote.deviceSetup:
+        raise ConfigEntryNotReady
+
     hass.data[DOMAIN][config_entry.entry_id] = {
         SKYQREMOTE: remote,
         UNDO_UPDATE_LISTENER: undo_listener,
