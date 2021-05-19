@@ -3,11 +3,14 @@ A utility function to generate yaml config for SkyQ media players.
 
 To support easy usage with other home assistant integrations, e.g. google home
 """
+import logging
 import os.path as _path
 
 import yaml
 
 from ..const import CONST_ALIAS_FILENAME
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class Switch_Maker:
@@ -30,6 +33,10 @@ class Switch_Maker:
             aliasfile = open(self._root + CONST_ALIAS_FILENAME, "r")
             self._alias = yaml.full_load(aliasfile)
             aliasfile.close()
+            if self._alias:
+                _LOGGER.info(
+                    "I0010S - skyqswitchalias.yaml is empty, it can be deleted"
+                )
 
         self._addSwitch("pause", "pause", "media_pause")
         self._addSwitch("play", "play", "media_play")
@@ -45,10 +52,11 @@ class Switch_Maker:
     def _addSwitch(self, switch, friendly_name, service, source=False):
         """Add switch to switches."""
         source_switch = switch.replace("'", "''")
-        if len(self._alias) > 0:
+        if self._alias and len(self._alias) > 0:
             friendly_name = self._findAlias(friendly_name)
         else:
             friendly_name = friendly_name.replace("'", "")
+
         switch_name = (
             "skyq_"
             + switch.replace(" ", "")
