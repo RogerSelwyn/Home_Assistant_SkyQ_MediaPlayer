@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.6.0 (19/05/2021)
+### Fixes
+- [Fix app icons not being displayed](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8b93624057a001c960820e64f64d33a803156c1b) - @RogerSelwyn
+- [Fix error when alias file is empty](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8654915b0016d2a94cb87a09a19a198e89186a77) - @RogerSelwyn - [#54](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/54) 
+
 ## v2.5.9 (20/04/2021)
 ### Fixes
 - [Fix device duplication for UI install after reboot during deep sleep](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/34a5df8c72ca680d5bfbc10cdda5e988dc395630) - @RogerSelwyn - [#53](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/53) 
