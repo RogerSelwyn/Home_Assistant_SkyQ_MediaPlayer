@@ -4,6 +4,10 @@
 ### Fixes
 - [Fix app icons not being displayed](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8b93624057a001c960820e64f64d33a803156c1b) - @RogerSelwyn
 - [Fix error when alias file is empty](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8654915b0016d2a94cb87a09a19a198e89186a77) - @RogerSelwyn - [#54](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/54) 
+### Maintenance
+- [Add iot_class to manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c4929e36d7d580261200dba422ed0ba3823a3a9d) - @RogerSelwyn
+- [Bump version to 2.6.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/48c7ee131ca5ee7b78bbe79d352bdb5798b39a02) - @RogerSelwyn
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/faff527aff0ffb7906833eedced5e9862080c1a1) - @RogerSelwyn
 
 ## v2.5.9 (20/04/2021)
 ### Fixes
