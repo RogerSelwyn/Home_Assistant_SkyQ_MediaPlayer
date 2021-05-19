@@ -57,10 +57,10 @@ APP_TITLES = {
     "com.bskyb.news": "SkyNews",
     "com.bskyb.vevo": "Vevo",
     "com.roku": "Roku",
-    "com.skyita.DAZN": "DAZN",
+    "com.skyita.dazn": "DAZN",
     "com.spotify.spotify.tvv2": "Spotify",
     "fiit.tv": "Fiit",
-    "MediasetPlay": "MediasetPlay",
+    "mediasetplay": "MediasetPlay",
     "play.works": "PlayWorks",
     "prime.video": "PrimeVideo",
 }
