@@ -574,7 +574,7 @@ class SkyQDevice(MediaPlayerEntity):
                 and self._available
             ):
                 self._available = False
-                _LOGGER.error(f"E0010M - Device is not available: {self.name}")
+                _LOGGER.info(f"I0010M - Device is not available: {self.name}")
 
         else:
             if not self._available:
