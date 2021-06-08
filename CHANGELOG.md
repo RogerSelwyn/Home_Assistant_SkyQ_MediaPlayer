@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.6.1 (08/06/2021)
+### Enhancements
+- [Log "not available" at warning level ](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/pull/56)  - @ollo69
+
+### Maintenance
+- [Bump to 2.6.1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3ebed0cbd9c91fd61508a66875fe2898e0df6a54) - @RogerSelwyn
+
 ## v2.6.0 (19/05/2021)
 ### Fixes
 - [Fix app icons not being displayed](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8b93624057a001c960820e64f64d33a803156c1b) - @RogerSelwyn
