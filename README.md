@@ -199,3 +199,6 @@ SkyFamilyHD: Sky Family HD
 play: engage
 ```
 
+ ## Homekit Integration
+ 
+ Please see [B-Hartley Github's](https://github.com/B-Hartley/bruces_homeassistant_config/tree/main/packages/systems/homekit) for some details on how to integrate (SkyQ) media player buttons with HomeKit
