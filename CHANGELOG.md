@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.6.3 (06/08/2021)
+### Fixes
+- [Handle hyphen in channel name](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ba98b427caddfbaceb0ef39aeeb2a0116a3697ea) - @RogerSelwyn - [#59](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/59) 
+
+
 ## v2.6.2 (06/08/2021)
 ### Fixes
 - [Handle & in channel name](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2563b60267761e4d9c6102a474e313611be7a7b9) - @RogerSelwyn - [#59](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/59) 
