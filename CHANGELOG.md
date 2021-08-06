@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.6.2 (06/08/2021)
+### Fixes
+- [Handle & in channel name](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2563b60267761e4d9c6102a474e313611be7a7b9) - @RogerSelwyn - [#59](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/59) 
+
+### Maintenance
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9a348e40933e8bfdb32f5c624fbfe47152ff6e88) - @RogerSelwyn
+
 ## v2.6.1 (08/06/2021)
 ### Enhancements
 - [Log "not available" at warning level ](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/pull/56)  - @ollo69
