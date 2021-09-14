@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.6.5 Beta (2021/09/14)
+### Maintenance
+- [Recommendations from Sourcery](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a9dfd5d9f2eea7c79b913d53a2e956583ee7504b) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.41](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9e561d906288aa3e1be307572560bdd0df97c48c) - @RogerSelwyn
+- [Bump to 2.6.5](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/354e5b1df5322d0642115eca9112f5300825d95b) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/53c99c7761acd9efa56fee06ada17e9694072f56) - @actions-user
+ 
 ## v2.6.4 (2021/09/14)
 ### Fixes
 - [Stop warning for race condition with  Volume Entity](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f725e1325c870e23191583a4c4b857fed81fb498) - @RogerSelwyn
