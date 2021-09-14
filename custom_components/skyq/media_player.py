@@ -468,7 +468,7 @@ class SkyQDevice(MediaPlayerEntity):
                 await self._async_get_live_media(currentMedia)
 
             elif currentMedia.pvrId:
-                await self._async_get_recodring(currentMedia)
+                await self._async_get_recording(currentMedia)
 
         except Exception as err:
             _LOGGER.exception(f"X0010M - Current Media retrieval failed: {currentMedia} : {err}")
