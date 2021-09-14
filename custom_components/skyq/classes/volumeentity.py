@@ -2,10 +2,7 @@
 
 import logging
 
-from homeassistant.components.media_player.const import (
-    ATTR_MEDIA_VOLUME_LEVEL,
-    ATTR_MEDIA_VOLUME_MUTED,
-)
+from homeassistant.components.media_player.const import ATTR_MEDIA_VOLUME_LEVEL, ATTR_MEDIA_VOLUME_MUTED
 from homeassistant.const import (
     ATTR_ENTITY_ID,
     ATTR_SUPPORTED_FEATURES,
@@ -29,6 +26,7 @@ class Volume_Entity:
         self.supported_features = None
         self._entity_name = volume_entity
         self._entity_name_error = False
+        self._startup_error = True
 
     async def async_update_volume_state(self, hass, mpname):
         """Get the volume entity state."""
@@ -40,20 +38,19 @@ class Volume_Entity:
             if state_obj:
                 self.volume_level = state_obj.attributes.get(ATTR_MEDIA_VOLUME_LEVEL)
                 self.is_volume_muted = state_obj.attributes.get(ATTR_MEDIA_VOLUME_MUTED)
-                self.supported_features = state_obj.attributes.get(
-                    ATTR_SUPPORTED_FEATURES
-                )
+                self.supported_features = state_obj.attributes.get(ATTR_SUPPORTED_FEATURES)
                 if self._entity_name_error:
-                    _LOGGER.info(
-                        f"I0010V - Volume entity now exists: {mpname} - {self._entity_name}"
-                    )
+                    _LOGGER.info(f"I0010V - Volume entity now exists: {mpname} - {self._entity_name}")
                     self._entity_name_error = False
+                    self._startup_error = False
             else:
                 if not self._entity_name_error:
-                    _LOGGER.warning(
-                        f"W0010V - Volume entity does not exist: {mpname} - {self._entity_name}"
-                    )
-                    self._entity_name_error = True
+                    if not self._startup_error:
+                        _LOGGER.warning(f"W0010V - Volume entity does not exist: {mpname} - {self._entity_name}")
+                        self._entity_name_error = True
+                    else:
+                        _LOGGER.debug(f"D0010V - Volume entity does not exist: {mpname} - {self._entity_name}")
+                        self._startup_error = False
             return
         except (TypeError, ValueError):
             return None
