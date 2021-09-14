@@ -283,16 +283,17 @@ class SkyQDevice(MediaPlayerEntity):
     @property
     def device_info(self):
         """Entity device information."""
-        device_info = None
-        if self._deviceInfo:
-            device_info = {
+        return (
+            {
                 "identifiers": {(DOMAIN, self._deviceInfo.serialNumber)},
                 "name": self.name,
                 "manufacturer": self._deviceInfo.manufacturer,
                 "model": self._deviceInfo.hardwareModel,
                 "sw_version": f"{self._deviceInfo.ASVersion}:{self._deviceInfo.versionNumber}",
             }
-        return device_info
+            if self._deviceInfo
+            else None
+        )
 
     @property
     def unique_id(self):

@@ -66,10 +66,7 @@ class Switch_Maker:
             .lower()
             + self._room.replace(" ", "").lower()
         )
-        source_name = ""
-        if source:
-            source_name = "          source: '" + source_switch + "'\n"
-
+        source_name = "          source: '" + source_switch + "'\n" if source else ""
         self._f.write(
             "    "
             + switch_name
