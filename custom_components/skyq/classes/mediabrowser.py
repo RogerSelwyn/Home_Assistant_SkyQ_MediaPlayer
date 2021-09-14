@@ -23,14 +23,10 @@ class Media_Browser:
         self._config = config
         self._appImageUrl = appImageUrl
 
-    async def async_browse_media(
-        self, hass, channel_list, media_content_type=None, media_content_id=None
-    ):
+    async def async_browse_media(self, hass, channel_list, media_content_type=None, media_content_id=None):
         """Implement the websocket media browsing helper."""
         if media_content_id not in (None, "root", "channels"):
-            raise BrowseError(
-                f"Media not found: {media_content_type} / {media_content_id}"
-            )
+            raise BrowseError(f"Media not found: {media_content_type} / {media_content_id}")
 
         channellist = await self._async_prepareChannels(hass, channel_list)
         channels = [
@@ -46,7 +42,7 @@ class Media_Browser:
             for channel in channellist
         ]
 
-        library_info = BrowseMedia(
+        return BrowseMedia(
             title=self._config.name,
             media_content_id="root",
             media_content_type="library",
@@ -56,15 +52,10 @@ class Media_Browser:
             children=channels,
         )
 
-        return library_info
-
     async def _async_prepareChannels(self, hass, channel_list):
         self._channels = []
         channels = await asyncio.gather(
-            *[
-                self._async_get_channelInfo(hass, channel_list, source)
-                for source in self._config.source_list
-            ]
+            *[self._async_get_channelInfo(hass, channel_list, source) for source in self._config.source_list]
         )
         return channels
 
@@ -73,9 +64,7 @@ class Media_Browser:
         if command[0] == "backup":
             command.remove("backup")
         channelno = "".join(command)
-        channelInfo = await hass.async_add_executor_job(
-            self._remote.getChannelInfo, channelno
-        )
+        channelInfo = await hass.async_add_executor_job(self._remote.getChannelInfo, channelno)
         if not channelInfo:
             channelInfo = {
                 "channelName": source,
@@ -93,9 +82,7 @@ class Media_Browser:
             if not isinstance(programme, Programme):
                 channelInfo = {
                     "channelName": source,
-                    "thumbnail": await self._appImageUrl.async_getAppImageUrl(
-                        hass, source
-                    ),
+                    "thumbnail": await self._appImageUrl.async_getAppImageUrl(hass, source),
                     "title": source,
                 }
             else:

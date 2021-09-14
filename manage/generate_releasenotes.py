@@ -46,8 +46,8 @@ def _last_repo_release(github, skip=True):
     tag_sha = None
     data = {}
     tags = list(repo.get_tags())
-    reg = "(v|^)?(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
     if tags:
+        reg = "(v|^)?(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
         for tag in tags:
             tag_name = tag.name
             if re.match(reg, tag_name):

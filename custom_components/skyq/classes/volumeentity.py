@@ -2,15 +2,11 @@
 
 import logging
 
-from homeassistant.components.media_player.const import ATTR_MEDIA_VOLUME_LEVEL, ATTR_MEDIA_VOLUME_MUTED
-from homeassistant.const import (
-    ATTR_ENTITY_ID,
-    ATTR_SUPPORTED_FEATURES,
-    SERVICE_VOLUME_DOWN,
-    SERVICE_VOLUME_MUTE,
-    SERVICE_VOLUME_SET,
-    SERVICE_VOLUME_UP,
-)
+from homeassistant.components.media_player.const import (
+    ATTR_MEDIA_VOLUME_LEVEL, ATTR_MEDIA_VOLUME_MUTED)
+from homeassistant.const import (ATTR_ENTITY_ID, ATTR_SUPPORTED_FEATURES,
+                                 SERVICE_VOLUME_DOWN, SERVICE_VOLUME_MUTE,
+                                 SERVICE_VOLUME_SET, SERVICE_VOLUME_UP)
 from homeassistant.helpers.service import async_call_from_config
 
 _LOGGER = logging.getLogger(__name__)
@@ -43,14 +39,13 @@ class Volume_Entity:
                     _LOGGER.info(f"I0010V - Volume entity now exists: {mpname} - {self._entity_name}")
                     self._entity_name_error = False
                     self._startup_error = False
-            else:
-                if not self._entity_name_error:
-                    if not self._startup_error:
-                        _LOGGER.warning(f"W0010V - Volume entity does not exist: {mpname} - {self._entity_name}")
-                        self._entity_name_error = True
-                    else:
-                        _LOGGER.debug(f"D0010V - Volume entity does not exist: {mpname} - {self._entity_name}")
-                        self._startup_error = False
+            elif not self._entity_name_error:
+                if not self._startup_error:
+                    _LOGGER.warning(f"W0010V - Volume entity does not exist: {mpname} - {self._entity_name}")
+                    self._entity_name_error = True
+                else:
+                    _LOGGER.debug(f"D0010V - Volume entity does not exist: {mpname} - {self._entity_name}")
+                    self._startup_error = False
             return
         except (TypeError, ValueError):
             return None
@@ -78,9 +73,11 @@ class Volume_Entity:
         await self._async_call_service(hass, SERVICE_VOLUME_DOWN, data)
 
     async def _async_call_service(self, hass, service_name, variable_data=None):
-        service_data = {}
-        service_data["service"] = "media_player." + service_name
-        service_data["data"] = variable_data
+        service_data = {
+            "service": "media_player." + service_name,
+            "data": variable_data,
+        }
+
         await async_call_from_config(
             hass,
             service_data,

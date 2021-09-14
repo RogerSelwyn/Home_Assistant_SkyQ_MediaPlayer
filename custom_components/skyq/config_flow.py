@@ -84,9 +84,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
             errors[CONF_HOST] = "invalid_host"
 
-        return self.async_show_form(
-            step_id="user", data_schema=vol.Schema(DATA_SCHEMA), errors=errors
-        )
+        return self.async_show_form(step_id="user", data_schema=vol.Schema(DATA_SCHEMA), errors=errors)
 
     async def _async_setUniqueID(self, host):
         remote = await self.hass.async_add_executor_job(SkyQRemote, host)
@@ -94,8 +92,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             raise CannotConnect()
         deviceInfo = await self.hass.async_add_executor_job(remote.getDeviceInformation)
         await self.async_set_unique_id(
-            deviceInfo.countryCode
-            + "".join(e for e in deviceInfo.serialNumber.casefold() if e.isalnum())
+            deviceInfo.countryCode + "".join(e for e in deviceInfo.serialNumber.casefold() if e.isalnum())
         )
         self._abort_if_unique_id_configured()
 
@@ -110,9 +107,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._remote = None
         self._channel_sources = config_entry.options.get(CONF_CHANNEL_SOURCES, [])
 
-        self._sources = convert_sources_JSON(
-            sources_list=config_entry.options.get(CONF_SOURCES)
-        )
+        self._sources = convert_sources_JSON(sources_list=config_entry.options.get(CONF_SOURCES))
 
         self._room = config_entry.options.get(CONF_ROOM)
         self._volume_entity = config_entry.options.get(CONF_VOLUME_ENTITY)
@@ -122,12 +117,8 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._country = config_entry.options.get(CONF_COUNTRY, CONST_DEFAULT)
         if self._country != CONST_DEFAULT:
             self._country = self._convertCountry(alpha_3=self._country)
-        self._output_programme_image = config_entry.options.get(
-            CONF_OUTPUT_PROGRAMME_IMAGE, True
-        )
-        self._epg_cache_len = config_entry.options.get(
-            CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN
-        )
+        self._output_programme_image = config_entry.options.get(CONF_OUTPUT_PROGRAMME_IMAGE, True)
+        self._epg_cache_len = config_entry.options.get(CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN)
         self._channelDisplay = []
         self._channel_list = []
 
@@ -135,7 +126,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         """Set up the option flow."""
         self._remote = self.hass.data[DOMAIN][self._config_entry.entry_id][SKYQREMOTE]
 
-        s = set(KNOWN_COUNTRIES[country] for country in KNOWN_COUNTRIES)
+        s = {KNOWN_COUNTRIES[country] for country in KNOWN_COUNTRIES}
         countryNames = []
         for alpha3 in s:
             countryName = self._convertCountry(alpha_3=alpha3)
@@ -144,26 +135,18 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._country_list = [CONST_DEFAULT] + sorted(countryNames)
 
         if self._remote.deviceSetup:
-            channelData = await self.hass.async_add_executor_job(
-                self._remote.getChannelList
-            )
+            channelData = await self.hass.async_add_executor_job(self._remote.getChannelList)
             self._channel_list = channelData.channels
 
             for channel in self._channel_list:
-                self._channelDisplay.append(
-                    CHANNEL_DISPLAY.format(channel.channelno, channel.channelname)
-                )
+                self._channelDisplay.append(CHANNEL_DISPLAY.format(channel.channelno, channel.channelname))
 
             self._channel_sources_display = []
             for channel in self._channel_sources:
                 try:
-                    channelData = next(
-                        c for c in self._channel_list if c.channelname == channel
-                    )
+                    channelData = next(c for c in self._channel_list if c.channelname == channel)
                     self._channel_sources_display.append(
-                        CHANNEL_DISPLAY.format(
-                            channelData.channelno, channelData.channelname
-                        )
+                        CHANNEL_DISPLAY.format(channelData.channelno, channelData.channelname)
                     )
                 except StopIteration:
                     pass
@@ -177,56 +160,8 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         errors = {}
 
         if user_input:
-            self._channel_sources_display = user_input[CHANNEL_SOURCES_DISPLAY]
-            user_input.pop(CHANNEL_SOURCES_DISPLAY)
-            if len(self._channel_sources_display) > 0:
-
-                channelitems = []
-                for channel in self._channel_sources_display:
-                    channelData = next(
-                        c
-                        for c in self._channel_list
-                        if channel == CHANNEL_DISPLAY.format(c.channelno, c.channelname)
-                    )
-                    channelitems.append(channelData)
-
-                if SORT_CHANNELS:
-                    channelnosorted = sorted(channelitems, key=attrgetter("channelno"))
-                    channelsorted = sorted(
-                        channelnosorted, key=attrgetter("channeltype"), reverse=True
-                    )
-                    channel_sources = []
-                    for c in channelsorted:
-                        channel_sources.append(c.channelname)
-                else:
-                    channel_sources = []
-                    for c in channelitems:
-                        channel_sources.append(c.channelname)
-
-                user_input[CONF_CHANNEL_SOURCES] = channel_sources
-
-            self._gen_switch = user_input.get(CONF_GEN_SWITCH)
-            self._live_tv = user_input.get(CONF_LIVE_TV)
-            self._get_live_record = user_input.get(CONF_GET_LIVE_RECORD)
-            self._output_programme_image = user_input.get(CONF_OUTPUT_PROGRAMME_IMAGE)
-            self._room = user_input.get(CONF_ROOM)
-            self._volume_entity = user_input.get(CONF_VOLUME_ENTITY)
-            self._country = user_input.get(CONF_COUNTRY)
-            if self._country == CONST_DEFAULT:
-                user_input.pop(CONF_COUNTRY)
-            else:
-                user_input[CONF_COUNTRY] = self._convertCountry(name=self._country)
-            self._epg_cache_len = user_input.get(CONF_EPG_CACHE_LEN)
-
             try:
-                self._sources = user_input.get(CONF_SOURCES)
-                if self._sources:
-                    user_input[CONF_SOURCES] = convert_sources_JSON(
-                        sources_json=self._sources
-                    )
-                    for source in user_input[CONF_SOURCES]:
-                        self._validate_commands(source)
-
+                user_input = await self._async_user_input(user_input)
                 return self.async_create_entry(title="", data=user_input)
             except json.decoder.JSONDecodeError:
                 errors["base"] = "invalid_sources"
@@ -238,44 +173,77 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             description_placeholders={CONF_NAME: self._name},
             data_schema=vol.Schema(
                 {
-                    vol.Optional(
-                        CHANNEL_SOURCES_DISPLAY, default=self._channel_sources_display
-                    ): cv.multi_select(self._channelDisplay),
+                    vol.Optional(CHANNEL_SOURCES_DISPLAY, default=self._channel_sources_display): cv.multi_select(
+                        self._channelDisplay
+                    ),
                     vol.Optional(
                         CONF_OUTPUT_PROGRAMME_IMAGE,
                         default=self._output_programme_image,
                     ): bool,
                     vol.Optional(CONF_LIVE_TV, default=self._live_tv): bool,
-                    vol.Optional(
-                        CONF_GET_LIVE_RECORD, default=self._get_live_record
-                    ): bool,
+                    vol.Optional(CONF_GET_LIVE_RECORD, default=self._get_live_record): bool,
                     vol.Optional(CONF_GEN_SWITCH, default=self._gen_switch): bool,
-                    vol.Optional(
-                        CONF_ROOM, description={"suggested_value": self._room}
-                    ): str,
-                    vol.Optional(CONF_COUNTRY, default=self._country): vol.In(
-                        self._country_list
-                    ),
+                    vol.Optional(CONF_ROOM, description={"suggested_value": self._room}): str,
+                    vol.Optional(CONF_COUNTRY, default=self._country): vol.In(self._country_list),
                     vol.Optional(
                         CONF_VOLUME_ENTITY,
                         description={"suggested_value": self._volume_entity},
                     ): str,
-                    vol.Optional(
-                        CONF_EPG_CACHE_LEN, default=self._epg_cache_len
-                    ): vol.In(LIST_EPGCACHELEN),
-                    vol.Optional(
-                        CONF_SOURCES, description={"suggested_value": self._sources}
-                    ): str,
+                    vol.Optional(CONF_EPG_CACHE_LEN, default=self._epg_cache_len): vol.In(LIST_EPGCACHELEN),
+                    vol.Optional(CONF_SOURCES, description={"suggested_value": self._sources}): str,
                 }
             ),
             errors=errors,
         )
 
+    async def _async_user_input(self, user_input):
+        self._channel_sources_display = user_input[CHANNEL_SOURCES_DISPLAY]
+        user_input.pop(CHANNEL_SOURCES_DISPLAY)
+        if len(self._channel_sources_display) > 0:
+
+            channelitems = []
+            for channel in self._channel_sources_display:
+                channelData = next(
+                    c for c in self._channel_list if channel == CHANNEL_DISPLAY.format(c.channelno, c.channelname)
+                )
+                channelitems.append(channelData)
+
+            channel_sources = []
+            if SORT_CHANNELS:
+                channelnosorted = sorted(channelitems, key=attrgetter("channelno"))
+                channelsorted = sorted(channelnosorted, key=attrgetter("channeltype"), reverse=True)
+                for c in channelsorted:
+                    channel_sources.append(c.channelname)
+            else:
+                for c in channelitems:
+                    channel_sources.append(c.channelname)
+
+            user_input[CONF_CHANNEL_SOURCES] = channel_sources
+
+        self._gen_switch = user_input.get(CONF_GEN_SWITCH)
+        self._live_tv = user_input.get(CONF_LIVE_TV)
+        self._get_live_record = user_input.get(CONF_GET_LIVE_RECORD)
+        self._output_programme_image = user_input.get(CONF_OUTPUT_PROGRAMME_IMAGE)
+        self._room = user_input.get(CONF_ROOM)
+        self._volume_entity = user_input.get(CONF_VOLUME_ENTITY)
+        self._country = user_input.get(CONF_COUNTRY)
+        if self._country == CONST_DEFAULT:
+            user_input.pop(CONF_COUNTRY)
+        else:
+            user_input[CONF_COUNTRY] = self._convertCountry(name=self._country)
+        self._epg_cache_len = user_input.get(CONF_EPG_CACHE_LEN)
+
+        self._sources = user_input.get(CONF_SOURCES)
+        if self._sources:
+            user_input[CONF_SOURCES] = convert_sources_JSON(sources_json=self._sources)
+            for source in user_input[CONF_SOURCES]:
+                self._validate_commands(source)
+
+        return user_input
+
     async def async_step_retry(self, user_input=None):
         """Handle a failed connection."""
-        errors = {}
-
-        errors["base"] = "cannot_connect"
+        errors = {"base": "cannot_connect"}
 
         return self.async_show_form(
             step_id="retry",

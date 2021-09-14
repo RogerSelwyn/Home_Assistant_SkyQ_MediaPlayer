@@ -1,6 +1,8 @@
-import os
-import requests
+"""Update the requirements.txt."""
 import json
+import os
+
+import requests
 
 COMPONENT = "skyq"
 

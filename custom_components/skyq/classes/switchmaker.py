@@ -25,18 +25,13 @@ class Switch_Maker:
 
         if self._root[-1] != "/":
             self._root += "/"
-        self._f = open(
-            self._root + "skyq" + self._room.replace(" ", "") + ".yaml", "w+"
-        )
+        self._f = open(self._root + "skyq" + self._room.replace(" ", "") + ".yaml", "w+")
 
         if _path.isfile(self._root + CONST_ALIAS_FILENAME):
-            aliasfile = open(self._root + CONST_ALIAS_FILENAME, "r")
-            self._alias = yaml.full_load(aliasfile)
-            aliasfile.close()
+            with open(self._root + CONST_ALIAS_FILENAME, "r") as aliasfile:
+                self._alias = yaml.full_load(aliasfile)
             if self._alias:
-                _LOGGER.info(
-                    "I0010S - skyqswitchalias.yaml is empty, it can be deleted"
-                )
+                _LOGGER.info("I0010S - skyqswitchalias.yaml is empty, it can be deleted")
 
         self._addSwitch("pause", "pause", "media_pause")
         self._addSwitch("play", "play", "media_play")
