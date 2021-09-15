@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.6.6 Beta (2021/09/14)
+### Maintenance
+- [More recommendations from Sourcery AI](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/43b82367a81c39bc0282d6471b64b52825a7ded0) - @RogerSelwyn
+
+### Fixes
+- [Fix error in recording](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d0a354642d330c138ae8bd9ed0817fd63aee3a8c) - @RogerSelwyn
+- [Bump to 2.6.6](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e421763d9dd233b4a0e878d5264fb8baac81a43c) - @RogerSelwyn
+
 ## v2.6.5 Beta (2021/09/14)
 ### Maintenance
 - [Recommendations from Sourcery](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a9dfd5d9f2eea7c79b913d53a2e956583ee7504b) - @RogerSelwyn
