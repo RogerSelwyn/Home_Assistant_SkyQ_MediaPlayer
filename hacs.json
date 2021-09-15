@@ -4,7 +4,6 @@
   "homeassistant": "0.115",
   "content_in_root": false,
   "domains": ["media_player"],
-  "iot_class": "Local Polling",
   "filename": "skyq.zip",
   "render_readme": true
 }
