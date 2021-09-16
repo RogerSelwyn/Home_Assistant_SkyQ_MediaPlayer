@@ -5,8 +5,6 @@
 - [More recommendations from Sourcery AI](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a9718f5e1d214e199c23e2ed00a6581b039c340b) - @RogerSelwyn
 - [Correct Github Workflows](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0a839959076fb7311e73640aa31a7b4a6c96b08d) - @RogerSelwyn
 - [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/624b55c3a6f3a134b876ce558fab53d7b4847276) - @RogerSelwyn
-- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f7565e451e9a881a1fdfc2768421e237fea021a0) - @RogerSelwyn
-- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cc2814785a9eb5be7b97d8d41fa70de4c82d86d3) - @RogerSelwyn
 - [Remove unrequired iot_class](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5b68ec77f461efe5d2cbb0b44181b9d013f8793a) - @RogerSelwyn
 - [Bump to 2.6.7](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b0e19bbb8de5f7c38f563e1d4b7ab06bb912e139) - @RogerSelwyn
 - [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/647974f88ac67432a80edfee4c2258c4ed537b46) - @RogerSelwyn
