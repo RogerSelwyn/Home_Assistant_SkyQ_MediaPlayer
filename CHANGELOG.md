@@ -7,7 +7,6 @@
 - [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/624b55c3a6f3a134b876ce558fab53d7b4847276) - @RogerSelwyn
 - [Remove unrequired iot_class](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5b68ec77f461efe5d2cbb0b44181b9d013f8793a) - @RogerSelwyn
 - [Bump to 2.6.7](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b0e19bbb8de5f7c38f563e1d4b7ab06bb912e139) - @RogerSelwyn
-- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/647974f88ac67432a80edfee4c2258c4ed537b46) - @RogerSelwyn
 
 ## v2.6.6 Beta (2021/09/14)
 ### Maintenance
