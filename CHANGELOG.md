@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.6.8 (2021/09/27)
+### Maintenance
+- [Update to use rogerselwyn/actions](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b9a8b5057cbab75e0a5cb7d5ec9049f69024254a) - @RogerSelwyn
+- [Auto update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c2a71a01cbbfc96e7365cbdfa3d7a8655f202707) - @actions-user
+
 ## v2.6.7 Beta (2021/09/15)
 ### Maintenance
 - [More recommendations from Sourcery AI](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a9718f5e1d214e199c23e2ed00a6581b039c340b) - @RogerSelwyn
