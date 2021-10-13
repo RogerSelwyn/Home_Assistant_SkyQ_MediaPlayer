@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.6.9 (2021/10/13)
+### Fixes
+- [Fix broken images](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b253a8b0a35f9a3b42df036da0b7f59f46d6bf0e) - @RogerSelwyn
+
+### Maintenance
+- [Correct workflow name](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/30f6b25f0f9b90c694c28c47831662bd70edbc48) - @RogerSelwyn
+- [Correct step name in release](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f146ad5db3b25598921479cb11d1f5d73b4069bc) - @RogerSelwyn
+
 ## v2.6.8 (2021/09/27)
 ### Maintenance
 - [Update to use rogerselwyn/actions](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b9a8b5057cbab75e0a5cb7d5ec9049f69024254a) - @RogerSelwyn
