@@ -1,12 +1,9 @@
 """Media Browser class for Sky Q."""
-import asyncio
+# import asyncio
 from datetime import datetime
 
 from homeassistant.components.media_player import BrowseMedia
-from homeassistant.components.media_player.const import (
-    MEDIA_CLASS_DIRECTORY,
-    MEDIA_CLASS_TV_SHOW,
-)
+from homeassistant.components.media_player.const import MEDIA_CLASS_DIRECTORY, MEDIA_CLASS_TV_SHOW
 from homeassistant.components.media_player.errors import BrowseError
 from pyskyqremote.classes.programme import Programme
 
@@ -53,10 +50,14 @@ class Media_Browser:
         )
 
     async def _async_prepareChannels(self, hass, channel_list):
-        self._channels = []
-        channels = await asyncio.gather(
-            *[self._async_get_channelInfo(hass, channel_list, source) for source in self._config.source_list]
-        )
+        channels = []
+        for source in self._config.source_list:
+            channel = await self._async_get_channelInfo(hass, channel_list, source)
+            channels.append(channel)
+
+        # channels = await asyncio.gather(
+        #     *[self._async_get_channelInfo(hass, channel_list, source) for source in self._config.source_list]
+        # )
         return channels
 
     async def _async_get_channelInfo(self, hass, channel_list, source):
