@@ -221,6 +221,11 @@ class SkyQDevice(MediaPlayerEntity):
         return self._config.source_list
 
     @property
+    def source(self):
+        """Title of current playing media."""
+        return self._channel if self._channel is not None else None
+
+    @property
     def media_image_url(self):
         """Image url of current playing media."""
         return self._imageUrl if self._config.enabled_features & FEATURE_IMAGE else None
