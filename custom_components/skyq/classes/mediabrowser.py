@@ -69,7 +69,7 @@ class Media_Browser:
         if not channelInfo:
             channelInfo = {
                 "channelName": source,
-                "thumbnail": await self._appImageUrl.async_getAppImageUrl(hass, source),
+                "thumbnail": self._appImageUrl.getAppImageUrl(source),
                 "title": source,
             }
         else:
@@ -83,7 +83,7 @@ class Media_Browser:
             if not isinstance(programme, Programme):
                 channelInfo = {
                     "channelName": source,
-                    "thumbnail": await self._appImageUrl.async_getAppImageUrl(hass, source),
+                    "thumbnail": self._appImageUrl.getAppImageUrl(source),
                     "title": source,
                 }
             else:

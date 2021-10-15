@@ -1,15 +1,10 @@
 """Utilities for the skyq platform."""
-import asyncio
 import collections
 import json
 import logging
+import os
 
-import aiohttp
-from homeassistant.const import HTTP_OK
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.network import NoURLAvailableError, get_url
-
-from .const import APP_IMAGE_URL_BASE, TIMEOUT
+from .const import APP_IMAGE_URL_BASE
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -70,70 +65,17 @@ class App_Image_Url:
         self._lastAppTitle = None
         self._firstError = True
 
-    async def async_getAppImageUrl(self, hass, appTitle):
+    def getAppImageUrl(self, appTitle):
         """Check app image is present."""
         if appTitle == self._lastAppTitle:
             return self._appImageUrl
 
         self._appImageUrl = None
 
-        appImageUrl = APP_IMAGE_URL_BASE + f"/{appTitle.casefold()}.png"
-
-        websession = async_get_clientsession(hass)
-        base_url = get_url(hass)
-        request_url = base_url + appImageUrl
-        certok = False
-
-        if self._use_internal:
-            certok = await self._async_check_for_image(
-                websession, appTitle, appImageUrl, request_url
-            )
-        if not self._use_internal or not certok:
-            try:
-                base_url = get_url(hass, allow_internal=False)
-                self._use_internal = False
-                request_url = base_url + appImageUrl
-                certok = await self._async_check_for_image(
-                    websession, appTitle, request_url, request_url
-                )
-            except NoURLAvailableError:
-                _LOGGER.error(
-                    "E0010U - Base URL not found, have you configured them in HA General Settings?"
-                )
+        appImageUrl = f"{APP_IMAGE_URL_BASE}/{appTitle.casefold()}.png"
+        dirPath = os.path.dirname(os.path.realpath(__file__))
+        imagePath = f"{dirPath}/static/{appTitle.casefold()}.png"
+        if os.path.isfile(imagePath):
+            self._appImageUrl = appImageUrl
 
         return self._appImageUrl
-
-    async def _async_check_for_image(
-        self, websession, appTitle, appImageUrl, request_url
-    ):
-        certok = True
-        try:
-            response = await websession.head(request_url, timeout=TIMEOUT)
-            async with response:
-                if response.status == HTTP_OK:
-                    self._appImageUrl = appImageUrl
-
-                self._lastAppTitle = appTitle
-
-        except (aiohttp.client_exceptions.ClientConnectorCertificateError) as err:
-            _LOGGER.info(
-                f"I0010U - Image file check certificate error, routing externally: {request_url} : {err}"
-            )
-            certok = False
-        except (
-            aiohttp.client_exceptions.ClientConnectorError,
-            aiohttp.ClientError,
-        ) as err:
-            # This error when server is starting up and app running
-            if self._firstError:
-                self._firstError = False
-            else:
-                _LOGGER.exception(
-                    f"X0010U - Image file check failed: {request_url} : {err}"
-                )
-                self._lastAppTitle = appTitle
-        except asyncio.TimeoutError as err:
-            _LOGGER.info(f"I0020U - Image file check timed out: {request_url} : {err}")
-            self._lastAppTitle = appTitle
-
-        return certok

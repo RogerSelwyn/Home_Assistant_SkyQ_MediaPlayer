@@ -459,7 +459,7 @@ class SkyQDevice(MediaPlayerEntity):
 
         self._imageRemotelyAccessible = True
         if not self._imageUrl:
-            appImageUrl = await self._appImageUrl.async_getAppImageUrl(self.hass, appTitle)
+            appImageUrl = self._appImageUrl.getAppImageUrl(appTitle)
             if appImageUrl:
                 self._imageUrl = appImageUrl
                 self._imageRemotelyAccessible = False
