@@ -14,5 +14,7 @@
   "config_flow": true,
   "version": "2.6.10b4",
   "iot_class": "local_polling",
-  "after_dependencies": ["homekit"]
+  "after_dependencies": [
+    "homekit"
+  ]
 }
