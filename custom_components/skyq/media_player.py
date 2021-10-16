@@ -5,64 +5,32 @@ from pathlib import Path
 
 from homeassistant.components.media_player import MediaPlayerEntity
 from homeassistant.components.media_player.const import (
-    MEDIA_TYPE_APP,
-    MEDIA_TYPE_TVSHOW,
-    SUPPORT_BROWSE_MEDIA,
-    SUPPORT_NEXT_TRACK,
-    SUPPORT_PAUSE,
-    SUPPORT_PLAY,
-    SUPPORT_PLAY_MEDIA,
-    SUPPORT_PREVIOUS_TRACK,
-    SUPPORT_SEEK,
-    SUPPORT_SELECT_SOURCE,
-    SUPPORT_STOP,
-    SUPPORT_TURN_OFF,
-    SUPPORT_TURN_ON,
-    SUPPORT_VOLUME_MUTE,
-    SUPPORT_VOLUME_SET,
-    SUPPORT_VOLUME_STEP,
-)
-from homeassistant.const import CONF_HOST, CONF_NAME, STATE_OFF, STATE_PAUSED, STATE_PLAYING, STATE_UNKNOWN
-from pyskyqremote.const import APP_EPG, SKY_STATE_OFF, SKY_STATE_ON, SKY_STATE_PAUSED, SKY_STATE_STANDBY
+    MEDIA_TYPE_APP, MEDIA_TYPE_TVSHOW, SUPPORT_BROWSE_MEDIA,
+    SUPPORT_NEXT_TRACK, SUPPORT_PAUSE, SUPPORT_PLAY, SUPPORT_PLAY_MEDIA,
+    SUPPORT_PREVIOUS_TRACK, SUPPORT_SEEK, SUPPORT_SELECT_SOURCE, SUPPORT_STOP,
+    SUPPORT_TURN_OFF, SUPPORT_TURN_ON, SUPPORT_VOLUME_MUTE, SUPPORT_VOLUME_SET,
+    SUPPORT_VOLUME_STEP)
+from homeassistant.const import (CONF_HOST, CONF_NAME, STATE_OFF, STATE_PAUSED,
+                                 STATE_PLAYING, STATE_UNKNOWN)
+from pyskyqremote.const import (APP_EPG, SKY_STATE_OFF, SKY_STATE_ON,
+                                SKY_STATE_PAUSED, SKY_STATE_STANDBY)
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .classes.config import Config
 from .classes.mediabrowser import Media_Browser
 from .classes.switchmaker import Switch_Maker
 from .classes.volumeentity import Volume_Entity
-from .const import (
-    APP_IMAGE_URL_BASE,
-    APP_TITLES,
-    CONF_CHANNEL_SOURCES,
-    CONF_COUNTRY,
-    CONF_EPG_CACHE_LEN,
-    CONF_GEN_SWITCH,
-    CONF_GET_LIVE_RECORD,
-    CONF_LIVE_TV,
-    CONF_OUTPUT_PROGRAMME_IMAGE,
-    CONF_ROOM,
-    CONF_SOURCES,
-    CONF_TEST_CHANNEL,
-    CONF_VOLUME_ENTITY,
-    CONST_DEFAULT_EPGCACHELEN,
-    CONST_DEFAULT_ROOM,
-    CONST_SKYQ_CHANNELNO,
-    CONST_SKYQ_MEDIA_TYPE,
-    DEVICE_CLASS,
-    DOMAIN,
-    DOMAINBROWSER,
-    ERROR_TIMEOUT,
-    FEATURE_GET_LIVE_RECORD,
-    FEATURE_IMAGE,
-    FEATURE_LIVE_TV,
-    FEATURE_SWITCHES,
-    SKYQ_APP,
-    SKYQ_ICONS,
-    SKYQ_LIVE,
-    SKYQ_LIVEREC,
-    SKYQ_PVR,
-    SKYQREMOTE,
-)
+from .const import (APP_IMAGE_URL_BASE, APP_TITLES, CONF_CHANNEL_SOURCES,
+                    CONF_COUNTRY, CONF_EPG_CACHE_LEN, CONF_GEN_SWITCH,
+                    CONF_GET_LIVE_RECORD, CONF_LIVE_TV,
+                    CONF_OUTPUT_PROGRAMME_IMAGE, CONF_ROOM, CONF_SOURCES,
+                    CONF_TEST_CHANNEL, CONF_VOLUME_ENTITY,
+                    CONST_DEFAULT_EPGCACHELEN, CONST_DEFAULT_ROOM,
+                    CONST_SKYQ_CHANNELNO, CONST_SKYQ_MEDIA_TYPE, DEVICE_CLASS,
+                    DOMAIN, DOMAINBROWSER, ERROR_TIMEOUT,
+                    FEATURE_GET_LIVE_RECORD, FEATURE_IMAGE, FEATURE_LIVE_TV,
+                    FEATURE_SWITCHES, SKYQ_APP, SKYQ_ICONS, SKYQ_LIVE,
+                    SKYQ_LIVEREC, SKYQ_PVR, SKYQREMOTE)
 from .utils import App_Image_Url, get_command
 
 _LOGGER = logging.getLogger(__name__)
@@ -122,6 +90,7 @@ async def _async_setup_platform_entry(config_item, async_add_entities, remote, u
     )
 
     player = SkyQDevice(
+        hass,
         remote,
         config,
     )
@@ -137,13 +106,17 @@ class SkyQDevice(MediaPlayerEntity):
 
     def __init__(
         self,
+        hass,
         remote,
         config,
     ):
         """Initialise the SkyQRemote."""
         self._config = config
         self._unique_id = config.unique_id
-        self._volume_entity = Volume_Entity(config.volume_entity)
+        if config.volume_entity:
+            self._volume_entity = Volume_Entity(hass, config.volume_entity)
+        else:
+            self._volume_entity = None
         self._appImageUrl = App_Image_Url()
         self._media_browser = Media_Browser(remote, config, self._appImageUrl)
         self._state = STATE_OFF
@@ -185,13 +158,15 @@ class SkyQDevice(MediaPlayerEntity):
     @property
     def supported_features(self):
         """Get the supported features."""
-        if self._volume_entity.supported_features:
-            if self._volume_entity.supported_features & SUPPORT_VOLUME_MUTE:
-                self._supported_features = self._supported_features | SUPPORT_VOLUME_MUTE
-            if self._volume_entity.supported_features & SUPPORT_VOLUME_SET:
-                self._supported_features = self._supported_features | SUPPORT_VOLUME_SET
-            if self._volume_entity.supported_features & SUPPORT_VOLUME_STEP:
-                self._supported_features = self._supported_features | SUPPORT_VOLUME_STEP
+        if self._volume_entity:
+            volume_entity_features = self._volume_entity.supported_features()
+            if volume_entity_features:
+                if volume_entity_features & SUPPORT_VOLUME_MUTE:
+                    self._supported_features = self._supported_features | SUPPORT_VOLUME_MUTE
+                if volume_entity_features & SUPPORT_VOLUME_SET:
+                    self._supported_features = self._supported_features | SUPPORT_VOLUME_SET
+                if volume_entity_features & SUPPORT_VOLUME_STEP:
+                    self._supported_features = self._supported_features | SUPPORT_VOLUME_STEP
         if len(self._config.source_list) > 0 and self.state not in (
             STATE_OFF,
             STATE_UNKNOWN,
@@ -316,12 +291,12 @@ class SkyQDevice(MediaPlayerEntity):
     @property
     def volume_level(self):
         """Volume level of entity specified in config."""
-        return self._volume_entity.volume_level
+        return self._volume_entity.volume_level() if self._volume_entity else None
 
     @property
     def is_volume_muted(self):
         """Boolean if volume is muted."""
-        return self._volume_entity.is_volume_muted
+        return self._volume_entity.is_volume_muted() if self._volume_entity else None
 
     async def async_update(self):
         """Get the latest data and update device state."""
@@ -340,6 +315,8 @@ class SkyQDevice(MediaPlayerEntity):
 
         if self._state not in [STATE_UNKNOWN, STATE_OFF]:
             await self._async_updateCurrentProgramme()
+
+        if self._volume_entity:
             await self._volume_entity.async_update_volume_state(self.hass, self.name)
 
         if not self._switches_generated and self.entity_id:

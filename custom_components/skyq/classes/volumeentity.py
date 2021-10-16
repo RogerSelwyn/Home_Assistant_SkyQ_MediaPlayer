@@ -2,11 +2,15 @@
 
 import logging
 
-from homeassistant.components.media_player.const import (
-    ATTR_MEDIA_VOLUME_LEVEL, ATTR_MEDIA_VOLUME_MUTED)
-from homeassistant.const import (ATTR_ENTITY_ID, ATTR_SUPPORTED_FEATURES,
-                                 SERVICE_VOLUME_DOWN, SERVICE_VOLUME_MUTE,
-                                 SERVICE_VOLUME_SET, SERVICE_VOLUME_UP)
+from homeassistant.components.media_player.const import ATTR_MEDIA_VOLUME_LEVEL, ATTR_MEDIA_VOLUME_MUTED
+from homeassistant.const import (
+    ATTR_ENTITY_ID,
+    ATTR_SUPPORTED_FEATURES,
+    SERVICE_VOLUME_DOWN,
+    SERVICE_VOLUME_MUTE,
+    SERVICE_VOLUME_SET,
+    SERVICE_VOLUME_UP,
+)
 from homeassistant.helpers.service import async_call_from_config
 
 _LOGGER = logging.getLogger(__name__)
@@ -15,14 +19,18 @@ _LOGGER = logging.getLogger(__name__)
 class Volume_Entity:
     """Class representing the volume entity."""
 
-    def __init__(self, volume_entity):
+    def __init__(self, hass, volume_entity):
         """Initialise the volume entity class."""
-        self.volume_level = None
-        self.is_volume_muted = None
-        self.supported_features = None
+        self._volume_level = None
+        self._is_volume_muted = None
         self._entity_name = volume_entity
         self._entity_name_error = False
+        self._supported_features = None
         self._startup_error = True
+        if self._entity_name:
+            state_obj = hass.states.get(self._entity_name)
+            if state_obj:
+                self._supported_features = state_obj.attributes.get(ATTR_SUPPORTED_FEATURES)
 
     async def async_update_volume_state(self, hass, mpname):
         """Get the volume entity state."""
@@ -32,9 +40,9 @@ class Volume_Entity:
         try:
             state_obj = hass.states.get(self._entity_name)
             if state_obj:
-                self.volume_level = state_obj.attributes.get(ATTR_MEDIA_VOLUME_LEVEL)
-                self.is_volume_muted = state_obj.attributes.get(ATTR_MEDIA_VOLUME_MUTED)
-                self.supported_features = state_obj.attributes.get(ATTR_SUPPORTED_FEATURES)
+                self._volume_level = state_obj.attributes.get(ATTR_MEDIA_VOLUME_LEVEL)
+                self._is_volume_muted = state_obj.attributes.get(ATTR_MEDIA_VOLUME_MUTED)
+                self._supported_features = state_obj.attributes.get(ATTR_SUPPORTED_FEATURES)
                 if self._entity_name_error:
                     _LOGGER.info(f"I0010V - Volume entity now exists: {mpname} - {self._entity_name}")
                     self._entity_name_error = False
@@ -85,3 +93,15 @@ class Volume_Entity:
             validate_config=False,
         )
         return
+
+    def supported_features(self):
+        """Provide supported features of the volume entity."""
+        return self._supported_features
+
+    def volume_level(self):
+        """Provide volume level of the volume entity."""
+        return self._volume_level
+
+    def is_volume_muted(self):
+        """Provide mute status of the volume entity."""
+        return self._is_volume_muted
