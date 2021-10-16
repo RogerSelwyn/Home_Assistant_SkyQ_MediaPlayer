@@ -52,11 +52,13 @@ from .classes.volumeentity import Volume_Entity
 from .const import (
     APP_IMAGE_URL_BASE,
     APP_TITLES,
-    BUTTON_PRESS_CHANNELDOWN,
-    BUTTON_PRESS_CHANNELUP,
     BUTTON_PRESS_DISMISS,
-    BUTTON_PRESS_I,
+    BUTTON_PRESS_DOWN,
+    BUTTON_PRESS_LEFT,
+    BUTTON_PRESS_RIGHT,
     BUTTON_PRESS_SELECT,
+    BUTTON_PRESS_TVGUIDE,
+    BUTTON_PRESS_UP,
     CONF_CHANNEL_SOURCES,
     CONF_COUNTRY,
     CONF_EPG_CACHE_LEN,
@@ -164,19 +166,21 @@ async def _async_setup_platform_entry(config_item, async_add_entities, remote, u
         keyname = _event.data[ATTR_KEY_NAME]
         _LOGGER.debug(f"D0010H - Homekit event - {player.entity_id} - {keyname}")
         if keyname == KEY_ARROW_RIGHT:
-            await player.async_media_next_track()
+            # await player.async_media_next_track()
+            await player.async_play_media(BUTTON_PRESS_RIGHT, DOMAIN)
         elif keyname == KEY_ARROW_LEFT:
-            await player.async_media_previous_track()
+            # await player.async_media_previous_track()
+            await player.async_play_media(BUTTON_PRESS_LEFT, DOMAIN)
         elif keyname == KEY_ARROW_UP:
-            await player.async_play_media(BUTTON_PRESS_CHANNELUP, DOMAIN)
+            await player.async_play_media(BUTTON_PRESS_UP, DOMAIN)
         elif keyname == KEY_ARROW_DOWN:
-            await player.async_play_media(BUTTON_PRESS_CHANNELDOWN, DOMAIN)
+            await player.async_play_media(BUTTON_PRESS_DOWN, DOMAIN)
         elif keyname == KEY_SELECT:
             await player.async_play_media(BUTTON_PRESS_SELECT, DOMAIN)
         elif keyname == KEY_BACK:
             await player.async_play_media(BUTTON_PRESS_DISMISS, DOMAIN)
         elif keyname == KEY_INFORMATION:
-            await player.async_play_media(BUTTON_PRESS_I, DOMAIN)
+            await player.async_play_media(BUTTON_PRESS_TVGUIDE, DOMAIN)
         else:
             _LOGGER.warning(f"W0010H - Invalid Homekit event - {player.entity_id} - {keyname}")
 
