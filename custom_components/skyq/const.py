@@ -65,3 +65,9 @@ APP_TITLES = {
     "prime.video": "PrimeVideo",
 }
 APP_IMAGE_URL_BASE = "/api/" + DOMAIN + "/static"
+
+BUTTON_PRESS_CHANNELUP = "channelup"
+BUTTON_PRESS_CHANNELDOWN = "channeldown"
+BUTTON_PRESS_SELECT = "select"
+BUTTON_PRESS_DISMISS = "dismiss"
+BUTTON_PRESS_I = "i"

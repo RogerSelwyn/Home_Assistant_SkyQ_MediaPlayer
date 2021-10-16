@@ -3,34 +3,90 @@ import logging
 from datetime import datetime, timedelta
 from pathlib import Path
 
+from homeassistant.components.homekit.const import (
+    ATTR_KEY_NAME,
+    EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED,
+    KEY_ARROW_DOWN,
+    KEY_ARROW_LEFT,
+    KEY_ARROW_RIGHT,
+    KEY_ARROW_UP,
+    KEY_BACK,
+    KEY_INFORMATION,
+    KEY_SELECT,
+)
 from homeassistant.components.media_player import MediaPlayerEntity
 from homeassistant.components.media_player.const import (
-    MEDIA_TYPE_APP, MEDIA_TYPE_TVSHOW, SUPPORT_BROWSE_MEDIA,
-    SUPPORT_NEXT_TRACK, SUPPORT_PAUSE, SUPPORT_PLAY, SUPPORT_PLAY_MEDIA,
-    SUPPORT_PREVIOUS_TRACK, SUPPORT_SEEK, SUPPORT_SELECT_SOURCE, SUPPORT_STOP,
-    SUPPORT_TURN_OFF, SUPPORT_TURN_ON, SUPPORT_VOLUME_MUTE, SUPPORT_VOLUME_SET,
-    SUPPORT_VOLUME_STEP)
-from homeassistant.const import (CONF_HOST, CONF_NAME, STATE_OFF, STATE_PAUSED,
-                                 STATE_PLAYING, STATE_UNKNOWN)
-from pyskyqremote.const import (APP_EPG, SKY_STATE_OFF, SKY_STATE_ON,
-                                SKY_STATE_PAUSED, SKY_STATE_STANDBY)
+    MEDIA_TYPE_APP,
+    MEDIA_TYPE_TVSHOW,
+    SUPPORT_BROWSE_MEDIA,
+    SUPPORT_NEXT_TRACK,
+    SUPPORT_PAUSE,
+    SUPPORT_PLAY,
+    SUPPORT_PLAY_MEDIA,
+    SUPPORT_PREVIOUS_TRACK,
+    SUPPORT_SEEK,
+    SUPPORT_SELECT_SOURCE,
+    SUPPORT_STOP,
+    SUPPORT_TURN_OFF,
+    SUPPORT_TURN_ON,
+    SUPPORT_VOLUME_MUTE,
+    SUPPORT_VOLUME_SET,
+    SUPPORT_VOLUME_STEP,
+)
+from homeassistant.const import (
+    ATTR_ENTITY_ID,
+    CONF_HOST,
+    CONF_NAME,
+    STATE_OFF,
+    STATE_PAUSED,
+    STATE_PLAYING,
+    STATE_UNKNOWN,
+)
+from pyskyqremote.const import APP_EPG, SKY_STATE_OFF, SKY_STATE_ON, SKY_STATE_PAUSED, SKY_STATE_STANDBY
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .classes.config import Config
 from .classes.mediabrowser import Media_Browser
 from .classes.switchmaker import Switch_Maker
 from .classes.volumeentity import Volume_Entity
-from .const import (APP_IMAGE_URL_BASE, APP_TITLES, CONF_CHANNEL_SOURCES,
-                    CONF_COUNTRY, CONF_EPG_CACHE_LEN, CONF_GEN_SWITCH,
-                    CONF_GET_LIVE_RECORD, CONF_LIVE_TV,
-                    CONF_OUTPUT_PROGRAMME_IMAGE, CONF_ROOM, CONF_SOURCES,
-                    CONF_TEST_CHANNEL, CONF_VOLUME_ENTITY,
-                    CONST_DEFAULT_EPGCACHELEN, CONST_DEFAULT_ROOM,
-                    CONST_SKYQ_CHANNELNO, CONST_SKYQ_MEDIA_TYPE, DEVICE_CLASS,
-                    DOMAIN, DOMAINBROWSER, ERROR_TIMEOUT,
-                    FEATURE_GET_LIVE_RECORD, FEATURE_IMAGE, FEATURE_LIVE_TV,
-                    FEATURE_SWITCHES, SKYQ_APP, SKYQ_ICONS, SKYQ_LIVE,
-                    SKYQ_LIVEREC, SKYQ_PVR, SKYQREMOTE)
+from .const import (
+    APP_IMAGE_URL_BASE,
+    APP_TITLES,
+    BUTTON_PRESS_CHANNELDOWN,
+    BUTTON_PRESS_CHANNELUP,
+    BUTTON_PRESS_DISMISS,
+    BUTTON_PRESS_I,
+    BUTTON_PRESS_SELECT,
+    CONF_CHANNEL_SOURCES,
+    CONF_COUNTRY,
+    CONF_EPG_CACHE_LEN,
+    CONF_GEN_SWITCH,
+    CONF_GET_LIVE_RECORD,
+    CONF_LIVE_TV,
+    CONF_OUTPUT_PROGRAMME_IMAGE,
+    CONF_ROOM,
+    CONF_SOURCES,
+    CONF_TEST_CHANNEL,
+    CONF_VOLUME_ENTITY,
+    CONST_DEFAULT_EPGCACHELEN,
+    CONST_DEFAULT_ROOM,
+    CONST_SKYQ_CHANNELNO,
+    CONST_SKYQ_MEDIA_TYPE,
+    DEVICE_CLASS,
+    DOMAIN,
+    DOMAINBROWSER,
+    ERROR_TIMEOUT,
+    FEATURE_GET_LIVE_RECORD,
+    FEATURE_IMAGE,
+    FEATURE_LIVE_TV,
+    FEATURE_SWITCHES,
+    SKYQ_APP,
+    SKYQ_ICONS,
+    SKYQ_LIVE,
+    SKYQ_LIVEREC,
+    SKYQ_PVR,
+    SKYQREMOTE,
+)
 from .utils import App_Image_Url, get_command
 
 _LOGGER = logging.getLogger(__name__)
@@ -94,11 +150,37 @@ async def _async_setup_platform_entry(config_item, async_add_entities, remote, u
         remote,
         config,
     )
-    async_add_entities([player], True)
 
     should_cache = False
     files_path = Path(__file__).parent / "static"
     hass.http.register_static_path(APP_IMAGE_URL_BASE, str(files_path), should_cache)
+
+    async_add_entities([player], True)
+
+    async def _async_homekit_event(_event):
+        if not player.entity_id == _event.data[ATTR_ENTITY_ID]:
+            return
+
+        keyname = _event.data[ATTR_KEY_NAME]
+        _LOGGER.debug(f"D0010H - Homekit event - {player.entity_id} - {keyname}")
+        if keyname == KEY_ARROW_RIGHT:
+            await player.async_media_next_track()
+        elif keyname == KEY_ARROW_LEFT:
+            await player.async_media_previous_track()
+        elif keyname == KEY_ARROW_UP:
+            await player.async_play_media(BUTTON_PRESS_CHANNELUP, DOMAIN)
+        elif keyname == KEY_ARROW_DOWN:
+            await player.async_play_media(BUTTON_PRESS_CHANNELDOWN, DOMAIN)
+        elif keyname == KEY_SELECT:
+            await player.async_play_media(BUTTON_PRESS_SELECT, DOMAIN)
+        elif keyname == KEY_BACK:
+            await player.async_play_media(BUTTON_PRESS_DISMISS, DOMAIN)
+        elif keyname == KEY_INFORMATION:
+            await player.async_play_media(BUTTON_PRESS_I, DOMAIN)
+        else:
+            _LOGGER.warning(f"W0010H - Invalid Homekit event - {player.entity_id} - {keyname}")
+
+    hass.bus.async_listen(EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED, _async_homekit_event)
 
 
 class SkyQDevice(MediaPlayerEntity):
