@@ -295,11 +295,19 @@ class SkyQDevice(MediaPlayerEntity):
     @property
     def source_list(self):
         """Get the list of sources for the device."""
-        return self._config.source_list
+        if not self.source or self.source in self._config.source_list:
+            return self._config.source_list
+        else:
+            sources = self._config.source_list.copy()
+            sources.insert(0, self.source)
+            return sources
 
     @property
     def source(self):
         """Title of current playing media."""
+        if self._skyq_type == SKYQ_PVR:
+            return SKYQ_PVR.upper()
+
         return self._channel if self._channel is not None else None
 
     @property
