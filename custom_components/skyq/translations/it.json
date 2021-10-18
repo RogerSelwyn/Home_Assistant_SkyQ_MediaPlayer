@@ -29,6 +29,7 @@
           "channel_sources_display": "Elenco delle fonti del canale",
           "sources": "Fonti personalizzate - leggi Github",
           "output_programme_image": "Mostra immagine del programma",
+          "tv_device_class": "Classe dispositivo TV (disabilita per ricevitore)",
           "generate_switches_for_channels": "Genera switch per canali",
           "live_tv": "Mostra i dettagli della TV in diretta",
           "get_live_record": "Ottieni lo stato della registrazione in tempo reale",

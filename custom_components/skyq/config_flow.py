@@ -26,6 +26,7 @@ from .const import (
     CONF_OUTPUT_PROGRAMME_IMAGE,
     CONF_ROOM,
     CONF_SOURCES,
+    CONF_TV_DEVICE_CLASS,
     CONF_VOLUME_ENTITY,
     CONST_DEFAULT,
     CONST_DEFAULT_EPGCACHELEN,
@@ -118,6 +119,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         if self._country != CONST_DEFAULT:
             self._country = self._convertCountry(alpha_3=self._country)
         self._output_programme_image = config_entry.options.get(CONF_OUTPUT_PROGRAMME_IMAGE, True)
+        self._tv_device_class = config_entry.options.get(CONF_TV_DEVICE_CLASS, True)
         self._epg_cache_len = config_entry.options.get(CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN)
         self._channelDisplay = []
         self._channel_list = []
@@ -183,6 +185,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                     vol.Optional(CONF_LIVE_TV, default=self._live_tv): bool,
                     vol.Optional(CONF_GET_LIVE_RECORD, default=self._get_live_record): bool,
                     vol.Optional(CONF_GEN_SWITCH, default=self._gen_switch): bool,
+                    vol.Optional(CONF_TV_DEVICE_CLASS, default=self._tv_device_class): bool,
                     vol.Optional(CONF_ROOM, description={"suggested_value": self._room}): str,
                     vol.Optional(CONF_COUNTRY, default=self._country): vol.In(self._country_list),
                     vol.Optional(
@@ -224,6 +227,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._live_tv = user_input.get(CONF_LIVE_TV)
         self._get_live_record = user_input.get(CONF_GET_LIVE_RECORD)
         self._output_programme_image = user_input.get(CONF_OUTPUT_PROGRAMME_IMAGE)
+        self._tv_device_class = user_input.get(CONF_TV_DEVICE_CLASS)
         self._room = user_input.get(CONF_ROOM)
         self._volume_entity = user_input.get(CONF_VOLUME_ENTITY)
         self._country = user_input.get(CONF_COUNTRY)

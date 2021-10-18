@@ -28,6 +28,7 @@
           "channel_sources": "List of channel sources",
           "sources": "Custom sources - read Github",
           "output_programme_image": "Show programme image",
+          "tv_device_class": "TV device class (disable for Receiver)",
           "generate_switches_for_channels": "Generate switches for channels",
           "live_tv": "Show live TV details",
           "get_live_record": "Get live record status",

@@ -29,6 +29,7 @@
           "channel_sources_display": "Liste der Kanalquellen",
           "sources": "Benutzerdefinierte Quellen - lesen Sie Github",
           "output_programme_image": "Programmbild anzeigen",
+          "tv_device_class": "TV-Geräteklasse (für Receiver deaktivieren)",
           "generate_switches_for_channels": "Generate switches for channels",
           "live_tv": "Generieren Sie Schalter für Kanäle",
           "get_live_record": "Erhalten Sie den Live-Aufzeichnungsstatus",

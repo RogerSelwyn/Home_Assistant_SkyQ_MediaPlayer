@@ -7,6 +7,7 @@ from ..const import (
     FEATURE_IMAGE,
     FEATURE_LIVE_TV,
     FEATURE_SWITCHES,
+    FEATURE_TV_DEVICE_CLASS,
 )
 from ..utils import convert_sources
 
@@ -16,6 +17,7 @@ enabled_features = (
     | FEATURE_LIVE_TV
     | FEATURE_SWITCHES
     | FEATURE_GET_LIVE_RECORD
+    | FEATURE_TV_DEVICE_CLASS
 )
 
 
@@ -33,6 +35,7 @@ class Config:
     channel_sources: list = field(init=True, repr=True, compare=True)
     generate_switches_for_channels: InitVar[bool]
     output_programme_image: InitVar[bool]
+    otv_device_class: InitVar[bool]
     live_tv: InitVar[bool]
     get_live_record: InitVar[bool]
     enabled_features: int = None
@@ -42,6 +45,7 @@ class Config:
         self,
         generate_switches_for_channels,
         output_programme_image,
+        tv_device_class,
         live_tv,
         get_live_record,
     ):
@@ -51,6 +55,9 @@ class Config:
 
         if not (output_programme_image):
             self.enabled_features ^= FEATURE_IMAGE
+
+        if not (tv_device_class):
+            self.enabled_features ^= FEATURE_TV_DEVICE_CLASS
 
         if not (live_tv):
             self.enabled_features ^= FEATURE_LIVE_TV

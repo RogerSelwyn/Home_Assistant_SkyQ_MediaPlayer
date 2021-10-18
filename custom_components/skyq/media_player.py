@@ -18,7 +18,7 @@ from homeassistant.components.homekit.const import (
     KEY_REWIND,
     KEY_SELECT,
 )
-from homeassistant.components.media_player import MediaPlayerEntity
+from homeassistant.components.media_player import DEVICE_CLASS_RECEIVER, DEVICE_CLASS_TV, MediaPlayerEntity
 from homeassistant.components.media_player.const import (
     MEDIA_TYPE_APP,
     MEDIA_TYPE_TVSHOW,
@@ -75,12 +75,12 @@ from .const import (
     CONF_ROOM,
     CONF_SOURCES,
     CONF_TEST_CHANNEL,
+    CONF_TV_DEVICE_CLASS,
     CONF_VOLUME_ENTITY,
     CONST_DEFAULT_EPGCACHELEN,
     CONST_DEFAULT_ROOM,
     CONST_SKYQ_CHANNELNO,
     CONST_SKYQ_MEDIA_TYPE,
-    DEVICE_CLASS,
     DOMAIN,
     DOMAINBROWSER,
     ERROR_TIMEOUT,
@@ -88,6 +88,7 @@ from .const import (
     FEATURE_IMAGE,
     FEATURE_LIVE_TV,
     FEATURE_SWITCHES,
+    FEATURE_TV_DEVICE_CLASS,
     SKYQ_APP,
     SKYQ_ICONS,
     SKYQ_LIVE,
@@ -149,6 +150,7 @@ async def _async_setup_platform_entry(config_item, async_add_entities, remote, u
         config_item.get(CONF_CHANNEL_SOURCES, []),
         config_item.get(CONF_GEN_SWITCH, False),
         config_item.get(CONF_OUTPUT_PROGRAMME_IMAGE, True),
+        config_item.get(CONF_TV_DEVICE_CLASS, True),
         config_item.get(CONF_LIVE_TV, True),
         config_item.get(CONF_GET_LIVE_RECORD, False),
     )
@@ -353,7 +355,7 @@ class SkyQDevice(MediaPlayerEntity):
     @property
     def device_class(self):
         """Entity class."""
-        return DEVICE_CLASS
+        return DEVICE_CLASS_TV if self._config.enabled_features & FEATURE_TV_DEVICE_CLASS else DEVICE_CLASS_RECEIVER
 
     @property
     def available(self):
