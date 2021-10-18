@@ -11,7 +11,11 @@ from homeassistant.components.homekit.const import (
     KEY_ARROW_RIGHT,
     KEY_ARROW_UP,
     KEY_BACK,
+    KEY_FAST_FORWARD,
     KEY_INFORMATION,
+    KEY_NEXT_TRACK,
+    KEY_PREVIOUS_TRACK,
+    KEY_REWIND,
     KEY_SELECT,
 )
 from homeassistant.components.media_player import MediaPlayerEntity
@@ -52,6 +56,8 @@ from .classes.volumeentity import Volume_Entity
 from .const import (
     APP_IMAGE_URL_BASE,
     APP_TITLES,
+    BUTTON_PRESS_CHANNELDOWN,
+    BUTTON_PRESS_CHANNELUP,
     BUTTON_PRESS_DISMISS,
     BUTTON_PRESS_DOWN,
     BUTTON_PRESS_LEFT,
@@ -164,12 +170,10 @@ async def _async_setup_platform_entry(config_item, async_add_entities, remote, u
             return
 
         keyname = _event.data[ATTR_KEY_NAME]
-        _LOGGER.debug(f"D0010H - Homekit event - {player.entity_id} - {keyname}")
+        # _LOGGER.debug(f"D0030M - Homekit event - {player.entity_id} - {keyname}")
         if keyname == KEY_ARROW_RIGHT:
-            # await player.async_media_next_track()
             await player.async_play_media(BUTTON_PRESS_RIGHT, DOMAIN)
         elif keyname == KEY_ARROW_LEFT:
-            # await player.async_media_previous_track()
             await player.async_play_media(BUTTON_PRESS_LEFT, DOMAIN)
         elif keyname == KEY_ARROW_UP:
             await player.async_play_media(BUTTON_PRESS_UP, DOMAIN)
@@ -181,8 +185,18 @@ async def _async_setup_platform_entry(config_item, async_add_entities, remote, u
             await player.async_play_media(BUTTON_PRESS_DISMISS, DOMAIN)
         elif keyname == KEY_INFORMATION:
             await player.async_play_media(BUTTON_PRESS_TVGUIDE, DOMAIN)
+        elif keyname == KEY_PREVIOUS_TRACK:
+            await player.async_play_media(BUTTON_PRESS_CHANNELDOWN, DOMAIN)
+        elif keyname == KEY_NEXT_TRACK:
+            await player.async_play_media(BUTTON_PRESS_CHANNELUP, DOMAIN)
+        elif keyname == KEY_REWIND:
+            # Lovelace previous_track buttons do rewind
+            await player.async_media_previous_track()
+        elif keyname == KEY_FAST_FORWARD:
+            # Lovelace next_track buttons do fast forward
+            await player.async_media_next_track()
         else:
-            _LOGGER.warning(f"W0010H - Invalid Homekit event - {player.entity_id} - {keyname}")
+            _LOGGER.warning(f"W0040M - Invalid Homekit event - {player.entity_id} - {keyname}")
 
     hass.bus.async_listen(EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED, _async_homekit_event)
 
