@@ -1,5 +1,24 @@
 # Changelog
 
+## v2.6.10 Beta 6 (2021/10/18)
+### Enhancements
+#### Enhance HomeKit support
+- [Add Source property](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7696090f08c9e30d6c0f2f9303f1dccf8a6eefec) - @RogerSelwyn
+- [Improve volume_entity property and capability handling](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/08a7ad6d9e82af251353aeb0aa93b1978e7885a3) - @RogerSelwyn
+- [Add Homekit dependency](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/1902c5d73a5c15fcd4c3705dc9a9b41edf40a3fb) - @RogerSelwyn
+- [Add Homekit button control](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c9298340ff1b2bab7884ab64dcf5a3a0bed67469) - @RogerSelwyn
+- [Change to EPG nav](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/de472d1634a2e486517ee60702b3b8ed44de610a) - @RogerSelwyn
+- [Add extra Homekit buttons](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cd9c180a0e30910e1acecb9d37c509a6c60ec201) - @RogerSelwyn
+- [Default to TV device class](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7e823f17fb7aa63432a314aead17878d2428a483) - @RogerSelwyn
+- [Alter source list to include current channel/PVR/App](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/774d8ff6fb5a168bbb6e806683a2f447650f6157) - @RogerSelwyn
+
+#### Other
+- [Convert image lookup to file system based](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3036efc07c8a08726476bba0aa89bf27ecab2829) - @RogerSelwyn
+
+### Maintenance
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fc32eb420f7cfc423a429dd81d040c73e21c566f) - @RogerSelwyn
+- [Bump to 2.6.10 beta 6](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a4ddf8930c83c33f919019fb6b93b150d6f40e63) - @RogerSelwyn
+
 ## v2.6.9 (2021/10/13)
 ### Fixes
 - [Fix broken images](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b253a8b0a35f9a3b42df036da0b7f59f46d6bf0e) - @RogerSelwyn
