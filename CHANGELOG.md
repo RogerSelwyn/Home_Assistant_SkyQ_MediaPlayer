@@ -22,6 +22,13 @@
 - [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e2620206371eba905c55c4eea410d2e34e7f19e7) - @actions-user
 - [Bump to 2.6.10 beta 7](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bf91d42410e882d187d7722011907f368f40f8ea) - @RogerSelwyn
 
+## v2.6.9 (2021/10/13)
+### Fixes
+- [Fix broken images](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b253a8b0a35f9a3b42df036da0b7f59f46d6bf0e) - @RogerSelwyn
+
+### Maintenance
+- [Correct workflow name](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/30f6b25f0f9b90c694c28c47831662bd70edbc48) - @RogerSelwyn
+- [Correct step name in release](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f146ad5db3b25598921479cb11d1f5d73b4069bc) - @RogerSelwyn
 
 ## v2.6.8 (2021/09/27)
 ### Maintenance
