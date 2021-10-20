@@ -167,7 +167,7 @@ async def _async_setup_platform_entry(config_item, async_add_entities, remote, u
     async_add_entities([player], True)
 
     async def _async_homekit_event(_event):
-        if not player.entity_id == _event.data[ATTR_ENTITY_ID]:
+        if player.entity_id != _event.data[ATTR_ENTITY_ID]:
             return
 
         keyname = _event.data[ATTR_KEY_NAME]
@@ -296,10 +296,9 @@ class SkyQDevice(MediaPlayerEntity):
         """Get the list of sources for the device."""
         if not self.source or self.source in self._config.source_list:
             return self._config.source_list
-        else:
-            sources = self._config.source_list.copy()
-            sources.insert(0, self.source)
-            return sources
+        sources = self._config.source_list.copy()
+        sources.insert(0, self.source)
+        return sources
 
     @property
     def source(self):
