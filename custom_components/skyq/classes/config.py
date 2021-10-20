@@ -64,7 +64,6 @@ class Config:
         live_tv = config_item.get(CONF_LIVE_TV, True)
         get_live_record = config_item.get(CONF_GET_LIVE_RECORD, False)
 
-        """Set up the config."""
         self.enabled_features = enabled_features
         self.source_list = []
 
