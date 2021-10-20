@@ -2,6 +2,18 @@
 from dataclasses import InitVar, dataclass, field
 
 from ..const import (
+    CONF_CHANNEL_SOURCES,
+    CONF_COUNTRY,
+    CONF_GEN_SWITCH,
+    CONF_GET_LIVE_RECORD,
+    CONF_LIVE_TV,
+    CONF_OUTPUT_PROGRAMME_IMAGE,
+    CONF_ROOM,
+    CONF_SOURCES,
+    CONF_TEST_CHANNEL,
+    CONF_TV_DEVICE_CLASS,
+    CONF_VOLUME_ENTITY,
+    CONST_DEFAULT_ROOM,
     FEATURE_BASIC,
     FEATURE_GET_LIVE_RECORD,
     FEATURE_IMAGE,
@@ -27,28 +39,31 @@ class Config:
 
     unique_id: str = field(init=True, repr=True, compare=True)
     name: str = field(init=True, repr=True, compare=True)
-    room: str = field(init=True, repr=True, compare=True)
-    volume_entity: str = field(init=True, repr=True, compare=True)
-    test_channel: str = field(init=True, repr=True, compare=True)
-    overrideCountry: str = field(init=True, repr=True, compare=True)
-    custom_sources: field(init=True, repr=False, compare=True)
-    channel_sources: list = field(init=True, repr=True, compare=True)
-    generate_switches_for_channels: InitVar[bool]
-    output_programme_image: InitVar[bool]
-    otv_device_class: InitVar[bool]
-    live_tv: InitVar[bool]
-    get_live_record: InitVar[bool]
+    config_item: InitVar[object]
+    room: str = None
+    volume_entity: str = None
+    test_channel: str = None
+    overrideCountry: str = None
     enabled_features: int = None
     source_list = None
 
     def __post_init__(
         self,
-        generate_switches_for_channels,
-        output_programme_image,
-        tv_device_class,
-        live_tv,
-        get_live_record,
+        config_item,
     ):
+        """Set up the config with all attributes."""
+        self.room = config_item.get(CONF_ROOM, CONST_DEFAULT_ROOM)
+        self.volume_entity = config_item.get(CONF_VOLUME_ENTITY, None)
+        self.test_channel = config_item.get(CONF_TEST_CHANNEL)
+        self.overrideCountry = config_item.get(CONF_COUNTRY)
+        self.custom_sources = config_item.get(CONF_SOURCES)
+        self.channel_sources = config_item.get(CONF_CHANNEL_SOURCES, [])
+        generate_switches_for_channels = config_item.get(CONF_GEN_SWITCH, False)
+        output_programme_image = config_item.get(CONF_OUTPUT_PROGRAMME_IMAGE, True)
+        tv_device_class = config_item.get(CONF_TV_DEVICE_CLASS, True)
+        live_tv = config_item.get(CONF_LIVE_TV, True)
+        get_live_record = config_item.get(CONF_GET_LIVE_RECORD, False)
+
         """Set up the config."""
         self.enabled_features = enabled_features
         self.source_list = []

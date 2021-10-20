@@ -6,33 +6,14 @@ from pathlib import Path
 from homeassistant.components.homekit.const import (
     ATTR_KEY_NAME,
     EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED,
-    KEY_ARROW_DOWN,
-    KEY_ARROW_LEFT,
-    KEY_ARROW_RIGHT,
-    KEY_ARROW_UP,
-    KEY_BACK,
     KEY_FAST_FORWARD,
-    KEY_INFORMATION,
-    KEY_NEXT_TRACK,
-    KEY_PREVIOUS_TRACK,
     KEY_REWIND,
-    KEY_SELECT,
 )
 from homeassistant.components.media_player import DEVICE_CLASS_RECEIVER, DEVICE_CLASS_TV, MediaPlayerEntity
 from homeassistant.components.media_player.const import (
     MEDIA_TYPE_APP,
     MEDIA_TYPE_TVSHOW,
     SUPPORT_BROWSE_MEDIA,
-    SUPPORT_NEXT_TRACK,
-    SUPPORT_PAUSE,
-    SUPPORT_PLAY,
-    SUPPORT_PLAY_MEDIA,
-    SUPPORT_PREVIOUS_TRACK,
-    SUPPORT_SEEK,
-    SUPPORT_SELECT_SOURCE,
-    SUPPORT_STOP,
-    SUPPORT_TURN_OFF,
-    SUPPORT_TURN_ON,
     SUPPORT_VOLUME_MUTE,
     SUPPORT_VOLUME_SET,
     SUPPORT_VOLUME_STEP,
@@ -55,39 +36,20 @@ from .classes.switchmaker import Switch_Maker
 from .classes.volumeentity import Volume_Entity
 from .const import (
     APP_IMAGE_URL_BASE,
-    BUTTON_PRESS_CHANNELDOWN,
-    BUTTON_PRESS_CHANNELUP,
-    BUTTON_PRESS_DISMISS,
-    BUTTON_PRESS_DOWN,
-    BUTTON_PRESS_LEFT,
-    BUTTON_PRESS_RIGHT,
-    BUTTON_PRESS_SELECT,
-    BUTTON_PRESS_TVGUIDE,
-    BUTTON_PRESS_UP,
-    CONF_CHANNEL_SOURCES,
-    CONF_COUNTRY,
     CONF_EPG_CACHE_LEN,
-    CONF_GEN_SWITCH,
-    CONF_GET_LIVE_RECORD,
-    CONF_LIVE_TV,
-    CONF_OUTPUT_PROGRAMME_IMAGE,
-    CONF_ROOM,
-    CONF_SOURCES,
-    CONF_TEST_CHANNEL,
-    CONF_TV_DEVICE_CLASS,
-    CONF_VOLUME_ENTITY,
     CONST_DEFAULT_EPGCACHELEN,
-    CONST_DEFAULT_ROOM,
     CONST_SKYQ_CHANNELNO,
     CONST_SKYQ_MEDIA_TYPE,
     DOMAIN,
     DOMAINBROWSER,
     ERROR_TIMEOUT,
+    FEATURE_BASE,
     FEATURE_GET_LIVE_RECORD,
     FEATURE_IMAGE,
     FEATURE_LIVE_TV,
     FEATURE_SWITCHES,
     FEATURE_TV_DEVICE_CLASS,
+    REMOTE_BUTTONS,
     SKYQ_APP,
     SKYQ_ICONS,
     SKYQ_LIVE,
@@ -138,21 +100,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
 async def _async_setup_platform_entry(config_item, async_add_entities, remote, unique_id, name, hass):
 
-    config = Config(
-        unique_id,
-        name,
-        config_item.get(CONF_ROOM, CONST_DEFAULT_ROOM),
-        config_item.get(CONF_VOLUME_ENTITY, None),
-        config_item.get(CONF_TEST_CHANNEL),
-        config_item.get(CONF_COUNTRY),
-        config_item.get(CONF_SOURCES),
-        config_item.get(CONF_CHANNEL_SOURCES, []),
-        config_item.get(CONF_GEN_SWITCH, False),
-        config_item.get(CONF_OUTPUT_PROGRAMME_IMAGE, True),
-        config_item.get(CONF_TV_DEVICE_CLASS, True),
-        config_item.get(CONF_LIVE_TV, True),
-        config_item.get(CONF_GET_LIVE_RECORD, False),
-    )
+    config = Config(unique_id, name, config_item)
 
     player = SkyQDevice(
         hass,
@@ -172,24 +120,8 @@ async def _async_setup_platform_entry(config_item, async_add_entities, remote, u
 
         keyname = _event.data[ATTR_KEY_NAME]
         # _LOGGER.debug(f"D0030M - Homekit event - {player.entity_id} - {keyname}")
-        if keyname == KEY_ARROW_RIGHT:
-            await player.async_play_media(BUTTON_PRESS_RIGHT, DOMAIN)
-        elif keyname == KEY_ARROW_LEFT:
-            await player.async_play_media(BUTTON_PRESS_LEFT, DOMAIN)
-        elif keyname == KEY_ARROW_UP:
-            await player.async_play_media(BUTTON_PRESS_UP, DOMAIN)
-        elif keyname == KEY_ARROW_DOWN:
-            await player.async_play_media(BUTTON_PRESS_DOWN, DOMAIN)
-        elif keyname == KEY_SELECT:
-            await player.async_play_media(BUTTON_PRESS_SELECT, DOMAIN)
-        elif keyname == KEY_BACK:
-            await player.async_play_media(BUTTON_PRESS_DISMISS, DOMAIN)
-        elif keyname == KEY_INFORMATION:
-            await player.async_play_media(BUTTON_PRESS_TVGUIDE, DOMAIN)
-        elif keyname == KEY_PREVIOUS_TRACK:
-            await player.async_play_media(BUTTON_PRESS_CHANNELDOWN, DOMAIN)
-        elif keyname == KEY_NEXT_TRACK:
-            await player.async_play_media(BUTTON_PRESS_CHANNELUP, DOMAIN)
+        if keyname in REMOTE_BUTTONS:
+            await player.async_play_media(REMOTE_BUTTONS[keyname], DOMAIN)
         elif keyname == KEY_REWIND:
             # Lovelace previous_track buttons do rewind
             await player.async_media_previous_track()
@@ -243,18 +175,7 @@ class SkyQDevice(MediaPlayerEntity):
             self._startupSetup = False
             _LOGGER.warning(f"W0010M - Device is not available: {self.name}")
 
-        self._supported_features = (
-            SUPPORT_TURN_OFF
-            | SUPPORT_TURN_ON
-            | SUPPORT_PAUSE
-            | SUPPORT_PLAY
-            | SUPPORT_STOP
-            | SUPPORT_NEXT_TRACK
-            | SUPPORT_PREVIOUS_TRACK
-            | SUPPORT_SELECT_SOURCE
-            | SUPPORT_SEEK
-            | SUPPORT_PLAY_MEDIA
-        )
+        self._supported_features = FEATURE_BASE
 
     @property
     def supported_features(self):
@@ -620,24 +541,32 @@ class SkyQDevice(MediaPlayerEntity):
     def _setPowerStatus(self, powerStatus):
 
         error_time_so_far = (datetime.now() - self._errorTime).seconds if self._errorTime else 0
-        error_time_target = self._errorTime + timedelta(seconds=ERROR_TIMEOUT) if self._errorTime else 0
         if powerStatus == SKY_STATE_OFF:
-            if not self._errorTime or datetime.now() < error_time_target:
-                if not self._errorTime:
-                    self._errorTime = datetime.now()
-                _LOGGER.debug(f"D0010M - Device is not available - {error_time_so_far} Seconds: {self.name}")
-            elif datetime.now() >= error_time_target and self._available:
-                self._available = False
-                _LOGGER.warning(f"W0030M - Device is not available: {self.name}")
-
+            self._powerStatus_off_handling()
         else:
-            if not self._available:
-                self._available = True
-                if self._startupSetup:
-                    _LOGGER.info(f"I0020M - Device is now available: {self.name}")
-                else:
-                    self._startupSetup = True
-                    _LOGGER.warning(f"W0020M - Device is now available: {self.name}")
-            elif self._errorTime:
-                _LOGGER.debug(f"D0020M - Device is now available - {error_time_so_far} Seconds: {self.name}")
-            self._errorTime = None
+            self._powerStatus_on_handling()
+
+    def _powerStatus_off_handling(self):
+        error_time_target = self._errorTime + timedelta(seconds=ERROR_TIMEOUT) if self._errorTime else 0
+        if not self._errorTime or datetime.now() < error_time_target:
+            if not self._errorTime:
+                self._errorTime = datetime.now()
+            _LOGGER.debug(f"D0010M - Device is not available - {self._error_time_so_far()} Seconds: {self.name}")
+        elif datetime.now() >= error_time_target and self._available:
+            self._available = False
+            _LOGGER.warning(f"W0030M - Device is not available: {self.name}")
+
+    def _powerStatus_on_handling(self):
+        if not self._available:
+            self._available = True
+            if self._startupSetup:
+                _LOGGER.info(f"I0020M - Device is now available: {self.name}")
+            else:
+                self._startupSetup = True
+                _LOGGER.warning(f"W0020M - Device is now available: {self.name}")
+        elif self._errorTime:
+            _LOGGER.debug(f"D0020M - Device is now available - {self._error_time_so_far()} Seconds: {self.name}")
+        self._errorTime = None
+
+    def _error_time_so_far(self):
+        return (datetime.now() - self._errorTime).seconds if self._errorTime else 0
