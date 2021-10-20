@@ -55,7 +55,6 @@ from .classes.switchmaker import Switch_Maker
 from .classes.volumeentity import Volume_Entity
 from .const import (
     APP_IMAGE_URL_BASE,
-    APP_TITLES,
     BUTTON_PRESS_CHANNELDOWN,
     BUTTON_PRESS_CHANNELUP,
     BUTTON_PRESS_DISMISS,
@@ -534,11 +533,9 @@ class SkyQDevice(MediaPlayerEntity):
     async def _async_updateCurrentProgramme(self):
 
         app = await self.hass.async_add_executor_job(self._remote.getActiveApplication)
-        appTitle = app
-        if appTitle.casefold() in APP_TITLES:
-            appTitle = APP_TITLES[appTitle.casefold()]
+        appTitle = app.title
 
-        if app == APP_EPG:
+        if app.appId == APP_EPG:
             await self._async_getCurrentMedia()
         else:
             self._skyq_type = SKYQ_APP

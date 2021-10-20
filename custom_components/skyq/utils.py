@@ -6,6 +6,8 @@ import os
 
 from .const import APP_IMAGE_URL_BASE
 
+CHAR_REPLACE = {" ": "", "+": "plus", "_": "", ".": ""}
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -69,8 +71,12 @@ class App_Image_Url:
         """Check app image is present."""
         if appTitle == self._lastAppTitle:
             return self._appImageUrl
+        self._lastAppTitle = appTitle
 
         self._appImageUrl = None
+
+        for searcher, replacer in CHAR_REPLACE.items():
+            appTitle = appTitle.replace(searcher, replacer)
 
         appImageUrl = f"{APP_IMAGE_URL_BASE}/{appTitle.casefold()}.png"
         dirPath = os.path.dirname(os.path.realpath(__file__))

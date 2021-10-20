@@ -52,18 +52,7 @@ SKYQ_ICONS = {
     SKYQ_PVR: "mdi:movie-open",
     STATE_UNKNOWN: "mdi:alert-circle-outline",
 }
-APP_TITLES = {
-    "com.bskyb.epgui": "EPG",
-    "com.bskyb.news": "SkyNews",
-    "com.bskyb.vevo": "Vevo",
-    "com.roku": "Roku",
-    "com.skyita.dazn": "DAZN",
-    "com.spotify.spotify.tvv2": "Spotify",
-    "fiit.tv": "Fiit",
-    "mediasetplay": "MediasetPlay",
-    "play.works": "PlayWorks",
-    "prime.video": "PrimeVideo",
-}
+
 APP_IMAGE_URL_BASE = "/api/" + DOMAIN + "/static"
 
 BUTTON_PRESS_CHANNELUP = "channelup"
