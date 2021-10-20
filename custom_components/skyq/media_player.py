@@ -540,7 +540,6 @@ class SkyQDevice(MediaPlayerEntity):
 
     def _setPowerStatus(self, powerStatus):
 
-        error_time_so_far = (datetime.now() - self._errorTime).seconds if self._errorTime else 0
         if powerStatus == SKY_STATE_OFF:
             self._powerStatus_off_handling()
         else:
