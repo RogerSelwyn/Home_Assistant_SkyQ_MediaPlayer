@@ -147,7 +147,7 @@ class SkyQDevice(MediaPlayerEntity):
         self._config = config
         self._unique_id = config.unique_id
         if config.volume_entity:
-            self._volume_entity = Volume_Entity(hass, config.volume_entity)
+            self._volume_entity = Volume_Entity(hass, config.volume_entity, self._config.name)
         else:
             self._volume_entity = None
         self._appImageUrl = App_Image_Url()
@@ -346,7 +346,7 @@ class SkyQDevice(MediaPlayerEntity):
             await self._async_updateCurrentProgramme()
 
         if self._volume_entity:
-            await self._volume_entity.async_update_volume_state(self.hass, self.name)
+            await self._volume_entity.async_update_volume_state(self.hass)
 
         if not self._switches_generated and self.entity_id:
             self._switches_generated = True

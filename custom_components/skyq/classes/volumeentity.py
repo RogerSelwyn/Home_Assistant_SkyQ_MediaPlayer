@@ -19,9 +19,10 @@ _LOGGER = logging.getLogger(__name__)
 class Volume_Entity:
     """Class representing the volume entity."""
 
-    def __init__(self, hass, volume_entity):
+    def __init__(self, hass, volume_entity, mpname):
         """Initialise the volume entity class."""
         self._volume_level = None
+        self._mpname = mpname
         self._is_volume_muted = None
         self._entity_name = volume_entity
         self._entity_name_error = False
@@ -31,8 +32,10 @@ class Volume_Entity:
             state_obj = hass.states.get(self._entity_name)
             if state_obj:
                 self._supported_features = state_obj.attributes.get(ATTR_SUPPORTED_FEATURES)
+            else:
+                _LOGGER.debug(f"D0010V - Volume entity does not exist: {self._mpname} - {self._entity_name}")
 
-    async def async_update_volume_state(self, hass, mpname):
+    async def async_update_volume_state(self, hass):
         """Get the volume entity state."""
         if not self._entity_name:
             return
@@ -44,15 +47,15 @@ class Volume_Entity:
                 self._is_volume_muted = state_obj.attributes.get(ATTR_MEDIA_VOLUME_MUTED)
                 self._supported_features = state_obj.attributes.get(ATTR_SUPPORTED_FEATURES)
                 if self._entity_name_error:
-                    _LOGGER.info(f"I0010V - Volume entity now exists: {mpname} - {self._entity_name}")
+                    _LOGGER.info(f"I0010V - Volume entity now exists: {self._mpname} - {self._entity_name}")
                     self._entity_name_error = False
                     self._startup_error = False
             elif not self._entity_name_error:
                 if not self._startup_error:
-                    _LOGGER.warning(f"W0010V - Volume entity does not exist: {mpname} - {self._entity_name}")
+                    _LOGGER.warning(f"W0010V - Volume entity does not exist: {self._mpname} - {self._entity_name}")
                     self._entity_name_error = True
                 else:
-                    _LOGGER.debug(f"D0010V - Volume entity does not exist: {mpname} - {self._entity_name}")
+                    _LOGGER.debug(f"D0020V - Volume entity does not exist: {self._mpname} - {self._entity_name}")
                     self._startup_error = False
             return
         except (TypeError, ValueError):
