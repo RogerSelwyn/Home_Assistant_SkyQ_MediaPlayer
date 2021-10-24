@@ -21,7 +21,7 @@ from ..const import (
     FEATURE_SWITCHES,
     FEATURE_TV_DEVICE_CLASS,
 )
-from ..utils import convert_sources
+from ..utils import convert_sources, convert_sources_JSON
 
 enabled_features = (
     FEATURE_BASIC
@@ -82,7 +82,10 @@ class Config:
         if not (generate_switches_for_channels):
             self.enabled_features ^= FEATURE_SWITCHES
 
-        if isinstance(self.custom_sources, list):
+        if isinstance(self.custom_sources, str):
+            cs_list = convert_sources_JSON(sources_json=self.custom_sources)
+            self.custom_sources = convert_sources(sources_list=cs_list)
+        elif isinstance(self.custom_sources, list):  # If old format sources list, need to convert. Changed in 2.6.10
             self.custom_sources = convert_sources(sources_list=self.custom_sources)
         elif not self.custom_sources:
             self.custom_sources = []

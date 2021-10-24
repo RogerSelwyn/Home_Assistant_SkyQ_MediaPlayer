@@ -108,7 +108,10 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._remote = None
         self._channel_sources = config_entry.options.get(CONF_CHANNEL_SOURCES, [])
 
-        self._sources = convert_sources_JSON(sources_list=config_entry.options.get(CONF_SOURCES))
+        self._sources = config_entry.options.get(CONF_SOURCES)
+        """If old format sources list, need to convert. Changed in 2.6.10"""
+        if isinstance(self._sources, list):
+            self._sources = convert_sources_JSON(sources_list=self._sources)
 
         self._room = config_entry.options.get(CONF_ROOM)
         self._volume_entity = config_entry.options.get(CONF_VOLUME_ENTITY)
@@ -239,8 +242,8 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
         self._sources = user_input.get(CONF_SOURCES)
         if self._sources:
-            user_input[CONF_SOURCES] = convert_sources_JSON(sources_json=self._sources)
-            for source in user_input[CONF_SOURCES]:
+            sources_list = convert_sources_JSON(sources_json=self._sources)
+            for source in sources_list:
                 self._validate_commands(source)
 
         return user_input
