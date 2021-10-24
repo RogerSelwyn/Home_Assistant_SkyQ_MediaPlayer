@@ -473,6 +473,9 @@ class SkyQDevice(MediaPlayerEntity):
         try:
             currentMedia = await self.hass.async_add_executor_job(self._remote.getCurrentMedia)
 
+            if not currentMedia:
+                return None
+
             if currentMedia.live and currentMedia.sid:
                 await self._async_get_live_media(currentMedia)
 
