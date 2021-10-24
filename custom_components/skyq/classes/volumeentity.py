@@ -28,12 +28,11 @@ class Volume_Entity:
         self._entity_name_error = False
         self._supported_features = None
         self._startup_error = True
+        self._startup = True
         if self._entity_name:
             state_obj = hass.states.get(self._entity_name)
             if state_obj:
                 self._supported_features = state_obj.attributes.get(ATTR_SUPPORTED_FEATURES)
-            else:
-                _LOGGER.debug(f"D0010V - Volume entity does not exist: {self._mpname} - {self._entity_name}")
 
     async def async_update_volume_state(self, hass):
         """Get the volume entity state."""
@@ -50,6 +49,10 @@ class Volume_Entity:
                     _LOGGER.info(f"I0010V - Volume entity now exists: {self._mpname} - {self._entity_name}")
                     self._entity_name_error = False
                     self._startup_error = False
+                    self._startup = False
+                elif self._startup:
+                    _LOGGER.debug(f"D0010V - Volume entity connected: {self._mpname} - {self._entity_name}")
+                    self._startup = False
             elif not self._entity_name_error:
                 if not self._startup_error:
                     _LOGGER.warning(f"W0010V - Volume entity does not exist: {self._mpname} - {self._entity_name}")

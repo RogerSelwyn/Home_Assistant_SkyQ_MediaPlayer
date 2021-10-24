@@ -180,15 +180,14 @@ class SkyQDevice(MediaPlayerEntity):
     @property
     def supported_features(self):
         """Get the supported features."""
-        if self._volume_entity:
-            volume_entity_features = self._volume_entity.supported_features()
-            if volume_entity_features:
-                if volume_entity_features & SUPPORT_VOLUME_MUTE:
-                    self._supported_features = self._supported_features | SUPPORT_VOLUME_MUTE
-                if volume_entity_features & SUPPORT_VOLUME_SET:
-                    self._supported_features = self._supported_features | SUPPORT_VOLUME_SET
-                if volume_entity_features & SUPPORT_VOLUME_STEP:
-                    self._supported_features = self._supported_features | SUPPORT_VOLUME_STEP
+        if self._config.volume_entity:
+            self._supported_features = self._supported_features | SUPPORT_VOLUME_MUTE
+            self._supported_features = self._supported_features | SUPPORT_VOLUME_STEP
+            if (
+                self._volume_entity.supported_features()
+                and self._volume_entity.supported_features() & SUPPORT_VOLUME_SET
+            ):
+                self._supported_features = self._supported_features | SUPPORT_VOLUME_SET
         if len(self._config.source_list) > 0 and self.state not in (
             STATE_OFF,
             STATE_UNKNOWN,
@@ -411,19 +410,31 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def async_mute_volume(self, mute):
         """Mute the volume."""
-        await self._volume_entity.async_mute_volume(self.hass, mute)
+        if self._volume_entity.supported_features() & SUPPORT_VOLUME_MUTE:
+            await self._volume_entity.async_mute_volume(self.hass, mute)
+        else:
+            await self.async_set_volume_level(0)
 
     async def async_set_volume_level(self, volume):
         """Set volume level, range 0..1."""
+        # _LOGGER.debug(f"D9999M - Volume level - {self.name}")
         await self._volume_entity.async_set_volume_level(self.hass, volume)
 
     async def async_volume_up(self):
         """Turn volume up for media player."""
-        await self._volume_entity.async_volume_up(self.hass)
+        # _LOGGER.debug(f"D9999M - Volume up - {self.name}")
+        if self._volume_entity.supported_features() & SUPPORT_VOLUME_STEP:
+            await self._volume_entity.async_volume_up(self.hass)
+        elif self.volume_level:
+            await self.async_set_volume_level(self.volume_level + 0.02)
 
     async def async_volume_down(self):
         """Turn volume down for media player."""
-        await self._volume_entity.async_volume_down(self.hass)
+        # _LOGGER.debug(f"D9999M - Volume down - {self.name}")
+        if self._volume_entity.supported_features() & SUPPORT_VOLUME_STEP:
+            await self._volume_entity.async_volume_down(self.hass)
+        elif self.volume_level:
+            await self.async_set_volume_level(self.volume_level - 0.02)
 
     async def async_browse_media(self, media_content_type=None, media_content_id=None):
         """Implement the websocket media browsing helper."""
