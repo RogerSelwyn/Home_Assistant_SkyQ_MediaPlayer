@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.6.10 Beta 7 (2021/10/20)
+## v2.6.10 Beta 8 (2021/10/24)
 ### Enhancements
 #### Enhance HomeKit support
 - [Add Source property](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7696090f08c9e30d6c0f2f9303f1dccf8a6eefec) - @RogerSelwyn
@@ -12,15 +12,27 @@
 - [Default to TV device class](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7e823f17fb7aa63432a314aead17878d2428a483) - @RogerSelwyn
 - [Alter source list to include current channel/PVR/App](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/774d8ff6fb5a168bbb6e806683a2f447650f6157) - @RogerSelwyn
 - [Add TV Device Class to YAML setup](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/84c0c375263d71626126226df9b737f61184081d) - @RogerSelwyn
+- [Change how volume entity is managed](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/43b681af201cca92331a2d9377c3c40b38cb25ae) - @RogerSelwyn
 
 #### Other
 - [Convert image lookup to file system based](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3036efc07c8a08726476bba0aa89bf27ecab2829) - @RogerSelwyn
 - [Update to use extensible app identification](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/77afbcb7d6716cdd6b530e0b6fbdb53a40db7575) - @RogerSelwyn
 
+### Fixes
+- [Handle 'None' from getCurrentMedia](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4eda7f835bc82ead8822443a327d77dbed692bf4) - @RogerSelwyn
+
 ### Maintenance
 - [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fc32eb420f7cfc423a429dd81d040c73e21c566f) - @RogerSelwyn
 - [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e2620206371eba905c55c4eea410d2e34e7f19e7) - @actions-user
-- [Bump to 2.6.10 beta 7](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bf91d42410e882d187d7722011907f368f40f8ea) - @RogerSelwyn
+- ['Refactored by Sourcery'](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e0417ecf021712e9199feeac06daa1a50d5bb591) - @None
+- [Refactor based on sourcery recommendations](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d90cd0e54ac0d369700a517e0440963b9cd3757d) - @RogerSelwyn
+- [Remove unneeded line](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2e9fcce658d7339be023cbeeb6d3f19aba394ddb) - @RogerSelwyn
+- [Codefactor improvement](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/17f6098b227ad32f2811e96960b73bd5a30b8187) - @RogerSelwyn
+- [Add extra debugging](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0be13a48b6bf62b45884919479f9787a9c19045d) - @RogerSelwyn
+- [Store custom sources as json (as entered)](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2850dacacec79c5bcc61d46acda1e88bffa086c1) - @RogerSelwyn
+- [Bump to 2.6.10 beta 8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f4dfd4aed130a4fdb813ad53ebc2226711231425) - @RogerSelwyn
+
+
 
 ## v2.6.9 (2021/10/13)
 ### Fixes
