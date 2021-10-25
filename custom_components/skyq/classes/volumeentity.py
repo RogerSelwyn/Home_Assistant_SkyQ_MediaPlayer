@@ -100,14 +100,17 @@ class Volume_Entity:
         )
         return
 
+    @property
     def supported_features(self):
         """Provide supported features of the volume entity."""
         return self._supported_features
 
+    @property
     def volume_level(self):
         """Provide volume level of the volume entity."""
         return self._volume_level
 
+    @property
     def is_volume_muted(self):
         """Provide mute status of the volume entity."""
         return self._is_volume_muted

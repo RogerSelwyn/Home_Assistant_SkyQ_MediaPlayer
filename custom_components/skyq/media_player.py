@@ -4,59 +4,35 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from homeassistant.components.homekit.const import (
-    ATTR_KEY_NAME,
-    EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED,
-    KEY_FAST_FORWARD,
-    KEY_REWIND,
-)
-from homeassistant.components.media_player import DEVICE_CLASS_RECEIVER, DEVICE_CLASS_TV, MediaPlayerEntity
-from homeassistant.components.media_player.const import (
-    MEDIA_TYPE_APP,
-    MEDIA_TYPE_TVSHOW,
-    SUPPORT_BROWSE_MEDIA,
-    SUPPORT_VOLUME_MUTE,
-    SUPPORT_VOLUME_SET,
-    SUPPORT_VOLUME_STEP,
-)
-from homeassistant.const import (
-    ATTR_ENTITY_ID,
-    CONF_HOST,
-    CONF_NAME,
-    STATE_OFF,
-    STATE_PAUSED,
-    STATE_PLAYING,
-    STATE_UNKNOWN,
-)
-from pyskyqremote.const import APP_EPG, SKY_STATE_OFF, SKY_STATE_ON, SKY_STATE_PAUSED, SKY_STATE_STANDBY
+    ATTR_KEY_NAME, EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED, KEY_FAST_FORWARD,
+    KEY_REWIND)
+from homeassistant.components.media_player import (DEVICE_CLASS_RECEIVER,
+                                                   DEVICE_CLASS_TV,
+                                                   MediaPlayerEntity)
+from homeassistant.components.media_player.const import (MEDIA_TYPE_APP,
+                                                         MEDIA_TYPE_TVSHOW,
+                                                         SUPPORT_BROWSE_MEDIA,
+                                                         SUPPORT_VOLUME_MUTE,
+                                                         SUPPORT_VOLUME_SET,
+                                                         SUPPORT_VOLUME_STEP)
+from homeassistant.const import (ATTR_ENTITY_ID, CONF_HOST, CONF_NAME,
+                                 STATE_OFF, STATE_PAUSED, STATE_PLAYING,
+                                 STATE_UNKNOWN)
+from pyskyqremote.const import (APP_EPG, SKY_STATE_OFF, SKY_STATE_ON,
+                                SKY_STATE_PAUSED, SKY_STATE_STANDBY)
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .classes.config import Config
 from .classes.mediabrowser import Media_Browser
 from .classes.switchmaker import Switch_Maker
 from .classes.volumeentity import Volume_Entity
-from .const import (
-    APP_IMAGE_URL_BASE,
-    CONF_EPG_CACHE_LEN,
-    CONST_DEFAULT_EPGCACHELEN,
-    CONST_SKYQ_CHANNELNO,
-    CONST_SKYQ_MEDIA_TYPE,
-    DOMAIN,
-    DOMAINBROWSER,
-    ERROR_TIMEOUT,
-    FEATURE_BASE,
-    FEATURE_GET_LIVE_RECORD,
-    FEATURE_IMAGE,
-    FEATURE_LIVE_TV,
-    FEATURE_SWITCHES,
-    FEATURE_TV_DEVICE_CLASS,
-    REMOTE_BUTTONS,
-    SKYQ_APP,
-    SKYQ_ICONS,
-    SKYQ_LIVE,
-    SKYQ_LIVEREC,
-    SKYQ_PVR,
-    SKYQREMOTE,
-)
+from .const import (APP_IMAGE_URL_BASE, CONF_EPG_CACHE_LEN,
+                    CONST_DEFAULT_EPGCACHELEN, CONST_SKYQ_CHANNELNO,
+                    CONST_SKYQ_MEDIA_TYPE, DOMAIN, DOMAINBROWSER,
+                    ERROR_TIMEOUT, FEATURE_BASE, FEATURE_GET_LIVE_RECORD,
+                    FEATURE_IMAGE, FEATURE_LIVE_TV, FEATURE_SWITCHES,
+                    FEATURE_TV_DEVICE_CLASS, REMOTE_BUTTONS, SKYQ_APP,
+                    SKYQ_ICONS, SKYQ_LIVE, SKYQ_LIVEREC, SKYQ_PVR, SKYQREMOTE)
 from .utils import App_Image_Url, get_command
 
 _LOGGER = logging.getLogger(__name__)
@@ -184,8 +160,8 @@ class SkyQDevice(MediaPlayerEntity):
             self._supported_features = self._supported_features | SUPPORT_VOLUME_MUTE
             self._supported_features = self._supported_features | SUPPORT_VOLUME_STEP
             if (
-                self._volume_entity.supported_features()
-                and self._volume_entity.supported_features() & SUPPORT_VOLUME_SET
+                self._volume_entity.supported_features
+                and self._volume_entity.supported_features & SUPPORT_VOLUME_SET
             ):
                 self._supported_features = self._supported_features | SUPPORT_VOLUME_SET
         if len(self._config.source_list) > 0 and self.state not in (
@@ -319,12 +295,12 @@ class SkyQDevice(MediaPlayerEntity):
     @property
     def volume_level(self):
         """Volume level of entity specified in config."""
-        return self._volume_entity.volume_level() if self._volume_entity else None
+        return self._volume_entity.volume_level if self._volume_entity else None
 
     @property
     def is_volume_muted(self):
         """Boolean if volume is muted."""
-        return self._volume_entity.is_volume_muted() if self._volume_entity else None
+        return self._volume_entity.is_volume_muted if self._volume_entity else None
 
     async def async_update(self):
         """Get the latest data and update device state."""
@@ -410,7 +386,7 @@ class SkyQDevice(MediaPlayerEntity):
 
     async def async_mute_volume(self, mute):
         """Mute the volume."""
-        if self._volume_entity.supported_features() & SUPPORT_VOLUME_MUTE:
+        if self._volume_entity.supported_features & SUPPORT_VOLUME_MUTE:
             await self._volume_entity.async_mute_volume(self.hass, mute)
         else:
             await self.async_set_volume_level(0)
@@ -423,7 +399,7 @@ class SkyQDevice(MediaPlayerEntity):
     async def async_volume_up(self):
         """Turn volume up for media player."""
         # _LOGGER.debug(f"D9999M - Volume up - {self.name}")
-        if self._volume_entity.supported_features() & SUPPORT_VOLUME_STEP:
+        if self._volume_entity.supported_features & SUPPORT_VOLUME_STEP:
             await self._volume_entity.async_volume_up(self.hass)
         elif self.volume_level:
             await self.async_set_volume_level(self.volume_level + 0.02)
@@ -431,7 +407,7 @@ class SkyQDevice(MediaPlayerEntity):
     async def async_volume_down(self):
         """Turn volume down for media player."""
         # _LOGGER.debug(f"D9999M - Volume down - {self.name}")
-        if self._volume_entity.supported_features() & SUPPORT_VOLUME_STEP:
+        if self._volume_entity.supported_features & SUPPORT_VOLUME_STEP:
             await self._volume_entity.async_volume_down(self.hass)
         elif self.volume_level:
             await self.async_set_volume_level(self.volume_level - 0.02)
