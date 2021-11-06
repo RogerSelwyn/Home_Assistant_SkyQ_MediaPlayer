@@ -42,7 +42,7 @@ You can use HACS by adding this repository as a custom Integration repository in
 
 - Put the files from `/custom_components/skyq/` in your folder `<config directory>/custom_components/skyq/`
 
-If you wish to add to the provided application images (such as Netflix) place '.png' images names the same as the application in the following folder:
+If you wish to add to the provided application images (such as Netflix) place '.png' images with names the same as the application in the following folder:
 
 - `<config directory>/custom_components/skyq/static/`
 
