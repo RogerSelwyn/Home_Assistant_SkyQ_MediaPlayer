@@ -1,7 +1,7 @@
 {
   "name": "SkyQ",
   "zip_release": true,
-  "homeassistant": "0.115",
+  "homeassistant": "2021.10.0",
   "content_in_root": false,
   "domains": ["media_player"],
   "filename": "skyq.zip",

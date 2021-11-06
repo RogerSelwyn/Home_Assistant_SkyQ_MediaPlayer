@@ -81,7 +81,7 @@ SKYQ_LIVE = "live"
 SKYQ_LIVEREC = "liverecord"
 SKYQ_PVR = "pvr"
 SKYQ_ICONS = {
-    SKYQ_APP: "mdi:application",
+    SKYQ_APP: "mdi:application-outline",
     SKYQ_LIVE: "mdi:satellite-variant",
     SKYQ_LIVEREC: "mdi:record-rec",
     STATE_OFF: "mdi:television",
