@@ -13,12 +13,15 @@ If you are able to supply details on where to reliably retrieve EPG information 
 
 There is currently support for the following device types within Home Assistant:
 
-- Media Player
+- [Media Player](#mediaplayer)
+- [Sensor](#storagesensor) (UI config only)
 
 ### [Buy Me A ~~Coffee~~ Beer 🍻](https://buymeacoffee.com/rogtp)
 I work on this integration because I like things to work well for myself and others, and for it to deliver as much as is achievable with the API. Please don't feel you are obligated to donate, but of course it is appreciated.
 
-## Screenshots
+## <a name="mediaplayer">Media Player</a>
+
+### Screenshots
 
 _Component showing current TV with default media control_
 
@@ -36,7 +39,7 @@ _Media Browser_
 
 <img src="https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/blob/master/screenshots/skyq_4.png">
 
-## Installation
+### Installation
 
 You can use HACS by adding this repository as a custom Integration repository in HACS settings, or install the component manually:
 
@@ -48,11 +51,11 @@ If you wish to add to the provided application images (such as Netflix) place '.
 
 For channels where there is no EPG, this can also be utilised to provide a channel image. Place an image file in the same directory with the same name as your channel source name (e.g. raiuno.png).
 
-# Media Player Configuration
+### Media Player Configuration
 
 There are two methods of configuration, via the Home Assistant Integrations UI dialogue or via YAML. You cannot use both for the same Sky Q box, please use one or the other. Previous YAML configurations are not migrated to the UI method, please continue to use YAML, or delete YAML, reboot and add via UI.
 
-## Integrations UI (from v2.2.0)
+#### Integrations UI (from v2.2.0)
 
 On the Integrations page, click to add a new Integration and search for Sky Q. Sky Q will only be visible if you have previously installed via one of the methods above and have restarted Home Assistant.
 
@@ -60,11 +63,11 @@ You will be asked to enter a host (which must be contactable on your network and
 
 If you want to add a second Sky Q box, just follow the same process again and add a new instance of the integration.
 
-## YAML
+#### YAML
 
 Add a skyq platform entry in your configuration.yaml as below.
 
-### Example of basic configuration.yaml
+**Example of basic configuration.yaml**
 
 ```
 media_player:
@@ -77,7 +80,7 @@ media_player:
       SkyNews: '5,0,1'
 ```
 
-## Configuration variables
+#### Configuration variables
 
 | **YAML**                                        | **UI**                            | **Default** | **Details** |
 | ------------------------------------------------|-----------------------------------|:-----------:|-------------|
@@ -93,11 +96,11 @@ media_player:
 | volume_entity<br>_(string)(Optional)_        | Entity to control volume of | _Empty_     | Specifies the entity for which volume control actions will be passed through to. No validation of the entity is done via the UI, warnings will show in the log if an invalid entity is used. Must be a media_player entity. e.g. media_player.braviatv|
 | epg_cache_len<br>_(integer)(Optional)_          | EPG Cache Length               | 20           |Allows you to configure the number of EPG channels to cache for the media browser. Larger numbers will cause slower initial load per day and consume more memory. |
 
-### Sources
+#### Sources
 
 To configure sources, set as:
 
-#### Via UI
+##### Via UI
 
 ```
 {"<YourChanneName>": "<button>,<button>,<button>", "<YourChanneName2>": "<button>,<button>,<button>"}.
@@ -118,18 +121,18 @@ Example
   BBC2: "1,0,2"
 ```
 
-### Supported buttons
+#### Supported buttons
 
 - sky, power, tvguide or home, boxoffice, search, sidebar, up, down, left, right, select, channelup, channeldown, i, dismiss, text, help, 
 - play, pause, rewind, fastforward, stop, record
 - red, green, yellow, blue
 - 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
-### Next/Previous Buttons
+#### Next/Previous Buttons
 
 The behaviour of the next and previous buttons is fastforward and rewind (multiple presses to increase speed, play to resume)
 
-### Sending Button Commands
+#### Sending Button Commands
 
 If you are using [Mini Media Player](https://github.com/kalkih/mini-media-player) or some other player that supports sending 'play_media' commands, you can configure this in the front-end rather than having to configure a source and then assigning it to a button. For example, the below will send the 'channelup' button command to the Sky box:
 
@@ -141,7 +144,7 @@ shortcuts:
       type: skyq
 ```
 
-## Media Browser
+### Media Browser
 
 Fetching data to support live programme information for the Media Browser is data intensive, so the information for upto 20 channels are cached to improve performance. The first media browser access per day will be slow (whilst the data is fetched), further accesses will utilise cached data. If the programme line up for a channel changes during the day, this will not be reflected in the media browser.
 
@@ -149,13 +152,13 @@ Images for the current live programme on each channel should show along with the
 
 In custom sources, if you have 'backup' as your first command, then this will be ignored when identifying the channel number to lookup the live programme for. This will not impact the set of commands sent to the Sky Box when you select a channel.
 
-# Switch Generation Helper
+### Switch Generation Helper
 
 A utility function has been created to generate yaml configuration for SkyQ enabled media players to support easy usage with other home assistant integrations, e.g. google home
 
 Usage based on Google home: _“turn on <source name / channel name> in the ”_
 
-## Configuration
+#### Configuration
 
 | **YAML**                                        | **UI**                            | **Default** | **Details** |
 | ------------------------------------------------|-----------------------------------|:-----------:|-------------|
@@ -164,7 +167,7 @@ Usage based on Google home: _“turn on <source name / channel name> in the ”_
 
 Avoid using [ ] in the name: or room: of your device. This field is required if you have more than one SkyQ box being configured with switches
 
-### Example configuration.yaml with switch generation
+**Example configuration.yaml with switch generation**
 
 ```
 media_player:
@@ -186,7 +189,7 @@ switch:
   switches: !include  skyq<room>.yaml
 ```
 
-## Aliases
+### Aliases
 
 Because the name of the channel may not always be what you want to use to talk to Google Home, it is possible to place an alias file in the root of your Home Assistant configuration. This needs to be called `skyqswitchalias.yaml`. It is also possible to use this to rename some of the default switches, so you can change `play` to `engage` for example. The contents should be pairs of switchname and alias as below:
 
@@ -200,6 +203,10 @@ SkyFamilyHD: Sky Family HD
 play: engage
 ```
 
- ## Homekit Integration
+ ### Homekit Integration
  
- Please see [B-Hartley Github's](https://github.com/B-Hartley/bruces_homeassistant_config/tree/main/packages/systems/homekit) for some details on how to integrate (SkyQ) media player buttons with HomeKit
+Please see [B-Hartley Github's](https://github.com/B-Hartley/bruces_homeassistant_config/tree/main/packages/systems/homekit) for some details on how to integrate (SkyQ) media player buttons with HomeKit
+
+ ## <a name="storagesensor">Storage Sensor</a>
+ 
+One sensor is created per SkyQ device with it's value set to the current used space in GB. Max GB and percentage used are all provided as attributes of the sensor.
