@@ -1,2 +1,2 @@
-pyskyqremote==0.2.46
+pyskyqremote==0.2.47
 pycountry>=20.7.3
