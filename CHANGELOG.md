@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.7.2 (2021/11/23)
+### Fixes
+- [Fix issue with recording image - bump pyskyqremote to 0.2.48](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c297256336298ff31440bcaef78b8880480b4bd9) - @RogerSelwyn
+
 ## v2.7.1 (2021/11/23)
 ### Fixes
 - [Fix channellist - bump pyskyqremote to 0.2.47](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/33f5cc877a1fd5ff15ade7c2a52701737e32faf3) - @RogerSelwyn
