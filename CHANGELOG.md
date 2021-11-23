@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.3 (2021/11/23)
+### Fixes
+- [Handle oeid missing in recording - bump pyskyqremote to 0.2.49](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/714070a930d0fa3dbba0407d0a9015d74074211b) - @RogerSelwyn
+
+### Maintenance
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fc969a6cf3c218eea4a3daaa5f86d2187cfeff09) - @actions-user
+ 
 ## v2.7.2 (2021/11/23)
 ### Fixes
 - [Fix issue with recording image - bump pyskyqremote to 0.2.48](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c297256336298ff31440bcaef78b8880480b4bd9) - @RogerSelwyn
