@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.7.1 (2021/11/23)
+### Fixes
+- [Fix channellist - bump pyskyqremote to 0.2.47](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/33f5cc877a1fd5ff15ade7c2a52701737e32faf3) - @RogerSelwyn
+
 ## v2.7.0 (2021/11/23)
 ### Enhancements
 - [Add storage consumption sensor](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f024b19fd1f98c2f4c3f9435f49676db7be20882) - @RogerSelwyn
