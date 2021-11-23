@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.0 (2021/11/23)
+### Enhancements
+- [Add storage consumption sensor](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f024b19fd1f98c2f4c3f9435f49676db7be20882) - @RogerSelwyn
+
+### Maintenance
+- [Update for new mdi icons - Requires HA 2021.10.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8dd4ac3d085aa7be2fc232b4ac082d82a36a4f9b) - @RogerSelwyn
+
 ## v2.6.10 (2021/11/06)
 ### Enhancements
 #### Enhance HomeKit support
