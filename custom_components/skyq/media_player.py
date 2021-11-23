@@ -33,6 +33,7 @@ from .const import (APP_IMAGE_URL_BASE, CONF_EPG_CACHE_LEN,
                     FEATURE_IMAGE, FEATURE_LIVE_TV, FEATURE_SWITCHES,
                     FEATURE_TV_DEVICE_CLASS, REMOTE_BUTTONS, SKYQ_APP,
                     SKYQ_ICONS, SKYQ_LIVE, SKYQ_LIVEREC, SKYQ_PVR, SKYQREMOTE)
+from .entity import SkyQEntity
 from .utils import App_Image_Url, get_command
 
 _LOGGER = logging.getLogger(__name__)
@@ -110,7 +111,7 @@ async def _async_setup_platform_entry(config_item, async_add_entities, remote, u
     hass.bus.async_listen(EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED, _async_homekit_event)
 
 
-class SkyQDevice(MediaPlayerEntity):
+class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     """Representation of a SkyQ Box."""
 
     def __init__(
@@ -159,10 +160,7 @@ class SkyQDevice(MediaPlayerEntity):
         if self._config.volume_entity:
             self._supported_features = self._supported_features | SUPPORT_VOLUME_MUTE
             self._supported_features = self._supported_features | SUPPORT_VOLUME_STEP
-            if (
-                self._volume_entity.supported_features
-                and self._volume_entity.supported_features & SUPPORT_VOLUME_SET
-            ):
+            if self._volume_entity.supported_features and self._volume_entity.supported_features & SUPPORT_VOLUME_SET:
                 self._supported_features = self._supported_features | SUPPORT_VOLUME_SET
         if len(self._config.source_list) > 0 and self.state not in (
             STATE_OFF,
@@ -263,21 +261,6 @@ class SkyQDevice(MediaPlayerEntity):
     def available(self):
         """Entity availability."""
         return self._available
-
-    @property
-    def device_info(self):
-        """Entity device information."""
-        return (
-            {
-                "identifiers": {(DOMAIN, self._deviceInfo.serialNumber)},
-                "name": self.name,
-                "manufacturer": self._deviceInfo.manufacturer,
-                "model": self._deviceInfo.hardwareModel,
-                "sw_version": f"{self._deviceInfo.ASVersion}:{self._deviceInfo.versionNumber}",
-            }
-            if self._deviceInfo
-            else None
-        )
 
     @property
     def unique_id(self):

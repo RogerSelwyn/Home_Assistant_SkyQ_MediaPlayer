@@ -7,7 +7,7 @@ from pyskyqremote.skyq_remote import SkyQRemote
 
 from .const import CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN, DOMAIN, SKYQREMOTE, UNDO_UPDATE_LISTENER
 
-PLATFORMS = ["media_player"]
+PLATFORMS = ["media_player", "sensor"]
 
 
 async def async_setup(hass, config):

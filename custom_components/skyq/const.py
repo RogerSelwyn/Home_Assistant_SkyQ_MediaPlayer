@@ -49,6 +49,9 @@ CONST_DEFAULT_ROOM = "Default Room"
 CONST_ALIAS_FILENAME = "skyqswitchalias.yaml"
 CONST_SKYQ_CHANNELNO = "skyq_channelno"
 CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
+CONST_SKYQ_STORAGE_MAX = "skyq_storage_max"
+CONST_SKYQ_STORAGE_PERCENT = "skyq_storage_percent"
+CONST_SKYQ_STORAGE_USED = "skyq_storage_used"
 CONST_DEFAULT = "Default"
 CONST_DEFAULT_EPGCACHELEN = 20
 LIST_EPGCACHELEN = [10, 20, 30, 50, 999]
@@ -87,6 +90,7 @@ SKYQ_ICONS = {
     STATE_OFF: "mdi:television",
     SKYQ_PVR: "mdi:movie-open",
     STATE_UNKNOWN: "mdi:alert-circle-outline",
+    CONST_SKYQ_STORAGE_USED: "mdi:database",
 }
 
 APP_IMAGE_URL_BASE = "/api/" + DOMAIN + "/static"
