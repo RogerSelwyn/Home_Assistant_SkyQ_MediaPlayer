@@ -1,5 +1,5 @@
 """Entity representation for storage usage."""
-
+import logging
 from datetime import timedelta
 
 from custom_components.skyq.entity import SkyQEntity
@@ -15,6 +15,8 @@ from .const import (
     SKYQ_ICONS,
     SKYQREMOTE,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 SCAN_INTERVAL = timedelta(minutes=30)
 
@@ -40,6 +42,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
         self._config = config
         self._deviceInfo = None
         self._quotaInfo = None
+        self._available = True
 
     @property
     def unit_of_measurement(self):
@@ -62,6 +65,11 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
         return SKYQ_ICONS[CONST_SKYQ_STORAGE_USED]
 
     @property
+    def available(self):
+        """Entity availability."""
+        return self._available
+
+    @property
     def native_value(self):
         """Return the state of the sensor."""
         return "{:.1f}".format(round(self._quotaInfo.quotaUsed / 1024, 1))
@@ -82,7 +90,23 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
         if not self._deviceInfo:
             await self._async_getDeviceInfo()
 
-        self._quotaInfo = await self.hass.async_add_executor_job(self._remote.getQuota)
+        resp = await self.hass.async_add_executor_job(self._remote.getQuota)
+        if not resp:
+            self._powerStatus_off_handling()
+            return
+
+        self._powerStatus_on_handling()
+        self._quotaInfo = resp
 
     async def _async_getDeviceInfo(self):
         self._deviceInfo = await self.hass.async_add_executor_job(self._remote.getDeviceInformation)
+
+    def _powerStatus_off_handling(self):
+        if self._available:
+            self._available = False
+            _LOGGER.warning(f"W0010S - Device is not available: {self.name}")
+
+    def _powerStatus_on_handling(self):
+        if not self._available:
+            self._available = True
+            _LOGGER.info(f"I0020M - Device is now available: {self.name}")
