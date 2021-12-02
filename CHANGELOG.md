@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.7.4 (2021/12/02)
+### Fixes
+- [Improve handling around sensor unavailable](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0843e887bce39685912f6ac19fa0a18520c2fd2d) - @RogerSelwyn
+
+### Maintenance
+- [Bump to 2.7.4](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/55ab599b3df40e1b5b96d9b218a10261de81109c) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6621eb921ee4dca10662bfe8e1bb0eec8af642e5) - @actions-user
+- [Auto update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/aed30bbc504d14d0c5b2e5ffbba957df4add08bc) - @actions-user
+
 ## v2.7.3 (2021/11/23)
 ### Fixes
 - [Handle oeid missing in recording - bump pyskyqremote to 0.2.49](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/714070a930d0fa3dbba0407d0a9015d74074211b) - @RogerSelwyn
