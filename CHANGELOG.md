@@ -1,13 +1,16 @@
 # Changelog
 
-## v2.7.4 (2021/12/02)
+## v2.7.4 (2021/12/05)
 ### Fixes
 - [Improve handling around sensor unavailable](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0843e887bce39685912f6ac19fa0a18520c2fd2d) - @RogerSelwyn
+- [Fix JSON handling - Bump pyskyqremote to 0.2.52](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d15f18434fa7e268d3f1c37c26b9215829623450) - @RogerSelwyn
 
 ### Maintenance
 - [Bump to 2.7.4](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/55ab599b3df40e1b5b96d9b218a10261de81109c) - @RogerSelwyn
 - [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6621eb921ee4dca10662bfe8e1bb0eec8af642e5) - @actions-user
 - [Auto update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/aed30bbc504d14d0c5b2e5ffbba957df4add08bc) - @actions-user
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e79b2f8d2275d07e01a7c2398ea102a4f7925ce6) - @actions-user
+
 
 ## v2.7.3 (2021/11/23)
 ### Fixes
