@@ -4,35 +4,59 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from homeassistant.components.homekit.const import (
-    ATTR_KEY_NAME, EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED, KEY_FAST_FORWARD,
-    KEY_REWIND)
-from homeassistant.components.media_player import (DEVICE_CLASS_RECEIVER,
-                                                   DEVICE_CLASS_TV,
-                                                   MediaPlayerEntity)
-from homeassistant.components.media_player.const import (MEDIA_TYPE_APP,
-                                                         MEDIA_TYPE_TVSHOW,
-                                                         SUPPORT_BROWSE_MEDIA,
-                                                         SUPPORT_VOLUME_MUTE,
-                                                         SUPPORT_VOLUME_SET,
-                                                         SUPPORT_VOLUME_STEP)
-from homeassistant.const import (ATTR_ENTITY_ID, CONF_HOST, CONF_NAME,
-                                 STATE_OFF, STATE_PAUSED, STATE_PLAYING,
-                                 STATE_UNKNOWN)
-from pyskyqremote.const import (APP_EPG, SKY_STATE_OFF, SKY_STATE_ON,
-                                SKY_STATE_PAUSED, SKY_STATE_STANDBY)
+    ATTR_KEY_NAME,
+    EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED,
+    KEY_FAST_FORWARD,
+    KEY_REWIND,
+)
+from homeassistant.components.media_player import DEVICE_CLASS_RECEIVER, DEVICE_CLASS_TV, MediaPlayerEntity
+from homeassistant.components.media_player.const import (
+    MEDIA_TYPE_APP,
+    MEDIA_TYPE_TVSHOW,
+    SUPPORT_BROWSE_MEDIA,
+    SUPPORT_VOLUME_MUTE,
+    SUPPORT_VOLUME_SET,
+    SUPPORT_VOLUME_STEP,
+)
+from homeassistant.const import (
+    ATTR_ENTITY_ID,
+    CONF_HOST,
+    CONF_NAME,
+    STATE_OFF,
+    STATE_PAUSED,
+    STATE_PLAYING,
+    STATE_UNKNOWN,
+)
+from pyskyqremote.const import APP_EPG, SKY_STATE_OFF, SKY_STATE_ON, SKY_STATE_PAUSED, SKY_STATE_STANDBY
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .classes.config import Config
 from .classes.mediabrowser import Media_Browser
 from .classes.switchmaker import Switch_Maker
 from .classes.volumeentity import Volume_Entity
-from .const import (APP_IMAGE_URL_BASE, CONF_EPG_CACHE_LEN,
-                    CONST_DEFAULT_EPGCACHELEN, CONST_SKYQ_CHANNELNO,
-                    CONST_SKYQ_MEDIA_TYPE, DOMAIN, DOMAINBROWSER,
-                    ERROR_TIMEOUT, FEATURE_BASE, FEATURE_GET_LIVE_RECORD,
-                    FEATURE_IMAGE, FEATURE_LIVE_TV, FEATURE_SWITCHES,
-                    FEATURE_TV_DEVICE_CLASS, REMOTE_BUTTONS, SKYQ_APP,
-                    SKYQ_ICONS, SKYQ_LIVE, SKYQ_LIVEREC, SKYQ_PVR, SKYQREMOTE)
+from .const import (
+    APP_IMAGE_URL_BASE,
+    CONF_EPG_CACHE_LEN,
+    CONST_DEFAULT_EPGCACHELEN,
+    CONST_SKYQ_CHANNELNO,
+    CONST_SKYQ_MEDIA_TYPE,
+    DOMAIN,
+    DOMAINBROWSER,
+    ERROR_TIMEOUT,
+    FEATURE_BASE,
+    FEATURE_GET_LIVE_RECORD,
+    FEATURE_IMAGE,
+    FEATURE_LIVE_TV,
+    FEATURE_SWITCHES,
+    FEATURE_TV_DEVICE_CLASS,
+    REMOTE_BUTTONS,
+    SKYQ_APP,
+    SKYQ_ICONS,
+    SKYQ_LIVE,
+    SKYQ_LIVEREC,
+    SKYQ_PVR,
+    SKYQREMOTE,
+)
 from .entity import SkyQEntity
 from .utils import App_Image_Url, get_command
 
@@ -268,7 +292,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         return self._unique_id
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         """Return entity specific state attributes."""
         attributes = {CONST_SKYQ_MEDIA_TYPE: self._skyq_type}
         if self._skyq_channelno:

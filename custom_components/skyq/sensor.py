@@ -75,7 +75,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
         return "{:.1f}".format(round(self._quotaInfo.quotaUsed / 1024, 1))
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         """Return entity specific state attributes."""
         attributes = {
             CONST_SKYQ_STORAGE_MAX: "{:.1f}".format(round(self._quotaInfo.quotaMax / 1024, 1)),
