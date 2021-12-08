@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.7.5 (2021/12/08)
+### Fixes
+- [Fix warning with regards device_state_attributes](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2542582517847cfba9f1ac403679e49d84a0a183) - @RogerSelwyn - [#75](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/75) 
+- [Bump to v2.7.5](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3557d2ea4cf4f3715cfcd2571d24099935ec105f) - @RogerSelwyn
+
 ## v2.7.4 (2021/12/05)
 ### Fixes
 - [Improve handling around sensor unavailable](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0843e887bce39685912f6ac19fa0a18520c2fd2d) - @RogerSelwyn
