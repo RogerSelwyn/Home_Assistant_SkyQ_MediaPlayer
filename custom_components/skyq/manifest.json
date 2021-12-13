@@ -7,12 +7,12 @@
     "@rogerselwyn"
   ],
   "requirements": [
-    "pyskyqremote==0.2.52",
+    "pyskyqremote==0.2.53",
     "pycountry>=20.7.3"
   ],
   "quality_scale": "silver",
   "config_flow": true,
-  "version": "v2.7.5",
+  "version": "v2.7.6",
   "iot_class": "local_polling",
   "after_dependencies": [
     "homekit"
