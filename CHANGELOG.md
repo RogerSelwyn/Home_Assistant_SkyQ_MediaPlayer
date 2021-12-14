@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.6 (2021/12/14)
+### Fixes
+- [Fix media browser issue - bump pyskyqremote to 0.2.53](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/275563e7bebb3b05051f309c2de4faf4a7711286) - @RogerSelwyn
+
+### Maintenance
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/97b1a18d38c85822d400375bc35986d081755f4a) - @actions-user
+
 ## v2.7.5 (2021/12/08)
 ### Fixes
 - [Fix warning with regards device_state_attributes](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2542582517847cfba9f1ac403679e49d84a0a183) - @RogerSelwyn - [#75](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/75) 
