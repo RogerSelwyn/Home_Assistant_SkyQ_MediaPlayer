@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.7 (2021/12/15)
+### Fixes
+- [Fix media player not showing paused - bump pyskyqremote to 0.2.54](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/427cbfb2e800944f1593f4d401e17a0abfd3e2ae) - @RogerSelwyn -  [#81](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/81) 
+
+### Maintenance
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b69ef3cf1fec704ff3e871df5a79eea475665667) - @actions-user
+
 ## v2.7.6 (2021/12/14)
 ### Fixes
 - [Fix media browser issue - bump pyskyqremote to 0.2.53](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/275563e7bebb3b05051f309c2de4faf4a7711286) - @RogerSelwyn
