@@ -3,7 +3,7 @@
   "zip_release": true,
   "homeassistant": "2021.10.0",
   "content_in_root": false,
-  "domains": ["media_player"],
+  "domains": ["media_player","sensor"],
   "filename": "skyq.zip",
   "render_readme": true
 }
