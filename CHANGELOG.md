@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.8 (2021/12/26)
+### Enhancements
+- [Add appletv+ logo](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7f1b419d56cb55459b9159d2b2851bbf4ef66763) - @RogerSelwyn
+### Maintenance
+- [Sensor added to HACS](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c98529ec591ec685c27923fc2bf164490358318c) - @RogerSelwyn
+- [Bump to v2.7.8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d6cc55750592eff8e3894d30b88df945d041ea00) - @RogerSelwyn
+
 ## v2.7.7 (2021/12/15)
 ### Fixes
 - [Fix media player not showing paused - bump pyskyqremote to 0.2.54](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/427cbfb2e800944f1593f4d401e17a0abfd3e2ae) - @RogerSelwyn -  [#81](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/81) 
