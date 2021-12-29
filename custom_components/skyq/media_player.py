@@ -145,8 +145,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         config,
     ):
         """Initialise the SkyQRemote."""
-        self._config = config
-        self._unique_id = config.unique_id
+        super().__init__(remote, config)
         if config.volume_entity:
             self._volume_entity = Volume_Entity(hass, config.volume_entity, self._config.name)
         else:
@@ -162,11 +161,9 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         self._imageUrl = None
         self._imageRemotelyAccessible = False
         self._season = None
-        self._remote = remote
         self._available = True
         self._errorTime = None
         self._startupSetup = True
-        self._deviceInfo = None
         self._channel_list = None
         self._use_internal = True
         self._switches_generated = False
@@ -177,6 +174,11 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             _LOGGER.warning(f"W0010M - Device is not available: {self.name}")
 
         self._supported_features = FEATURE_BASE
+
+    @property
+    def device_info(self):
+        """Entity device information."""
+        return self.skyq_device_info
 
     @property
     def supported_features(self):
@@ -524,13 +526,8 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             self._config.overrideCountry,
             self._config.test_channel,
         )
-        self._deviceInfo = await self.hass.async_add_executor_job(self._remote.getDeviceInformation)
+        await self._async_get_device_info(self.hass)
         if self._deviceInfo:
-            if not self._unique_id:
-                self._unique_id = self._deviceInfo.epgCountryCode + "".join(
-                    e for e in self._deviceInfo.serialNumber.casefold() if e.isalnum()
-                )
-
             if not self._channel_list and len(self._config.channel_sources) > 0:
                 channelData = await self.hass.async_add_executor_job(self._remote.getChannelList)
                 self._channel_list = channelData.channels
