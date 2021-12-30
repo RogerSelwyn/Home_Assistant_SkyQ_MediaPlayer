@@ -38,11 +38,14 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
     def __init__(self, remote, config):
         """Initialize the used storage sensor."""
-        self._remote = remote
-        self._config = config
-        self._deviceInfo = None
+        super().__init__(remote, config)
         self._quotaInfo = None
         self._available = True
+
+    @property
+    def device_info(self):
+        """Entity device information."""
+        return self.skyq_device_info
 
     @property
     def unit_of_measurement(self):
@@ -56,8 +59,8 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
     @property
     def unique_id(self):
-        """Get the name of the devices."""
-        return f"{self._config.unique_id}_used"
+        """Get the unique id of the devices."""
+        return f"{self._unique_id}_used" if self._unique_id else None
 
     @property
     def icon(self):
@@ -87,8 +90,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
     async def async_update(self):
         """Get the latest data and update device state."""
-        if not self._deviceInfo:
-            await self._async_getDeviceInfo()
+        await self._async_get_device_info(self.hass)
 
         resp = await self.hass.async_add_executor_job(self._remote.getQuota)
         if not resp:
@@ -97,9 +99,6 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
         self._powerStatus_on_handling()
         self._quotaInfo = resp
-
-    async def _async_getDeviceInfo(self):
-        self._deviceInfo = await self.hass.async_add_executor_job(self._remote.getDeviceInformation)
 
     def _powerStatus_off_handling(self):
         if self._available:
