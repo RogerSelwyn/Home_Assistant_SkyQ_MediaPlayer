@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.9 (2021/12/30)
+### Fixes
+- [Fix device_info name](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0aade96dcd3a00ab553b2c123679b0ca189dd7b4) - @ollo69
+### Maintenance
+- [Apply Sourcery recommended changes](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a0fb57352a02fabd596913040633fa30706a39ee) - @RogerSelwyn
+- [Update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ac9071e4c9a28d654b4ed0b02448e81bf76850a8) - @RogerSelwyn
+
 ## v2.7.8 (2021/12/26)
 ### Enhancements
 - [Add appletv+ logo](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7f1b419d56cb55459b9159d2b2851bbf4ef66763) - @RogerSelwyn
