@@ -80,13 +80,16 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     @property
     def extra_state_attributes(self):
         """Return entity specific state attributes."""
-        attributes = {
-            CONST_SKYQ_STORAGE_MAX: "{:.1f}".format(round(self._quotaInfo.quotaMax / 1024, 1)),
+        return {
+            CONST_SKYQ_STORAGE_MAX: "{:.1f}".format(
+                round(self._quotaInfo.quotaMax / 1024, 1)
+            ),
             CONST_SKYQ_STORAGE_PERCENT: "{:.1f}".format(
-                round((self._quotaInfo.quotaUsed / self._quotaInfo.quotaMax) * 100, 1)
+                round(
+                    (self._quotaInfo.quotaUsed / self._quotaInfo.quotaMax) * 100, 1
+                )
             ),
         }
-        return attributes
 
     async def async_update(self):
         """Get the latest data and update device state."""
