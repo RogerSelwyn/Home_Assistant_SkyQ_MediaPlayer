@@ -526,7 +526,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             self._config.overrideCountry,
             self._config.test_channel,
         )
-        await self._async_get_device_info()
+        await self._async_get_device_info(self.hass)
         if self._deviceInfo:
             if not self._channel_list and len(self._config.channel_sources) > 0:
                 channelData = await self.hass.async_add_executor_job(self._remote.getChannelList)

@@ -28,11 +28,11 @@ class SkyQEntity:
             else None
         )
 
-    async def _async_get_device_info(self):
+    async def _async_get_device_info(self, hass):
         """Query the device for device info."""
         if self._deviceInfo:
             return
-        self._deviceInfo = await self.hass.async_add_executor_job(self._remote.getDeviceInformation)
+        self._deviceInfo = await hass.async_add_executor_job(self._remote.getDeviceInformation)
         if self._deviceInfo:
             if not self._unique_id:
                 self._unique_id = self._deviceInfo.epgCountryCode + "".join(

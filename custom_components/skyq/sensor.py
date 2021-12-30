@@ -4,12 +4,17 @@ from datetime import timedelta
 
 from custom_components.skyq.entity import SkyQEntity
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.const import (CONF_NAME, DATA_GIGABYTES,
-                                 ENTITY_CATEGORY_DIAGNOSTIC)
+from homeassistant.const import CONF_NAME, DATA_GIGABYTES, ENTITY_CATEGORY_DIAGNOSTIC
 
 from .classes.config import Config
-from .const import (CONST_SKYQ_STORAGE_MAX, CONST_SKYQ_STORAGE_PERCENT,
-                    CONST_SKYQ_STORAGE_USED, DOMAIN, SKYQ_ICONS, SKYQREMOTE)
+from .const import (
+    CONST_SKYQ_STORAGE_MAX,
+    CONST_SKYQ_STORAGE_PERCENT,
+    CONST_SKYQ_STORAGE_USED,
+    DOMAIN,
+    SKYQ_ICONS,
+    SKYQREMOTE,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -85,7 +90,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
     async def async_update(self):
         """Get the latest data and update device state."""
-        await self._async_get_device_info()
+        await self._async_get_device_info(self.hass)
 
         resp = await self.hass.async_add_executor_job(self._remote.getQuota)
         if not resp:
