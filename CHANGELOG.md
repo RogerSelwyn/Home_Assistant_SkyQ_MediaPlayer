@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.10 (2022/01/01)
+### Fixes
+- [Fix issue with unique_id for YAML installs](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3d4487520d8175fa65400aa04a1e20e4e1adc70c) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.7.10](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2b5833ff3c3521dbe1576df46eee38378e32fa4d) - @RogerSelwyn
+
 ## v2.7.9 (2021/12/30)
 ### Fixes
 - [Fix device_info name](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0aade96dcd3a00ab553b2c123679b0ca189dd7b4) - @ollo69
