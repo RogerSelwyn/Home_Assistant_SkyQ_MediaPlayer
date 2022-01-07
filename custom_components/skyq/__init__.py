@@ -5,9 +5,12 @@ from homeassistant.const import CONF_HOST
 from homeassistant.exceptions import ConfigEntryNotReady
 from pyskyqremote.skyq_remote import SkyQRemote
 
-from .const import CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN, DOMAIN, SKYQREMOTE, UNDO_UPDATE_LISTENER
+from .const import (CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN, DOMAIN,
+                    SKYQREMOTE, UNDO_UPDATE_LISTENER)
 
-PLATFORMS = ["media_player", "sensor"]
+sensor = "sensor"
+media_player = "media_player"
+PLATFORMS = [media_player, sensor]
 
 
 async def async_setup(hass, config):
@@ -35,7 +38,8 @@ async def async_setup_entry(hass, config_entry):
     }
 
     for component in PLATFORMS:
-        hass.async_create_task(hass.config_entries.async_forward_entry_setup(config_entry, component))
+        if remote.gateway or component == media_player:
+            hass.async_create_task(hass.config_entries.async_forward_entry_setup(config_entry, component))
 
     return True
 
