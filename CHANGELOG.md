@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.7.11 (2022/01/13)
+### Enhancements
+- [Don't create storage sensor for mini](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e6df64d8838abc88e12e38ed26d434f93751f19d) - @RogerSelwyn
+### Maintenance
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a6c5b14504aa8ee67b5cdb7f86861b9a4114d15a) - @RogerSelwyn
+- [Don't create storage sensor if mini](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f360586cc2ec968554063e7b7ec730b1622d316d) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6f5e9abcce1a6725e43ffb56dc4c689ae25a8a83) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e2a8436de48cfd0929dbf0de720709cbd088c707) - @RogerSelwyn
+- [Revert "Don't create storage sensor if mini"](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b7e13539c4a0bf9caa45cbe01ad05bdb69e975d5) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.56](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/20211a258ea415aa27ccd53a764c0426923ef2c7) - @RogerSelwyn
+- [Bump to v2.7.11](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/91b04b11be9ade43aee8451ff7ab06a07e205407) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ae0dbf669d6ef3702942e1b21fc9b9ec99f73bba) - @actions-user
+
 ## v2.7.10 (2022/01/01)
 ### Fixes
 - [Fix issue with unique_id for YAML installs](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3d4487520d8175fa65400aa04a1e20e4e1adc70c) - @RogerSelwyn
