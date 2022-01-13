@@ -2,7 +2,7 @@
 
 ## v2.7.11 (2022/01/13)
 ### Enhancements
-- [Don't create storage sensor for mini](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e6df64d8838abc88e12e38ed26d434f93751f19d) - @RogerSelwyn
+- [Don't create storage sensor for Mini](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e6df64d8838abc88e12e38ed26d434f93751f19d) - @RogerSelwyn
 ### Maintenance
 - [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a6c5b14504aa8ee67b5cdb7f86861b9a4114d15a) - @RogerSelwyn
 - [Don't create storage sensor if mini](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f360586cc2ec968554063e7b7ec730b1622d316d) - @RogerSelwyn
