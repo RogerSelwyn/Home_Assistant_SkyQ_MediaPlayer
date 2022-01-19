@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.12 (2022/01/19)
+### Enhancements
+- [Added ability to send sequence of commands via play media](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/426a882ba12d965cd83d7df0b5b35361e3ae2379) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.7.12](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/23743b9b9bd51b0d4b3b8979b8c80bc601bd68cb) - @RogerSelwyn
+ 
 ## v2.7.11 (2022/01/13)
 ### Enhancements
 - [Don't create storage sensor for Mini](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e6df64d8838abc88e12e38ed26d434f93751f19d) - @RogerSelwyn
