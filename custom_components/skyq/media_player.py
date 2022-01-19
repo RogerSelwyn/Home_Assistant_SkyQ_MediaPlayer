@@ -27,7 +27,7 @@ from homeassistant.const import (
     STATE_PLAYING,
     STATE_UNKNOWN,
 )
-from pyskyqremote.const import APP_EPG, SKY_STATE_OFF, SKY_STATE_ON, SKY_STATE_PAUSED, SKY_STATE_STANDBY
+from pyskyqremote.const import APP_EPG, COMMANDS, SKY_STATE_OFF, SKY_STATE_ON, SKY_STATE_PAUSED, SKY_STATE_STANDBY
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .classes.config import Config
@@ -388,7 +388,10 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     async def async_play_media(self, media_id, media_type, **kwargs):
         """Perform a media action."""
         if media_type.casefold() == DOMAIN:
-            await self.hass.async_add_executor_job(self._remote.press, media_id.casefold())
+            command = media_id.casefold()
+            if command not in COMMANDS:
+                command = command.split(",")
+            await self.hass.async_add_executor_job(self._remote.press, command)
             await self.async_update()
         if media_type.casefold() == DOMAINBROWSER:
             await self.async_select_source(media_id)
