@@ -145,7 +145,7 @@ shortcuts:
       id: channelup
       type: skyq
 ```
-You can also send a sequence of commands as a service call such as the below (backup is included here because you may need to exit the Sky EPG, it is not required):
+You can also send a sequence of commands as a service call such as the below ('backup' is included here because you may need to exit the Sky EPG, it is not required):
 
 ```
 service: media_player.play_media
