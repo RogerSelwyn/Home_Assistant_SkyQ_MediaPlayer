@@ -4,7 +4,7 @@ from datetime import timedelta
 
 from custom_components.skyq.entity import SkyQEntity
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.const import CONF_NAME, DATA_GIGABYTES, ENTITY_CATEGORY_DIAGNOSTIC
+from homeassistant.const import CONF_HOST, CONF_NAME, DATA_GIGABYTES, ENTITY_CATEGORY_DIAGNOSTIC
 
 from .classes.config import Config
 from .const import (
@@ -18,12 +18,14 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
-SCAN_INTERVAL = timedelta(minutes=1)
+SCAN_INTERVAL = timedelta(minutes=5)
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up Sonos from a config entry."""
-    config = Config(config_entry.unique_id, config_entry.data[CONF_NAME], config_entry.options)
+    config = Config(
+        config_entry.unique_id, config_entry.data[CONF_NAME], config_entry.data[CONF_HOST], config_entry.options
+    )
     remote = hass.data[DOMAIN][config_entry.entry_id][SKYQREMOTE]
 
     usedsensor = SkyQUsedStorage(remote, config)

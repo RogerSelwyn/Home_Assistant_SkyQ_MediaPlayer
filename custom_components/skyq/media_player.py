@@ -78,6 +78,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         remote,
         unique_id,
         name,
+        host,
         hass,
     )
 
@@ -88,6 +89,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     unique_id = config_entry.unique_id
     name = config_entry.data[CONF_NAME]
+    host = config_entry.data[CONF_HOST]
 
     await _async_setup_platform_entry(
         config_entry.options,
@@ -95,13 +97,14 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         remote,
         unique_id,
         name,
+        host,
         hass,
     )
 
 
-async def _async_setup_platform_entry(config_item, async_add_entities, remote, unique_id, name, hass):
+async def _async_setup_platform_entry(config_item, async_add_entities, remote, unique_id, name, host, hass):
 
-    config = Config(unique_id, name, config_item)
+    config = Config(unique_id, name, host, config_item)
 
     player = SkyQDevice(
         hass,
