@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.7.13 (2022/01/27)
+### Enhancements
+- [Add system information url to device](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/68d5fa6342fb608a5ca55edb0b13dbd8bcdf44d3) - @RogerSelwyn
+- [Add diagnostics support for HA 2022.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/465dfbc1ea030f8a85e460e06a25becf2abbe453) - @RogerSelwyn
+
+### Maintenance
+- [Bump pyskyqremote to 0.2.57](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0272c56b0c06273a98e2883581b0d79264bd5864) - @RogerSelwyn
+- [Bump to v2.7.13](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d185180f1fc00da7cd49b1b998d8f29b9d47e846) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8a44941f9ae99967c0fbdf0f7232ab87c005da53) - @actions-user
+
 ## v2.7.12 (2022/01/19)
 ### Enhancements
 - [Added ability to send sequence of commands via play media](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/426a882ba12d965cd83d7df0b5b35361e3ae2379) - @RogerSelwyn
