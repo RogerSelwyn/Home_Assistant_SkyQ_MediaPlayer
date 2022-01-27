@@ -45,9 +45,17 @@ async def async_setup_entry(hass, config_entry):
 
 async def async_unload_entry(hass, config_entry):
     """Unload a config entry."""
+    host = config_entry.data[CONF_HOST]
+    epg_cache_len = CONST_DEFAULT_EPGCACHELEN
+    remote = await hass.async_add_executor_job(SkyQRemote, host, epg_cache_len)
+    processPlatforms = []
+    for component in PLATFORMS:
+        if remote.gateway or component == entity_media_player:
+            processPlatforms.append(component)
+
     unload_ok = all(
         await asyncio.gather(
-            *[hass.config_entries.async_forward_entry_unload(config_entry, component) for component in PLATFORMS]
+            *[hass.config_entries.async_forward_entry_unload(config_entry, component) for component in processPlatforms]
         )
     )
 
