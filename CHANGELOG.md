@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.7.14 (2022/02/01
+### Fixes
+- [Fix error when unloading Mini which has no storage sensor](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5b41859769bff183d97b4e64bdd29df3da5905b0) - @RogerSelwyn
+
+### Maintenance
+- [Add warning when no media info retrieved](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7be97c90a37a5b7fd83bfe9fc5de76a6ac76b839) - @RogerSelwyn
+- [Bump pyskyqremote to 0.2.58](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9e5aeea96a072310aee96bf010b1772f563d144d) - @RogerSelwyn
+- [Bump to v2.7.14](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cd2d2340f6a5945a7e6d945c05c6d851c7b214c6) - @RogerSelwyn
+
 ## v2.7.13 (2022/01/27)
 ### Enhancements
 - [Add system information url to device](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/68d5fa6342fb608a5ca55edb0b13dbd8bcdf44d3) - @RogerSelwyn
