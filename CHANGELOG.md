@@ -8,6 +8,8 @@
 - [Add warning when no media info retrieved](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7be97c90a37a5b7fd83bfe9fc5de76a6ac76b839) - @RogerSelwyn
 - [Bump pyskyqremote to 0.2.58](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9e5aeea96a072310aee96bf010b1772f563d144d) - @RogerSelwyn
 - [Bump to v2.7.14](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cd2d2340f6a5945a7e6d945c05c6d851c7b214c6) - @RogerSelwyn
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/29b388f5171f6306a677cb031c14367947dbfcfd) - @RogerSelwyn
+- [Update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ab3b2a5155b33557c6ab94e65f8cfffee169bedb) - @RogerSelwyn
 
 ## v2.7.13 (2022/01/27)
 ### Enhancements
