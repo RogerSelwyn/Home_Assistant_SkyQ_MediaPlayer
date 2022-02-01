@@ -133,7 +133,7 @@ async def _async_setup_platform_entry(config_item, async_add_entities, remote, u
             # Lovelace next_track buttons do fast forward
             await player.async_media_next_track()
         else:
-            _LOGGER.warning(f"W0040M - Invalid Homekit event - {player.entity_id} - {keyname}")
+            _LOGGER.warning(f"W0010M - Invalid Homekit event - {player.entity_id} - {keyname}")
 
     hass.bus.async_listen(EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED, _async_homekit_event)
 
@@ -174,7 +174,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         if not self._remote.deviceSetup:
             self._available = False
             self._startupSetup = False
-            _LOGGER.warning(f"W0010M - Device is not available: {self.name}")
+            _LOGGER.warning(f"W0020M - Device is not available: {self.name}")
 
         self._supported_features = FEATURE_BASE
 
@@ -476,6 +476,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             currentMedia = await self.hass.async_add_executor_job(self._remote.getCurrentMedia)
 
             if not currentMedia:
+                _LOGGER.warning(f"W0030M - Current Media retrieval failed  - {self._config.host}")
                 return None
 
             if currentMedia.live and currentMedia.sid:
@@ -552,7 +553,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             _LOGGER.debug(f"D0010M - Device is not available - {self._error_time_so_far()} Seconds: {self.name}")
         elif datetime.now() >= error_time_target and self._available:
             self._available = False
-            _LOGGER.warning(f"W0030M - Device is not available: {self.name}")
+            _LOGGER.warning(f"W0040M - Device is not available: {self.name}")
 
     def _powerStatus_on_handling(self):
         if not self._available:
@@ -561,7 +562,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
                 _LOGGER.info(f"I0020M - Device is now available: {self.name}")
             else:
                 self._startupSetup = True
-                _LOGGER.warning(f"W0020M - Device is now available: {self.name}")
+                _LOGGER.warning(f"W0050M - Device is now available: {self.name}")
         elif self._errorTime:
             _LOGGER.debug(f"D0020M - Device is now available - {self._error_time_so_far()} Seconds: {self.name}")
         self._errorTime = None
