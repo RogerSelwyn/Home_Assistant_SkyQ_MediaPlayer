@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.8.1 (2022/02/03)
+### Fixes
+- [Correct HW/SW version numbers](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/010968202a2f0262a590a1a68e962649bd4e17e8) - @RogerSelwyn
+- [Fix extraneous warnings on power up/down](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3ce56dfb5be2a8eed50df3fa21138896fb6ab641) - @RogerSelwyn
+### Maintenance
+- [Bump to v2.8.1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8519f7c3785401d49f77b5c5979d2251662fc024) - @RogerSelwyn
+
 ## v2.8.0 (2022/02/03)
 ### Enhancements
 - [Add HW version supported by 2022.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c745e1a7ef2b69f2e5340f821db3556ce82475ba) - @RogerSelwyn
