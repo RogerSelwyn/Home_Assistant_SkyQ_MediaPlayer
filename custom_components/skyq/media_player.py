@@ -27,7 +27,15 @@ from homeassistant.const import (
     STATE_PLAYING,
     STATE_UNKNOWN,
 )
-from pyskyqremote.const import APP_EPG, COMMANDS, SKY_STATE_OFF, SKY_STATE_ON, SKY_STATE_PAUSED, SKY_STATE_STANDBY
+from pyskyqremote.const import (
+    APP_EPG,
+    COMMANDS,
+    SKY_STATE_OFF,
+    SKY_STATE_ON,
+    SKY_STATE_PAUSED,
+    SKY_STATE_PLAYING,
+    SKY_STATE_STANDBY,
+)
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .classes.config import Config
@@ -350,14 +358,14 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         powerStatus = await self.hass.async_add_executor_job(self._remote.powerStatus)
         if powerStatus == SKY_STATE_ON:
             await self.hass.async_add_executor_job(self._remote.press, "power")
-            await self.async_update()
+            # await self.async_update()
 
     async def async_turn_on(self):
         """Turn SkyQ box on."""
         powerStatus = await self.hass.async_add_executor_job(self._remote.powerStatus)
         if powerStatus == SKY_STATE_STANDBY:
             await self.hass.async_add_executor_job(self._remote.press, ["home", "dismiss"])
-            await self.async_update()
+            # await self.async_update()
 
     async def async_media_play(self):
         """Play the current media item."""
@@ -434,23 +442,31 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         )
 
     async def _async_updateState(self):
-        powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)
-        self._setPowerStatus(powerState)
-        if powerState == SKY_STATE_STANDBY:
-            self._skyq_type = STATE_OFF
-            self._state = STATE_OFF
-            return
-        if powerState != SKY_STATE_ON:
-            self._skyq_type = STATE_UNKNOWN
-            self._state = STATE_OFF
-            return
+        # powerState = await self.hass.async_add_executor_job(self._remote.powerStatus)
+        # self._setPowerStatus(powerState)
+        # if powerState == SKY_STATE_STANDBY:
+        #     self._skyq_type = STATE_OFF
+        #     self._state = STATE_OFF
+        #     return
+        # if powerState != SKY_STATE_ON:
+        #     self._skyq_type = STATE_UNKNOWN
+        #     self._state = STATE_OFF
+        #     return
 
         currentState = await self.hass.async_add_executor_job(self._remote.getCurrentState)
-
-        if currentState == SKY_STATE_PAUSED:
+        self._setPowerStatus(currentState)
+        if currentState == SKY_STATE_STANDBY:
+            self._skyq_type = STATE_OFF
+            self._state = STATE_OFF
+        elif currentState == SKY_STATE_PAUSED:
             self._state = STATE_PAUSED
-        else:
+        elif currentState == SKY_STATE_PLAYING:
             self._state = STATE_PLAYING
+        else:
+            self._skyq_type = STATE_UNKNOWN
+            self._state = STATE_OFF
+
+        return
 
     async def _async_updateCurrentProgramme(self):
 
