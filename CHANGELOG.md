@@ -3,7 +3,6 @@
 ## v2.8.0 (2022/02/03)
 ### Enhancements
 - [Add HW version supported by 2022.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c745e1a7ef2b69f2e5340f821db3556ce82475ba) - @RogerSelwyn
-- [Derive power status from transport status to reduce calls](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/965bc7cdab9480479cefec98b8a5fa557d414dfb) - @RogerSelwyn
 
 ### Maintenance
 - [Bump pyskyqremote to 0.2.59](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c4719bca223b8075892b65fac445961ccc1d5130) - @RogerSelwyn
