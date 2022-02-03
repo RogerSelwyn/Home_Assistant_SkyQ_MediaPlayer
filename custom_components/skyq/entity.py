@@ -22,8 +22,8 @@ class SkyQEntity:
                 "name": self._config.name,
                 "manufacturer": self._deviceInfo.manufacturer,
                 "model": f"{self._deviceInfo.hardwareModel} ({self._deviceInfo.hardwareName})",
-                "hw_version": f"{self._deviceInfo.modelNumber}",
-                "sw_version": f"{self._deviceInfo.ASVersion} : {self._deviceInfo.versionNumber}",
+                "hw_version": f"{self._deviceInfo.versionNumber}",
+                "sw_version": f"{self._deviceInfo.modelNumber}",
                 "configuration_url": f"http://{self._config.host}:9006/as/system/information",
             }
             if self._deviceInfo
