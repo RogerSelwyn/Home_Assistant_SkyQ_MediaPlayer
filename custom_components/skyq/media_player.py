@@ -476,7 +476,8 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             currentMedia = await self.hass.async_add_executor_job(self._remote.getCurrentMedia)
 
             if not currentMedia:
-                _LOGGER.warning(f"W0030M - Current Media retrieval failed  - {self._config.host}")
+                # Extra warnings can be produced unneccesarily if SkyQ box is powering up/down
+                # _LOGGER.warning(f"W0030M - Current Media retrieval failed  - {self._config.host}")
                 return None
 
             if currentMedia.live and currentMedia.sid:
