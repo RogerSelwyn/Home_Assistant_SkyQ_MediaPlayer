@@ -1,6 +1,16 @@
 # Changelog
 
-## v2.7.14 (2022/02/01
+## v2.8.0 (2022/02/03)
+### Enhancements
+- [Add HW version supported by 2022.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c745e1a7ef2b69f2e5340f821db3556ce82475ba) - @RogerSelwyn
+- [Derive power status from transport status to reduce calls](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/965bc7cdab9480479cefec98b8a5fa557d414dfb) - @RogerSelwyn
+
+### Maintenance
+- [Bump pyskyqremote to 0.2.59](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c4719bca223b8075892b65fac445961ccc1d5130) - @RogerSelwyn
+- [Bump to v2.8.0 (for a new year)](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b0a6c5c40d608902da4465acc83717028de46d7b) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/833e418f5602bf8764d9db0bcd56053a829e4173) - @actions-user
+
+## v2.7.14 (2022/02/01)
 ### Fixes
 - [Fix error when unloading Mini which has no storage sensor](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5b41859769bff183d97b4e64bdd29df3da5905b0) - @RogerSelwyn
 
