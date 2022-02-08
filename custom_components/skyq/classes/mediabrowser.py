@@ -76,7 +76,7 @@ class MediaBrowser:
             command.remove("backup")
         channelno = "".join(command)
         channel_info = await hass.async_add_executor_job(
-            self._remote.getChannelInfo, channelno
+            self._remote.get_channel_info, channelno
         )
         if not channel_info:
             channel_info = {
@@ -87,7 +87,7 @@ class MediaBrowser:
         else:
             query_date = datetime.utcnow()
             programme = await hass.async_add_executor_job(
-                self._remote.getProgrammeFromEpg,
+                self._remote.get_programme_from_epg,
                 channel_info.channelsid,
                 query_date,
                 query_date,
@@ -99,7 +99,7 @@ class MediaBrowser:
                     "title": source,
                 }
             else:
-                image_url = programme.imageUrl or channel_info.channelimageurl
+                image_url = programme.image_url or channel_info.channelimageurl
                 channel_info = {
                     "channelName": source,
                     "thumbnail": image_url,

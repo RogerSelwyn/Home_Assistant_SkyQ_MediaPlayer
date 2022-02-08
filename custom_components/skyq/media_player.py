@@ -190,7 +190,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         self._use_internal = True
         self._switches_generated = False
 
-        if not self._remote.deviceSetup:
+        if not self._remote.device_setup:
             self._available = False
             self._startup_setup = False
             _LOGGER.warning("W0020M - Device is not available: %s", self.name)
@@ -375,14 +375,14 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
     async def async_turn_off(self):
         """Turn SkyQ box off."""
-        power_status = await self.hass.async_add_executor_job(self._remote.powerStatus)
+        power_status = await self.hass.async_add_executor_job(self._remote.power_status)
         if power_status == SKY_STATE_ON:
             await self.hass.async_add_executor_job(self._remote.press, "power")
             await self.async_update()
 
     async def async_turn_on(self):
         """Turn SkyQ box on."""
-        power_status = await self.hass.async_add_executor_job(self._remote.powerStatus)
+        power_status = await self.hass.async_add_executor_job(self._remote.power_status)
         if power_status == SKY_STATE_STANDBY:
             await self.hass.async_add_executor_job(
                 self._remote.press, ["home", "dismiss"]
@@ -464,7 +464,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         )
 
     async def _async_update_state(self):
-        power_state = await self.hass.async_add_executor_job(self._remote.powerStatus)
+        power_state = await self.hass.async_add_executor_job(self._remote.power_status)
         self._set_power_status(power_state)
         if power_state == SKY_STATE_STANDBY:
             self._skyq_type = STATE_OFF
@@ -476,7 +476,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             return
 
         current_state = await self.hass.async_add_executor_job(
-            self._remote.getCurrentState
+            self._remote.get_current_state
         )
 
         if current_state == SKY_STATE_PAUSED:
@@ -486,7 +486,9 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
     async def _async_update_current_programme(self):
 
-        app = await self.hass.async_add_executor_job(self._remote.getActiveApplication)
+        app = await self.hass.async_add_executor_job(
+            self._remote.get_active_application
+        )
         app_title = app.title
 
         if app.appId == APP_EPG:
@@ -506,7 +508,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         current_media = None
         try:
             current_media = await self.hass.async_add_executor_job(
-                self._remote.getCurrentMedia
+                self._remote.get_current_media
             )
 
             if not current_media:
@@ -517,7 +519,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             if current_media.live and current_media.sid:
                 await self._async_get_live_media(current_media)
 
-            elif current_media.pvrId:
+            elif current_media.pvrid:
                 await self._async_get_recording(current_media)
 
         except Exception as err:  # pylint: disable=broad-except
@@ -528,13 +530,13 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     async def _async_get_live_media(self, current_media):
         self._channel = current_media.channel
         self._skyq_channelno = current_media.channelno
-        self._image_url = current_media.imageUrl
+        self._image_url = current_media.image_url
         self._skyq_type = SKYQ_LIVE
         if not self._config.enabled_features & FEATURE_LIVE_TV:
             return
 
         current_programme = await self.hass.async_add_executor_job(
-            self._remote.getCurrentLiveTVProgramme, current_media.sid
+            self._remote.get_current_live_tv_programme, current_media.sid
         )
         if not current_programme:
             return
@@ -542,14 +544,14 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         self._episode = current_programme.episode
         self._season = current_programme.season
         self._title = current_programme.title
-        if current_programme.imageUrl:
-            self._image_url = current_programme.imageUrl
+        if current_programme.image_url:
+            self._image_url = current_programme.image_url
 
         if not self._config.enabled_features & FEATURE_GET_LIVE_RECORD:
             return
 
         recordings = await self.hass.async_add_executor_job(
-            self._remote.getRecordings, "RECORDING"
+            self._remote.get_recordings, "RECORDING"
         )
         for recording in recordings.programmes:
             if current_programme.programmeuuid == recording.programmeuuid:
@@ -557,7 +559,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
     async def _async_get_recording(self, current_media):
         recording = await self.hass.async_add_executor_job(
-            self._remote.getRecording, current_media.pvrId
+            self._remote.get_recording, current_media.pvrid
         )
         self._skyq_type = SKYQ_PVR
         if recording:
@@ -566,11 +568,11 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             self._episode = recording.episode
             self._season = recording.season
             self._title = recording.title
-            self._image_url = recording.imageUrl
+            self._image_url = recording.image_url
 
     async def _async_get_mp_device_info(self):
         await self.hass.async_add_executor_job(
-            self._remote.setOverrides,
+            self._remote.set_overrides,
             self._config.override_country,
             self._config.test_channel,
         )
@@ -581,7 +583,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             and len(self._config.channel_sources) > 0
         ):
             channel_data = await self.hass.async_add_executor_job(
-                self._remote.getChannelList
+                self._remote.get_channel_list
             )
             self._channel_list = channel_data.channels
 

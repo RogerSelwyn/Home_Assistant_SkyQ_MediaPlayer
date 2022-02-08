@@ -35,9 +35,9 @@ class SkyQEntity:
         if self._device_info:
             return
         self._device_info = await hass.async_add_executor_job(
-            self._remote.getDeviceInformation
+            self._remote.get_device_information
         )
         if self._device_info and not self._unique_id:
-            self._unique_id = self._device_info.usedCountryCode + "".join(
+            self._unique_id = self._device_info.used_country_code + "".join(
                 e for e in self._device_info.serialNumber.casefold() if e.isalnum()
             )

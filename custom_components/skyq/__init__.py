@@ -34,7 +34,7 @@ async def async_setup_entry(hass, config_entry):
 
     hass.data.setdefault(DOMAIN, {})
     remote = await hass.async_add_executor_job(SkyQRemote, host, epg_cache_len)
-    if not remote.deviceSetup:
+    if not remote.device_setup:
         raise ConfigEntryNotReady
 
     hass.data[DOMAIN][config_entry.entry_id] = {

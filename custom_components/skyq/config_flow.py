@@ -91,10 +91,10 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def _async_setuniqueid(self, host):
         remote = await self.hass.async_add_executor_job(SkyQRemote, host)
-        if not remote.deviceSetup:
+        if not remote.device_setup:
             raise CannotConnect()
         device_info = await self.hass.async_add_executor_job(
-            remote.getDeviceInformation
+            remote.get_device_information
         )
         await self.async_set_unique_id(
             device_info.countryCode
@@ -153,9 +153,9 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
         self._country_list = [CONST_DEFAULT] + sorted(country_names)
 
-        if self._remote.deviceSetup:
+        if self._remote.device_etup:
             channel_data = await self.hass.async_add_executor_job(
-                self._remote.getChannelList
+                self._remote.get_channel_list
             )
             self._channel_list = channel_data.channels
 

@@ -85,14 +85,14 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        return f"{round(self._quota_info.quotaUsed / 1024, 1)}"
+        return f"{round(self._quota_info.quota_used / 1024, 1)}"
 
     @property
     def extra_state_attributes(self):
         """Return entity specific state attributes."""
-        maxs = round(self._quota_info.quotaMax / 1024, 1)
+        maxs = round(self._quota_info.quota_max / 1024, 1)
         percent = round(
-            (self._quota_info.quotaUsed / self._quota_info.quotaMax) * 100, 1
+            (self._quota_info.quota_used / self._quota_info.quota_max) * 100, 1
         )
         return {
             CONST_SKYQ_STORAGE_MAX: f"{maxs}",
@@ -103,7 +103,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
         """Get the latest data and update device state."""
         await self._async_get_device_info(self.hass)
 
-        resp = await self.hass.async_add_executor_job(self._remote.getQuota)
+        resp = await self.hass.async_add_executor_job(self._remote.get_quota)
         if not resp:
             self._power_status_off_handling()
             return
