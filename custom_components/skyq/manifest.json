@@ -7,7 +7,7 @@
     "@rogerselwyn"
   ],
   "requirements": [
-    "pyskyqremote==0.3.00",
+    "pyskyqremote==0.3.0",
     "pycountry>=20.7.3"
   ],
   "quality_scale": "silver",
