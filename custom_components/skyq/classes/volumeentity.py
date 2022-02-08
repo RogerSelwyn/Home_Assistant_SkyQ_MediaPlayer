@@ -2,21 +2,17 @@
 
 import logging
 
-from homeassistant.components.media_player.const import ATTR_MEDIA_VOLUME_LEVEL, ATTR_MEDIA_VOLUME_MUTED
-from homeassistant.const import (
-    ATTR_ENTITY_ID,
-    ATTR_SUPPORTED_FEATURES,
-    SERVICE_VOLUME_DOWN,
-    SERVICE_VOLUME_MUTE,
-    SERVICE_VOLUME_SET,
-    SERVICE_VOLUME_UP,
-)
+from homeassistant.components.media_player.const import (
+    ATTR_MEDIA_VOLUME_LEVEL, ATTR_MEDIA_VOLUME_MUTED)
+from homeassistant.const import (ATTR_ENTITY_ID, ATTR_SUPPORTED_FEATURES,
+                                 SERVICE_VOLUME_DOWN, SERVICE_VOLUME_MUTE,
+                                 SERVICE_VOLUME_SET, SERVICE_VOLUME_UP)
 from homeassistant.helpers.service import async_call_from_config
 
 _LOGGER = logging.getLogger(__name__)
 
 
-class Volume_Entity:
+class VolumeEntity:
     """Class representing the volume entity."""
 
     def __init__(self, hass, volume_entity, mpname):
@@ -32,7 +28,9 @@ class Volume_Entity:
         if self._entity_name:
             state_obj = hass.states.get(self._entity_name)
             if state_obj:
-                self._supported_features = state_obj.attributes.get(ATTR_SUPPORTED_FEATURES)
+                self._supported_features = state_obj.attributes.get(
+                    ATTR_SUPPORTED_FEATURES
+                )
 
     async def async_update_volume_state(self, hass):
         """Get the volume entity state."""
@@ -43,22 +41,42 @@ class Volume_Entity:
             state_obj = hass.states.get(self._entity_name)
             if state_obj:
                 self._volume_level = state_obj.attributes.get(ATTR_MEDIA_VOLUME_LEVEL)
-                self._is_volume_muted = state_obj.attributes.get(ATTR_MEDIA_VOLUME_MUTED)
-                self._supported_features = state_obj.attributes.get(ATTR_SUPPORTED_FEATURES)
+                self._is_volume_muted = state_obj.attributes.get(
+                    ATTR_MEDIA_VOLUME_MUTED
+                )
+                self._supported_features = state_obj.attributes.get(
+                    ATTR_SUPPORTED_FEATURES
+                )
                 if self._entity_name_error:
-                    _LOGGER.info(f"I0010V - Volume entity now exists: {self._mpname} - {self._entity_name}")
+                    _LOGGER.info(
+                        "I0010V - Volume entity now exists: %s - %s",
+                        self._mpname,
+                        self._entity_name,
+                    )
                     self._entity_name_error = False
                     self._startup_error = False
                     self._startup = False
                 elif self._startup:
-                    _LOGGER.debug(f"D0010V - Volume entity connected: {self._mpname} - {self._entity_name}")
+                    _LOGGER.debug(
+                        "D0010V - Volume entity connected: %s - %s",
+                        self._mpname,
+                        self._entity_name,
+                    )
                     self._startup = False
             elif not self._entity_name_error:
                 if not self._startup_error:
-                    _LOGGER.warning(f"W0010V - Volume entity does not exist: {self._mpname} - {self._entity_name}")
+                    _LOGGER.warning(
+                        "W0010V - Volume entity does not exist: %s - %s",
+                        self._mpname,
+                        self._entity_name,
+                    )
                     self._entity_name_error = True
                 else:
-                    _LOGGER.debug(f"D0020V - Volume entity does not exist: {self._mpname} - {self._entity_name}")
+                    _LOGGER.debug(
+                        "D0020V - Volume entity does not exist: %s - %s",
+                        self._mpname,
+                        self._entity_name,
+                    )
                     self._startup_error = False
             return
         except (TypeError, ValueError):

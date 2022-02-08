@@ -21,9 +21,9 @@ from ..const import (
     FEATURE_SWITCHES,
     FEATURE_TV_DEVICE_CLASS,
 )
-from ..utils import convert_sources, convert_sources_JSON
+from ..utils import convert_sources, convert_sources_json
 
-enabled_features = (
+ENABLED_FEATURES = (
     FEATURE_BASIC
     | FEATURE_IMAGE
     | FEATURE_LIVE_TV
@@ -44,7 +44,7 @@ class Config:
     room: str = None
     volume_entity: str = None
     test_channel: str = None
-    overrideCountry: str = None
+    override_country: str = None
     enabled_features: int = None
     source_list = None
 
@@ -56,7 +56,7 @@ class Config:
         self.room = config_item.get(CONF_ROOM, CONST_DEFAULT_ROOM)
         self.volume_entity = config_item.get(CONF_VOLUME_ENTITY, None)
         self.test_channel = config_item.get(CONF_TEST_CHANNEL)
-        self.overrideCountry = config_item.get(CONF_COUNTRY)
+        self.override_country = config_item.get(CONF_COUNTRY)
         self.custom_sources = config_item.get(CONF_SOURCES)
         self.channel_sources = config_item.get(CONF_CHANNEL_SOURCES, [])
         generate_switches_for_channels = config_item.get(CONF_GEN_SWITCH, False)
@@ -65,28 +65,30 @@ class Config:
         live_tv = config_item.get(CONF_LIVE_TV, True)
         get_live_record = config_item.get(CONF_GET_LIVE_RECORD, False)
 
-        self.enabled_features = enabled_features
+        self.enabled_features = ENABLED_FEATURES
         self.source_list = []
 
-        if not (output_programme_image):
+        if not output_programme_image:
             self.enabled_features ^= FEATURE_IMAGE
 
-        if not (tv_device_class):
+        if not tv_device_class:
             self.enabled_features ^= FEATURE_TV_DEVICE_CLASS
 
-        if not (live_tv):
+        if not live_tv:
             self.enabled_features ^= FEATURE_LIVE_TV
 
-        if not (get_live_record):
+        if not get_live_record:
             self.enabled_features ^= FEATURE_GET_LIVE_RECORD
 
-        if not (generate_switches_for_channels):
+        if not generate_switches_for_channels:
             self.enabled_features ^= FEATURE_SWITCHES
 
         if isinstance(self.custom_sources, str):
-            cs_list = convert_sources_JSON(sources_json=self.custom_sources)
+            cs_list = convert_sources_json(sources_json=self.custom_sources)
             self.custom_sources = convert_sources(sources_list=cs_list)
-        elif isinstance(self.custom_sources, list):  # If old format sources list, need to convert. Changed in 2.6.10
+        elif isinstance(
+            self.custom_sources, list
+        ):  # If old format sources list, need to convert. Changed in 2.6.10
             self.custom_sources = convert_sources(sources_list=self.custom_sources)
         elif not self.custom_sources:
             self.custom_sources = []

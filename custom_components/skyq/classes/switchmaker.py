@@ -10,13 +10,23 @@ import yaml
 
 from ..const import CONST_ALIAS_FILENAME
 
-SWITCH_REPLACE = {" ": "", "'": "", "+": "_", ".": "", "!": "", ":": "_", "/": "_", "&": "_", "-": "_"}
+SWITCH_REPLACE = {
+    " ": "",
+    "'": "",
+    "+": "_",
+    ".": "",
+    "!": "",
+    ":": "_",
+    "/": "_",
+    "&": "_",
+    "-": "_",
+}
 
 
 _LOGGER = logging.getLogger(__name__)
 
 
-class Switch_Maker:
+class SwitchMaker:
     """The Switchmaker Class."""
 
     def __init__(self, config_dir, entity_id, room, channels):
@@ -28,30 +38,38 @@ class Switch_Maker:
 
         if self._root[-1] != "/":
             self._root += "/"
-        self._f = open(self._root + "skyq" + self._room.replace(" ", "") + ".yaml", "w+")
+        self._f = open(
+            self._root + "skyq" + self._room.replace(" ", "") + ".yaml",
+            "w+",
+            encoding="utf-8",
+        )
 
         if _path.isfile(self._root + CONST_ALIAS_FILENAME):
-            with open(self._root + CONST_ALIAS_FILENAME, "r") as aliasfile:
+            with open(
+                self._root + CONST_ALIAS_FILENAME, "r", encoding="utf-8"
+            ) as aliasfile:
                 self._alias = yaml.full_load(aliasfile)
             if self._alias:
-                _LOGGER.info("I0010S - skyqswitchalias.yaml is empty, it can be deleted")
+                _LOGGER.info(
+                    "I0010S - skyqswitchalias.yaml is empty, it can be deleted"
+                )
 
-        self._addSwitch("pause", "pause", "media_pause")
-        self._addSwitch("play", "play", "media_play")
-        self._addSwitch("ff", "fastforward", "media_next_track")
-        self._addSwitch("rw", "rewind", "media_previous_track")
+        self._add_switch("pause", "pause", "media_pause")
+        self._add_switch("play", "play", "media_play")
+        self._add_switch("ff", "fastforward", "media_next_track")
+        self._add_switch("rw", "rewind", "media_previous_track")
 
         dedup_channels = list(dict.fromkeys(channels))
-        for ch in dedup_channels:
-            self._addSwitch(ch, ch, "select_source", True)
+        for channel in dedup_channels:
+            self._add_switch(channel, channel, "select_source", True)
 
         self._f.close()
 
-    def _addSwitch(self, switch, friendly_name, service, source=False):
+    def _add_switch(self, switch, friendly_name, service, source=False):
         """Add switch to switches."""
         source_switch = switch.replace("'", "''")
         if self._alias and len(self._alias) > 0:
-            friendly_name = self._findAlias(friendly_name)
+            friendly_name = self._find_alias(friendly_name)
         else:
             friendly_name = friendly_name.replace("'", "")
 
@@ -66,7 +84,9 @@ class Switch_Maker:
         room_name = switch + self._room.replace(" ", "").lower()
         self._f.write("    " + "skyq_" + room_name + ":\n")
         self._f.write("      value_template: '{{\"off\"}}'\n")
-        self._f.write("      friendly_name: '" + friendly_name + " in the " + self._room + "'\n")
+        self._f.write(
+            "      friendly_name: '" + friendly_name + " in the " + self._room + "'\n"
+        )
         self._f.write("      turn_on:\n")
         self._f.write("        service: media_player." + service + "\n")
         self._f.write("        data:\n")
@@ -75,7 +95,7 @@ class Switch_Maker:
         self._f.write("      turn_off:\n")
         self._f.write("        service: script.placeholder\n")
 
-    def _findAlias(self, friendly_name):
+    def _find_alias(self, friendly_name):
         try:
             alias = self._alias[friendly_name]
         except KeyError:

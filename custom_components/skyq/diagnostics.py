@@ -9,7 +9,9 @@ from homeassistant.core import HomeAssistant
 from .const import DOMAIN
 
 
-async def async_get_config_entry_diagnostics(hass: HomeAssistant, config_entry: ConfigEntry) -> dict:
+async def async_get_config_entry_diagnostics(
+    hass: HomeAssistant, config_entry: ConfigEntry
+) -> dict:
     """Return diagnostics for a config entry."""
     diag: dict[str, Any] = {}
 
@@ -17,7 +19,7 @@ async def async_get_config_entry_diagnostics(hass: HomeAssistant, config_entry: 
     diag["config_entry_options"] = dict(config_entry.options)
 
     remote = hass.data[DOMAIN][config_entry.entry_id]["skyqremote"]
-    deviceInfo = await hass.async_add_executor_job(remote.getDeviceInformation)
-    diag["device_information"] = vars(deviceInfo)
+    device_info = await hass.async_add_executor_job(remote.getDeviceInformation)
+    diag["device_information"] = vars(device_info)
 
     return diag

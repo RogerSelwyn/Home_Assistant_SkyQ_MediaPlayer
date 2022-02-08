@@ -3,7 +3,10 @@
 from datetime import datetime
 
 from homeassistant.components.media_player import BrowseMedia
-from homeassistant.components.media_player.const import MEDIA_CLASS_DIRECTORY, MEDIA_CLASS_TV_SHOW
+from homeassistant.components.media_player.const import (
+    MEDIA_CLASS_DIRECTORY,
+    MEDIA_CLASS_TV_SHOW,
+)
 from homeassistant.components.media_player.errors import BrowseError
 from pyskyqremote.classes.programme import Programme
 
@@ -11,21 +14,25 @@ from ..const import DOMAINBROWSER
 from ..utils import get_command
 
 
-class Media_Browser:
+class MediaBrowser:
     """Class representing the media browser."""
 
-    def __init__(self, remote, config, appImageUrl):
+    def __init__(self, remote, config, app_image_url):
         """Initialise the volume entity class."""
         self._remote = remote
         self._config = config
-        self._appImageUrl = appImageUrl
+        self._app_image_url = app_image_url
 
-    async def async_browse_media(self, hass, channel_list, media_content_type=None, media_content_id=None):
+    async def async_browse_media(
+        self, hass, channel_list, media_content_type=None, media_content_id=None
+    ):
         """Implement the websocket media browsing helper."""
         if media_content_id not in (None, "root", "channels"):
-            raise BrowseError(f"Media not found: {media_content_type} / {media_content_id}")
+            raise BrowseError(
+                f"Media not found: {media_content_type} / {media_content_id}"
+            )
 
-        channellist = await self._async_prepareChannels(hass, channel_list)
+        channellist = await self._async_prepare_channels(hass, channel_list)
         channels = [
             BrowseMedia(
                 title=channel["title"],
@@ -49,49 +56,54 @@ class Media_Browser:
             children=channels,
         )
 
-    async def _async_prepareChannels(self, hass, channel_list):
+    async def _async_prepare_channels(self, hass, channel_list):
         channels = []
         for source in self._config.source_list:
-            channel = await self._async_get_channelInfo(hass, channel_list, source)
+            channel = await self._async_get_channel_info(hass, channel_list, source)
             channels.append(channel)
 
         # channels = await asyncio.gather(
-        #     *[self._async_get_channelInfo(hass, channel_list, source) for source in self._config.source_list]
+        #     *[
+        #         self._async_get_channelInfo(hass, channel_list, source)
+        #         for source in self._config.source_list
+        #     ]
         # )
         return channels
 
-    async def _async_get_channelInfo(self, hass, channel_list, source):
+    async def _async_get_channel_info(self, hass, channel_list, source):
         command = get_command(self._config.custom_sources, channel_list, source)
         if command[0] == "backup":
             command.remove("backup")
         channelno = "".join(command)
-        channelInfo = await hass.async_add_executor_job(self._remote.getChannelInfo, channelno)
-        if not channelInfo:
-            channelInfo = {
+        channel_info = await hass.async_add_executor_job(
+            self._remote.getChannelInfo, channelno
+        )
+        if not channel_info:
+            channel_info = {
                 "channelName": source,
-                "thumbnail": self._appImageUrl.getAppImageUrl(source),
+                "thumbnail": self._app_image_url.getAppImageUrl(source),
                 "title": source,
             }
         else:
-            queryDate = datetime.utcnow()
+            query_date = datetime.utcnow()
             programme = await hass.async_add_executor_job(
                 self._remote.getProgrammeFromEpg,
-                channelInfo.channelsid,
-                queryDate,
-                queryDate,
+                channel_info.channelsid,
+                query_date,
+                query_date,
             )
             if not isinstance(programme, Programme):
-                channelInfo = {
+                channel_info = {
                     "channelName": source,
-                    "thumbnail": self._appImageUrl.getAppImageUrl(source),
+                    "thumbnail": self._app_image_url.getAppImageUrl(source),
                     "title": source,
                 }
             else:
-                imageUrl = programme.imageUrl or channelInfo.channelimageurl
-                channelInfo = {
+                image_url = programme.imageUrl or channel_info.channelimageurl
+                channel_info = {
                     "channelName": source,
-                    "thumbnail": imageUrl,
+                    "thumbnail": image_url,
                     "title": f"{source} - {programme.title}",
                 }
 
-        return channelInfo
+        return channel_info

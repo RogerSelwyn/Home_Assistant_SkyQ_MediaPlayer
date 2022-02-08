@@ -11,7 +11,7 @@ CHAR_REPLACE = {" ": "", "+": "plus", "_": "", ".": ""}
 _LOGGER = logging.getLogger(__name__)
 
 
-def convert_sources_JSON(sources_list=None, sources_json=None):
+def convert_sources_json(sources_list=None, sources_json=None):
     """Convert sources to JSON format."""
     if sources_list:
         sources_dict = convert_sources(sources_list=sources_list)
@@ -30,15 +30,15 @@ def convert_sources(sources_list=None, sources_dict=None):
     """Convert sources to JSON format."""
     if sources_list:
         sources_dict = collections.OrderedDict()
-        for s in sources_list:
-            sources_dict[s[0]] = s[1]
+        for source in sources_list:
+            sources_dict[source[0]] = source[1]
 
         return sources_dict
 
     if sources_dict:
         sources_list = []
-        for k, v in sources_dict.items():
-            sources_list.append([k, v])
+        for k, val in sources_dict.items():
+            sources_list.append([k, val])
 
         return sources_list
 
@@ -57,31 +57,31 @@ def get_command(custom_sources, channel_list, source):
         return source
 
 
-class App_Image_Url:
+class AppImageUrl:
     """Class to manage the app image url."""
 
     def __init__(self):
         """Initialise the app image url class."""
-        self._appImageUrl = None
+        self._app_image_url = None
         self._use_internal = True
-        self._lastAppTitle = None
-        self._firstError = True
+        self._last_app_title = None
+        self._first_error = True
 
-    def getAppImageUrl(self, appTitle):
+    def get_app_image_url(self, app_title):
         """Check app image is present."""
-        if appTitle == self._lastAppTitle:
-            return self._appImageUrl
-        self._lastAppTitle = appTitle
+        if app_title == self._last_app_title:
+            return self._app_image_url
+        self._last_app_title = app_title
 
-        self._appImageUrl = None
+        self._app_image_url = None
 
         for searcher, replacer in CHAR_REPLACE.items():
-            appTitle = appTitle.replace(searcher, replacer)
+            app_title = app_title.replace(searcher, replacer)
 
-        appImageUrl = f"{APP_IMAGE_URL_BASE}/{appTitle.casefold()}.png"
-        dirPath = os.path.dirname(os.path.realpath(__file__))
-        imagePath = f"{dirPath}/static/{appTitle.casefold()}.png"
-        if os.path.isfile(imagePath):
-            self._appImageUrl = appImageUrl
+        app_image_url = f"{APP_IMAGE_URL_BASE}/{app_title.casefold()}.png"
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        image_path = f"{dir_path}/static/{app_title.casefold()}.png"
+        if os.path.isfile(image_path):
+            self._app_image_url = app_image_url
 
-        return self._appImageUrl
+        return self._app_image_url

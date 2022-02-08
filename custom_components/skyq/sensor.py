@@ -2,9 +2,13 @@
 import logging
 from datetime import timedelta
 
-from custom_components.skyq.entity import SkyQEntity
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.const import CONF_HOST, CONF_NAME, DATA_GIGABYTES, ENTITY_CATEGORY_DIAGNOSTIC
+from homeassistant.const import (
+    CONF_HOST,
+    CONF_NAME,
+    DATA_GIGABYTES,
+    ENTITY_CATEGORY_DIAGNOSTIC,
+)
 
 from .classes.config import Config
 from .const import (
@@ -15,6 +19,7 @@ from .const import (
     SKYQ_ICONS,
     SKYQREMOTE,
 )
+from .entity import SkyQEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -24,7 +29,10 @@ SCAN_INTERVAL = timedelta(minutes=5)
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up Sonos from a config entry."""
     config = Config(
-        config_entry.unique_id, config_entry.data[CONF_NAME], config_entry.data[CONF_HOST], config_entry.options
+        config_entry.unique_id,
+        config_entry.data[CONF_NAME],
+        config_entry.data[CONF_HOST],
+        config_entry.options,
     )
     remote = hass.data[DOMAIN][config_entry.entry_id][SKYQREMOTE]
 
@@ -41,7 +49,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     def __init__(self, remote, config):
         """Initialize the used storage sensor."""
         super().__init__(remote, config)
-        self._quotaInfo = None
+        self._quota_info = None
         self._available = True
 
     @property
@@ -50,7 +58,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
         return self.skyq_device_info
 
     @property
-    def unit_of_measurement(self):
+    def unit_of_measurement(self):  # pylint: disable=overridden-final-method
         """Provide the unit of measurement."""
         return DATA_GIGABYTES
 
@@ -77,16 +85,18 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        return "{:.1f}".format(round(self._quotaInfo.quotaUsed / 1024, 1))
+        return f"{round(self._quota_info.quotaUsed / 1024, 1)}"
 
     @property
     def extra_state_attributes(self):
         """Return entity specific state attributes."""
+        maxs = round(self._quota_info.quotaMax / 1024, 1)
+        percent = round(
+            (self._quota_info.quotaUsed / self._quota_info.quotaMax) * 100, 1
+        )
         return {
-            CONST_SKYQ_STORAGE_MAX: "{:.1f}".format(round(self._quotaInfo.quotaMax / 1024, 1)),
-            CONST_SKYQ_STORAGE_PERCENT: "{:.1f}".format(
-                round((self._quotaInfo.quotaUsed / self._quotaInfo.quotaMax) * 100, 1)
-            ),
+            CONST_SKYQ_STORAGE_MAX: f"{maxs}",
+            CONST_SKYQ_STORAGE_PERCENT: f"{percent}",
         }
 
     async def async_update(self):
@@ -95,18 +105,18 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
         resp = await self.hass.async_add_executor_job(self._remote.getQuota)
         if not resp:
-            self._powerStatus_off_handling()
+            self._power_status_off_handling()
             return
 
-        self._powerStatus_on_handling()
-        self._quotaInfo = resp
+        self._power_status_on_handling()
+        self._quota_info = resp
 
-    def _powerStatus_off_handling(self):
+    def _power_status_off_handling(self):
         if self._available:
             self._available = False
-            _LOGGER.warning(f"W0010S - Device is not available: {self.name}")
+            _LOGGER.warning("W0010S - Device is not available: %s", self.name)
 
-    def _powerStatus_on_handling(self):
+    def _power_status_on_handling(self):
         if not self._available:
             self._available = True
-            _LOGGER.info(f"I0020M - Device is now available: {self.name}")
+            _LOGGER.info("I0020M - Device is now available: %s", self.name)
