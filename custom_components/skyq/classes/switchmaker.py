@@ -39,7 +39,7 @@ class SwitchMaker:
         if self._root[-1] != "/":
             self._root += "/"
         self._f = open(
-            self._root + "skyq" + self._room.replace(" ", "") + ".yaml",
+            f"{self._root}skyq{self._room.replace(' ', '')}.yaml",
             "w+",
             encoding="utf-8",
         )
@@ -88,9 +88,9 @@ class SwitchMaker:
             "      friendly_name: '" + friendly_name + " in the " + self._room + "'\n"
         )
         self._f.write("      turn_on:\n")
-        self._f.write("        service: media_player." + service + "\n")
+        self._f.write(f"        service: media_player.{service}\n")
         self._f.write("        data:\n")
-        self._f.write("          entity_id: " + self._entity_id + "\n")
+        self._f.write(f"          entity_id: {self._entity_id}\n")
         self._f.write(source_name)
         self._f.write("      turn_off:\n")
         self._f.write("        service: script.placeholder\n")

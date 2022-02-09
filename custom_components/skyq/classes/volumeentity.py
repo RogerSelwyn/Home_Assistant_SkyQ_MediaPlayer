@@ -26,8 +26,7 @@ class VolumeEntity:
         self._startup_error = True
         self._startup = True
         if self._entity_name:
-            state_obj = hass.states.get(self._entity_name)
-            if state_obj:
+            if state_obj := hass.states.get(self._entity_name):
                 self._supported_features = state_obj.attributes.get(
                     ATTR_SUPPORTED_FEATURES
                 )
@@ -38,8 +37,7 @@ class VolumeEntity:
             return
 
         try:
-            state_obj = hass.states.get(self._entity_name)
-            if state_obj:
+            if state_obj := hass.states.get(self._entity_name):
                 self._volume_level = state_obj.attributes.get(ATTR_MEDIA_VOLUME_LEVEL)
                 self._is_volume_muted = state_obj.attributes.get(
                     ATTR_MEDIA_VOLUME_MUTED
@@ -106,7 +104,7 @@ class VolumeEntity:
 
     async def _async_call_service(self, hass, service_name, variable_data=None):
         service_data = {
-            "service": "media_player." + service_name,
+            "service": f"media_player.{service_name}",
             "data": variable_data,
         }
 

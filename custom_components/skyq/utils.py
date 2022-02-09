@@ -37,9 +37,7 @@ def convert_sources(sources_list=None, sources_dict=None):
 
     if sources_dict:
         sources_list = []
-        for k, val in sources_dict.items():
-            sources_list.append([k, val])
-
+        sources_list.extend([k, val] for k, val in sources_dict.items())
         return sources_list
 
     return None

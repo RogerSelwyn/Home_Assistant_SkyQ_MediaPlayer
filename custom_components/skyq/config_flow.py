@@ -14,26 +14,13 @@ from homeassistant.core import callback
 from pyskyqremote.const import KNOWN_COUNTRIES
 from pyskyqremote.skyq_remote import SkyQRemote
 
-from .const import (
-    CHANNEL_DISPLAY,
-    CHANNEL_SOURCES_DISPLAY,
-    CONF_CHANNEL_SOURCES,
-    CONF_COUNTRY,
-    CONF_EPG_CACHE_LEN,
-    CONF_GEN_SWITCH,
-    CONF_GET_LIVE_RECORD,
-    CONF_LIVE_TV,
-    CONF_OUTPUT_PROGRAMME_IMAGE,
-    CONF_ROOM,
-    CONF_SOURCES,
-    CONF_TV_DEVICE_CLASS,
-    CONF_VOLUME_ENTITY,
-    CONST_DEFAULT,
-    CONST_DEFAULT_EPGCACHELEN,
-    DOMAIN,
-    LIST_EPGCACHELEN,
-    SKYQREMOTE,
-)
+from .const import (CHANNEL_DISPLAY, CHANNEL_SOURCES_DISPLAY,
+                    CONF_CHANNEL_SOURCES, CONF_COUNTRY, CONF_EPG_CACHE_LEN,
+                    CONF_GEN_SWITCH, CONF_GET_LIVE_RECORD, CONF_LIVE_TV,
+                    CONF_OUTPUT_PROGRAMME_IMAGE, CONF_ROOM, CONF_SOURCES,
+                    CONF_TV_DEVICE_CLASS, CONF_VOLUME_ENTITY, CONST_DEFAULT,
+                    CONST_DEFAULT_EPGCACHELEN, DOMAIN, LIST_EPGCACHELEN,
+                    SKYQREMOTE)
 from .schema import DATA_SCHEMA
 from .utils import convert_sources_json
 
@@ -153,7 +140,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
         self._country_list = [CONST_DEFAULT] + sorted(country_names)
 
-        if self._remote.device_etup:
+        if self._remote.device_setup:
             channel_data = await self.hass.async_add_executor_job(
                 self._remote.get_channel_list
             )
@@ -256,11 +243,14 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                 channelsorted = sorted(
                     channelnosorted, key=attrgetter("channeltype"), reverse=True
                 )
-                for sorted_channel in channelsorted:
-                    channel_sources.append(sorted_channel.channelname)
+                channel_sources.extend(
+                    sorted_channel.channelname for sorted_channel in channelsorted
+                )
+
             else:
-                for sorted_channel in channelitems:
-                    channel_sources.append(sorted_channel.channelname)
+                channel_sources.extend(
+                    sorted_channel.channelname for sorted_channel in channelitems
+                )
 
             user_input[CONF_CHANNEL_SOURCES] = channel_sources
 

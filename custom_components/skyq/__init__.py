@@ -56,10 +56,11 @@ async def async_unload_entry(hass, config_entry):
     host = config_entry.data[CONF_HOST]
     epg_cache_len = CONST_DEFAULT_EPGCACHELEN
     remote = await hass.async_add_executor_job(SkyQRemote, host, epg_cache_len)
-    process_platforms = []
-    for component in PLATFORMS:
-        if remote.gateway or component == ENTITY_MEDIA_PLAYER:
-            process_platforms.append(component)
+    process_platforms = [
+        component
+        for component in PLATFORMS
+        if remote.gateway or component == ENTITY_MEDIA_PLAYER
+    ]
 
     unload_ok = all(
         await asyncio.gather(

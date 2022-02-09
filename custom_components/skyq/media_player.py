@@ -4,70 +4,35 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from homeassistant.components.homekit.const import (
-    ATTR_KEY_NAME,
-    EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED,
-    KEY_FAST_FORWARD,
-    KEY_REWIND,
-)
-from homeassistant.components.media_player import (
-    DEVICE_CLASS_RECEIVER,
-    DEVICE_CLASS_TV,
-    MediaPlayerEntity,
-)
-from homeassistant.components.media_player.const import (
-    MEDIA_TYPE_APP,
-    MEDIA_TYPE_TVSHOW,
-    SUPPORT_BROWSE_MEDIA,
-    SUPPORT_VOLUME_MUTE,
-    SUPPORT_VOLUME_SET,
-    SUPPORT_VOLUME_STEP,
-)
-from homeassistant.const import (
-    ATTR_ENTITY_ID,
-    CONF_HOST,
-    CONF_NAME,
-    STATE_OFF,
-    STATE_PAUSED,
-    STATE_PLAYING,
-    STATE_UNKNOWN,
-)
-from pyskyqremote.const import (
-    APP_EPG,
-    COMMANDS,
-    SKY_STATE_OFF,
-    SKY_STATE_ON,
-    SKY_STATE_PAUSED,
-    SKY_STATE_STANDBY,
-)
+    ATTR_KEY_NAME, EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED, KEY_FAST_FORWARD,
+    KEY_REWIND)
+from homeassistant.components.media_player import (DEVICE_CLASS_RECEIVER,
+                                                   DEVICE_CLASS_TV,
+                                                   MediaPlayerEntity)
+from homeassistant.components.media_player.const import (MEDIA_TYPE_APP,
+                                                         MEDIA_TYPE_TVSHOW,
+                                                         SUPPORT_BROWSE_MEDIA,
+                                                         SUPPORT_VOLUME_MUTE,
+                                                         SUPPORT_VOLUME_SET,
+                                                         SUPPORT_VOLUME_STEP)
+from homeassistant.const import (ATTR_ENTITY_ID, CONF_HOST, CONF_NAME,
+                                 STATE_OFF, STATE_PAUSED, STATE_PLAYING,
+                                 STATE_UNKNOWN)
+from pyskyqremote.const import (APP_EPG, COMMANDS, SKY_STATE_OFF, SKY_STATE_ON,
+                                SKY_STATE_PAUSED, SKY_STATE_STANDBY)
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .classes.config import Config
 from .classes.mediabrowser import MediaBrowser
 from .classes.switchmaker import SwitchMaker
 from .classes.volumeentity import VolumeEntity
-from .const import (
-    APP_IMAGE_URL_BASE,
-    CONF_EPG_CACHE_LEN,
-    CONST_DEFAULT_EPGCACHELEN,
-    CONST_SKYQ_CHANNELNO,
-    CONST_SKYQ_MEDIA_TYPE,
-    DOMAIN,
-    DOMAINBROWSER,
-    ERROR_TIMEOUT,
-    FEATURE_BASE,
-    FEATURE_GET_LIVE_RECORD,
-    FEATURE_IMAGE,
-    FEATURE_LIVE_TV,
-    FEATURE_SWITCHES,
-    FEATURE_TV_DEVICE_CLASS,
-    REMOTE_BUTTONS,
-    SKYQ_APP,
-    SKYQ_ICONS,
-    SKYQ_LIVE,
-    SKYQ_LIVEREC,
-    SKYQ_PVR,
-    SKYQREMOTE,
-)
+from .const import (APP_IMAGE_URL_BASE, CONF_EPG_CACHE_LEN,
+                    CONST_DEFAULT_EPGCACHELEN, CONST_SKYQ_CHANNELNO,
+                    CONST_SKYQ_MEDIA_TYPE, DOMAIN, DOMAINBROWSER,
+                    ERROR_TIMEOUT, FEATURE_BASE, FEATURE_GET_LIVE_RECORD,
+                    FEATURE_IMAGE, FEATURE_LIVE_TV, FEATURE_SWITCHES,
+                    FEATURE_TV_DEVICE_CLASS, REMOTE_BUTTONS, SKYQ_APP,
+                    SKYQ_ICONS, SKYQ_LIVE, SKYQ_LIVEREC, SKYQ_PVR, SKYQREMOTE)
 from .entity import SkyQEntity
 from .utils import AppImageUrl, get_command
 
@@ -413,8 +378,9 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
     async def async_select_source(self, source):
         """Select the specified source."""
-        command = get_command(self._config.custom_sources, self._channel_list, source)
-        if command:
+        if command := get_command(
+            self._config.custom_sources, self._channel_list, source
+        ):
             await self.hass.async_add_executor_job(self._remote.press, command)
             await self.async_update()
 
@@ -499,10 +465,12 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
         self._image_remotely_accessible = True
         if not self._image_url:
-            app_image_url = self._app_image_url.get_app_image_url(app_title)
-            if app_image_url:
-                self._image_url = app_image_url
-                self._image_remotely_accessible = False
+            self._app_image(app_title)
+
+    def _app_image(self, app_title):
+        if app_image_url := self._app_image_url.get_app_image_url(app_title):
+            self._image_url = app_image_url
+            self._image_remotely_accessible = False
 
     async def _async_get_current_media(self):
         current_media = None

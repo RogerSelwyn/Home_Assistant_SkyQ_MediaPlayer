@@ -1,5 +1,6 @@
 """Constants for SkyQ."""
 
+
 from homeassistant.components.homekit.const import (
     KEY_ARROW_DOWN,
     KEY_ARROW_LEFT,
@@ -93,7 +94,7 @@ SKYQ_ICONS = {
     CONST_SKYQ_STORAGE_USED: "mdi:database",
 }
 
-APP_IMAGE_URL_BASE = "/api/" + DOMAIN + "/static"
+APP_IMAGE_URL_BASE = f'/api/{DOMAIN}/static'
 
 BUTTON_PRESS_CHANNELUP = "channelup"
 BUTTON_PRESS_CHANNELDOWN = "channeldown"
