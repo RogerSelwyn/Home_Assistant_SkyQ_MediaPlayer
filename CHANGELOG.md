@@ -1,9 +1,21 @@
 # Changelog
 
+## v2.8.2 (2022/02/12)
+### Maintenance
+- [Create codeql-analysis.yml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c3ade382cccefaeadbeb19077d7bd13e09b14607) - @RogerSelwyn
+- [Pylint applied](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b293db76a5a12635ece1b515ec6f5a4b54b7e7e5) - @RogerSelwyn
+- [Bump pyskyqremote to 0.3.00 for pylint changes](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d687f007cabd2a91aac4424442610390f53aad8f) - @RogerSelwyn
+- [Correct pyskyqremote version to 0.3.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/99f2a99bc800bc96e1608beedbb190f5b1c7f6fa) - @RogerSelwyn
+- [Sourcery recommendations](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a14486ce0cfad421959fbbe5d28225a19ec69c56) - @RogerSelwyn
+- [Bump pyskyqremote to 0.3.1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bd8c096481cbfa33ca1c559af0f5f16d015ce65c) - @RogerSelwyn
+- [Bump to v2.8.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/23b639d42eeb86ab01a3e00db8da26342d717608) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/31d8a89b4968084e7661b6f177117d7da7640400) - @actions-user
+
 ## v2.8.1 (2022/02/03)
 ### Fixes
 - [Correct HW/SW version numbers](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/010968202a2f0262a590a1a68e962649bd4e17e8) - @RogerSelwyn
 - [Fix extraneous warnings on power up/down](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3ce56dfb5be2a8eed50df3fa21138896fb6ab641) - @RogerSelwyn
+
 ### Maintenance
 - [Bump to v2.8.1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8519f7c3785401d49f77b5c5979d2251662fc024) - @RogerSelwyn
 
