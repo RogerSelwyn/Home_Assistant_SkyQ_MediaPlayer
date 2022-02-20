@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.8.3 (2022/02/20)
+### Fixes
+- [Bump pyskyqremote to 0.3.2 (Fix apps not being identified correctly)](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2a38dbe3b330ee0e08c63a09077c29c4a4742828) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.8.3](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9103551ce2882ead8532ee7ea2c4655a2ad350b2) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8b10d64ac588ebb80cc9e768da0606ed599c33d6) - @actions-user
+
 ## v2.8.2 (2022/02/12)
 ### Maintenance
 - [Create codeql-analysis.yml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c3ade382cccefaeadbeb19077d7bd13e09b14607) - @RogerSelwyn
