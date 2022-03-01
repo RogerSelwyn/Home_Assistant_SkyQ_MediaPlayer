@@ -1,17 +1,5 @@
 """Constants for SkyQ."""
 
-
-from homeassistant.components.homekit.const import (
-    KEY_ARROW_DOWN,
-    KEY_ARROW_LEFT,
-    KEY_ARROW_RIGHT,
-    KEY_ARROW_UP,
-    KEY_BACK,
-    KEY_INFORMATION,
-    KEY_NEXT_TRACK,
-    KEY_PREVIOUS_TRACK,
-    KEY_SELECT,
-)
 from homeassistant.components.media_player.const import (
     SUPPORT_NEXT_TRACK,
     SUPPORT_PAUSE,
@@ -25,6 +13,18 @@ from homeassistant.components.media_player.const import (
     SUPPORT_TURN_ON,
 )
 from homeassistant.const import STATE_OFF, STATE_UNKNOWN
+
+from .const_homekit import (
+    KEY_ARROW_DOWN,
+    KEY_ARROW_LEFT,
+    KEY_ARROW_RIGHT,
+    KEY_ARROW_UP,
+    KEY_BACK,
+    KEY_INFORMATION,
+    KEY_NEXT_TRACK,
+    KEY_PREVIOUS_TRACK,
+    KEY_SELECT,
+)
 
 DOMAIN = "skyq"
 DOMAINBROWSER = "skyq_browser"
@@ -94,7 +94,7 @@ SKYQ_ICONS = {
     CONST_SKYQ_STORAGE_USED: "mdi:database",
 }
 
-APP_IMAGE_URL_BASE = f'/api/{DOMAIN}/static'
+APP_IMAGE_URL_BASE = f"/api/{DOMAIN}/static"
 
 BUTTON_PRESS_CHANNELUP = "channelup"
 BUTTON_PRESS_CHANNELDOWN = "channeldown"
