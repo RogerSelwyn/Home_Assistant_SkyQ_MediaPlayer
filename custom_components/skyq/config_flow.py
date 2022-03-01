@@ -6,7 +6,6 @@ import re
 from operator import attrgetter
 
 import homeassistant.helpers.config_validation as cv
-import pycountry
 import voluptuous as vol
 from homeassistant import config_entries, exceptions
 from homeassistant.const import CONF_HOST, CONF_NAME
@@ -14,13 +13,26 @@ from homeassistant.core import callback
 from pyskyqremote.const import KNOWN_COUNTRIES
 from pyskyqremote.skyq_remote import SkyQRemote
 
-from .const import (CHANNEL_DISPLAY, CHANNEL_SOURCES_DISPLAY,
-                    CONF_CHANNEL_SOURCES, CONF_COUNTRY, CONF_EPG_CACHE_LEN,
-                    CONF_GEN_SWITCH, CONF_GET_LIVE_RECORD, CONF_LIVE_TV,
-                    CONF_OUTPUT_PROGRAMME_IMAGE, CONF_ROOM, CONF_SOURCES,
-                    CONF_TV_DEVICE_CLASS, CONF_VOLUME_ENTITY, CONST_DEFAULT,
-                    CONST_DEFAULT_EPGCACHELEN, DOMAIN, LIST_EPGCACHELEN,
-                    SKYQREMOTE)
+from .const import (
+    CHANNEL_DISPLAY,
+    CHANNEL_SOURCES_DISPLAY,
+    CONF_CHANNEL_SOURCES,
+    CONF_COUNTRY,
+    CONF_EPG_CACHE_LEN,
+    CONF_GEN_SWITCH,
+    CONF_GET_LIVE_RECORD,
+    CONF_LIVE_TV,
+    CONF_OUTPUT_PROGRAMME_IMAGE,
+    CONF_ROOM,
+    CONF_SOURCES,
+    CONF_TV_DEVICE_CLASS,
+    CONF_VOLUME_ENTITY,
+    CONST_DEFAULT,
+    CONST_DEFAULT_EPGCACHELEN,
+    DOMAIN,
+    LIST_EPGCACHELEN,
+    SKYQREMOTE,
+)
 from .schema import DATA_SCHEMA
 from .utils import convert_sources_json
 
@@ -113,8 +125,6 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._live_tv = config_entry.options.get(CONF_LIVE_TV, True)
         self._get_live_record = config_entry.options.get(CONF_GET_LIVE_RECORD, False)
         self._country = config_entry.options.get(CONF_COUNTRY, CONST_DEFAULT)
-        if self._country != CONST_DEFAULT:
-            self._country = self._convert_country(alpha_3=self._country)
         self._output_programme_image = config_entry.options.get(
             CONF_OUTPUT_PROGRAMME_IMAGE, True
         )
@@ -135,8 +145,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         }
         country_names = []
         for alpha3 in country_alphas:
-            country_name = self._convert_country(alpha_3=alpha3)
-            country_names.append(country_name)
+            country_names.append(alpha3)
 
         self._country_list = [CONST_DEFAULT] + sorted(country_names)
 
@@ -265,7 +274,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         if self._country == CONST_DEFAULT:
             user_input.pop(CONF_COUNTRY)
         else:
-            user_input[CONF_COUNTRY] = self._convert_country(name=self._country)
+            user_input[CONF_COUNTRY] = self._country
         self._epg_cache_len = user_input.get(CONF_EPG_CACHE_LEN)
 
         self._sources = user_input.get(CONF_SOURCES)
@@ -287,12 +296,6 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             data_schema=vol.Schema({}),
             errors=errors,
         )
-
-    def _convert_country(self, alpha_3=None, name=None):
-        if name:
-            return pycountry.countries.get(name=name).alpha_3
-        if alpha_3:
-            return pycountry.countries.get(alpha_3=alpha_3).name
 
     def _validate_commands(self, source):
         commands = source[1].split(",")
