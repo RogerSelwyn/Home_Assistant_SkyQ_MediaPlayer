@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.8.4 (2022/03/01)
+### Maintenance
+
+- [Remove dependency on homekit integration](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8f88347412a6683e0e8476570902dd028b6a8cff) - @RogerSelwyn
+- [Remove dependency on pycountry](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5fe54fbd5b5667f8ecb6b752a04abb48f40b99b9) - @RogerSelwyn
+- [Bump to v2.8.4](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/1ba2f96cd7bf8f6d053058c8bfeb638fd3a7e57a) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7fe866953387eaf15050ed55aef5f4b10d1c701e) - @actions-user
+
 ## v2.8.3 (2022/02/20)
 ### Fixes
 - [Bump pyskyqremote to 0.3.2 (Fix apps not being identified correctly)](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2a38dbe3b330ee0e08c63a09077c29c4a4742828) - @RogerSelwyn
