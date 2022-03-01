@@ -67,7 +67,7 @@ class SwitchMaker:
 
     def _add_switch(self, switch, friendly_name, service, source=False):
         """Add switch to switches."""
-        source_switch = switch.replace("'", "''")
+        source_switch = str(switch).replace("'", "''")
         if self._alias and len(self._alias) > 0:
             friendly_name = self._find_alias(friendly_name)
         else:
