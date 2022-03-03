@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.8.5 (2022/03/03)
+### Fixes
+- [Fix error when using integer source names](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c2368e14230a82aadb570fc26249b63e4a7d79c0) - @RogerSelwyn
+- [Fix error fetching app image url](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/141f9fefdf31878fdfc84dc012830b8880468f13) - @RogerSelwyn
+
+### Maintenance
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7514d0c3472016e13bc0c3eeae912da9e28ad6b7) - @RogerSelwyn
+- [Bump to v2.8.5](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/363916cca769eec7f1f9fcab83e26b84c4791fd2) - @RogerSelwyn
+
 ## v2.8.4 (2022/03/01)
 ### Maintenance
 
