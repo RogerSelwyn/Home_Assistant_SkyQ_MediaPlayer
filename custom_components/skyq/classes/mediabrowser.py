@@ -81,7 +81,7 @@ class MediaBrowser:
         if not channel_info:
             channel_info = {
                 "channelName": source,
-                "thumbnail": self._app_image_url.getAppImageUrl(source),
+                "thumbnail": self._app_image_url.get_app_image_url(source),
                 "title": source,
             }
         else:
@@ -95,7 +95,7 @@ class MediaBrowser:
             if not isinstance(programme, Programme):
                 channel_info = {
                     "channelName": source,
-                    "thumbnail": self._app_image_url.getAppImageUrl(source),
+                    "thumbnail": self._app_image_url.get_app_image_url(source),
                     "title": source,
                 }
             else:
