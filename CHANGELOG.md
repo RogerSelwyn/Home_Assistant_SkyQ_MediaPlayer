@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.8.6 (2022/03/07)
+### Enhancements
+- [Send 'pause' when pausing channel not application](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b4d8f6a1ffa4f79b97af791e4f13de6dfd83f5ab) - @RogerSelwyn
+
+### Maintenance
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f6c8a827988b21f03fd2e60621e93ed400044f4e) - @RogerSelwyn
+- [Bump to v2.8.6](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/af83828825934fc07922ad8a1f77bfc73ec2dd0f) - @RogerSelwyn
+
 ## v2.8.5 (2022/03/03)
 ### Fixes
 - [Fix error when using integer source names](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c2368e14230a82aadb570fc26249b63e4a7d79c0) - @RogerSelwyn
