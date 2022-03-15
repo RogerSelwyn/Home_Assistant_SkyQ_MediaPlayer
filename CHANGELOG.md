@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.8.7 (2022/03/15)
+### Enhancements
+- [Improve startup time](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/045c757eea144ecd4f199be1ddd600bc7186e082) - @RogerSelwyn
+
+### Maintenance
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/22fe33820b891cab23940c6caf15d0b0e0cb7809) - @RogerSelwyn
+- [Bump to v2.8.7](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cd59c89d7d96cee66776126ffdcf01454a2278ec) - @RogerSelwyn
+- [Minor sourcery code change](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d700994c48ac7032ad0d3dba3287b72c80febafb) - @RogerSelwyn
+
 ## v2.8.6 (2022/03/07)
 ### Enhancements
 - [Send 'pause' when pausing channel not application](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b4d8f6a1ffa4f79b97af791e4f13de6dfd83f5ab) - @RogerSelwyn
