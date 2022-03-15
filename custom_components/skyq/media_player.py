@@ -79,7 +79,6 @@ async def async_setup_platform(
 ):  # pylint: disable=unused-argument
     """Set up the SkyQ platform."""
     host = config.get(CONF_HOST)
-    _LOGGER.debug("Startup - host: %s", host)
     epg_cache_len = config.get(CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN)
     remote = await hass.async_add_executor_job(SkyQRemote, host, epg_cache_len)
 
@@ -132,7 +131,7 @@ async def _async_setup_platform_entry(
     files_path = Path(__file__).parent / "static"
     hass.http.register_static_path(APP_IMAGE_URL_BASE, str(files_path), should_cache)
 
-    async_add_entities([player], True)
+    async_add_entities([player], False)
 
     async def _async_homekit_event(_event):
         if player.entity_id != _event.data[ATTR_ENTITY_ID]:
@@ -154,7 +153,6 @@ async def _async_setup_platform_entry(
             )
 
     hass.bus.async_listen(EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED, _async_homekit_event)
-    _LOGGER.debug("End startup - host: %s", host)
 
 
 class SkyQDevice(SkyQEntity, MediaPlayerEntity):
@@ -185,7 +183,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         self._image_url = None
         self._image_remotely_accessible = False
         self._season = None
-        self._available = True
+        self._available = None
         self._error_time = None
         self._startup_setup = True
         self._channel_list = None

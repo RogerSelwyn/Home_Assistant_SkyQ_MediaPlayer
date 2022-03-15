@@ -1,6 +1,9 @@
 """Entity representation for storage usage."""
+import json
 import logging
+import os
 from datetime import timedelta
+from types import SimpleNamespace
 
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import (
@@ -36,9 +39,9 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     )
     remote = hass.data[DOMAIN][config_entry.entry_id][SKYQREMOTE]
 
-    usedsensor = SkyQUsedStorage(remote, config)
+    usedsensor = SkyQUsedStorage(hass, remote, config)
 
-    async_add_entities([usedsensor], True)
+    async_add_entities([usedsensor], False)
 
 
 class SkyQUsedStorage(SkyQEntity, SensorEntity):
@@ -46,11 +49,15 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
     _attr_entity_category = ENTITY_CATEGORY_DIAGNOSTIC
 
-    def __init__(self, remote, config):
+    def __init__(self, hass, remote, config):
         """Initialize the used storage sensor."""
         super().__init__(remote, config)
-        self._quota_info = None
-        self._available = True
+        self._available = None
+        self._config = config
+        self._statefile = os.path.join(
+            hass.config.config_dir, ".storage/skyq.restore_state"
+        )
+        self._quota_info = self._read_state()
 
     @property
     def device_info(self):
@@ -110,6 +117,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
         self._power_status_on_handling()
         self._quota_info = resp
+        self._write_state()
 
     def _power_status_off_handling(self):
         if self._available:
@@ -120,3 +128,37 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
         if not self._available:
             self._available = True
             _LOGGER.info("I0020M - Device is now available: %s", self.name)
+
+    def _read_state(self):
+        if os.path.isfile(self._statefile):
+            with open(self._statefile, "r", encoding="UTF8") as infile:
+                file_content = json.load(infile)
+            for host in file_content:
+                if host["host"] == self._config.host:
+                    json_content = json.dumps(host["attributes"])
+                    self._available = True
+                    return json.loads(
+                        json_content, object_hook=lambda d: SimpleNamespace(**d)
+                    )
+
+        return None
+
+    def _write_state(self):
+        file_content = []
+        if os.path.isfile(self._statefile):
+            with open(self._statefile, "r", encoding="UTF8") as infile:
+                old_file_content = json.load(infile)
+                file_content.extend(
+                    host
+                    for host in old_file_content
+                    if host["host"] != self._config.host
+                )
+
+        host_content = {
+            "host": self._config.host,
+            "attributes": self._quota_info.__dict__,
+        }
+        file_content.append(host_content)
+
+        with open(self._statefile, "w", encoding="UTF8") as outfile:
+            json.dump(file_content, outfile, ensure_ascii=False, indent=4)

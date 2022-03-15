@@ -6,13 +6,8 @@ from homeassistant.const import CONF_HOST
 from homeassistant.exceptions import ConfigEntryNotReady
 from pyskyqremote.skyq_remote import SkyQRemote
 
-from .const import (
-    CONF_EPG_CACHE_LEN,
-    CONST_DEFAULT_EPGCACHELEN,
-    DOMAIN,
-    SKYQREMOTE,
-    UNDO_UPDATE_LISTENER,
-)
+from .const import (CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN, DOMAIN,
+                    SKYQREMOTE, UNDO_UPDATE_LISTENER)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -28,9 +23,7 @@ async def async_setup(hass, config):  # pylint: disable=unused-argument
 
 async def async_setup_entry(hass, config_entry):
     """Set up a config entry."""
-
     host = config_entry.data[CONF_HOST]
-    _LOGGER.debug("Startup - host: %s", host)
     epg_cache_len = CONST_DEFAULT_EPGCACHELEN
     if CONF_EPG_CACHE_LEN in config_entry.options:
         epg_cache_len = config_entry.options[CONF_EPG_CACHE_LEN]
