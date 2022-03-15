@@ -135,7 +135,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._channel_display = []
         self._channel_list = []
 
-    async def async_step_init(self, user_input=None):  # pylint: disable=unused-argument
+    async def async_step_init(self, user_input=None):    # pylint: disable=unused-argument
         """Set up the option flow."""
         self._remote = self.hass.data[DOMAIN][self._config_entry.entry_id][SKYQREMOTE]
 
@@ -143,10 +143,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             KNOWN_COUNTRIES[country]
             for country in KNOWN_COUNTRIES  # pylint: disable=consider-using-dict-items
         }
-        country_names = []
-        for alpha3 in country_alphas:
-            country_names.append(alpha3)
-
+        country_names = list(country_alphas)
         self._country_list = [CONST_DEFAULT] + sorted(country_names)
 
         if self._remote.device_setup:
