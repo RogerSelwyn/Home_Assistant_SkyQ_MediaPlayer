@@ -143,9 +143,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             KNOWN_COUNTRIES[country]
             for country in KNOWN_COUNTRIES  # pylint: disable=consider-using-dict-items
         }
-        country_names = []
-        for alpha3 in country_alphas:
-            country_names.append(alpha3)
+        country_names = list(country_alphas)
 
         self._country_list = [CONST_DEFAULT] + sorted(country_names)
 
