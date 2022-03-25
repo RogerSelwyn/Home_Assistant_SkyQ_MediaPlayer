@@ -138,7 +138,7 @@ async def _async_setup_platform_entry(
             return
 
         keyname = _event.data[ATTR_KEY_NAME]
-        # _LOGGER.debug(f"D0030M - Homekit event - {player.entity_id} - {keyname}")
+        # _LOGGER.debug(f"D0030 - Homekit event - {player.entity_id} - {keyname}")
         if keyname in REMOTE_BUTTONS:
             await player.async_play_media(REMOTE_BUTTONS[keyname], DOMAIN)
         elif keyname == KEY_REWIND:
@@ -149,7 +149,7 @@ async def _async_setup_platform_entry(
             await player.async_media_next_track()
         else:
             _LOGGER.warning(
-                "W0010M - Invalid Homekit event - %s - %s", player.entity_id, keyname
+                "W0010 - Invalid Homekit event - %s - %s", player.entity_id, keyname
             )
 
     hass.bus.async_listen(EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED, _async_homekit_event)
@@ -193,7 +193,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         if not self._remote.device_setup:
             self._available = False
             self._startup_setup = False
-            _LOGGER.warning("W0020M - Device is not available: %s", self.name)
+            _LOGGER.warning("W0020 - Device is not available: %s", self.name)
 
         self._supported_features = FEATURE_BASE
 
@@ -446,12 +446,10 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
     async def async_set_volume_level(self, volume):
         """Set volume level, range 0..1."""
-        # _LOGGER.debug(f"D9999M - Volume level - {self.name}")
         await self._volume_entity.async_set_volume_level(self.hass, volume)
 
     async def async_volume_up(self):
         """Turn volume up for media player."""
-        # _LOGGER.debug(f"D9999M - Volume up - {self.name}")
         if self._volume_entity.supported_features & SUPPORT_VOLUME_STEP:
             await self._volume_entity.async_volume_up(self.hass)
         elif self.volume_level:
@@ -459,7 +457,6 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
     async def async_volume_down(self):
         """Turn volume down for media player."""
-        # _LOGGER.debug(f"D9999M - Volume down - {self.name}")
         if self._volume_entity.supported_features & SUPPORT_VOLUME_STEP:
             await self._volume_entity.async_volume_down(self.hass)
         elif self.volume_level:
@@ -523,7 +520,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
             if not current_media:
                 # Extra warnings can be produced unneccesarily if SkyQ box is powering up/down
-                # _LOGGER.warning(f"W0030M - Current Media retrieval failed  - {self._config.host}")
+                # _LOGGER.warning(f"W0030 - Current Media retrieval failed  - {self._config.host}")
                 return None
 
             if current_media.live and current_media.sid:
@@ -534,7 +531,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
         except Exception as err:  # pylint: disable=broad-except
             _LOGGER.exception(
-                "X0010M - Current Media retrieval failed: %s : %s", current_media, err
+                "X0010 - Current Media retrieval failed: %s : %s", current_media, err
             )
 
     async def _async_get_live_media(self, current_media):
@@ -614,25 +611,25 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             if not self._error_time:
                 self._error_time = datetime.now()
             _LOGGER.debug(
-                "D0010M - Device is not available - %s Seconds: %s",
+                "D0010 - Device is not available - %s Seconds: %s",
                 self._error_time_so_far(),
                 self.name,
             )
         elif datetime.now() >= error_time_target and self._available:
             self._available = False
-            _LOGGER.warning("W0040M - Device is not available: %s", self.name)
+            _LOGGER.warning("W0040 - Device is not available: %s", self.name)
 
     def _power_status_on_handling(self):
         if not self._available:
             self._available = True
             if self._startup_setup:
-                _LOGGER.info("I0020M - Device is now available: %s", self.name)
+                _LOGGER.debug("D0040 - Device is now available: %s", self.name)
             else:
                 self._startup_setup = True
-                _LOGGER.warning("W0050M - Device is now available: %s", self.name)
+                _LOGGER.warning("W0050 - Device is now available: %s", self.name)
         elif self._error_time:
             _LOGGER.debug(
-                "D0020M - Device is now available - %s Seconds: %s",
+                "D0020 - Device is now available - %s Seconds: %s",
                 self._error_time_so_far(),
                 self.name,
             )

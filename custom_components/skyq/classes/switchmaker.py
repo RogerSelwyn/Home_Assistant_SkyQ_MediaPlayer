@@ -50,9 +50,7 @@ class SwitchMaker:
             ) as aliasfile:
                 self._alias = yaml.full_load(aliasfile)
             if self._alias:
-                _LOGGER.info(
-                    "I0010S - skyqswitchalias.yaml is empty, it can be deleted"
-                )
+                _LOGGER.info("I0010 - skyqswitchalias.yaml is empty, it can be deleted")
 
         self._add_switch("pause", "pause", "media_pause")
         self._add_switch("play", "play", "media_play")

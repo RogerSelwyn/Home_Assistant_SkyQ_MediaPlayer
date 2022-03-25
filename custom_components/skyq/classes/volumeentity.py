@@ -3,10 +3,17 @@
 import logging
 
 from homeassistant.components.media_player.const import (
-    ATTR_MEDIA_VOLUME_LEVEL, ATTR_MEDIA_VOLUME_MUTED)
-from homeassistant.const import (ATTR_ENTITY_ID, ATTR_SUPPORTED_FEATURES,
-                                 SERVICE_VOLUME_DOWN, SERVICE_VOLUME_MUTE,
-                                 SERVICE_VOLUME_SET, SERVICE_VOLUME_UP)
+    ATTR_MEDIA_VOLUME_LEVEL,
+    ATTR_MEDIA_VOLUME_MUTED,
+)
+from homeassistant.const import (
+    ATTR_ENTITY_ID,
+    ATTR_SUPPORTED_FEATURES,
+    SERVICE_VOLUME_DOWN,
+    SERVICE_VOLUME_MUTE,
+    SERVICE_VOLUME_SET,
+    SERVICE_VOLUME_UP,
+)
 from homeassistant.helpers.service import async_call_from_config
 
 _LOGGER = logging.getLogger(__name__)
@@ -47,7 +54,7 @@ class VolumeEntity:
                 )
                 if self._entity_name_error:
                     _LOGGER.info(
-                        "I0010V - Volume entity now exists: %s - %s",
+                        "I0010 - Volume entity now exists: %s - %s",
                         self._mpname,
                         self._entity_name,
                     )
@@ -56,7 +63,7 @@ class VolumeEntity:
                     self._startup = False
                 elif self._startup:
                     _LOGGER.debug(
-                        "D0010V - Volume entity connected: %s - %s",
+                        "D0010 - Volume entity connected: %s - %s",
                         self._mpname,
                         self._entity_name,
                     )
@@ -64,14 +71,14 @@ class VolumeEntity:
             elif not self._entity_name_error:
                 if not self._startup_error:
                     _LOGGER.warning(
-                        "W0010V - Volume entity does not exist: %s - %s",
+                        "W0010 - Volume entity does not exist: %s - %s",
                         self._mpname,
                         self._entity_name,
                     )
                     self._entity_name_error = True
                 else:
                     _LOGGER.debug(
-                        "D0020V - Volume entity does not exist: %s - %s",
+                        "D0020 - Volume entity does not exist: %s - %s",
                         self._mpname,
                         self._entity_name,
                     )
