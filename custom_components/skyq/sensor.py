@@ -30,7 +30,7 @@ SCAN_INTERVAL = timedelta(minutes=5)
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
-    """Set up Sonos from a config entry."""
+    """Set up Sky Q from a config entry."""
     config = Config(
         config_entry.unique_id,
         config_entry.data[CONF_NAME],
