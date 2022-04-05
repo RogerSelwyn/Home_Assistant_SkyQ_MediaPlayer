@@ -36,7 +36,7 @@
           "epg_cache_len": "EPG cache length for Media Browser",
           "volume_entity": "Media Player entity to control volume of"
         },
-        "title": "Options for Sky Q"
+        "description": "Setup options for {name}"
       },
       "retry": {
         "data": {},
