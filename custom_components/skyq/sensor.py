@@ -6,12 +6,7 @@ from datetime import timedelta
 from types import SimpleNamespace
 
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.const import (
-    CONF_HOST,
-    CONF_NAME,
-    DATA_GIGABYTES,
-    ENTITY_CATEGORY_DIAGNOSTIC,
-)
+from homeassistant.const import CONF_HOST, CONF_NAME, DATA_GIGABYTES
 from homeassistant.helpers.entity import EntityCategory
 
 from .classes.config import Config
