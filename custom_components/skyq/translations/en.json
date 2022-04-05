@@ -12,8 +12,7 @@
           "host": "Host",
           "name": "Name"
         },
-        "description": "Set up Sky Q integration. If you have problems with configuration go to: https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer \n\nEnsure that your Sky Q box is powered on.",
-        "title": "Sky Q"
+        "description": "Set up Sky Q integration. If you have problems with configuration go to: https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer \n\nEnsure that your Sky Q box is powered on."
       }
     }
   },
