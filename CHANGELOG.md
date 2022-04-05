@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.8.8 (2022/04/05)
+### Fixes
+- [Fix for UsedStorage sensor not working](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9fd1190aa00860a231ff6037d78338cf0ab8bb86) - @RogerSelwyn
+- [Fix for hassfest failing](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/93c1adbcea69612cb7ed2d3ce18c630ff941bfe9) - @RogerSelwyn
+- [Fix more hassfest](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f0ceb50f050dda83ec2cae83d7ce8c4f5c5535a7) - @RogerSelwyn
+
+### Maintenance
+- [Tidy up error messaging](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2cbb3882a3207e0e082b8b738c7df97d84757446) - @RogerSelwyn
+- [Correct doc string](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6b1d830426c040c8ca18a14e0555cddbfde394ac) - @RogerSelwyn
+- [Bump to v2.8.8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/03907f23e839f55a2fcc1053e5d651bf7c539e2e) - @RogerSelwyn
+- [Remove unrequired constant](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c5dbdd8358d00b4aa2a2a3e721f332b4aa184b9e) - @RogerSelwyn
+
 ## v2.8.7 (2022/03/15)
 ### Enhancements
 - [Improve startup time](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/045c757eea144ecd4f199be1ddd600bc7186e082) - @RogerSelwyn
