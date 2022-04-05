@@ -12,6 +12,7 @@ from homeassistant.const import (
     DATA_GIGABYTES,
     ENTITY_CATEGORY_DIAGNOSTIC,
 )
+from homeassistant.helpers.entity import EntityCategory
 
 from .classes.config import Config
 from .const import (
@@ -47,7 +48,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 class SkyQUsedStorage(SkyQEntity, SensorEntity):
     """Used Storage Entity for SkyQ Device."""
 
-    _attr_entity_category = ENTITY_CATEGORY_DIAGNOSTIC
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, hass, remote, config):
         """Initialize the used storage sensor."""
