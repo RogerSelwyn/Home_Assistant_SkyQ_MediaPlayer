@@ -123,7 +123,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     def _power_status_on_handling(self):
         if not self._available:
             self._available = True
-            _LOGGER.warning("W0020 - Device is now available: %s", self.name)
+            _LOGGER.info("I0010 - Device is now available: %s", self.name)
 
     def _read_state(self):
         if os.path.isfile(self._statefile):

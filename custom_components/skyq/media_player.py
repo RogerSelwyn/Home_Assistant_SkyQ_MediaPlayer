@@ -185,14 +185,13 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         self._season = None
         self._available = None
         self._error_time = None
-        self._startup_setup = True
+        self._startup_setup = False
         self._channel_list = None
         self._use_internal = True
         self._switches_generated = False
 
         if not self._remote.device_setup:
             self._available = False
-            self._startup_setup = False
             _LOGGER.warning("W0020 - Device is not available: %s", self.name)
 
         self._supported_features = FEATURE_BASE
@@ -623,10 +622,12 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         if not self._available:
             self._available = True
             if self._startup_setup:
-                _LOGGER.debug("D0040 - Device is now available: %s", self.name)
+                _LOGGER.info("I0010 - Device is now available: %s", self.name)
             else:
                 self._startup_setup = True
-                _LOGGER.warning("W0050 - Device is now available: %s", self.name)
+                _LOGGER.info(
+                    "I0020 - Device is now available after startup: %s", self.name
+                )
         elif self._error_time:
             _LOGGER.debug(
                 "D0020 - Device is now available - %s Seconds: %s",
