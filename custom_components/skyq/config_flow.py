@@ -189,44 +189,11 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             except InvalidCommand:
                 errors["base"] = "invalid_command"
 
+        schema = self._create_options_schema()
         return self.async_show_form(
             step_id="user",
             description_placeholders={CONF_NAME: self._name},
-            data_schema=vol.Schema(
-                {
-                    vol.Optional(
-                        CHANNEL_SOURCES_DISPLAY, default=self._channel_sources_display
-                    ): cv.multi_select(self._channel_display),
-                    vol.Optional(
-                        CONF_OUTPUT_PROGRAMME_IMAGE,
-                        default=self._output_programme_image,
-                    ): bool,
-                    vol.Optional(CONF_LIVE_TV, default=self._live_tv): bool,
-                    vol.Optional(
-                        CONF_GET_LIVE_RECORD, default=self._get_live_record
-                    ): bool,
-                    vol.Optional(CONF_GEN_SWITCH, default=self._gen_switch): bool,
-                    vol.Optional(
-                        CONF_TV_DEVICE_CLASS, default=self._tv_device_class
-                    ): bool,
-                    vol.Optional(
-                        CONF_ROOM, description={"suggested_value": self._room}
-                    ): str,
-                    vol.Optional(CONF_COUNTRY, default=self._country): vol.In(
-                        self._country_list
-                    ),
-                    vol.Optional(
-                        CONF_VOLUME_ENTITY,
-                        description={"suggested_value": self._volume_entity},
-                    ): str,
-                    vol.Optional(
-                        CONF_EPG_CACHE_LEN, default=self._epg_cache_len
-                    ): vol.In(LIST_EPGCACHELEN),
-                    vol.Optional(
-                        CONF_SOURCES, description={"suggested_value": self._sources}
-                    ): str,
-                }
-            ),
+            data_schema=vol.Schema(schema),
             errors=errors,
         )
 
@@ -300,6 +267,35 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         for command in commands:
             if command not in SkyQRemote.commands:
                 raise InvalidCommand()
+
+    def _create_options_schema(self):
+        return {
+            vol.Optional(
+                CHANNEL_SOURCES_DISPLAY, default=self._channel_sources_display
+            ): cv.multi_select(self._channel_display),
+            vol.Optional(
+                CONF_OUTPUT_PROGRAMME_IMAGE,
+                default=self._output_programme_image,
+            ): bool,
+            vol.Optional(CONF_LIVE_TV, default=self._live_tv): bool,
+            vol.Optional(CONF_GET_LIVE_RECORD, default=self._get_live_record): bool,
+            vol.Optional(CONF_GEN_SWITCH, default=self._gen_switch): bool,
+            vol.Optional(CONF_TV_DEVICE_CLASS, default=self._tv_device_class): bool,
+            vol.Optional(CONF_ROOM, description={"suggested_value": self._room}): str,
+            vol.Optional(CONF_COUNTRY, default=self._country): vol.In(
+                self._country_list
+            ),
+            vol.Optional(
+                CONF_VOLUME_ENTITY,
+                description={"suggested_value": self._volume_entity},
+            ): str,
+            vol.Optional(CONF_EPG_CACHE_LEN, default=self._epg_cache_len): vol.In(
+                LIST_EPGCACHELEN
+            ),
+            vol.Optional(
+                CONF_SOURCES, description={"suggested_value": self._sources}
+            ): str,
+        }
 
 
 class CannotConnect(exceptions.HomeAssistantError):
