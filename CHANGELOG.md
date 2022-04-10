@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.8.9 (2022/04/10)
+### Maintenance
+- [Tweak unavailable errors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/12c96da7028da988122d695d609afb833843ef7d) - @RogerSelwyn
+- [Clarify config_flow](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cf019fb254357dbf8f0d3f2e446556ee13b0ac52) - @RogerSelwyn
+- [Bump to v2.8.9](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d8a82d842da86fb23ee6a9f4d38ccd06682ea58b) - @RogerSelwyn
+- [Auto update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/700dc7e784ecbdb7c49aef65f73bb672f37fb3f0) - @actions-user
+
 ## v2.8.8 (2022/04/05)
 ### Fixes
 - [Fix for UsedStorage sensor not working](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9fd1190aa00860a231ff6037d78338cf0ab8bb86) - @RogerSelwyn
