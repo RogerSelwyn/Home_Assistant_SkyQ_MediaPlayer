@@ -7,14 +7,11 @@ from homeassistant.components.media_player import (
     DEVICE_CLASS_RECEIVER,
     DEVICE_CLASS_TV,
     MediaPlayerEntity,
+    MediaPlayerEntityFeature,
 )
 from homeassistant.components.media_player.const import (
     MEDIA_TYPE_APP,
     MEDIA_TYPE_TVSHOW,
-    SUPPORT_BROWSE_MEDIA,
-    SUPPORT_VOLUME_MUTE,
-    SUPPORT_VOLUME_SET,
-    SUPPORT_VOLUME_STEP,
 )
 from homeassistant.const import (
     ATTR_ENTITY_ID,
@@ -205,18 +202,25 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     def supported_features(self):
         """Get the supported features."""
         if self._config.volume_entity:
-            self._supported_features = self._supported_features | SUPPORT_VOLUME_MUTE
-            self._supported_features = self._supported_features | SUPPORT_VOLUME_STEP
+            self._supported_features = (
+                self._supported_features | MediaPlayerEntityFeature.VOLUME_MUTE
+            )
+            self._supported_features = (
+                self._supported_features | MediaPlayerEntityFeature.VOLUME_STEP
+            )
             if (
                 self._volume_entity.supported_features
-                and self._volume_entity.supported_features & SUPPORT_VOLUME_SET
+                and self._volume_entity.supported_features
+                & MediaPlayerEntityFeature.VOLUME_SET
             ):
-                self._supported_features = self._supported_features | SUPPORT_VOLUME_SET
+                self._supported_features = (
+                    self._supported_features | MediaPlayerEntityFeature.VOLUME_SET
+                )
         if len(self._config.source_list) > 0 and self.state not in (
             STATE_OFF,
             STATE_UNKNOWN,
         ):
-            return self._supported_features | SUPPORT_BROWSE_MEDIA
+            return self._supported_features | MediaPlayerEntityFeature.BROWSE_MEDIA
 
         return self._supported_features
 
@@ -438,7 +442,10 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
     async def async_mute_volume(self, mute):
         """Mute the volume."""
-        if self._volume_entity.supported_features & SUPPORT_VOLUME_MUTE:
+        if (
+            self._volume_entity.supported_features
+            & MediaPlayerEntityFeature.VOLUME_MUTE
+        ):
             await self._volume_entity.async_mute_volume(self.hass, mute)
         else:
             await self.async_set_volume_level(0)
@@ -449,14 +456,20 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
     async def async_volume_up(self):
         """Turn volume up for media player."""
-        if self._volume_entity.supported_features & SUPPORT_VOLUME_STEP:
+        if (
+            self._volume_entity.supported_features
+            & MediaPlayerEntityFeature.VOLUME_STEP
+        ):
             await self._volume_entity.async_volume_up(self.hass)
         elif self.volume_level:
             await self.async_set_volume_level(self.volume_level + 0.02)
 
     async def async_volume_down(self):
         """Turn volume down for media player."""
-        if self._volume_entity.supported_features & SUPPORT_VOLUME_STEP:
+        if (
+            self._volume_entity.supported_features
+            & MediaPlayerEntityFeature.VOLUME_STEP
+        ):
             await self._volume_entity.async_volume_down(self.hass)
         elif self.volume_level:
             await self.async_set_volume_level(self.volume_level - 0.02)
