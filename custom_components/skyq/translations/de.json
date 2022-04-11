@@ -27,19 +27,25 @@
       "user": {
         "data": {
           "channel_sources_display": "Liste der Kanalquellen",
-          "sources": "Benutzerdefinierte Quellen - lesen Sie Github",
           "output_programme_image": "Programmbild anzeigen",
-          "tv_device_class": "TV-Geräteklasse (für Receiver deaktivieren)",
-          "generate_switches_for_channels": "Generate switches for channels",
           "live_tv": "Generieren Sie Schalter für Kanäle",
           "get_live_record": "Erhalten Sie den Live-Aufzeichnungsstatus",
+          "generate_switches_for_channels": "Generate switches for channels",
           "room": "Optionaler Raumname - für Schalter erforderlich",
-          "country": "Land überschreiben",
-          "epg_cache_len": "EPG-Cache-Länge für Media Browser",
           "volume_entity": "Media Player-Entität zur Steuerung der Lautstärke von"
         },
         "title": "Sky Q",
         "description": "Setup-Optionen für {name}"
+      },
+      "advanced": {
+        "data": {
+          "tv_device_class": "TV-Geräteklasse (für Receiver deaktivieren)",
+          "country": "Land überschreiben",
+          "epg_cache_len": "EPG-Cache-Länge für Media Browser",
+          "sources": "Benutzerdefinierte Quellen - lesen Sie Github"
+        },
+        "title": "Sky Q",
+        "description": "Erweiterte Setup-Optionen für {name}"
       },
       "retry": {
         "data": {},

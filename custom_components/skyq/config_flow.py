@@ -41,16 +41,6 @@ SORT_CHANNELS = False
 _LOGGER = logging.getLogger(__name__)
 
 
-def host_valid(host):
-    """Return True if hostname or IP address is valid."""
-    try:
-        if ipaddress.ip_address(host).version == (4 or 6):
-            return True
-    except ValueError:
-        disallowed = re.compile(r"[^a-zA-Z\d\-]")
-        return all(x and not disallowed.search(x) for x in host.split("."))
-
-
 class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Example config flow."""
 
@@ -71,7 +61,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
 
         if user_input:
-            if host_valid(user_input[CONF_HOST]):
+            if _host_valid(user_input[CONF_HOST]):
                 host = user_input[CONF_HOST]
                 name = user_input[CONF_NAME]
 
@@ -134,6 +124,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         )
         self._channel_display = []
         self._channel_list = []
+        self._user_input = None
 
     async def async_step_init(self, user_input=None):  # pylint: disable=unused-argument
         """Set up the option flow."""
@@ -181,17 +172,34 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         errors = {}
 
         if user_input:
+            self._user_input = await self._async_user_input(user_input)
+            return await self.async_step_advanced()
+
+        schema = self._create_options_schema()
+        return self.async_show_form(
+            step_id="user",
+            description_placeholders={CONF_NAME: self._name},
+            data_schema=vol.Schema(schema),
+            errors=errors,
+        )
+
+    async def async_step_advanced(self, user_input=None):
+        """Handle a flow initialized by the user."""
+        errors = {}
+
+        if user_input:
             try:
-                user_input = await self._async_user_input(user_input)
+                advanced_input = await self._async_advanced_input(user_input)
+                user_input = {**self._user_input, **advanced_input}
                 return self.async_create_entry(title="", data=user_input)
             except json.decoder.JSONDecodeError:
                 errors["base"] = "invalid_sources"
             except InvalidCommand:
                 errors["base"] = "invalid_command"
 
-        schema = self._create_options_schema()
+        schema = self._create_advanced_options_schema()
         return self.async_show_form(
-            step_id="user",
+            step_id="advanced",
             description_placeholders={CONF_NAME: self._name},
             data_schema=vol.Schema(schema),
             errors=errors,
@@ -232,9 +240,13 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._live_tv = user_input.get(CONF_LIVE_TV)
         self._get_live_record = user_input.get(CONF_GET_LIVE_RECORD)
         self._output_programme_image = user_input.get(CONF_OUTPUT_PROGRAMME_IMAGE)
-        self._tv_device_class = user_input.get(CONF_TV_DEVICE_CLASS)
         self._room = user_input.get(CONF_ROOM)
         self._volume_entity = user_input.get(CONF_VOLUME_ENTITY)
+
+        return user_input
+
+    async def _async_advanced_input(self, user_input):
+        self._tv_device_class = user_input.get(CONF_TV_DEVICE_CLASS)
         self._country = user_input.get(CONF_COUNTRY)
         if self._country == CONST_DEFAULT:
             user_input.pop(CONF_COUNTRY)
@@ -246,7 +258,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         if self._sources:
             sources_list = convert_sources_json(sources_json=self._sources)
             for source in sources_list:
-                self._validate_commands(source)
+                _validate_commands(source)
 
         return user_input
 
@@ -262,12 +274,6 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             errors=errors,
         )
 
-    def _validate_commands(self, source):
-        commands = source[1].split(",")
-        for command in commands:
-            if command not in SkyQRemote.commands:
-                raise InvalidCommand()
-
     def _create_options_schema(self):
         return {
             vol.Optional(
@@ -280,15 +286,19 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             vol.Optional(CONF_LIVE_TV, default=self._live_tv): bool,
             vol.Optional(CONF_GET_LIVE_RECORD, default=self._get_live_record): bool,
             vol.Optional(CONF_GEN_SWITCH, default=self._gen_switch): bool,
-            vol.Optional(CONF_TV_DEVICE_CLASS, default=self._tv_device_class): bool,
             vol.Optional(CONF_ROOM, description={"suggested_value": self._room}): str,
-            vol.Optional(CONF_COUNTRY, default=self._country): vol.In(
-                self._country_list
-            ),
             vol.Optional(
                 CONF_VOLUME_ENTITY,
                 description={"suggested_value": self._volume_entity},
             ): str,
+        }
+
+    def _create_advanced_options_schema(self):
+        return {
+            vol.Optional(CONF_TV_DEVICE_CLASS, default=self._tv_device_class): bool,
+            vol.Optional(CONF_COUNTRY, default=self._country): vol.In(
+                self._country_list
+            ),
             vol.Optional(CONF_EPG_CACHE_LEN, default=self._epg_cache_len): vol.In(
                 LIST_EPGCACHELEN
             ),
@@ -296,6 +306,22 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                 CONF_SOURCES, description={"suggested_value": self._sources}
             ): str,
         }
+
+
+def _host_valid(host):
+    """Return True if hostname or IP address is valid."""
+    try:
+        return ipaddress.ip_address(host).version == ((4 or 6))
+    except ValueError:
+        disallowed = re.compile(r"[^a-zA-Z\d\-]")
+        return all(x and not disallowed.search(x) for x in host.split("."))
+
+
+def _validate_commands(source):
+    commands = source[1].split(",")
+    for command in commands:
+        if command not in SkyQRemote.commands:
+            raise InvalidCommand()
 
 
 class CannotConnect(exceptions.HomeAssistantError):
