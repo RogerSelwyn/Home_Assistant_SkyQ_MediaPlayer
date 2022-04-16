@@ -1,4 +1,4 @@
-"""Schema for Sk Q Integration."""
+"""Schema for Sky Q Integration."""
 
 from datetime import timedelta
 
@@ -11,13 +11,13 @@ from .const import (
     CONF_COUNTRY,
     CONF_EPG_CACHE_LEN,
     CONF_GEN_SWITCH,
+    CONF_GET_LIVE_RECORD,
     CONF_LIVE_TV,
     CONF_OUTPUT_PROGRAMME_IMAGE,
-    CONF_TV_DEVICE_CLASS,
     CONF_ROOM,
-    CONF_GET_LIVE_RECORD,
     CONF_SOURCES,
     CONF_TEST_CHANNEL,
+    CONF_TV_DEVICE_CLASS,
     CONF_VOLUME_ENTITY,
     CONST_DEFAULT_EPGCACHELEN,
     CONST_DEFAULT_ROOM,
@@ -40,7 +40,9 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_TEST_CHANNEL): cv.string,
         vol.Optional(CONF_SCAN_INTERVAL, default=SCAN_INTERVAL): cv.time_period,
         vol.Optional(CONF_VOLUME_ENTITY): cv.string,
-        vol.Optional(CONF_EPG_CACHE_LEN, default=CONST_DEFAULT_EPGCACHELEN): cv.positive_int,
+        vol.Optional(
+            CONF_EPG_CACHE_LEN, default=CONST_DEFAULT_EPGCACHELEN
+        ): cv.positive_int,
     }
 )
 

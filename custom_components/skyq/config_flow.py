@@ -71,8 +71,8 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     errors["base"] = "cannot_connect"
                 else:
                     return self.async_create_entry(title=name, data=user_input)
-
-            errors[CONF_HOST] = "invalid_host"
+            else:
+                errors[CONF_HOST] = "invalid_host"
 
         return self.async_show_form(
             step_id="user", data_schema=vol.Schema(DATA_SCHEMA), errors=errors

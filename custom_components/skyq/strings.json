@@ -4,7 +4,8 @@
       "already_configured": "This Sky Q box is already configured."
     },
     "error": {
-      "cannot_connect": "Failed to connect, invalid host."
+      "cannot_connect": "Failed to connect to host.",
+      "invalid_host": "Invalid hostname or ip."
     },
     "step": {
       "user": {

@@ -4,7 +4,8 @@
       "already_configured": "Diese Sky Q-Box ist bereits konfiguriert."
     },
     "error": {
-      "cannot_connect": "Verbindung fehlgeschlagen, ungültiger Host."
+      "cannot_connect": "Verbindung zum Host fehlgeschlagen.",
+      "invalid_host": "Ungültiger Hostname oder IP."
     },
     "step": {
       "user": {

@@ -4,7 +4,8 @@
       "already_configured": "Questa casella Sky Q è già configurata.."
     },
     "error": {
-      "cannot_connect": "Impossibile connettersi, host non valido."
+      "cannot_connect": "Impossibile connettersi all'host.",
+      "invalid_host": "Nome host o IP non valido."
     },
     "step": {
       "user": {
