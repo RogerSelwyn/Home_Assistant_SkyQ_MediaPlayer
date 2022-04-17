@@ -485,6 +485,8 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
         if current_state == SKY_STATE_PAUSED:
             self._state = STATE_PAUSED
+        elif current_state == SKY_STATE_OFF:
+            self._state = STATE_OFF
         else:
             self._state = STATE_PLAYING
 
