@@ -10,7 +10,7 @@ import voluptuous as vol
 from homeassistant import config_entries, exceptions
 from homeassistant.const import CONF_HOST, CONF_NAME
 from homeassistant.core import callback
-from pyskyqremote.const import KNOWN_COUNTRIES
+from pyskyqremote.const import KNOWN_COUNTRIES, UNSUPPORTED_DEVICES
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .const import (
@@ -82,9 +82,16 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         remote = await self.hass.async_add_executor_job(SkyQRemote, host)
         if not remote.device_setup:
             raise CannotConnect()
+
+        if remote.device_type in UNSUPPORTED_DEVICES:
+            _LOGGER.warning(
+                "W0010 - Device type - %s - is not supported", remote.device_type
+            )
+
         device_info = await self.hass.async_add_executor_job(
             remote.get_device_information
         )
+
         await self.async_set_unique_id(
             device_info.countryCode
             + "".join(e for e in device_info.serialNumber.casefold() if e.isalnum())

@@ -2,12 +2,18 @@
 import asyncio
 import logging
 
-from homeassistant.const import CONF_HOST
+from homeassistant.const import CONF_HOST, CONF_NAME
 from homeassistant.exceptions import ConfigEntryNotReady
+from pyskyqremote.const import DEVICE_GATEWAYSTB, UNSUPPORTED_DEVICES
 from pyskyqremote.skyq_remote import SkyQRemote
 
-from .const import (CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN, DOMAIN,
-                    SKYQREMOTE, UNDO_UPDATE_LISTENER)
+from .const import (
+    CONF_EPG_CACHE_LEN,
+    CONST_DEFAULT_EPGCACHELEN,
+    DOMAIN,
+    SKYQREMOTE,
+    UNDO_UPDATE_LISTENER,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -35,13 +41,20 @@ async def async_setup_entry(hass, config_entry):
     if not remote.device_setup:
         raise ConfigEntryNotReady
 
+    if remote.device_type in UNSUPPORTED_DEVICES:
+        _LOGGER.warning(
+            "W0010 - Device type - %s - is not supported - %s",
+            remote.device_type,
+            config_entry.data[CONF_NAME],
+        )
+
     hass.data[DOMAIN][config_entry.entry_id] = {
         SKYQREMOTE: remote,
         UNDO_UPDATE_LISTENER: undo_listener,
     }
 
     for component in PLATFORMS:
-        if remote.gateway or component == ENTITY_MEDIA_PLAYER:
+        if remote.device_type == DEVICE_GATEWAYSTB or component == ENTITY_MEDIA_PLAYER:
             hass.async_create_task(
                 hass.config_entries.async_forward_entry_setup(config_entry, component)
             )
