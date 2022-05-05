@@ -280,9 +280,11 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
     def _fake_advanced_input(self):
         advanced_input = {}
         advanced_input[CONF_TV_DEVICE_CLASS] = self._tv_device_class
-        advanced_input[CONF_COUNTRY] = self._country
+        if self._country != CONST_DEFAULT:
+            advanced_input[CONF_COUNTRY] = self._country
         advanced_input[CONF_EPG_CACHE_LEN] = self._epg_cache_len
-        advanced_input[CONF_SOURCES] = self._sources
+        if self._sources:
+            advanced_input[CONF_SOURCES] = self._sources
         return advanced_input
 
     async def async_step_retry(

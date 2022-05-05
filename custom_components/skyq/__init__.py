@@ -74,7 +74,7 @@ async def async_unload_entry(hass, config_entry):
     process_platforms = [
         component
         for component in PLATFORMS
-        if remote.gateway or component == ENTITY_MEDIA_PLAYER
+        if remote.device_type == DEVICE_GATEWAYSTB or component == ENTITY_MEDIA_PLAYER
     ]
 
     unload_ok = all(
@@ -107,19 +107,19 @@ async def async_migrate_entry(hass, config_entry):
 
     if config_entry.version == 1:
 
-        newData = {**config_entry.data}
-        newOptions = {**config_entry.options}
+        new_options = {**config_entry.options}
         if (
-            not config_entry.options.get(CONF_TV_DEVICE_CLASS)
+            not config_entry.options.get(CONF_TV_DEVICE_CLASS, True)
             or config_entry.options.get(CONF_COUNTRY)
-            or config_entry.options.get(CONF_EPG_CACHE_LEN) != CONST_DEFAULT_EPGCACHELEN
+            or config_entry.options.get(CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN)
+            != CONST_DEFAULT_EPGCACHELEN
             or config_entry.options.get(CONF_SOURCES)
         ):
-            newOptions[CONF_ADVANCED_OPTIONS] = True
+            new_options[CONF_ADVANCED_OPTIONS] = True
         else:
-            newOptions[CONF_ADVANCED_OPTIONS] = False
+            new_options[CONF_ADVANCED_OPTIONS] = False
         config_entry.version = 2
-        hass.config_entries.async_update_entry(config_entry, options=newOptions)
+        hass.config_entries.async_update_entry(config_entry, options=new_options)
 
     _LOGGER.info(
         "Migration of %s to version %s successful",
