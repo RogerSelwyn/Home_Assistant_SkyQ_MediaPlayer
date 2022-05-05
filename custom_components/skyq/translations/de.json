@@ -33,7 +33,8 @@
           "get_live_record": "Erhalten Sie den Live-Aufzeichnungsstatus",
           "generate_switches_for_channels": "Generate switches for channels",
           "room": "Optionaler Raumname - für Schalter erforderlich",
-          "volume_entity": "Media Player-Entität zur Steuerung der Lautstärke von"
+          "volume_entity": "Media Player-Entität zur Steuerung der Lautstärke von",
+          "advanced_options": "Erweiterte Optionen anzeigen"
         },
         "title": "Sky Q",
         "description": "Setup-Optionen für {name}"

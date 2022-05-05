@@ -8,7 +8,11 @@ from pyskyqremote.const import DEVICE_GATEWAYSTB, UNSUPPORTED_DEVICES
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .const import (
+    CONF_ADVANCED_OPTIONS,
+    CONF_COUNTRY,
     CONF_EPG_CACHE_LEN,
+    CONF_SOURCES,
+    CONF_TV_DEVICE_CLASS,
     CONST_DEFAULT_EPGCACHELEN,
     DOMAIN,
     SKYQREMOTE,
@@ -93,3 +97,34 @@ async def async_unload_entry(hass, config_entry):
 async def update_listener(hass, config_entry):
     """Handle options update."""
     await hass.config_entries.async_reload(config_entry.entry_id)
+
+
+async def async_migrate_entry(hass, config_entry):
+    """Migrate old entry."""
+    _LOGGER.debug(
+        "Migrating %s from version %s", config_entry.title, config_entry.version
+    )
+
+    if config_entry.version == 1:
+
+        newData = {**config_entry.data}
+        newOptions = {**config_entry.options}
+        if (
+            not config_entry.options.get(CONF_TV_DEVICE_CLASS)
+            or config_entry.options.get(CONF_COUNTRY)
+            or config_entry.options.get(CONF_EPG_CACHE_LEN) != CONST_DEFAULT_EPGCACHELEN
+            or config_entry.options.get(CONF_SOURCES)
+        ):
+            newOptions[CONF_ADVANCED_OPTIONS] = True
+        else:
+            newOptions[CONF_ADVANCED_OPTIONS] = False
+        config_entry.version = 2
+        hass.config_entries.async_update_entry(config_entry, options=newOptions)
+
+    _LOGGER.info(
+        "Migration of %s to version %s successful",
+        config_entry.title,
+        config_entry.version,
+    )
+
+    return True

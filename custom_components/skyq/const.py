@@ -19,6 +19,7 @@ DOMAINBROWSER = "skyq_browser"
 SKYQREMOTE = "skyqremote"
 UNDO_UPDATE_LISTENER = "undo_update_listener"
 
+CONF_ADVANCED_OPTIONS = "advanced_options"
 CONF_TV_DEVICE_CLASS = "tv_device_class"
 CONF_SOURCES = "sources"
 CONF_CHANNEL_SOURCES = "channel_sources"

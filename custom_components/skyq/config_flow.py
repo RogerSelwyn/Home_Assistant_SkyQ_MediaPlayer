@@ -16,6 +16,7 @@ from pyskyqremote.skyq_remote import SkyQRemote
 from .const import (
     CHANNEL_DISPLAY,
     CHANNEL_SOURCES_DISPLAY,
+    CONF_ADVANCED_OPTIONS,
     CONF_CHANNEL_SOURCES,
     CONF_COUNTRY,
     CONF_EPG_CACHE_LEN,
@@ -44,7 +45,7 @@ _LOGGER = logging.getLogger(__name__)
 class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Example config flow."""
 
-    VERSION = 1
+    VERSION = 2
     CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_POLL
 
     def __init__(self):
@@ -129,6 +130,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._epg_cache_len = config_entry.options.get(
             CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN
         )
+        self._advanced_options = config_entry.options.get(CONF_ADVANCED_OPTIONS, False)
         self._channel_display = []
         self._channel_list = []
         self._user_input = None
@@ -179,8 +181,13 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         errors = {}
 
         if user_input:
-            self._user_input = await self._async_user_input(user_input)
-            return await self.async_step_advanced()
+            self._user_input = self._store_user_input(user_input)
+            if self._advanced_options:
+                return await self.async_step_advanced()
+
+            advanced_input = self._fake_advanced_input()
+            user_input = {**self._user_input, **advanced_input}
+            return self.async_create_entry(title="", data=user_input)
 
         schema = self._create_options_schema()
         return self.async_show_form(
@@ -196,7 +203,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
         if user_input:
             try:
-                advanced_input = await self._async_advanced_input(user_input)
+                advanced_input = self._store_advanced_input(user_input)
                 user_input = {**self._user_input, **advanced_input}
                 return self.async_create_entry(title="", data=user_input)
             except json.decoder.JSONDecodeError:
@@ -212,7 +219,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             errors=errors,
         )
 
-    async def _async_user_input(self, user_input):
+    def _store_user_input(self, user_input):
         self._channel_sources_display = user_input[CHANNEL_SOURCES_DISPLAY]
         user_input.pop(CHANNEL_SOURCES_DISPLAY)
         if len(self._channel_sources_display) > 0:
@@ -249,10 +256,11 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._output_programme_image = user_input.get(CONF_OUTPUT_PROGRAMME_IMAGE)
         self._room = user_input.get(CONF_ROOM)
         self._volume_entity = user_input.get(CONF_VOLUME_ENTITY)
+        self._advanced_options = user_input.get(CONF_ADVANCED_OPTIONS)
 
         return user_input
 
-    async def _async_advanced_input(self, user_input):
+    def _store_advanced_input(self, user_input):
         self._tv_device_class = user_input.get(CONF_TV_DEVICE_CLASS)
         self._country = user_input.get(CONF_COUNTRY)
         if self._country == CONST_DEFAULT:
@@ -268,6 +276,14 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                 _validate_commands(source)
 
         return user_input
+
+    def _fake_advanced_input(self):
+        advanced_input = {}
+        advanced_input[CONF_TV_DEVICE_CLASS] = self._tv_device_class
+        advanced_input[CONF_COUNTRY] = self._country
+        advanced_input[CONF_EPG_CACHE_LEN] = self._epg_cache_len
+        advanced_input[CONF_SOURCES] = self._sources
+        return advanced_input
 
     async def async_step_retry(
         self, user_input=None
@@ -298,6 +314,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                 CONF_VOLUME_ENTITY,
                 description={"suggested_value": self._volume_entity},
             ): str,
+            vol.Optional(CONF_ADVANCED_OPTIONS, default=self._advanced_options): bool,
         }
 
     def _create_advanced_options_schema(self):

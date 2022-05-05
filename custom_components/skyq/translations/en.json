@@ -39,7 +39,8 @@
           "get_live_record": "Get live record status",
           "generate_switches_for_channels": "Generate switches for channels",
           "room": "Optional room name - required for switches",
-          "volume_entity": "Media Player entity to control volume of"
+          "volume_entity": "Media Player entity to control volume of",
+          "advanced_options": "Show advanced options"
         },
         "description": "Setup options for {name}"
       },

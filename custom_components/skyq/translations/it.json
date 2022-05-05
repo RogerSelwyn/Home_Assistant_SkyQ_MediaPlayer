@@ -33,7 +33,8 @@
           "get_live_record": "Ottieni lo stato della registrazione in tempo reale",
           "generate_switches_for_channels": "Genera switch per canali",
           "room": "Nome stanza opzionale - richiesto per gli interruttori",
-          "volume_entity": "Entità di Media Player per controllare il volume di"
+          "volume_entity": "Entità di Media Player per controllare il volume di",
+          "advanced_options": "Mostra opzioni avanzate"
         },
         "title": "Sky Q",
         "description": "Opzioni di configurazione per {name}"
