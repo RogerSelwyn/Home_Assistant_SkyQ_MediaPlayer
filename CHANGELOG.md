@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.9.0 (2022/05/08)
+### Enhancements
+- [Split configuration options into two](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b775212bbc7f45d62860bf7ce7d5cc9efae9c2ab) - @RogerSelwyn
+- [Add handling for unsupported devices - TV/IPSETTOPBOX](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5969b41d096cf979f1f96f58edd4be1c6b917d14) - @RogerSelwyn
+- [Add option to show advanced options](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/39f2fe58e9c8e72a45ca3c2332673c493df5d2e0) - @RogerSelwyn
+- [Add transport_status to exposed attributes](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b215358abedacd6e51056e7e8a2cdfb370b483c1) - @RogerSelwyn
+### Fixes
+- [Correct error messages for invalid hosts](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f4d66bd9b815985e964ff6a6873c88058dd3b75d) - @RogerSelwyn
+- [Handle state off returned from SkyQRemote](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/026e7d5a67ecb1eb5434ec15a103855eb9192d2f) - @RogerSelwyn
+- [Update to handle power off status from pyskyqremote](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b23f57102d1b4b5c237910dc146886507412f111) - @RogerSelwyn
+- [Fixes in support of split options](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5144219a5d1e52d2cf63315b5523f709da03727b) - @RogerSelwyn
+### Maintenance
+- [Support changes in HA 2022.5](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8fd7f87aa72829dbbdaf48ad7aa40a0991ff1b75) - @RogerSelwyn
+- [Bump pyskyqremote to 0.3.6](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/82980df45c2efcb9e76f7cef32a84edc125cc571) - @RogerSelwyn
+- [Bump pyskyqremote to 0.3.7](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b80b5ba7f04bb254643bbb14a39aed08bdc48377) - @RogerSelwyn
+- [Bump to v2.9.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f734a24163cd62cbe94e3012949401a25580f90d) - @RogerSelwyn
+- [Sourcery recommendation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/efe80fbed9f8f807708321c3df8a763f70a051a9) - @RogerSelwyn
+- ['Refactored by Sourcery'](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ef94e93dfad918ace2df06391133d306f5c78aa1) - @None
+- [Revert obscure sourcery change](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b3d72b86c227fd001844538a07670c436261215d) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5c26ce20afd716b7857663d7db2497db86617b62) - @actions-user
+
 ## v2.8.9 (2022/04/10)
 ### Maintenance
 - [Tweak unavailable errors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/12c96da7028da988122d695d609afb833843ef7d) - @RogerSelwyn
