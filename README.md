@@ -7,7 +7,7 @@
 
 The skyq platform allows you to control a Sky Q set top box.
 
-**Note:** This integration does not support **Sky Glass** or internet only devices that are currently being sold outside the UK. 
+**Note:** This integration does not support **Sky Glass** or internet only devices that are currently being sold outside the UK.
 
 **Note:** Whilst it will pull back information for current channel and live programme, it will do this for a very limited set of countries (currently UK, and any countries that use the same EPG/images, plus Italy and Germany). If you are in an unsupported country, or don't want this information set 'live_tv' to False in your config.
 
@@ -215,10 +215,38 @@ SkyFamilyHD: Sky Family HD
 play: engage
 ```
 
- ### Homekit Integration
+### Media Player Entity Attributes
+The media player provides a main status, plus a range of attributes. The main attributes are common with other HA media players and provide detail on the currently playing item:
+- source_list: BBC One South, BBC Two HD, ITV
+- media_content_type: tvshow
+- media_title: BBC Two HD
+- media_series_title: Planet Earth II: A World of Wonder
+- media_season: 2
+- media_episode: 7
+- media_channel: BBC Two HD
+- source: BBC Two HD
+- entity_picture_local: /api/media_player_proxy/media_player.sky_q_mini?token=6418e8bac0e0065a5276f3407e80d3f10157dbd6d7be93fc3d96582cbd6be80c&cache=450f5a402a3ce01c
+- device_class: tv
+- entity_picture: https://imageservice.sky.com/pd-image/1c54548b-4afa-4d8a-aab4-19e7201c26bb/16-9/456?territory=GB&provider=SKY&proposition=SKYQ
+- icon: mdi:satellite-variant
+- friendly_name: Sky Q Mini
+- supported_features: 154547
+
+The following items are specific to the SkyQ media player and are items requested by users of the integration:
+- skyq_media_type - shows current media type being played
+  - app - an application such as Netflix is being played
+  - live - a live programme is being played (unknown if it has been paused previously or not)
+  - liverecord - a live programme is being played as well as being recorded
+  - pvr - a recording is being played
+- skyq_transport_status
+  - OK - standard status when all is OK, even in standby.
+  - ERROR_PIN_REQUIRED - when the box is awaiting PIN entry. This can be used as a means of triggering automatic PIN entry.
+  - Not present - if box is in lower power mode (overnight) or for an unsupported box (e.g. Sky Glass)
+- skyq_channelno - the sky channel being played. Not present if no channel has been identified (e.g. YouTube is being viewed)
+### Homekit Integration
 
 The integration will expose the relevant controls to Homekit as long as it is configured in the Homekit integration. The Sky Q media player should be exposed as an accesory. Normally you will want 'tv_device_class' to be enabled to provide the maximum functionality to Homekit, since this presents the box as a TV which can be managed by Apple Remote. If 'tv_device_class' is disabled, then the Sky Q box is presented as a Receiver to Homekit which then presents a set of switches in the Home app. Note that in the list of available channels that is presented in the Home app, the current channel is always available even if not configured as a source in HA.
 
- ## <a name="storagesensor">Storage Sensor</a>
+## <a name="storagesensor">Storage Sensor</a>
 
 One sensor is created per SkyQ device with it's value set to the current used space in GB. Max GB and percentage used are all provided as attributes of the sensor.
