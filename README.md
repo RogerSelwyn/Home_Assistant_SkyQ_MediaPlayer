@@ -243,7 +243,8 @@ The following items are specific to the SkyQ media player and are items requeste
   - ERROR_PIN_REQUIRED - when the box is awaiting PIN entry. This can be used as a means of triggering automatic PIN entry.
   - Not present - if box is in lower power mode (overnight) or for an unsupported box (e.g. Sky Glass)
 - skyq_channelno - the sky channel being played. Not present if no channel has been identified (e.g. YouTube is being viewed)
-### Homekit Integration
+
+ ### Homekit Integration
 
 The integration will expose the relevant controls to Homekit as long as it is configured in the Homekit integration. The Sky Q media player should be exposed as an accesory. Normally you will want 'tv_device_class' to be enabled to provide the maximum functionality to Homekit, since this presents the box as a TV which can be managed by Apple Remote. If 'tv_device_class' is disabled, then the Sky Q box is presented as a Receiver to Homekit which then presents a set of switches in the Home app. Note that in the list of available channels that is presented in the Home app, the current channel is always available even if not configured as a source in HA.
 
