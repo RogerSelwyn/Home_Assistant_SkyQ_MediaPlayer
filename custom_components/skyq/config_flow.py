@@ -278,8 +278,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         return user_input
 
     def _fake_advanced_input(self):
-        advanced_input = {}
-        advanced_input[CONF_TV_DEVICE_CLASS] = self._tv_device_class
+        advanced_input = {CONF_TV_DEVICE_CLASS: self._tv_device_class}
         if self._country != CONST_DEFAULT:
             advanced_input[CONF_COUNTRY] = self._country
         advanced_input[CONF_EPG_CACHE_LEN] = self._epg_cache_len
