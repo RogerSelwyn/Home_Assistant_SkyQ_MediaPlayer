@@ -107,17 +107,21 @@ async def async_migrate_entry(hass, config_entry):
 
     if config_entry.version == 1:
 
-        new_options = {**config_entry.options}
-        if (
-            not config_entry.options.get(CONF_TV_DEVICE_CLASS, True)
-            or config_entry.options.get(CONF_COUNTRY)
-            or config_entry.options.get(CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN)
-            != CONST_DEFAULT_EPGCACHELEN
-            or config_entry.options.get(CONF_SOURCES)
-        ):
-            new_options[CONF_ADVANCED_OPTIONS] = True
-        else:
-            new_options[CONF_ADVANCED_OPTIONS] = False
+        new_options = {
+            **config_entry.options,
+            CONF_ADVANCED_OPTIONS: bool(
+                (
+                    not config_entry.options.get(CONF_TV_DEVICE_CLASS, True)
+                    or config_entry.options.get(CONF_COUNTRY)
+                    or config_entry.options.get(
+                        CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN
+                    )
+                    != CONST_DEFAULT_EPGCACHELEN
+                    or config_entry.options.get(CONF_SOURCES)
+                )
+            ),
+        }
+
         config_entry.version = 2
         hass.config_entries.async_update_entry(config_entry, options=new_options)
 
