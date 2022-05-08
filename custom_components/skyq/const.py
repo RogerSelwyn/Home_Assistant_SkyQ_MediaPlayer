@@ -1,17 +1,5 @@
 """Constants for SkyQ."""
-
-from homeassistant.components.media_player.const import (
-    SUPPORT_NEXT_TRACK,
-    SUPPORT_PAUSE,
-    SUPPORT_PLAY,
-    SUPPORT_PLAY_MEDIA,
-    SUPPORT_PREVIOUS_TRACK,
-    SUPPORT_SEEK,
-    SUPPORT_SELECT_SOURCE,
-    SUPPORT_STOP,
-    SUPPORT_TURN_OFF,
-    SUPPORT_TURN_ON,
-)
+from homeassistant.components.media_player import MediaPlayerEntityFeature
 from homeassistant.const import STATE_OFF, STATE_UNKNOWN
 
 from .const_homekit import (
@@ -31,6 +19,7 @@ DOMAINBROWSER = "skyq_browser"
 SKYQREMOTE = "skyqremote"
 UNDO_UPDATE_LISTENER = "undo_update_listener"
 
+CONF_ADVANCED_OPTIONS = "advanced_options"
 CONF_TV_DEVICE_CLASS = "tv_device_class"
 CONF_SOURCES = "sources"
 CONF_CHANNEL_SOURCES = "channel_sources"
@@ -53,6 +42,7 @@ CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
 CONST_SKYQ_STORAGE_MAX = "skyq_storage_max"
 CONST_SKYQ_STORAGE_PERCENT = "skyq_storage_percent"
 CONST_SKYQ_STORAGE_USED = "skyq_storage_used"
+CONST_SKYQ_TRANSPORT_STATUS = "skyq_transport_status"
 CONST_DEFAULT = "Default"
 CONST_DEFAULT_EPGCACHELEN = 20
 LIST_EPGCACHELEN = [10, 20, 30, 50, 999]
@@ -65,16 +55,16 @@ FEATURE_GET_LIVE_RECORD = 16
 FEATURE_TV_DEVICE_CLASS = 32
 
 FEATURE_BASE = (
-    SUPPORT_TURN_OFF
-    | SUPPORT_TURN_ON
-    | SUPPORT_PAUSE
-    | SUPPORT_PLAY
-    | SUPPORT_STOP
-    | SUPPORT_NEXT_TRACK
-    | SUPPORT_PREVIOUS_TRACK
-    | SUPPORT_SELECT_SOURCE
-    | SUPPORT_SEEK
-    | SUPPORT_PLAY_MEDIA
+    MediaPlayerEntityFeature.TURN_OFF
+    | MediaPlayerEntityFeature.TURN_ON
+    | MediaPlayerEntityFeature.PAUSE
+    | MediaPlayerEntityFeature.PLAY
+    | MediaPlayerEntityFeature.STOP
+    | MediaPlayerEntityFeature.NEXT_TRACK
+    | MediaPlayerEntityFeature.PREVIOUS_TRACK
+    | MediaPlayerEntityFeature.SELECT_SOURCE
+    | MediaPlayerEntityFeature.SEEK
+    | MediaPlayerEntityFeature.PLAY_MEDIA
 )
 
 TIMEOUT = 2
@@ -118,3 +108,5 @@ REMOTE_BUTTONS = {
     KEY_PREVIOUS_TRACK: BUTTON_PRESS_CHANNELDOWN,
     KEY_NEXT_TRACK: BUTTON_PRESS_CHANNELUP,
 }
+
+STATE_UNSUPPORTED = "unsupported"

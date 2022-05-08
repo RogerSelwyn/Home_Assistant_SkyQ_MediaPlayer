@@ -7,14 +7,11 @@ from homeassistant.components.media_player import (
     DEVICE_CLASS_RECEIVER,
     DEVICE_CLASS_TV,
     MediaPlayerEntity,
+    MediaPlayerEntityFeature,
 )
 from homeassistant.components.media_player.const import (
     MEDIA_TYPE_APP,
     MEDIA_TYPE_TVSHOW,
-    SUPPORT_BROWSE_MEDIA,
-    SUPPORT_VOLUME_MUTE,
-    SUPPORT_VOLUME_SET,
-    SUPPORT_VOLUME_STEP,
 )
 from homeassistant.const import (
     ATTR_ENTITY_ID,
@@ -28,10 +25,13 @@ from homeassistant.const import (
 from pyskyqremote.const import (
     APP_EPG,
     COMMANDS,
+    DEFAULT_TRANSPORT_STATE,
     SKY_STATE_OFF,
     SKY_STATE_ON,
     SKY_STATE_PAUSED,
     SKY_STATE_STANDBY,
+    SKY_STATE_UNSUPPORTED,
+    UNSUPPORTED_DEVICES,
 )
 from pyskyqremote.skyq_remote import SkyQRemote
 
@@ -45,6 +45,7 @@ from .const import (
     CONST_DEFAULT_EPGCACHELEN,
     CONST_SKYQ_CHANNELNO,
     CONST_SKYQ_MEDIA_TYPE,
+    CONST_SKYQ_TRANSPORT_STATUS,
     DOMAIN,
     DOMAINBROWSER,
     ERROR_TIMEOUT,
@@ -61,6 +62,7 @@ from .const import (
     SKYQ_LIVEREC,
     SKYQ_PVR,
     SKYQREMOTE,
+    STATE_UNSUPPORTED,
 )
 from .const_homekit import (
     ATTR_KEY_NAME,
@@ -189,6 +191,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         self._channel_list = None
         self._use_internal = True
         self._switches_generated = False
+        self._transport_status = None
 
         if not self._remote.device_setup:
             self._available = False
@@ -205,18 +208,25 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     def supported_features(self):
         """Get the supported features."""
         if self._config.volume_entity:
-            self._supported_features = self._supported_features | SUPPORT_VOLUME_MUTE
-            self._supported_features = self._supported_features | SUPPORT_VOLUME_STEP
+            self._supported_features = (
+                self._supported_features | MediaPlayerEntityFeature.VOLUME_MUTE
+            )
+            self._supported_features = (
+                self._supported_features | MediaPlayerEntityFeature.VOLUME_STEP
+            )
             if (
                 self._volume_entity.supported_features
-                and self._volume_entity.supported_features & SUPPORT_VOLUME_SET
+                and self._volume_entity.supported_features
+                & MediaPlayerEntityFeature.VOLUME_SET
             ):
-                self._supported_features = self._supported_features | SUPPORT_VOLUME_SET
+                self._supported_features = (
+                    self._supported_features | MediaPlayerEntityFeature.VOLUME_SET
+                )
         if len(self._config.source_list) > 0 and self.state not in (
             STATE_OFF,
             STATE_UNKNOWN,
         ):
-            return self._supported_features | SUPPORT_BROWSE_MEDIA
+            return self._supported_features | MediaPlayerEntityFeature.BROWSE_MEDIA
 
         return self._supported_features
 
@@ -326,7 +336,10 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     @property
     def extra_state_attributes(self):
         """Return entity specific state attributes."""
-        attributes = {CONST_SKYQ_MEDIA_TYPE: self._skyq_type}
+        attributes = {
+            CONST_SKYQ_MEDIA_TYPE: self._skyq_type,
+            CONST_SKYQ_TRANSPORT_STATUS: self._transport_status,
+        }
         if self._skyq_channelno:
             attributes[CONST_SKYQ_CHANNELNO] = self._skyq_channelno
         return attributes
@@ -376,21 +389,19 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         """Turn SkyQ box off."""
         power_status = await self.hass.async_add_executor_job(self._remote.power_status)
         if power_status == SKY_STATE_ON:
-            await self.hass.async_add_executor_job(self._remote.press, "power")
+            await self._press_button("power")
             await self.async_update()
 
     async def async_turn_on(self):
         """Turn SkyQ box on."""
         power_status = await self.hass.async_add_executor_job(self._remote.power_status)
         if power_status == SKY_STATE_STANDBY:
-            await self.hass.async_add_executor_job(
-                self._remote.press, ["home", "dismiss"]
-            )
+            await self._press_button(["home", "dismiss"])
             await self.async_update()
 
     async def async_media_play(self):
         """Play the current media item."""
-        await self.hass.async_add_executor_job(self._remote.press, "play")
+        await self._press_button("play")
         self._state = STATE_PLAYING
         self.async_write_ha_state()
 
@@ -400,21 +411,21 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             self._remote.get_active_application
         )
         if app.appId == APP_EPG:
-            await self.hass.async_add_executor_job(self._remote.press, "pause")
+            await self._press_button("pause")
         else:
-            await self.hass.async_add_executor_job(self._remote.press, "play")
+            await self._press_button("play")
 
         self._state = STATE_PAUSED
         self.async_write_ha_state()
 
     async def async_media_next_track(self):
         """Fast forward the current media item."""
-        await self.hass.async_add_executor_job(self._remote.press, "fastforward")
+        await self._press_button("fastforward")
         await self.async_update()
 
     async def async_media_previous_track(self):
         """Rewind the current media item."""
-        await self.hass.async_add_executor_job(self._remote.press, "rewind")
+        await self._press_button("rewind")
         await self.async_update()
 
     async def async_select_source(self, source):
@@ -422,7 +433,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         if command := get_command(
             self._config.custom_sources, self._channel_list, source
         ):
-            await self.hass.async_add_executor_job(self._remote.press, command)
+            await self._press_button(command)
             await self.async_update()
 
     async def async_play_media(self, media_type, media_id, **kwargs):
@@ -431,14 +442,17 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             command = media_id.casefold()
             if command not in COMMANDS:
                 command = command.split(",")
-            await self.hass.async_add_executor_job(self._remote.press, command)
+            await self._press_button(command)
             await self.async_update()
         if media_type.casefold() == DOMAINBROWSER:
             await self.async_select_source(media_id)
 
     async def async_mute_volume(self, mute):
         """Mute the volume."""
-        if self._volume_entity.supported_features & SUPPORT_VOLUME_MUTE:
+        if (
+            self._volume_entity.supported_features
+            & MediaPlayerEntityFeature.VOLUME_MUTE
+        ):
             await self._volume_entity.async_mute_volume(self.hass, mute)
         else:
             await self.async_set_volume_level(0)
@@ -449,14 +463,20 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
     async def async_volume_up(self):
         """Turn volume up for media player."""
-        if self._volume_entity.supported_features & SUPPORT_VOLUME_STEP:
+        if (
+            self._volume_entity.supported_features
+            & MediaPlayerEntityFeature.VOLUME_STEP
+        ):
             await self._volume_entity.async_volume_up(self.hass)
         elif self.volume_level:
             await self.async_set_volume_level(self.volume_level + 0.02)
 
     async def async_volume_down(self):
         """Turn volume down for media player."""
-        if self._volume_entity.supported_features & SUPPORT_VOLUME_STEP:
+        if (
+            self._volume_entity.supported_features
+            & MediaPlayerEntityFeature.VOLUME_STEP
+        ):
             await self._volume_entity.async_volume_down(self.hass)
         elif self.volume_level:
             await self.async_set_volume_level(self.volume_level - 0.02)
@@ -467,24 +487,41 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             self.hass, self._channel_list, media_content_type, media_content_id
         )
 
+    async def _press_button(self, command):
+        if self._remote.device_type in UNSUPPORTED_DEVICES:
+            _LOGGER.warning(
+                "W0050 - Button press - %s - is not supported for %s",
+                command,
+                self.name,
+            )
+            return
+
+        await self.hass.async_add_executor_job(self._remote.press, command)
+
     async def _async_update_state(self):
         power_state = await self.hass.async_add_executor_job(self._remote.power_status)
         self._set_power_status(power_state)
         if power_state == SKY_STATE_STANDBY:
             self._skyq_type = STATE_OFF
             self._state = STATE_OFF
+            self._transport_status = DEFAULT_TRANSPORT_STATE
             return
         if power_state != SKY_STATE_ON:
             self._skyq_type = STATE_UNKNOWN
             self._state = STATE_OFF
+            self._transport_status = None
             return
 
-        current_state = await self.hass.async_add_executor_job(
+        response = await self.hass.async_add_executor_job(
             self._remote.get_current_state
         )
+        current_state = response.state
+        self._transport_status = response.CurrentTransportStatus
 
         if current_state == SKY_STATE_PAUSED:
             self._state = STATE_PAUSED
+        elif current_state == SKY_STATE_UNSUPPORTED:
+            self._state = STATE_UNSUPPORTED
         elif current_state == SKY_STATE_OFF:
             self._state = STATE_OFF
         else:
@@ -498,7 +535,11 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         app_title = app.title
 
         if app.appId == APP_EPG:
-            await self._async_get_current_media()
+            if self._remote.device_type not in UNSUPPORTED_DEVICES:
+                await self._async_get_current_media()
+            else:
+                self._skyq_type = SKYQ_LIVE
+                self._title = STATE_UNSUPPORTED.capitalize()
         else:
             self._skyq_type = SKYQ_APP
             self._title = app_title

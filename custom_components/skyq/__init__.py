@@ -2,12 +2,22 @@
 import asyncio
 import logging
 
-from homeassistant.const import CONF_HOST
+from homeassistant.const import CONF_HOST, CONF_NAME
 from homeassistant.exceptions import ConfigEntryNotReady
+from pyskyqremote.const import DEVICE_GATEWAYSTB, UNSUPPORTED_DEVICES
 from pyskyqremote.skyq_remote import SkyQRemote
 
-from .const import (CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN, DOMAIN,
-                    SKYQREMOTE, UNDO_UPDATE_LISTENER)
+from .const import (
+    CONF_ADVANCED_OPTIONS,
+    CONF_COUNTRY,
+    CONF_EPG_CACHE_LEN,
+    CONF_SOURCES,
+    CONF_TV_DEVICE_CLASS,
+    CONST_DEFAULT_EPGCACHELEN,
+    DOMAIN,
+    SKYQREMOTE,
+    UNDO_UPDATE_LISTENER,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -35,13 +45,20 @@ async def async_setup_entry(hass, config_entry):
     if not remote.device_setup:
         raise ConfigEntryNotReady
 
+    if remote.device_type in UNSUPPORTED_DEVICES:
+        _LOGGER.warning(
+            "W0010 - Device type - %s - is not supported - %s",
+            remote.device_type,
+            config_entry.data[CONF_NAME],
+        )
+
     hass.data[DOMAIN][config_entry.entry_id] = {
         SKYQREMOTE: remote,
         UNDO_UPDATE_LISTENER: undo_listener,
     }
 
     for component in PLATFORMS:
-        if remote.gateway or component == ENTITY_MEDIA_PLAYER:
+        if remote.device_type == DEVICE_GATEWAYSTB or component == ENTITY_MEDIA_PLAYER:
             hass.async_create_task(
                 hass.config_entries.async_forward_entry_setup(config_entry, component)
             )
@@ -57,7 +74,7 @@ async def async_unload_entry(hass, config_entry):
     process_platforms = [
         component
         for component in PLATFORMS
-        if remote.gateway or component == ENTITY_MEDIA_PLAYER
+        if remote.device_type == DEVICE_GATEWAYSTB or component == ENTITY_MEDIA_PLAYER
     ]
 
     unload_ok = all(
@@ -80,3 +97,38 @@ async def async_unload_entry(hass, config_entry):
 async def update_listener(hass, config_entry):
     """Handle options update."""
     await hass.config_entries.async_reload(config_entry.entry_id)
+
+
+async def async_migrate_entry(hass, config_entry):
+    """Migrate old entry."""
+    _LOGGER.debug(
+        "Migrating %s from version %s", config_entry.title, config_entry.version
+    )
+
+    if config_entry.version == 1:
+
+        new_options = {
+            **config_entry.options,
+            CONF_ADVANCED_OPTIONS: bool(
+                (
+                    not config_entry.options.get(CONF_TV_DEVICE_CLASS, True)
+                    or config_entry.options.get(CONF_COUNTRY)
+                    or config_entry.options.get(
+                        CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN
+                    )
+                    != CONST_DEFAULT_EPGCACHELEN
+                    or config_entry.options.get(CONF_SOURCES)
+                )
+            ),
+        }
+
+        config_entry.version = 2
+        hass.config_entries.async_update_entry(config_entry, options=new_options)
+
+    _LOGGER.info(
+        "Migration of %s to version %s successful",
+        config_entry.title,
+        config_entry.version,
+    )
+
+    return True
