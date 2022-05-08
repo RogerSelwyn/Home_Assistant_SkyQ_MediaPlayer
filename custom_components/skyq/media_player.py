@@ -25,6 +25,7 @@ from homeassistant.const import (
 from pyskyqremote.const import (
     APP_EPG,
     COMMANDS,
+    DEFAULT_TRANSPORT_STATE,
     SKY_STATE_OFF,
     SKY_STATE_ON,
     SKY_STATE_PAUSED,
@@ -44,6 +45,7 @@ from .const import (
     CONST_DEFAULT_EPGCACHELEN,
     CONST_SKYQ_CHANNELNO,
     CONST_SKYQ_MEDIA_TYPE,
+    CONST_SKYQ_TRANSPORT_STATUS,
     DOMAIN,
     DOMAINBROWSER,
     ERROR_TIMEOUT,
@@ -189,6 +191,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         self._channel_list = None
         self._use_internal = True
         self._switches_generated = False
+        self._transport_status = None
 
         if not self._remote.device_setup:
             self._available = False
@@ -333,7 +336,10 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     @property
     def extra_state_attributes(self):
         """Return entity specific state attributes."""
-        attributes = {CONST_SKYQ_MEDIA_TYPE: self._skyq_type}
+        attributes = {
+            CONST_SKYQ_MEDIA_TYPE: self._skyq_type,
+            CONST_SKYQ_TRANSPORT_STATUS: self._transport_status,
+        }
         if self._skyq_channelno:
             attributes[CONST_SKYQ_CHANNELNO] = self._skyq_channelno
         return attributes
@@ -498,15 +504,19 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         if power_state == SKY_STATE_STANDBY:
             self._skyq_type = STATE_OFF
             self._state = STATE_OFF
+            self._transport_status = DEFAULT_TRANSPORT_STATE
             return
         if power_state != SKY_STATE_ON:
             self._skyq_type = STATE_UNKNOWN
             self._state = STATE_OFF
+            self._transport_status = None
             return
 
-        current_state = await self.hass.async_add_executor_job(
+        response = await self.hass.async_add_executor_job(
             self._remote.get_current_state
         )
+        current_state = response.state
+        self._transport_status = response.CurrentTransportStatus
 
         if current_state == SKY_STATE_PAUSED:
             self._state = STATE_PAUSED

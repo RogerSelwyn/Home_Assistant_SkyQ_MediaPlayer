@@ -42,6 +42,7 @@ CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
 CONST_SKYQ_STORAGE_MAX = "skyq_storage_max"
 CONST_SKYQ_STORAGE_PERCENT = "skyq_storage_percent"
 CONST_SKYQ_STORAGE_USED = "skyq_storage_used"
+CONST_SKYQ_TRANSPORT_STATUS = "skyq_transport_status"
 CONST_DEFAULT = "Default"
 CONST_DEFAULT_EPGCACHELEN = 20
 LIST_EPGCACHELEN = [10, 20, 30, 50, 999]
