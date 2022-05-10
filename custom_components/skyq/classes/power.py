@@ -12,15 +12,22 @@ _LOGGER = logging.getLogger(__name__)
 class SkyQPower:
     """Sky Q Power class."""
 
-    def __init__(self, name):
+    def __init__(self, hass, remote, config):
         """Intialise the power status."""
         self.available = None
-        self.name = name
+        self._hass = hass
+        self._remote = remote
+        self._name = config.name
         self._error_time = None
         self._startup_setup = False
 
-    def set_power_status(self, power_status):
-        """Manage the power status."""
+    async def async_get_power_status(self):
+        """Get the power status."""
+        power_state = await self._hass.async_add_executor_job(self._remote.power_status)
+        self._set_power_status(power_state)
+        return power_state
+
+    def _set_power_status(self, power_status):
         if power_status == SKY_STATE_OFF:
             self._power_status_off_handling()
         else:
@@ -38,27 +45,27 @@ class SkyQPower:
             _LOGGER.debug(
                 "D0010 - Device is not available - %s Seconds: %s",
                 self._error_time_so_far(),
-                self.name,
+                self._name,
             )
         elif datetime.now() >= error_time_target and self.available:
             self.available = False
-            _LOGGER.warning("W0010 - Device is not available: %s", self.name)
+            _LOGGER.warning("W0010 - Device is not available: %s", self._name)
 
     def _power_status_on_handling(self):
         if not self.available:
             self.available = True
             if self._startup_setup:
-                _LOGGER.info("I0010 - Device is now available: %s", self.name)
+                _LOGGER.info("I0010 - Device is now available: %s", self._name)
             else:
                 self._startup_setup = True
                 _LOGGER.info(
-                    "I0020 - Device is now available after startup: %s", self.name
+                    "I0020 - Device is now available after startup: %s", self._name
                 )
         elif self._error_time:
             _LOGGER.debug(
                 "D0020 - Device is now available - %s Seconds: %s",
                 self._error_time_so_far(),
-                self.name,
+                self._name,
             )
         self._error_time = None
 

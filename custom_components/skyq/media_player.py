@@ -177,7 +177,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         self._media_browser = MediaBrowser(remote, config, self._app_image_url)
         self._state = STATE_OFF
         self._entity_attr = MPEntityAttributes()
-        self._power_state = SkyQPower(self._config.name)
+        self._power_state = SkyQPower(hass, self._remote, self._config)
         self._channel_list = None
         self._use_internal = True
         self._switches_generated = False
@@ -362,6 +362,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
         if not self._device_info:
             await self._async_get_mp_device_info()
+            self._channel_list = await self._async_get_channel_list()
 
         if self._device_info:
             await self._async_update_state()
@@ -496,8 +497,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         await self.hass.async_add_executor_job(self._remote.press, command)
 
     async def _async_update_state(self):
-        power_state = await self.hass.async_add_executor_job(self._remote.power_status)
-        self._power_state.set_power_status(power_state)
+        power_state = await self._power_state.async_get_power_status()
         if power_state == SKY_STATE_STANDBY:
             self._entity_attr.skyq_media_type = STATE_OFF
             self._state = STATE_OFF
@@ -611,6 +611,8 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             self._config.test_channel,
         )
         await self._async_get_device_info(self.hass)
+
+    async def _async_get_channel_list(self):
         if (
             self._device_info
             and not self._channel_list
@@ -619,4 +621,5 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             channel_data = await self.hass.async_add_executor_job(
                 self._remote.get_channel_list
             )
-            self._channel_list = channel_data.channels
+            return channel_data.channels
+        return None
