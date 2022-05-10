@@ -242,7 +242,7 @@ The following items are specific to the SkyQ media player and are items requeste
   - OK - standard status when all is OK, even in standby.
   - ERROR_PIN_REQUIRED - when the box is awaiting PIN entry. This can be used as a means of triggering automatic PIN entry.
   - Not present - if box is in lower power mode (overnight) or for an unsupported box (e.g. Sky Glass)
-- skyq_channelno - the sky channel being played. Not present if no channel has been identified (e.g. YouTube is being viewed)
+- skyq_channelno - the Sky Q channel being played. Not present if no channel has been identified (e.g. YouTube is being viewed)
 
  ### Homekit Integration
 
