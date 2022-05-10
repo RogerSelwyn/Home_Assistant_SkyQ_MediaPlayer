@@ -128,7 +128,7 @@ async def _async_setup_platform_entry(
         config,
     )
 
-    should_cache = False
+    should_cache = True
     files_path = Path(__file__).parent / "static"
     hass.http.register_static_path(APP_IMAGE_URL_BASE, str(files_path), should_cache)
 
