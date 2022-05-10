@@ -1,6 +1,5 @@
 """The skyq platform allows you to control a SkyQ set top box."""
 import logging
-from datetime import datetime, timedelta
 from pathlib import Path
 
 from homeassistant.components.media_player import (
@@ -38,6 +37,7 @@ from pyskyqremote.skyq_remote import SkyQRemote
 from .classes.config import Config
 from .classes.mediabrowser import MediaBrowser
 from .classes.mpentity import MPEntityAttributes
+from .classes.power import SkyQPower
 from .classes.switchmaker import SwitchMaker
 from .classes.volumeentity import VolumeEntity
 from .const import (
@@ -49,7 +49,6 @@ from .const import (
     CONST_SKYQ_TRANSPORT_STATUS,
     DOMAIN,
     DOMAINBROWSER,
-    ERROR_TIMEOUT,
     FEATURE_GET_LIVE_RECORD,
     FEATURE_IMAGE,
     FEATURE_LIVE_TV,
@@ -178,15 +177,13 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         self._media_browser = MediaBrowser(remote, config, self._app_image_url)
         self._state = STATE_OFF
         self._entity_attr = MPEntityAttributes()
-        self._available = None
-        self._error_time = None
-        self._startup_setup = False
+        self._power_state = SkyQPower(self._config.name)
         self._channel_list = None
         self._use_internal = True
         self._switches_generated = False
 
         if not self._remote.device_setup:
-            self._available = False
+            self._power_state.available = False
             _LOGGER.warning("W0020 - Device is not available: %s", self.name)
 
         # self._supported_features = FEATURE_BASE
@@ -331,7 +328,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     @property
     def available(self):
         """Entity availability."""
-        return self._available
+        return self._power_state.available
 
     @property
     def unique_id(self):
@@ -500,7 +497,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
     async def _async_update_state(self):
         power_state = await self.hass.async_add_executor_job(self._remote.power_status)
-        self._set_power_status(power_state)
+        self._power_state.set_power_status(power_state)
         if power_state == SKY_STATE_STANDBY:
             self._entity_attr.skyq_media_type = STATE_OFF
             self._state = STATE_OFF
@@ -623,49 +620,3 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
                 self._remote.get_channel_list
             )
             self._channel_list = channel_data.channels
-
-    def _set_power_status(self, power_status):
-
-        if power_status == SKY_STATE_OFF:
-            self._power_status_off_handling()
-        else:
-            self._power_status_on_handling()
-
-    def _power_status_off_handling(self):
-        error_time_target = (
-            self._error_time + timedelta(seconds=ERROR_TIMEOUT)
-            if self._error_time
-            else 0
-        )
-        if not self._error_time or datetime.now() < error_time_target:
-            if not self._error_time:
-                self._error_time = datetime.now()
-            _LOGGER.debug(
-                "D0010 - Device is not available - %s Seconds: %s",
-                self._error_time_so_far(),
-                self.name,
-            )
-        elif datetime.now() >= error_time_target and self._available:
-            self._available = False
-            _LOGGER.warning("W0040 - Device is not available: %s", self.name)
-
-    def _power_status_on_handling(self):
-        if not self._available:
-            self._available = True
-            if self._startup_setup:
-                _LOGGER.info("I0010 - Device is now available: %s", self.name)
-            else:
-                self._startup_setup = True
-                _LOGGER.info(
-                    "I0020 - Device is now available after startup: %s", self.name
-                )
-        elif self._error_time:
-            _LOGGER.debug(
-                "D0020 - Device is now available - %s Seconds: %s",
-                self._error_time_so_far(),
-                self.name,
-            )
-        self._error_time = None
-
-    def _error_time_so_far(self):
-        return (datetime.now() - self._error_time).seconds if self._error_time else 0
