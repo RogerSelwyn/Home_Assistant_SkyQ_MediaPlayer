@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.9.1 (2022/05/18)
+### Enhancements
+- [App images can be cached](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ff0a59f56ddf545e20aed882e99c67c3f63b6eba) - @RogerSelwyn
+- [Bump pyskyqremote to 0.3.9](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8295229d283423a4331c9dc4c1e449a57d04364d) - @RogerSelwyn
+
+### Maintenance
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9324e24a9cf2a86bb481ef173d99c672ff1cb921) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9c8e837d0c85e0e61f65b3ec1b2f8a9c53854c13) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6937fb09d1f9b67dbb3669f05ede1bf287c50bca) - @RogerSelwyn
+- [Simplify code](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/87108ea371bdee0a4d10dce9a86d53f1268f05e6) - @RogerSelwyn
+- [Move power status to class](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0d7f8603238a83d22a7a34fdab22e1aad2b24492) - @RogerSelwyn
+- [More code simplification](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/36183bab2e82ded31abc91f27953ce81f8c5cf9b) - @RogerSelwyn
+- [Bump to v2.9.1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0155bc287f87d892b358f14bf085a3237c908a3d) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7347a40ae5d45325beb0bc3bf4c36280641f49c9) - @actions-user
+
 ## v2.9.0 (2022/05/08)
 ### Enhancements
 - [Split configuration options into two](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b775212bbc7f45d62860bf7ce7d5cc9efae9c2ab) - @RogerSelwyn
