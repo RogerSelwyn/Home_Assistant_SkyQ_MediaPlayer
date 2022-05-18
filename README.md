@@ -9,9 +9,7 @@ The skyq platform allows you to control a Sky Q set top box.
 
 **Note:** This integration does not support **Sky Glass** or internet only devices that are currently being sold outside the UK.
 
-**Note:** Whilst it will pull back information for current channel and live programme, it will do this for a very limited set of countries (currently UK, and any countries that use the same EPG/images, plus Italy and Germany). If you are in an unsupported country, or don't want this information set 'live_tv' to False in your config.
-
-If you are able to supply details on where to reliably retrieve EPG information and images from, please raise a Feature Request with the relevant details and I'll look to include.
+**Note:** The integration supports Sky Q in the UK (and Ireland using the same EPG), Germany and Italy.
 
 There is currently support for the following device types within Home Assistant:
 
