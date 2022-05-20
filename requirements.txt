@@ -1,1 +1,1 @@
-pyskyqremote==0.3.9
+pyskyqremote==0.3.11
