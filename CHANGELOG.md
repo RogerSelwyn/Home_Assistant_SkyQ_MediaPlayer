@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.9.2 (2022/05/20)
+### Fixes
+- [Bump pyskyqremote to 0.3.11 to fix errors shown in eco mode](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fd4fa924ccd05b998e8af277693be86b8ec799e8) - @RogerSelwyn
+### Maintenance
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c22b7ee6f8e05acc6f57001378b477e2fc5f3b32) - @RogerSelwyn
+- [Bump to v2.9.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cc30188949fc88214168fdf3ac2d43842edd6d37) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/341dfb2396f7cc4a4b36d538e64a97fd5b3facf6) - @actions-user
+
 ## v2.9.1 (2022/05/18)
 ### Enhancements
 - [App images can be cached](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ff0a59f56ddf545e20aed882e99c67c3f63b6eba) - @RogerSelwyn
