@@ -141,7 +141,10 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
     ) -> FlowResult:
         """Set up the option flow."""
         if self._config_entry.entry_id not in self.hass.data[DOMAIN]:
-            errmsg = f"E0010 - Sky Q box has not been available since last Home Assistant restart: {self._config_entry.title}"
+            errmsg = (
+                "E0010 - Sky Q box has not been available "
+                f"since last Home Assistant restart: {self._config_entry.title}"
+            )
             _LOGGER.error(errmsg)
             raise AbortFlow(errmsg)
 
@@ -159,6 +162,11 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             channel_data = await self.hass.async_add_executor_job(
                 self._remote.get_channel_list
             )
+            if not channel_data:
+                errmsg = f"E0020 - Sky Q box is unavailable: {self._config_entry.title}"
+                _LOGGER.error(errmsg)
+                raise AbortFlow(errmsg)
+
             self._channel_list = channel_data.channels
 
             for channel in self._channel_list:
