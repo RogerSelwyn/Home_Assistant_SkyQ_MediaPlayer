@@ -100,6 +100,7 @@ async def update_listener(hass, config_entry):
 
 
 async def async_migrate_entry(hass, config_entry):
+    # sourcery skip: assign-if-exp, boolean-if-exp-identity, merge-dict-assign
     """Migrate old entry."""
     _LOGGER.debug(
         "Migrating %s from version %s", config_entry.title, config_entry.version

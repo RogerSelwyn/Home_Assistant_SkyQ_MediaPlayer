@@ -10,6 +10,7 @@ import voluptuous as vol
 from homeassistant import config_entries, exceptions
 from homeassistant.const import CONF_HOST, CONF_NAME
 from homeassistant.core import callback
+from homeassistant.data_entry_flow import AbortFlow, FlowResult
 from pyskyqremote.const import KNOWN_COUNTRIES, UNSUPPORTED_DEVICES
 from pyskyqremote.skyq_remote import SkyQRemote
 
@@ -135,8 +136,15 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._channel_list = []
         self._user_input = None
 
-    async def async_step_init(self, user_input=None):  # pylint: disable=unused-argument
+    async def async_step_init(
+        self, user_input=None  # pylint: disable=unused-argument
+    ) -> FlowResult:
         """Set up the option flow."""
+        if self._config_entry.entry_id not in self.hass.data[DOMAIN]:
+            errmsg = f"E0010 - Sky Q box has not been available since last Home Assistant restart: {self._config_entry.title}"
+            _LOGGER.error(errmsg)
+            raise AbortFlow(errmsg)
+
         self._remote = self.hass.data[DOMAIN][self._config_entry.entry_id][SKYQREMOTE]
 
         country_alphas = {
@@ -176,7 +184,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
         return await self.async_step_retry()
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(self, user_input=None) -> FlowResult:
         """Handle a flow initialized by the user."""
         errors = {}
 
@@ -197,7 +205,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             errors=errors,
         )
 
-    async def async_step_advanced(self, user_input=None):
+    async def async_step_advanced(self, user_input=None) -> FlowResult:
         """Handle a flow initialized by the user."""
         errors = {}
 
