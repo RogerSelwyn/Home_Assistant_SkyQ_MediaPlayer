@@ -106,6 +106,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
     def __init__(self, config_entry):
         """Initialize Sky Q options flow."""
+        _LOGGER.debug("D0010 - Config flow initiated for: %s", config_entry.title)
         self._name = config_entry.title
         self._config_entry = config_entry
         self._remote = None
