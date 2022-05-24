@@ -34,6 +34,7 @@ async def async_setup(hass, config):  # pylint: disable=unused-argument
 async def async_setup_entry(hass, config_entry):
     """Set up a config entry."""
     host = config_entry.data[CONF_HOST]
+    name = config_entry.data[CONF_NAME]
     epg_cache_len = CONST_DEFAULT_EPGCACHELEN
     if CONF_EPG_CACHE_LEN in config_entry.options:
         epg_cache_len = config_entry.options[CONF_EPG_CACHE_LEN]
@@ -43,13 +44,13 @@ async def async_setup_entry(hass, config_entry):
     hass.data.setdefault(DOMAIN, {})
     remote = await hass.async_add_executor_job(SkyQRemote, host, epg_cache_len)
     if not remote.device_setup:
-        raise ConfigEntryNotReady
+        raise ConfigEntryNotReady(f"W0010 - Device is not available: {host}")
 
     if remote.device_type in UNSUPPORTED_DEVICES:
         _LOGGER.warning(
-            "W0010 - Device type - %s - is not supported - %s",
+            "W0020 - Device type - %s - is not supported - %s",
             remote.device_type,
-            config_entry.data[CONF_NAME],
+            name,
         )
 
     hass.data[DOMAIN][config_entry.entry_id] = {
