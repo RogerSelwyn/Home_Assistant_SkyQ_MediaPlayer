@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.9.4 (2022/05/24)
+### Maintenance
+- [Handle attempt to configure during eco mode after HA restart](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/db03a7e8a8c62f4ad5dd645691acf6dbfa59f887) - @RogerSelwyn
+- [Handle attempt to configure when box unavailable](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d98b7c6b7fdf4d3c74f28017fd996f0a00ab781d) - @RogerSelwyn
+- [Add debug](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c5f7e39168823546bf25d97bd1f49c31a1d0e5ce) - @RogerSelwyn
+- [Tweak error messaging](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/81c5e4680286a9eb5fa0b5f3250d89fcf6460e3b) - @RogerSelwyn
+- [Bump to v2.9.4](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8c7c1631531bde89684908bc8783d2c44a7a97ec) - @RogerSelwyn
+
 ## v2.9.3 (2022/05/21)
 ### Fixes
 - [Bump pyskyqremote to 0.3.12](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7d9666a499cf95c28bc3468a51785a2e22a1eb48) - @RogerSelwyn - [#106](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/106) 
