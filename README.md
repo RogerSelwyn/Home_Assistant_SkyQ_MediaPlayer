@@ -21,7 +21,7 @@ I work on this integration because I like things to work well for myself and oth
 
 # Documentation
 
-The full documentation is available here - [O365 Documentation](https://rogerselwyn.github.io/Home_Assistant_SkyQ_MediaPlayer/)
+The full documentation is available here - [Sky Q Documentation](https://rogerselwyn.github.io/Home_Assistant_SkyQ_MediaPlayer/)
 
 ### Screenshots
 
