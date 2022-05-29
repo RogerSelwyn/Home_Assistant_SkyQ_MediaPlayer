@@ -9,4 +9,4 @@ Fetching data to support live programme information for the Media Browser is dat
 
 Images for the current live programme on each channel should show along with the title of each programme. These are identified via the channel number, so if you are using a 'custom' source with a Sky Q favourite it won't be able show the live programme. Applications can be included, but for an image to show the image file name in your SkyQ install directory needs to match the name of the custom source.
 
-In custom sources, if you have 'backup' as your first command, then this will be ignored when identifying the channel number to lookup the live programme for. This will not impact the set of commands sent to the Sky Box when you select a channel.
+In custom sources, if you have `backup` as your first command, then this will be ignored when identifying the channel number to lookup the live programme for. This will not impact the set of commands sent to the Sky Box when you select a channel.

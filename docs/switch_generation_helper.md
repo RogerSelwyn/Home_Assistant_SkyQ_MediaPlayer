@@ -1,5 +1,5 @@
 ---
-title: Switch Gneeration Helper
+title: Switch Generation Helper
 nav_order: 7
 ---
 
