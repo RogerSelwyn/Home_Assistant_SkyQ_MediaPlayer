@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.9.5 (2022/06/01)
+### Enhancements
+- [Move docs to github.io](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0b8b2f36ebdd649eb419d33d476722411ba7d8e4) - @RogerSelwyn
+
+### Fixes
+- [Remove invalid script.placeholder](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/94c5b484a182cdb1e3bb2f475fba1cfc0d2240f3) - @RogerSelwyn
+
+### Maintenance
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a1ad6680e567e4dfc0f344e8b637ef524cb5aa0b) - @RogerSelwyn
+- [Remove domains key from hacs.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/20de2451b49eb4fa82e4fb89a1ddfb0bb195dc0f) - @RogerSelwyn
+- [Minor updates](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c28be289a8444c6f0b682495cbb8bfc7bfec1346) - @RogerSelwyn
+- [Typo](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ca3890350b1f955e7546253e0472e47313e11034) - @RogerSelwyn
+- [Bump to v2.9.5](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4242626720f69ecc0c5b2c78a912bac025f0f433) - @RogerSelwyn
+
 ## v2.9.4 (2022/05/24)
 ### Maintenance
 - [Handle attempt to configure during eco mode after HA restart](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/db03a7e8a8c62f4ad5dd645691acf6dbfa59f887) - @RogerSelwyn
