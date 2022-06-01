@@ -91,7 +91,7 @@ class SwitchMaker:
         self._f.write(f"          entity_id: {self._entity_id}\n")
         self._f.write(source_name)
         self._f.write("      turn_off:\n")
-        self._f.write("        stop:")
+        self._f.write("        stop:\n")
 
     def _find_alias(self, friendly_name):
         try:
