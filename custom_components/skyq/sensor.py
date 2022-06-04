@@ -27,13 +27,15 @@ SCAN_INTERVAL = timedelta(minutes=5)
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up Sky Q from a config entry."""
+    remote = hass.data[DOMAIN][config_entry.entry_id][SKYQREMOTE]
+    device_info = await hass.async_add_executor_job(remote.get_device_information)
     config = Config(
         config_entry.unique_id,
         config_entry.data[CONF_NAME],
         config_entry.data[CONF_HOST],
+        device_info,
         config_entry.options,
     )
-    remote = hass.data[DOMAIN][config_entry.entry_id][SKYQREMOTE]
 
     usedsensor = SkyQUsedStorage(hass, remote, config)
 
@@ -104,8 +106,6 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
     async def async_update(self):
         """Get the latest data and update device state."""
-        await self._async_get_device_info(self.hass)
-
         resp = await self.hass.async_add_executor_job(self._remote.get_quota)
         if not resp:
             self._power_status_off_handling()

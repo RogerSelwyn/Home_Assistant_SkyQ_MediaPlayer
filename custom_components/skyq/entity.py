@@ -11,33 +11,33 @@ class SkyQEntity:
         self._remote = remote
         self._config = config
         self._unique_id = config.unique_id
-        self._device_info = None
 
     @property
     def skyq_device_info(self):
         """Entity device information."""
         return (
             {
-                "identifiers": {(DOMAIN, self._device_info.serialNumber)},
+                "identifiers": {(DOMAIN, self._config.device_info.serialNumber)},
                 "name": self._config.name,
-                "manufacturer": self._device_info.manufacturer,
-                "model": f"{self._device_info.hardwareModel} ({self._device_info.hardwareName})",
-                "hw_version": f"{self._device_info.versionNumber}",
-                "sw_version": f"{self._device_info.modelNumber}",
+                "manufacturer": self._config.device_info.manufacturer,
+                "model": f"{self._config.device_info.hardwareModel} "
+                + f"({self._config.device_info.hardwareName})",
+                "hw_version": f"{self._config.device_info.versionNumber}",
+                "sw_version": f"{self._config.device_info.modelNumber}",
                 "configuration_url": f"http://{self._config.host}:9006/as/system/information",
             }
-            if self._device_info
+            if self._config.device_info
             else None
         )
 
     async def _async_get_device_info(self, hass):
         """Query the device for device info."""
-        if self._device_info:
-            return
-        self._device_info = await hass.async_add_executor_job(
+        self._config.device_info = await hass.async_add_executor_job(
             self._remote.get_device_information
         )
-        if self._device_info and not self._unique_id:
-            self._unique_id = self._device_info.used_country_code + "".join(
-                e for e in self._device_info.serialNumber.casefold() if e.isalnum()
+        if self._config.device_info and not self._unique_id:
+            self._unique_id = self._config.device_info.used_country_code + "".join(
+                e
+                for e in self._config.device_info.serialNumber.casefold()
+                if e.isalnum()
             )

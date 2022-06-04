@@ -40,6 +40,7 @@ class Config:
     unique_id: str = field(init=True, repr=True, compare=True)
     name: str = field(init=True, repr=True, compare=True)
     host: str = field(init=True, repr=True, compare=True)
+    device_info: object
     config_item: InitVar[object]
     room: str = None
     volume_entity: str = None

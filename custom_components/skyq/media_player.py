@@ -42,7 +42,9 @@ from .classes.switchmaker import SwitchMaker
 from .classes.volumeentity import VolumeEntity
 from .const import (
     APP_IMAGE_URL_BASE,
+    CONF_COUNTRY,
     CONF_EPG_CACHE_LEN,
+    CONF_TEST_CHANNEL,
     CONST_DEFAULT_EPGCACHELEN,
     CONST_SKYQ_CHANNELNO,
     CONST_SKYQ_MEDIA_TYPE,
@@ -120,7 +122,17 @@ async def _async_setup_platform_entry(
     config_item, async_add_entities, remote, unique_id, name, host, hass
 ):
 
-    config = Config(unique_id, name, host, config_item)
+    await hass.async_add_executor_job(
+        remote.set_overrides,
+        config_item.get(CONF_COUNTRY),
+        config_item.get(CONF_TEST_CHANNEL),
+    )
+    device_info = await hass.async_add_executor_job(remote.get_device_information)
+    if device_info and not unique_id:
+        unique_id = device_info.used_country_code + "".join(
+            e for e in device_info.serialNumber.casefold() if e.isalnum()
+        )
+    config = Config(unique_id, name, host, device_info, config_item)
 
     player = SkyQDevice(
         hass,
@@ -360,11 +372,13 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         """Get the latest data and update device state."""
         self._entity_attr.reset()
 
-        if not self._device_info:
-            await self._async_get_mp_device_info()
+        if not self._config.device_info:
+            await self._async_get_device_info(self.hass)
+
+        if not self._channel_list:
             self._channel_list = await self._async_get_channel_list()
 
-        if self._device_info:
+        if self._config.device_info:
             await self._async_update_state()
 
         if self._state not in [STATE_UNKNOWN, STATE_OFF]:
@@ -604,17 +618,9 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         if recording:
             self._entity_attr.store_recording(recording)
 
-    async def _async_get_mp_device_info(self):
-        await self.hass.async_add_executor_job(
-            self._remote.set_overrides,
-            self._config.override_country,
-            self._config.test_channel,
-        )
-        await self._async_get_device_info(self.hass)
-
     async def _async_get_channel_list(self):
         if (
-            self._device_info
+            self._config.device_info
             and not self._channel_list
             and len(self._config.channel_sources) > 0
         ):
