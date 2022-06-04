@@ -28,8 +28,8 @@ media_player:
    sources:
       SkyOne: '1,0,6'
       SkyNews: '5,0,1'
-   room: Living Room
    generate_switches_for_channels: true
+   room: Living Room
 ```
 
 To integrate these generated switch configuration files, add the generated yaml to your configuration.yaml. The following example configuration implements the generated switches from the generate_switches_for_channels function.
