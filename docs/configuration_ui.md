@@ -17,14 +17,15 @@ If you want to add a second Sky Q box, just follow the same process again and ad
 |-----------------------------------|:-----------:|-------------|
 | Host                              |             | The IP of the SkyQ set top box, e.g., 192.168.0.10. |
 | Name                              |             | The name you would like to give to the SkyQ set top box. |
-| Custom Sources                    |  _Empty_    | List of channels or other commands that will appear in the source selection. |
-|Show programme image            | True        | Allows you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing. |
+| Show programme image            | True        | Allows you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing. |
 | Show live TV details           | True        | Allows you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from current known sources. |
 | Get Live Record status           | False       | Allows you to fetch the status of the currently playing item to see if it is a "Live Recording". |
+| Entity to control volume of | _Empty_     | Specifies the entity for which volume control actions will be passed through to. No validation of the entity is done via the UI, warnings will show in the log if an invalid entity is used. Must be a media_player entity. e.g. media_player.braviatv|
+| Advanced                         | False       | Show the advanced page of configuration items |
 | TV device class   | True    | Sets device class to TV. Unticked sets it to Receiver. |
 | Override Country | _Empty_     | Overrides the detected country from the SkyQ box. Currently supports "GBR", "ITA" and "DEU". In theory you shouldn't need to use this. |
-| Entity to control volume of | _Empty_     | Specifies the entity for which volume control actions will be passed through to. No validation of the entity is done via the UI, warnings will show in the log if an invalid entity is used. Must be a media_player entity. e.g. media_player.braviatv|
 | EPG Cache Length               | 20           |Allows you to configure the number of EPG channels to cache for the media browser. Larger numbers will cause slower initial load per day and consume more memory. |
+| Custom Sources                    |  _Empty_    | List of channels or other commands that will appear in the source selection. |
 
 ## Sources
 
