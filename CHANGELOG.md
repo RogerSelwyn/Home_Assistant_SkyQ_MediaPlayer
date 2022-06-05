@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.9.6 (2022/06/05)
+### Fixes
+- [Fix issue with device not being created](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3ee13aea23aefd528ec3aaf565e17d8c027f5de0) - @RogerSelwyn
+
+### Maintenance
+- [Update storage_sensor.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/120aea7a41bb08aaaaa5f0bdc089a65226f0612d) - @RogerSelwyn
+- [Update configuration_ui.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/510929ad9af815e456c684cf844fc859b1c357d4) - @RogerSelwyn
+- [Update configuration_ui.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/21a2d9838bcedafbc42a0e2f50c33af25d7c752d) - @RogerSelwyn
+- [Update switch_generation_helper.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ba7c192953a3d53f6623691ff0c69cea2f744def) - @RogerSelwyn
+- [Bump to v2.9.6](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/114ccbee4d9215e76bb9002f5e0b379f48e6d11e) - @RogerSelwyn
+
 ## v2.9.5 (2022/06/01)
 ### Enhancements
 - [Move docs to github.io](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0b8b2f36ebdd649eb419d33d476722411ba7d8e4) - @RogerSelwyn
