@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.9.7 (2022/08/01)
+### Fixes
+- [Bump pyskyqremote to 0.3.14](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/788ddd321ee8a57fd8f8473e7577550bdfb0e009) - @RogerSelwyn - [#111](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/111)
+
+### Maintenance
+- [Bump to v2.9.7](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0bf7076a5c8136aa0422e1037f5b95f3578c647e) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/14849e9aae78f219c3a5160d532bc91eea133beb) - @actions-user
+
 ## v2.9.6 (2022/06/05)
 ### Fixes
 - [Fix issue with device not being created](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3ee13aea23aefd528ec3aaf565e17d8c027f5de0) - @RogerSelwyn
