@@ -27,16 +27,16 @@ The full documentation is available here - [Sky Q Documentation](https://rogerse
 
 _Component showing current TV with default media control_
 
-<img src="./docs/screenshots/skyq_1.png">
+<img src="https://raw.githubusercontent.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/master/docs/screenshots/skyq_1.png">
 
 _Component showing application with default media control_
 
-<img src="./docs/screenshots/skyq_2.png">
+<img src="https://raw.githubusercontent.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/master/docs/screenshots/skyq_2.png">
 
 _Component showing recording with [Mini Media Player](https://github.com/kalkih/mini-media-player)_
 
-<img src="./docs/screenshots/skyq_3.png">
+<img src="https://raw.githubusercontent.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/master/docs/screenshots/skyq_3.png">
 
 _Media Browser_
 
-<img src="./docs/screenshots/skyq_4.png">
+<img src="https://raw.githubusercontent.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/master/docs/screenshots/skyq_4.png">
