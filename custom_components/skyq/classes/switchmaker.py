@@ -74,7 +74,7 @@ class SwitchMaker:
         for searcher, replacer in SWITCH_REPLACE.items():
             switch = switch.replace(searcher, replacer)
         switch = switch.lower()
-        source_name = "          source: '" + source_switch + "'\n" if source else ""
+        source_name = "            source: '" + source_switch + "'\n" if source else ""
 
         self._write_switch(switch, friendly_name, service, source_name)
 
@@ -86,10 +86,12 @@ class SwitchMaker:
             "      friendly_name: '" + friendly_name + " in the " + self._room + "'\n"
         )
         self._f.write("      turn_on:\n")
-        self._f.write(f"        service: media_player.{service}\n")
-        self._f.write("        data:\n")
-        self._f.write(f"          entity_id: {self._entity_id}\n")
+        self._f.write(f"        - service: media_player.{service}\n")
+        self._f.write("          data:\n")
+        self._f.write(f"            entity_id: {self._entity_id}\n")
         self._f.write(source_name)
+        self._f.write("        - delay:\n")
+        self._f.write("            seconds: 10\n")
         self._f.write("      turn_off:\n")
         self._f.write("        stop:\n")
 
