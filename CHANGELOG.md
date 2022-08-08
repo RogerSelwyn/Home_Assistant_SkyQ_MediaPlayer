@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.9.8 (2022/08/08)
+### Enhancements
+- [Add delay to switch](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/41369589ef831a2074e24e7b0b3492141fa75afc) - @RogerSelwyn - [#110](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/110) 
+- [Bump pyskyqremote to 0.3.15](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/520e084b2bd296f71bf4e077eda3bfdb5865d1ab) - @RogerSelwyn - [#113](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/113) 
+
+### Maintenance
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/571a2266340291c080fb54ebb4184a8e78c421b1) - @RogerSelwyn
+- [Bump to v2.9.8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ad57b6222b3c27e2c37497763477f673530a4f3b) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8e22e15b999ab5dc8d6625c409d9d69639d6f6fb) - @actions-user
+
 ## v2.9.7 (2022/08/01)
 ### Fixes
 - [Bump pyskyqremote to 0.3.14](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/788ddd321ee8a57fd8f8473e7577550bdfb0e009) - @RogerSelwyn - [#111](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/111)
