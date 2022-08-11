@@ -6,6 +6,8 @@ from pyskyqremote.const import SKY_STATE_OFF
 
 from ..const import ERROR_TIMEOUT
 
+WARN_MSG_DELAY = 180
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -20,6 +22,7 @@ class SkyQPower:
         self._name = config.name
         self._error_time = None
         self._startup_setup = False
+        self._warn_msg_logged = False
 
     async def async_get_power_status(self):
         """Get the power status."""
@@ -47,8 +50,13 @@ class SkyQPower:
                 self._error_time_so_far(),
                 self._name,
             )
-        elif datetime.now() >= error_time_target and self.available:
+            return
+
+        elapsed = (datetime.now() - self._error_time).total_seconds()
+        if self.available:
             self.available = False
+        if elapsed > WARN_MSG_DELAY and not self._warn_msg_logged:
+            self._warn_msg_logged = True
             _LOGGER.warning("W0010 - Device is not available: %s", self._name)
 
     def _power_status_on_handling(self):
@@ -68,6 +76,7 @@ class SkyQPower:
                 self._name,
             )
         self._error_time = None
+        self._warn_msg_logged = False
 
     def _error_time_so_far(self):
         return (datetime.now() - self._error_time).seconds if self._error_time else 0
