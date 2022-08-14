@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.9.9 Beta 1 (2022/08/14)
+### Enhancements
+- [Change overnight log messages to Info where appropriate](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ef2cff5b6abbd646f53731e3df2263210625a6b4) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.9.9b1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/899a8d705cd6f175cd89957a7a1f1569f84cd901) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d8f8b0ee7d1a2236522c1ca591d3544ad722be88) - @actions-user
+
 ## v2.9.8 (2022/08/08)
 ### Enhancements
 - [Add delay to switch](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/41369589ef831a2074e24e7b0b3492141fa75afc) - @RogerSelwyn - [#110](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/110) 
