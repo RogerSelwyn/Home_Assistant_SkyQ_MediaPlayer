@@ -1,4 +1,5 @@
 """Constants for SkyQ."""
+import datetime as dt
 from homeassistant.components.media_player import MediaPlayerEntityFeature
 from homeassistant.const import STATE_OFF, STATE_UNKNOWN
 
@@ -69,6 +70,11 @@ FEATURE_BASE = (
 
 TIMEOUT = 2
 ERROR_TIMEOUT = 10
+REBOOT_TIMEOUT = 180
+QUIET_START = dt.datetime.strptime("0230", "%H%M").time()
+QUIET_END = dt.datetime.strptime("1505", "%H%M").time()
+ECO_WAKEREASON = "ECO"
+RESET_WAKEREASON = "RESET"
 
 SKYQ_APP = "app"
 SKYQ_LIVE = "live"

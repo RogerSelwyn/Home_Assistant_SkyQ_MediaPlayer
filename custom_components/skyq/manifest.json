@@ -7,7 +7,7 @@
     "@rogerselwyn"
   ],
   "requirements": [
-    "pyskyqremote==0.3.15"
+    "pyskyqremote==0.3.16"
   ],
   "quality_scale": "silver",
   "config_flow": true,
