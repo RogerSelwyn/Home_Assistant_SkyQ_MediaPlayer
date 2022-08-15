@@ -71,10 +71,9 @@ FEATURE_BASE = (
 TIMEOUT = 2
 ERROR_TIMEOUT = 10
 REBOOT_TIMEOUT = 180
-QUIET_START = dt.datetime.strptime("0230", "%H%M").time()
+QUIET_START = dt.datetime.strptime("0045", "%H%M").time()
 QUIET_END = dt.datetime.strptime("0600", "%H%M").time()
 ECO_WAKEREASON = "ECO"
-RESET_WAKEREASON = "RESET"
 
 SKYQ_APP = "app"
 SKYQ_LIVE = "live"

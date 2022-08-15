@@ -2,8 +2,9 @@
 import json
 import logging
 import os
-from datetime import timedelta
+from datetime import timedelta, datetime, timezone
 from types import SimpleNamespace
+import pytz
 
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import CONF_HOST, CONF_NAME, DATA_GIGABYTES
@@ -15,6 +16,8 @@ from .const import (
     CONST_SKYQ_STORAGE_PERCENT,
     CONST_SKYQ_STORAGE_USED,
     DOMAIN,
+    QUIET_END,
+    QUIET_START,
     SKYQ_ICONS,
     SKYQREMOTE,
 )
@@ -56,6 +59,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
             hass.config.config_dir, ".storage/skyq.restore_state"
         )
         self._quota_info = self._read_state()
+        self._utc_now = None
 
     @property
     def device_info(self):
@@ -116,9 +120,16 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
         self._write_state()
 
     def _power_status_off_handling(self):
+        self._utc_now = datetime.now(tz=timezone.utc)
         if self._available:
             self._available = False
-            _LOGGER.warning("W0010 - Device is not available: %s", self.name)
+            if self._quiet_period():
+                _LOGGER.info(
+                    "I0020 - Device is not available overnight, ECO/reboot?: %s",
+                    self.name,
+                )
+            else:
+                _LOGGER.warning("W0010 - Device is not available: %s", self.name)
 
     def _power_status_on_handling(self):
         if not self._available:
@@ -158,3 +169,20 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
         with open(self._statefile, "w", encoding="UTF8") as outfile:
             json.dump(file_content, outfile, ensure_ascii=False, indent=4)
+
+    def _skyq_time(self):
+        if self._utc_now > datetime.fromtimestamp(
+            self._config.device_info.futureTransitionUtc, tz=timezone.utc
+        ):
+            offset = self._config.device_info.futureLocalTimeOffset
+        else:
+            offset = self._config.device_info.presentLocalTimeOffset
+        return self._utc_now + timedelta(seconds=offset)
+
+    def _quiet_period(self):
+        skyq_timenow = self._skyq_time()
+        utctz = pytz.timezone("UTC")
+        quiet_start = utctz.localize(datetime.combine(skyq_timenow.date(), QUIET_START))
+        quiet_end = utctz.localize(datetime.combine(skyq_timenow.date(), QUIET_END))
+
+        return skyq_timenow >= quiet_start and skyq_timenow <= quiet_end
