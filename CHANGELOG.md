@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.9.10 (2022/08/22)
+### Enhancements
+- [Extend reboot time for Mini](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6d2aa5c6e88a2d5b205b604c63afa1c6b99dbbe0) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.9.10](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ed5eb1e337893e9c5979049fdfd42c193cd2a3f3) - @RogerSelwyn
+
 ## v2.9.9 (2022/08/19)
 ### Enhancements
 - [Change overnight log messages to Info where appropriate](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ef2cff5b6abbd646f53731e3df2263210625a6b4) - @RogerSelwyn
