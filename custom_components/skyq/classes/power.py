@@ -2,16 +2,17 @@
 
 import logging
 from datetime import datetime, timedelta, timezone
-import pytz
 
-from pyskyqremote.const import SKY_STATE_OFF
+import pytz
+from pyskyqremote.const import DEVICE_MULTIROOMSTB, SKY_STATE_OFF
 
 from ..const import (
     ECO_WAKEREASON,
     ERROR_TIMEOUT,
     QUIET_END,
     QUIET_START,
-    REBOOT_TIMEOUT,
+    REBOOT_MAIN_TIMEOUT,
+    REBOOT_MINI_TIMEOUT,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -153,8 +154,14 @@ class SkyQPower:
             if self._error_time
             else 0
         )
+        reboot_timeout = (
+            REBOOT_MINI_TIMEOUT
+            if self._config.device_info.deviceType == DEVICE_MULTIROOMSTB
+            else REBOOT_MAIN_TIMEOUT
+        )
+
         reboot_time_target = (
-            self._error_time + timedelta(seconds=REBOOT_TIMEOUT)
+            self._error_time + timedelta(seconds=reboot_timeout)
             if self._error_time
             else 0
         )
