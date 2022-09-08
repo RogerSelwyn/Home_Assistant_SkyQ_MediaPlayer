@@ -7,11 +7,11 @@ sequenceDiagram
 participant I as Integration
 participant M as Module
 participant J as 9006
-I->>M:+ Initialise
+I->>+M: Initialise
 M->>J: system/deviceinformation
 M->>J: system/information
 M->>J: system/time
-M->>I: Combined system information
+M->>-I: Combined system information
 ```
 
 ## Update sequence
