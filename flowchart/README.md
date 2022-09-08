@@ -1,16 +1,17 @@
 # Key sequences
 
-## Startup sequence
+## Initialise sequence
 
 ```mermaid
 sequenceDiagram
 participant I as Integration
 participant M as Module
 participant J as 9006
-I->>M: Initialise
+I->>M:+ Initialise
 M->>J: system/deviceinformation
 M->>J: system/information
 M->>J: system/time
+M->>I: Combined system information
 ```
 
 ## Update sequence
@@ -26,7 +27,7 @@ participant S as 49153 SOAP
 participant W as 9006 Websocket
 participant E as EPG
 opt
-  I->>M: Initialise (If not done at startup)
+  I->>M: Initialise (1st time)
 end
 opt
   I->>M: Get channel list (1st time)
@@ -57,7 +58,6 @@ alt powered on
       I->>M: Get recording
       M->>S: pvr/details/{pvrid}
     end
-  else Application
   end
 end
 ```
