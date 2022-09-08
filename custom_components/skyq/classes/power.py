@@ -18,7 +18,7 @@ from ..const import (
 _LOGGER = logging.getLogger(__name__)
 
 
-class SkyQPower:
+class SkyQPower:  # pylint: disable=too-few-public-methods
     """Sky Q Power class."""
 
     def __init__(self, hass, remote, config):

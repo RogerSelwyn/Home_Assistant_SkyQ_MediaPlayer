@@ -1,5 +1,5 @@
 """Media Browser class for Sky Q."""
-# import asyncio
+
 from datetime import datetime
 
 from homeassistant.components.media_player import BrowseMedia
@@ -85,7 +85,7 @@ class MediaBrowser:
                 "title": source,
             }
         else:
-            query_date = datetime.utcnow()
+            query_date = datetime.now()
             programme = await hass.async_add_executor_job(
                 self._remote.get_programme_from_epg,
                 channel_info.channelsid,
