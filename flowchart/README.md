@@ -7,11 +7,11 @@ sequenceDiagram
 participant I as Integration
 participant M as Module
 participant J as 9006
-I->>+M: Initialise
+I->>+M: Get device info
 M->>J: system/deviceinformation
 M->>J: system/information
 M->>J: system/time
-M->>-I: Return setup
+M->>-I: Combined device info
 ```
 
 ## Update sequence
@@ -27,11 +27,11 @@ participant S as 49153 SOAP
 participant W as 9006 Websocket
 participant E as EPG
 opt
-  I->>+M: Get device info (1st time)
+  I->>+M: Get device info (if reqd)
   M->>J: system/deviceinformation
   M->>J: system/information
   M->>J: system/time
-  M->>-I: Combined system info
+  M->>-I: Combined device info
 end
 opt
   I->>+M: Get channel list (1st time)
@@ -66,7 +66,7 @@ alt Powered on
       M->>-I: Current live TV
     else Recording
       I->>+M: Get recording
-      M->>S: pvr/details/{pvrid}
+      M->>J: pvr/details/{pvrid}
       M->>-I: Recording details
     end
   end
