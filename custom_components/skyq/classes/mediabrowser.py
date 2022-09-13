@@ -2,11 +2,7 @@
 
 from datetime import datetime
 
-from homeassistant.components.media_player import BrowseMedia
-from homeassistant.components.media_player.const import (
-    MEDIA_CLASS_DIRECTORY,
-    MEDIA_CLASS_TV_SHOW,
-)
+from homeassistant.components.media_player import BrowseMedia, MediaClass
 from homeassistant.components.media_player.errors import BrowseError
 from pyskyqremote.classes.programme import Programme
 
@@ -36,7 +32,7 @@ class MediaBrowser:
         channels = [
             BrowseMedia(
                 title=channel["title"],
-                media_class=MEDIA_CLASS_TV_SHOW,
+                media_class=MediaClass.TV_SHOW,
                 media_content_id=channel["channelName"],
                 media_content_type=DOMAINBROWSER,
                 can_play=True,
@@ -50,7 +46,7 @@ class MediaBrowser:
             title=self._config.name,
             media_content_id="root",
             media_content_type="library",
-            media_class=MEDIA_CLASS_DIRECTORY,
+            media_class=MediaClass.DIRECTORY,
             can_play=False,
             can_expand=True,
             children=channels,

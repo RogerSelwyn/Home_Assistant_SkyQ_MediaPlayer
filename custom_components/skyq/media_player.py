@@ -7,10 +7,7 @@ from homeassistant.components.media_player import (
     DEVICE_CLASS_TV,
     MediaPlayerEntity,
     MediaPlayerEntityFeature,
-)
-from homeassistant.components.media_player.const import (
-    MEDIA_TYPE_APP,
-    MEDIA_TYPE_TVSHOW,
+    MediaType,
 )
 from homeassistant.const import (
     ATTR_ENTITY_ID,
@@ -293,9 +290,9 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         if self.state == STATE_UNKNOWN:
             return None
         if self._entity_attr.skyq_media_type == SKYQ_APP:
-            return MEDIA_TYPE_APP
+            return MediaType.APP
 
-        return MEDIA_TYPE_TVSHOW
+        return MediaType.TVSHOW
 
     @property
     def media_series_title(self):
