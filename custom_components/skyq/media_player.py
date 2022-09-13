@@ -7,17 +7,10 @@ from homeassistant.components.media_player import (
     DEVICE_CLASS_TV,
     MediaPlayerEntity,
     MediaPlayerEntityFeature,
+    MediaPlayerState,
     MediaType,
 )
-from homeassistant.const import (
-    ATTR_ENTITY_ID,
-    CONF_HOST,
-    CONF_NAME,
-    STATE_OFF,
-    STATE_PAUSED,
-    STATE_PLAYING,
-    STATE_UNKNOWN,
-)
+from homeassistant.const import ATTR_ENTITY_ID, CONF_HOST, CONF_NAME
 from pyskyqremote.const import (
     APP_EPG,
     COMMANDS,
@@ -58,9 +51,10 @@ from .const import (
     SKYQ_ICONS,
     SKYQ_LIVE,
     SKYQ_LIVEREC,
+    SKYQ_OFF,
     SKYQ_PVR,
+    SKYQ_UNKNOWN,
     SKYQREMOTE,
-    STATE_UNSUPPORTED,
 )
 from .const_homekit import (
     ATTR_KEY_NAME,
@@ -184,7 +178,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             self._volume_entity = None
         self._app_image_url = AppImageUrl()
         self._media_browser = MediaBrowser(remote, config, self._app_image_url)
-        self._state = STATE_OFF
+        self._state = MediaPlayerState.OFF
         self._entity_attr = MPEntityAttributes()
         self._power_state = SkyQPower(hass, self._remote, self._config)
         self._channel_list = None
@@ -220,10 +214,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
                 self._entity_attr.add_supported_feature(
                     MediaPlayerEntityFeature.VOLUME_SET
                 )
-        if len(self._config.source_list) > 0 and self.state not in (
-            STATE_OFF,
-            STATE_UNKNOWN,
-        ):
+        if len(self._config.source_list) > 0 and self.state != MediaPlayerState.OFF:
             return (
                 self._entity_attr.supported_features
                 | MediaPlayerEntityFeature.BROWSE_MEDIA
@@ -287,8 +278,6 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     @property
     def media_content_type(self):
         """Content type of current playing media."""
-        if self.state == STATE_UNKNOWN:
-            return None
         if self._entity_attr.skyq_media_type == SKYQ_APP:
             return MediaType.APP
 
@@ -378,7 +367,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         if self._config.device_info:
             await self._async_update_state()
 
-        if self._state not in [STATE_UNKNOWN, STATE_OFF]:
+        if self._state != MediaPlayerState.OFF:
             await self._async_update_current_programme()
 
         if self._volume_entity:
@@ -411,7 +400,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     async def async_media_play(self):
         """Play the current media item."""
         await self._press_button("play")
-        self._state = STATE_PLAYING
+        self._state = MediaPlayerState.PLAYING
         self.async_write_ha_state()
 
     async def async_media_pause(self):
@@ -424,7 +413,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         else:
             await self._press_button("play")
 
-        self._state = STATE_PAUSED
+        self._state = MediaPlayerState.PAUSED
         self.async_write_ha_state()
 
     async def async_media_next_track(self):
@@ -510,13 +499,13 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     async def _async_update_state(self):
         power_state = await self._power_state.async_get_power_status()
         if power_state == SKY_STATE_STANDBY:
-            self._entity_attr.skyq_media_type = STATE_OFF
-            self._state = STATE_OFF
+            self._entity_attr.skyq_media_type = SKYQ_OFF
+            self._state = MediaPlayerState.OFF
             self._entity_attr.skyq_transport_status = DEFAULT_TRANSPORT_STATE
             return
         if power_state != SKY_STATE_ON:
-            self._entity_attr.skyq_media_type = STATE_UNKNOWN
-            self._state = STATE_OFF
+            self._entity_attr.skyq_media_type = SKYQ_UNKNOWN
+            self._state = MediaPlayerState.OFF
             self._entity_attr.skyq_transport_status = None
             return
 
@@ -527,13 +516,13 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         self._entity_attr.skyq_transport_status = response.CurrentTransportStatus
 
         if current_state == SKY_STATE_PAUSED:
-            self._state = STATE_PAUSED
+            self._state = MediaPlayerState.PAUSED
         elif current_state == SKY_STATE_UNSUPPORTED:
-            self._state = STATE_UNSUPPORTED
+            self._state = SKY_STATE_UNSUPPORTED
         elif current_state == SKY_STATE_OFF:
-            self._state = STATE_OFF
+            self._state = MediaPlayerState.OFF
         else:
-            self._state = STATE_PLAYING
+            self._state = MediaPlayerState.PLAYING
 
     async def _async_update_current_programme(self):
 
@@ -547,7 +536,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
                 await self._async_get_current_media()
             else:
                 self._entity_attr.skyq_media_type = SKYQ_LIVE
-                self._entity_attr.title = STATE_UNSUPPORTED.capitalize()
+                self._entity_attr.title = SKY_STATE_UNSUPPORTED.capitalize()
         else:
             self._entity_attr.skyq_media_type = SKYQ_APP
             self._entity_attr.title = app_title

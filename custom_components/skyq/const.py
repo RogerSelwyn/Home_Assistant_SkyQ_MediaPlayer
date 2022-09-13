@@ -2,7 +2,6 @@
 import datetime as dt
 
 from homeassistant.components.media_player import MediaPlayerEntityFeature
-from homeassistant.const import STATE_OFF, STATE_UNKNOWN
 
 from .const_homekit import (
     KEY_ARROW_DOWN,
@@ -80,16 +79,19 @@ ECO_WAKEREASON = "ECO"
 SKYQ_APP = "app"
 SKYQ_LIVE = "live"
 SKYQ_LIVEREC = "liverecord"
+SKYQ_OFF = "off"
 SKYQ_PVR = "pvr"
+SKYQ_UNKNOWN = "unknown"
 SKYQ_ICONS = {
     SKYQ_APP: "mdi:application-outline",
     SKYQ_LIVE: "mdi:satellite-variant",
     SKYQ_LIVEREC: "mdi:record-rec",
-    STATE_OFF: "mdi:television",
+    SKYQ_OFF: "mdi:television",
     SKYQ_PVR: "mdi:movie-open",
-    STATE_UNKNOWN: "mdi:alert-circle-outline",
+    SKYQ_UNKNOWN: "mdi:alert-circle-outline",
     CONST_SKYQ_STORAGE_USED: "mdi:database",
 }
+
 
 APP_IMAGE_URL_BASE = f"/api/{DOMAIN}/static"
 
@@ -115,5 +117,3 @@ REMOTE_BUTTONS = {
     KEY_PREVIOUS_TRACK: BUTTON_PRESS_CHANNELDOWN,
     KEY_NEXT_TRACK: BUTTON_PRESS_CHANNELUP,
 }
-
-STATE_UNSUPPORTED = "unsupported"

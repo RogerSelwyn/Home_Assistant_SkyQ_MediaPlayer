@@ -1,8 +1,6 @@
 """Class to hold the core media_player entity attributes."""
 
-from homeassistant.const import STATE_OFF
-
-from ..const import FEATURE_BASE
+from ..const import FEATURE_BASE, SKYQ_OFF
 
 
 class MPEntityAttributes:
@@ -20,7 +18,7 @@ class MPEntityAttributes:
 
         self._image_remotely_accessible = False
 
-        self.skyq_media_type = STATE_OFF
+        self.skyq_media_type = SKYQ_OFF
         self.skyq_transport_status = None
 
     def reset(self):
