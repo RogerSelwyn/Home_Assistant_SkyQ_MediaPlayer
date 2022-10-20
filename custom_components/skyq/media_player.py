@@ -11,6 +11,7 @@ from homeassistant.components.media_player import (
     MediaType,
 )
 from homeassistant.const import ATTR_ENTITY_ID, CONF_HOST, CONF_NAME
+from homeassistant.exceptions import PlatformNotReady
 from pyskyqremote.const import (
     APP_EPG,
     COMMANDS,
@@ -75,6 +76,8 @@ async def async_setup_platform(
     host = config.get(CONF_HOST)
     epg_cache_len = config.get(CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN)
     remote = await hass.async_add_executor_job(SkyQRemote, host, epg_cache_len)
+    if not remote.device_setup:
+        raise PlatformNotReady(f"W0010 - Device is not available: {host}")
 
     unique_id = None
     name = config.get(CONF_NAME)
@@ -153,7 +156,7 @@ async def _async_setup_platform_entry(
             await player.async_media_next_track()
         else:
             _LOGGER.warning(
-                "W0010 - Invalid Homekit event - %s - %s", player.entity_id, keyname
+                "W0020 - Invalid Homekit event - %s - %s", player.entity_id, keyname
             )
 
     hass.bus.async_listen(EVENT_HOMEKIT_TV_REMOTE_KEY_PRESSED, _async_homekit_event)
@@ -184,12 +187,6 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         self._channel_list = None
         self._use_internal = True
         self._switches_generated = False
-
-        if not self._remote.device_setup:
-            self._power_state.available = False
-            _LOGGER.warning("W0020 - Device is not available: %s", self.name)
-
-        # self._supported_features = FEATURE_BASE
 
     @property
     def device_info(self):
@@ -339,6 +336,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         attributes = {
             CONST_SKYQ_MEDIA_TYPE: self._entity_attr.skyq_media_type,
             CONST_SKYQ_TRANSPORT_STATUS: self._entity_attr.skyq_transport_status,
+            "id": self.unique_id,
         }
         if self._entity_attr.skyq_channelno:
             attributes[CONST_SKYQ_CHANNELNO] = self._entity_attr.skyq_channelno
@@ -356,6 +354,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
 
     async def async_update(self):
         """Get the latest data and update device state."""
+        # _LOGGER.debug("D0010 - Update started - %s", self.name)
         self._entity_attr.reset()
 
         if not self._config.device_info:
