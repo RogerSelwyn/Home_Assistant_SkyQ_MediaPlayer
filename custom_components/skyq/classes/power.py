@@ -49,7 +49,11 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
 
     def _power_status_off_handling(self):
 
+        if not self._error_time:
+            self._error_time = self._utc_now
         error_time_target, reboot_time_target = self._target_times()
+        self._error_time_debug(error_time_target)
+
         if not self._quiet_period():
             self._power_off_standard_hours(error_time_target)
             return
@@ -61,18 +65,15 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
         self._power_off_other(error_time_target, reboot_time_target)
 
     def _power_off_standard_hours(self, error_time_target):
-        self._error_time_debug(error_time_target)
-        if self.available or self._quiet_time_error:
+        if (
+            self.available or self._quiet_time_error
+        ) and self._utc_now > error_time_target:
             self.available = False
             self._quiet_time_error = False
             self._reboot_check = True
-            if error_time_target != 0 and self._utc_now > error_time_target:
-                _LOGGER.warning(
-                    "W0010 - Device is not available: %s", self._config.name
-                )
+            _LOGGER.warning("W0010 - Device is not available: %s", self._config.name)
 
     def _power_off_eco(self, error_time_target):
-        self._error_time_debug(error_time_target)
         if (
             error_time_target != 0
             and self._utc_now > error_time_target
@@ -85,7 +86,6 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
             )
 
     def _power_off_other(self, error_time_target, reboot_time_target):
-        self._error_time_debug(error_time_target)
         if (
             error_time_target != 0
             and self._utc_now > error_time_target
@@ -168,9 +168,7 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
         return error_time_target, reboot_time_target
 
     def _error_time_debug(self, time_target):
-        if not self._error_time or self._utc_now < time_target:
-            if not self._error_time:
-                self._error_time = self._utc_now
+        if self._utc_now < time_target:
             _LOGGER.debug(
                 "D0010 - Device is not available - %s Seconds: %s",
                 self._error_time_so_far(),
