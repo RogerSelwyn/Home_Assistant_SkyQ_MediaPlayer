@@ -49,7 +49,7 @@ class SwitchMaker:
                 self._root + CONST_ALIAS_FILENAME, "r", encoding="utf-8"
             ) as aliasfile:
                 self._alias = yaml.full_load(aliasfile)
-            if self._alias:
+            if not self._alias:
                 _LOGGER.info("I0010 - skyqswitchalias.yaml is empty, it can be deleted")
 
         self._add_switch("pause", "pause", "media_pause")
@@ -67,7 +67,7 @@ class SwitchMaker:
         """Add switch to switches."""
         source_switch = str(switch).replace("'", "''")
         if self._alias and len(self._alias) > 0:
-            friendly_name = self._find_alias(friendly_name)
+            friendly_name = self._find_alias(friendly_name).replace("'", "")
         else:
             friendly_name = friendly_name.replace("'", "")
 
