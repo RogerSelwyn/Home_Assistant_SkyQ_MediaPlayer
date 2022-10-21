@@ -33,6 +33,9 @@ async def async_setup(hass, config):  # pylint: disable=unused-argument
 
 async def async_setup_entry(hass, config_entry):
     """Set up a config entry."""
+    _LOGGER.debug(
+        "D0010 - Load %s, %s", config_entry.data[CONF_HOST], config_entry.unique_id
+    )
     host = config_entry.data[CONF_HOST]
     name = config_entry.data[CONF_NAME]
     epg_cache_len = CONST_DEFAULT_EPGCACHELEN
@@ -69,6 +72,9 @@ async def async_setup_entry(hass, config_entry):
 
 async def async_unload_entry(hass, config_entry):
     """Unload a config entry."""
+    _LOGGER.debug(
+        "D0020 - Unload %s, %s", config_entry.data[CONF_HOST], config_entry.unique_id
+    )
     host = config_entry.data[CONF_HOST]
     epg_cache_len = CONST_DEFAULT_EPGCACHELEN
     remote = await hass.async_add_executor_job(SkyQRemote, host, epg_cache_len)
@@ -90,6 +96,11 @@ async def async_unload_entry(hass, config_entry):
     hass.data[DOMAIN][config_entry.entry_id][UNDO_UPDATE_LISTENER]()
 
     if unload_ok:
+        _LOGGER.debug(
+            "D0030 - Unload OK %s, %s",
+            config_entry.data[CONF_HOST],
+            config_entry.unique_id,
+        )
         hass.data[DOMAIN].pop(config_entry.entry_id)
 
     return unload_ok
@@ -104,7 +115,7 @@ async def async_migrate_entry(hass, config_entry):
     # sourcery skip: assign-if-exp, boolean-if-exp-identity, merge-dict-assign
     """Migrate old entry."""
     _LOGGER.debug(
-        "Migrating %s from version %s", config_entry.title, config_entry.version
+        "D0040 - Migrating %s from version %s", config_entry.title, config_entry.version
     )
 
     if config_entry.version == 1:
