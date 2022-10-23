@@ -3,7 +3,9 @@ title: Oddities
 nav_order: 11
 ---
 
-# Channel List
+# Oddities
+
+## Channel List
 
 Some channels in the channel list have a channel number after them. This is because not all channel names are unique, and the core design was that in case channel numbers changed only channel name would be used for configuration.
 
