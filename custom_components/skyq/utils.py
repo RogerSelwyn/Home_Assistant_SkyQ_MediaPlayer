@@ -83,3 +83,16 @@ class AppImageUrl:
             self._app_image_url = app_image_url
 
         return self._app_image_url
+
+
+async def async_get_channel_data(hass, remote):
+    """Retrieve and process the channel data."""
+    channel_data = await hass.async_add_executor_job(remote.get_channel_list)
+    for index1, channel1 in enumerate(channel_data.channels):
+        for index2, channel2 in enumerate(channel_data.channels):
+            if index2 == index1:
+                break
+            if channel2.channelname == channel1.channelname:
+                channel1.channelname = f"{channel1.channelname} ({channel1.channelno})"
+                break
+    return channel_data

@@ -1,4 +1,6 @@
 """Configuration flow for the skyq platform."""
+
+import contextlib
 import ipaddress
 import json
 import logging
@@ -36,7 +38,7 @@ from .const import (
     SKYQREMOTE,
 )
 from .schema import DATA_SCHEMA
-from .utils import convert_sources_json
+from .utils import async_get_channel_data, convert_sources_json
 
 SORT_CHANNELS = False
 
@@ -165,9 +167,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._country_list = [CONST_DEFAULT] + sorted(country_names)
 
         if self._remote.device_setup:
-            channel_data = await self.hass.async_add_executor_job(
-                self._remote.get_channel_list
-            )
+            channel_data = await async_get_channel_data(self.hass, self._remote)
             if not channel_data:
                 errmsg = f"E0020 - Sky Q box is unavailable: {self._config_entry.title}"
                 _LOGGER.error(errmsg)
@@ -182,7 +182,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
 
             self._channel_sources_display = []
             for channel in self._channel_sources:
-                try:
+                with contextlib.suppress(StopIteration):
                     channel_data = next(
                         c for c in self._channel_list if c.channelname == channel
                     )
@@ -191,9 +191,6 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                             channel_data.channelno, channel_data.channelname
                         )
                     )
-                except StopIteration:
-                    pass
-
             return await self.async_step_user()
 
         return await self.async_step_retry()

@@ -64,7 +64,7 @@ from .const_homekit import (
     KEY_REWIND,
 )
 from .entity import SkyQEntity
-from .utils import AppImageUrl, get_command
+from .utils import AppImageUrl, async_get_channel_data, get_command
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -609,8 +609,6 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             and not self._channel_list
             and len(self._config.channel_sources) > 0
         ):
-            channel_data = await self.hass.async_add_executor_job(
-                self._remote.get_channel_list
-            )
+            channel_data = await async_get_channel_data(self.hass, self._remote)
             return channel_data.channels
         return None
