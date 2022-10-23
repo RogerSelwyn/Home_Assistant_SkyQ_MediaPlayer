@@ -2,6 +2,7 @@
 
 ## v2.9.11 (2022/10/23)
 ### Fixes
+- [Update switchmaker.py to correctly handle aliases](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/228a9eea67b43af7125a8176028f85bb3cd11240) - @RogerSelwyn - [#119](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/119)
 - [Fix issue with new entity created with HA reboot during ECO](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9ba65f2a5bd86cbdfdce7c12678165b186fab55d) - @RogerSelwyn - [#121](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/121)
 - [Fix logging for power down - No warning shown for non-eco hours](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a196e9155b6240d3be5a8f72334a715723b1f5d4) - @RogerSelwyn
 - [Handle duplicate channel names in channel list](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/944a860c1d41d992f2abe9c94d59a0ce97371363) - @RogerSelwyn - [#124](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/124)
@@ -16,7 +17,6 @@
 - [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ab0adcf2ddaddb34f60462022a752597b7704d3a) - @RogerSelwyn
 - [Media Player Constant Deprecations in 2022.10](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/478cddec8464c662edbb4eba23c1dfbaeffdf172) - @RogerSelwyn
 - [Media Player Constant Deprecations in 2022.10](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/50a2f132a0fa3dd232e318765e2ba09174292969) - @RogerSelwyn
-- [Update switchmaker.py](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/228a9eea67b43af7125a8176028f85bb3cd11240) - @RogerSelwyn
 - [Update bug_report.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a3827af5cc9d2c8802efb8d63ffd44973138ab69) - @RogerSelwyn
 - [Add extra debug logging](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/31d6de9c70e26800041254bbf64b7f283d37a3c4) - @RogerSelwyn
 - [Bump to v2.9.11](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fea3689956e9eaff0d1e6dffdf0aaded37ccb335) - @RogerSelwyn
