@@ -13,7 +13,7 @@ One sensor, updated every minute, is created per SkyQ device (not Minis) which s
 - Scheduled Start Time
 - Scheduled End Time
 - Scheduled Title
-- Recordings (array) - current recordings in progress
+- Recordings (array) - recordings currently in progress
   - Recording Start Time
   - Recording Scheduled End Time
   - Recording Title 
