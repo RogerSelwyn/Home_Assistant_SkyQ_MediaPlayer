@@ -19,7 +19,7 @@ If you want to add a second Sky Q box, just follow the same process again and ad
 | Name                              |             | The name you would like to give to the SkyQ set top box. |
 | Show programme image            | True        | Allows you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing. |
 | Show live TV details           | True        | Allows you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from current known sources. |
-| Get Live Record status           | False       | Allows you to fetch the status of the currently playing item to see if it is a "Live Recording". |
+| Get Live Record Status           | False       | Allows you to fetch the status of the currently playing item to see if it is a "Live Recording". Also enables the schedule sensor. |
 | Entity to control volume of | _Empty_     | Specifies the entity for which volume control actions will be passed through to. No validation of the entity is done via the UI, warnings will show in the log if an invalid entity is used. Must be a media_player entity. e.g. media_player.braviatv|
 | Advanced                         | False       | Show the advanced page of configuration items |
 | TV device class   | True    | Sets device class to TV. Unticked sets it to Receiver. |
