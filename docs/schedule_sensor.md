@@ -10,10 +10,10 @@ One sensor, updated every minute, is created per SkyQ device (not Minis) when 'G
   - 'Scheduled' - There is an item scheduled in the future to record
   - 'Scheduled - off' - There is an item scheduled but the box is switched off
   - 'None' - Nothing is scheduled
-- Scheduled Start Time
-- Scheduled End Time
+- Scheduled Start Time (UTC)
+- Scheduled End Time (UTC)
 - Scheduled Title
 - Recordings (array) - recordings currently in progress
-  - Recording Start Time
-  - Recording Scheduled End Time
+  - Recording Start Time (UTC)
+  - Recording Scheduled End Time (UTC)
   - Recording Title 
