@@ -7,6 +7,9 @@
 ### Maintenance
 - [Bump to v2.10.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/51d090d2acb705f6ca4f7640f49fe6c3033e22a9) - @RogerSelwyn
 - [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9f54af9bf86e85a67b500f676b65e56c39bf9e87) - @actions-user
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/803f024713fa714f63e7cc9f4f12f316e52e1d7f) - @RogerSelwyn
+- [Update configuration_ui.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6c492f374bfa971d6fd34ec9011ce5eeeec5d17d) - @RogerSelwyn
+- [Add documentation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ca400a93b14bd85157a42b81fe5cfcf10e815f63) - @RogerSelwyn
 
 ## v2.9.11 (2022/10/23)
 ### Fixes
