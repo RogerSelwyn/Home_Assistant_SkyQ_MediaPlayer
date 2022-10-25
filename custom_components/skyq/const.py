@@ -3,9 +3,17 @@ import datetime as dt
 
 from homeassistant.components.media_player import MediaPlayerEntityFeature
 
-from .const_homekit import (KEY_ARROW_DOWN, KEY_ARROW_LEFT, KEY_ARROW_RIGHT,
-                            KEY_ARROW_UP, KEY_BACK, KEY_INFORMATION,
-                            KEY_NEXT_TRACK, KEY_PREVIOUS_TRACK, KEY_SELECT)
+from .const_homekit import (
+    KEY_ARROW_DOWN,
+    KEY_ARROW_LEFT,
+    KEY_ARROW_RIGHT,
+    KEY_ARROW_UP,
+    KEY_BACK,
+    KEY_INFORMATION,
+    KEY_NEXT_TRACK,
+    KEY_PREVIOUS_TRACK,
+    KEY_SELECT,
+)
 
 DOMAIN = "skyq"
 DOMAINBROWSER = "skyq_browser"
@@ -31,8 +39,8 @@ CHANNEL_DISPLAY = "{0} - {1}"
 CONST_DEFAULT_ROOM = "Default Room"
 CONST_ALIAS_FILENAME = "skyqswitchalias.yaml"
 CONST_NONE = "None"
-CONST_SCHEDULED = "scheduled"
-CONST_SCHEDULED_OFF = "scheduled - off"
+CONST_SCHEDULED = "Scheduled"
+CONST_SCHEDULED_OFF = "Scheduled - off"
 CONST_SKYQ_CHANNELNO = "skyq_channelno"
 CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
 CONST_SKYQ_RECORDING_START = "skyq_recording_start"

@@ -1,6 +1,6 @@
 ---
 title: Storage Sensor
-nav_order: 10
+nav_order: 11
 ---
 
 # Storage Sensor
