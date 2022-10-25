@@ -1,13 +1,14 @@
 # Changelog
 
-## v2.10.0 (2022/10/25)
 ### Enhancements
 - [Add sensor with next scheduled recording](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/84a5003336215d53255f28348fffdab31b4d3ceb) - @RogerSelwyn
+
+### Fixes
+- [Fix handling of old state storage](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3c641f77d020f727cc349614d0c7e4dde409c256) - @RogerSelwyn
 
 ### Maintenance
 - [Bump to v2.10.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/51d090d2acb705f6ca4f7640f49fe6c3033e22a9) - @RogerSelwyn
 - [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9f54af9bf86e85a67b500f676b65e56c39bf9e87) - @actions-user
-- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/803f024713fa714f63e7cc9f4f12f316e52e1d7f) - @RogerSelwyn
 - [Update configuration_ui.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6c492f374bfa971d6fd34ec9011ce5eeeec5d17d) - @RogerSelwyn
 - [Add documentation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ca400a93b14bd85157a42b81fe5cfcf10e815f63) - @RogerSelwyn
 
