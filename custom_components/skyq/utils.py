@@ -110,11 +110,12 @@ def read_state(statefile, sensor_type, config_host):
     if os.path.isfile(statefile):
         with open(statefile, "r", encoding=STORAGE_ENCODING) as infile:
             file_content = json.load(infile)
-        for sensor in file_content:
-            if sensor[STORAGE_SENSOR] == sensor_type:
-                for host in sensor[STORAGE_HOSTS]:
-                    if host[STORAGE_HOST] == config_host:
-                        return host[STORAGE_ATTRIBUTES]
+        if STORAGE_SENSOR in file_content:
+            for sensor in file_content:
+                if sensor[STORAGE_SENSOR] == sensor_type:
+                    for host in sensor[STORAGE_HOSTS]:
+                        if host[STORAGE_HOST] == config_host:
+                            return host[STORAGE_ATTRIBUTES]
 
     return None
 
@@ -127,6 +128,8 @@ def write_state(statefile, sensor_type, config_host, new_attributes):
         with open(statefile, "r", encoding=STORAGE_ENCODING) as infile:
             old_file_content = json.load(infile)
             for sensor in old_file_content:
+                if STORAGE_SENSOR not in file_content:
+                    break
                 if sensor[STORAGE_SENSOR] != sensor_type:
                     file_content.append(sensor)
                 else:
