@@ -1,16 +1,24 @@
 """Entity representing a Sky Device."""
+import os
+from datetime import datetime, timedelta, timezone
 
-from .const import DOMAIN
+import pytz
+
+from .const import DOMAIN, QUIET_END, QUIET_START
 
 
 class SkyQEntity:
     """Representation of a SkyQ Device."""
 
-    def __init__(self, remote, config):
+    def __init__(self, hass, remote, config):
         """Initialise the SkyQEntity."""
         self._remote = remote
         self._config = config
         self._unique_id = config.unique_id
+        self._utc_now = None
+        self._statefile = os.path.join(
+            hass.config.config_dir, ".storage/skyq.restore_state"
+        )
 
     @property
     def skyq_device_info(self):
@@ -41,3 +49,20 @@ class SkyQEntity:
                 for e in self._config.device_info.serialNumber.casefold()
                 if e.isalnum()
             )
+
+    def _skyq_time(self):
+        if self._utc_now > datetime.fromtimestamp(
+            self._config.device_info.futureTransitionUtc, tz=timezone.utc
+        ):
+            offset = self._config.device_info.futureLocalTimeOffset
+        else:
+            offset = self._config.device_info.presentLocalTimeOffset
+        return self._utc_now + timedelta(seconds=offset)
+
+    def _quiet_period(self):
+        skyq_timenow = self._skyq_time()
+        utctz = pytz.timezone("UTC")
+        quiet_start = utctz.localize(datetime.combine(skyq_timenow.date(), QUIET_START))
+        quiet_end = utctz.localize(datetime.combine(skyq_timenow.date(), QUIET_END))
+
+        return skyq_timenow >= quiet_start and skyq_timenow <= quiet_end

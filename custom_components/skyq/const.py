@@ -3,17 +3,9 @@ import datetime as dt
 
 from homeassistant.components.media_player import MediaPlayerEntityFeature
 
-from .const_homekit import (
-    KEY_ARROW_DOWN,
-    KEY_ARROW_LEFT,
-    KEY_ARROW_RIGHT,
-    KEY_ARROW_UP,
-    KEY_BACK,
-    KEY_INFORMATION,
-    KEY_NEXT_TRACK,
-    KEY_PREVIOUS_TRACK,
-    KEY_SELECT,
-)
+from .const_homekit import (KEY_ARROW_DOWN, KEY_ARROW_LEFT, KEY_ARROW_RIGHT,
+                            KEY_ARROW_UP, KEY_BACK, KEY_INFORMATION,
+                            KEY_NEXT_TRACK, KEY_PREVIOUS_TRACK, KEY_SELECT)
 
 DOMAIN = "skyq"
 DOMAINBROWSER = "skyq_browser"
@@ -38,11 +30,21 @@ CHANNEL_DISPLAY = "{0} - {1}"
 
 CONST_DEFAULT_ROOM = "Default Room"
 CONST_ALIAS_FILENAME = "skyqswitchalias.yaml"
+CONST_NONE = "None"
+CONST_SCHEDULED = "scheduled"
+CONST_SCHEDULED_OFF = "scheduled - off"
 CONST_SKYQ_CHANNELNO = "skyq_channelno"
 CONST_SKYQ_MEDIA_TYPE = "skyq_media_type"
+CONST_SKYQ_RECORDING_START = "skyq_recording_start"
+CONST_SKYQ_RECORDING_END = "skyq_recording_end"
+CONST_SKYQ_RECORDING_TITLE = "skyq_recording_title"
 CONST_SKYQ_STORAGE_MAX = "skyq_storage_max"
 CONST_SKYQ_STORAGE_PERCENT = "skyq_storage_percent"
 CONST_SKYQ_STORAGE_USED = "skyq_storage_used"
+CONST_SKYQ_SCHEDULED = "skyq_scheduled"
+CONST_SKYQ_SCHEDULED_START = "skyq_scheduled_start"
+CONST_SKYQ_SCHEDULED_END = "skyq_scheduled_end"
+CONST_SKYQ_SCHEDULED_TITLE = "skyq_scheduled_title"
 CONST_SKYQ_TRANSPORT_STATUS = "skyq_transport_status"
 CONST_DEFAULT = "Default"
 CONST_DEFAULT_EPGCACHELEN = 20
@@ -90,6 +92,7 @@ SKYQ_ICONS = {
     SKYQ_PVR: "mdi:movie-open",
     SKYQ_UNKNOWN: "mdi:alert-circle-outline",
     CONST_SKYQ_STORAGE_USED: "mdi:database",
+    CONST_SKYQ_SCHEDULED: "mdi:clock-outline",
 }
 
 
@@ -117,3 +120,11 @@ REMOTE_BUTTONS = {
     KEY_PREVIOUS_TRACK: BUTTON_PRESS_CHANNELDOWN,
     KEY_NEXT_TRACK: BUTTON_PRESS_CHANNELUP,
 }
+
+STORAGE_ATTRIBUTES = "attributes"
+STORAGE_ENCODING = "UTF8"
+STORAGE_HOST = "host"
+STORAGE_HOSTS = "hosts"
+STORAGE_SENSOR = "sensor"
+STORAGE_SENSOR_STORAGE = "storage"
+STORAGE_SENSOR_SCHEDULE = "schedule"

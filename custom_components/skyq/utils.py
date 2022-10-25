@@ -4,7 +4,14 @@ import json
 import logging
 import os
 
-from .const import APP_IMAGE_URL_BASE
+from .const import (
+    APP_IMAGE_URL_BASE,
+    STORAGE_ATTRIBUTES,
+    STORAGE_ENCODING,
+    STORAGE_HOST,
+    STORAGE_HOSTS,
+    STORAGE_SENSOR,
+)
 
 CHAR_REPLACE = {" ": "", "+": "plus", "_": "", ".": ""}
 
@@ -96,3 +103,53 @@ async def async_get_channel_data(hass, remote):
                 channel1.channelname = f"{channel1.channelname} ({channel1.channelno})"
                 break
     return channel_data
+
+
+def read_state(statefile, sensor_type, config_host):
+    """Read state from storage."""
+    if os.path.isfile(statefile):
+        with open(statefile, "r", encoding=STORAGE_ENCODING) as infile:
+            file_content = json.load(infile)
+        for sensor in file_content:
+            if sensor[STORAGE_SENSOR] == sensor_type:
+                for host in sensor[STORAGE_HOSTS]:
+                    if host[STORAGE_HOST] == config_host:
+                        return host[STORAGE_ATTRIBUTES]
+
+    return None
+
+
+def write_state(statefile, sensor_type, config_host, new_attributes):
+    """Write state to storage."""
+    file_content = []
+    old_sensor = None
+    if os.path.isfile(statefile):
+        with open(statefile, "r", encoding=STORAGE_ENCODING) as infile:
+            old_file_content = json.load(infile)
+            for sensor in old_file_content:
+                if sensor[STORAGE_SENSOR] != sensor_type:
+                    file_content.append(sensor)
+                else:
+                    old_sensor = sensor
+
+    sensor_hosts = []
+    if old_sensor:
+        sensor_hosts.extend(
+            host
+            for host in old_sensor[STORAGE_HOSTS]
+            if host[STORAGE_HOST] != config_host
+        )
+
+    host_content = {
+        STORAGE_HOST: config_host,
+        STORAGE_ATTRIBUTES: new_attributes,
+    }
+    sensor_hosts.append(host_content)
+    sensor_content = {
+        STORAGE_SENSOR: sensor_type,
+        STORAGE_HOSTS: sensor_hosts,
+    }
+    file_content.append(sensor_content)
+
+    with open(statefile, "w", encoding=STORAGE_ENCODING) as outfile:
+        json.dump(file_content, outfile, ensure_ascii=False, indent=4)

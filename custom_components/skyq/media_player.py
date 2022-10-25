@@ -172,7 +172,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         config,
     ):
         """Initialise the SkyQRemote."""
-        super().__init__(remote, config)
+        super().__init__(hass, remote, config)
         if config.volume_entity:
             self._volume_entity = VolumeEntity(
                 hass, config.volume_entity, self._config.name

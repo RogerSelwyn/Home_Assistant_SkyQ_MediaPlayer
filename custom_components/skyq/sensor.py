@@ -1,31 +1,44 @@
 """Entity representation for storage usage."""
+
 import json
 import logging
-import os
-from datetime import timedelta, datetime, timezone
+from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
-import pytz
 
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import CONF_HOST, CONF_NAME, DATA_GIGABYTES
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.util import Throttle
 
 from .classes.config import Config
 from .const import (
+    CONST_NONE,
+    CONST_SCHEDULED,
+    CONST_SCHEDULED_OFF,
+    CONST_SKYQ_RECORDING_END,
+    CONST_SKYQ_RECORDING_START,
+    CONST_SKYQ_RECORDING_TITLE,
+    CONST_SKYQ_SCHEDULED,
+    CONST_SKYQ_SCHEDULED_END,
+    CONST_SKYQ_SCHEDULED_START,
+    CONST_SKYQ_SCHEDULED_TITLE,
     CONST_SKYQ_STORAGE_MAX,
     CONST_SKYQ_STORAGE_PERCENT,
     CONST_SKYQ_STORAGE_USED,
     DOMAIN,
-    QUIET_END,
-    QUIET_START,
+    FEATURE_GET_LIVE_RECORD,
     SKYQ_ICONS,
     SKYQREMOTE,
+    STORAGE_SENSOR_SCHEDULE,
+    STORAGE_SENSOR_STORAGE,
 )
 from .entity import SkyQEntity
+from .utils import read_state, write_state
 
 _LOGGER = logging.getLogger(__name__)
 
-SCAN_INTERVAL = timedelta(minutes=5)
+_SCAN_INTERVAL_STORAGE = timedelta(minutes=5)
+_SCAN_INTERVAL_SCHEDULE = timedelta(minutes=1)
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -40,9 +53,11 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         config_entry.options,
     )
 
-    usedsensor = SkyQUsedStorage(hass, remote, config)
+    sensors = [SkyQUsedStorage(hass, remote, config)]
+    if config.enabled_features & FEATURE_GET_LIVE_RECORD:
+        sensors.append(SkyQSchedule(hass, remote, config))
 
-    async_add_entities([usedsensor], False)
+    async_add_entities(sensors, False)
 
 
 class SkyQUsedStorage(SkyQEntity, SensorEntity):
@@ -52,14 +67,19 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
     def __init__(self, hass, remote, config):
         """Initialize the used storage sensor."""
-        super().__init__(remote, config)
+        super().__init__(hass, remote, config)
         self._available = None
         self._config = config
-        self._statefile = os.path.join(
-            hass.config.config_dir, ".storage/skyq.restore_state"
+        attributes = read_state(
+            self._statefile, STORAGE_SENSOR_STORAGE, self._config.host
         )
-        self._quota_info = self._read_state()
-        self._utc_now = None
+
+        self._quota_info = None
+        if attributes:
+            self._quota_info = json.loads(
+                json.dumps(attributes), object_hook=lambda d: SimpleNamespace(**d)
+            )
+            self._available = True
 
     @property
     def device_info(self):
@@ -108,6 +128,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
             CONST_SKYQ_STORAGE_PERCENT: f"{percent}",
         }
 
+    @Throttle(_SCAN_INTERVAL_STORAGE)
     async def async_update(self):
         """Get the latest data and update device state."""
         resp = await self.hass.async_add_executor_job(self._remote.get_quota)
@@ -117,7 +138,12 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
         self._power_status_on_handling()
         self._quota_info = resp
-        self._write_state()
+        write_state(
+            self._statefile,
+            STORAGE_SENSOR_STORAGE,
+            self._config.host,
+            self._quota_info.__dict__,
+        )
 
     def _power_status_off_handling(self):
         self._utc_now = datetime.now(tz=timezone.utc)
@@ -136,53 +162,107 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
             self._available = True
             _LOGGER.info("I0010 - Device is now available: %s", self.name)
 
-    def _read_state(self):
-        if os.path.isfile(self._statefile):
-            with open(self._statefile, "r", encoding="UTF8") as infile:
-                file_content = json.load(infile)
-            for host in file_content:
-                if host["host"] == self._config.host:
-                    json_content = json.dumps(host["attributes"])
-                    self._available = True
-                    return json.loads(
-                        json_content, object_hook=lambda d: SimpleNamespace(**d)
-                    )
 
-        return None
+class SkyQSchedule(SkyQEntity, SensorEntity):
+    """Schedule information for SkyQ Device."""
 
-    def _write_state(self):
-        file_content = []
-        if os.path.isfile(self._statefile):
-            with open(self._statefile, "r", encoding="UTF8") as infile:
-                old_file_content = json.load(infile)
-                file_content.extend(
-                    host
-                    for host in old_file_content
-                    if host["host"] != self._config.host
-                )
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
-        host_content = {
-            "host": self._config.host,
-            "attributes": self._quota_info.__dict__,
-        }
-        file_content.append(host_content)
+    def __init__(self, hass, remote, config):
+        """Initialize the used storage sensor."""
+        super().__init__(hass, remote, config)
+        self._available = None
+        self._scheduled_programme = None
+        self._config = config
 
-        with open(self._statefile, "w", encoding="UTF8") as outfile:
-            json.dump(file_content, outfile, ensure_ascii=False, indent=4)
+        attributes = read_state(
+            self._statefile, STORAGE_SENSOR_SCHEDULE, self._config.host
+        )
+        self._schedule_attributes = None
+        if attributes:
+            self._schedule_attributes = attributes
+            self._available = True
 
-    def _skyq_time(self):
-        if self._utc_now > datetime.fromtimestamp(
-            self._config.device_info.futureTransitionUtc, tz=timezone.utc
-        ):
-            offset = self._config.device_info.futureLocalTimeOffset
-        else:
-            offset = self._config.device_info.presentLocalTimeOffset
-        return self._utc_now + timedelta(seconds=offset)
+    @property
+    def device_info(self):
+        """Entity device information."""
+        return self.skyq_device_info
 
-    def _quiet_period(self):
-        skyq_timenow = self._skyq_time()
-        utctz = pytz.timezone("UTC")
-        quiet_start = utctz.localize(datetime.combine(skyq_timenow.date(), QUIET_START))
-        quiet_end = utctz.localize(datetime.combine(skyq_timenow.date(), QUIET_END))
+    @property
+    def name(self):
+        """Get the name of the devices."""
+        return f"{self._config.name} Schedule"
 
-        return skyq_timenow >= quiet_start and skyq_timenow <= quiet_end
+    @property
+    def unique_id(self):
+        """Get the unique id of the devices."""
+        return f"{self._unique_id}_schedule" if self._unique_id else None
+
+    @property
+    def icon(self):
+        """Entity icon."""
+        return SKYQ_ICONS[CONST_SKYQ_SCHEDULED]
+
+    @property
+    def available(self):
+        """Entity availability."""
+        return self._available
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        return self._scheduled_programme
+
+    @property
+    def extra_state_attributes(self):
+        """Return entity specific state attributes."""
+        return self._schedule_attributes
+
+    @Throttle(_SCAN_INTERVAL_SCHEDULE)
+    async def async_update(self):
+        """Get the latest data and update device state."""
+        date_format = "%Y-%m-%dT%H:%M:%S%z"
+        recordings_scheduled = await self.hass.async_add_executor_job(
+            self._remote.get_recordings, "SCHEDULED"
+        )
+
+        if not recordings_scheduled:
+            self._scheduled_programme = CONST_SCHEDULED_OFF
+            return
+        self._available = True
+
+        self._scheduled_programme = CONST_NONE
+        if len(recordings_scheduled.programmes) > 0:
+            self._scheduled_programme = CONST_SCHEDULED
+
+        for recording in recordings_scheduled.programmes:
+            self._schedule_attributes = {
+                CONST_SKYQ_SCHEDULED_START: recording.starttime.strftime(date_format),
+                CONST_SKYQ_SCHEDULED_END: recording.endtime.strftime(date_format),
+                CONST_SKYQ_SCHEDULED_TITLE: recording.title,
+            }
+            break
+
+        recordings_recording = await self.hass.async_add_executor_job(
+            self._remote.get_recordings, "RECORDING"
+        )
+        if len(recordings_recording.programmes) > 0:
+            schedule_data = [
+                {
+                    CONST_SKYQ_RECORDING_START: recording.starttime.strftime(
+                        date_format
+                    ),
+                    CONST_SKYQ_RECORDING_END: recording.endtime.strftime(date_format),
+                    CONST_SKYQ_RECORDING_TITLE: recording.title,
+                }
+                for recording in recordings_recording.programmes
+            ]
+
+            self._schedule_attributes.update({"recordings": schedule_data})
+
+        write_state(
+            self._statefile,
+            STORAGE_SENSOR_SCHEDULE,
+            self._config.host,
+            self._schedule_attributes,
+        )
