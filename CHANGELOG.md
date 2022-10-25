@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.10.0 (2022/10/25)
+### Enhancements
+- [Add sensor with next scheduled recording](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/84a5003336215d53255f28348fffdab31b4d3ceb) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.10.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/51d090d2acb705f6ca4f7640f49fe6c3033e22a9) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9f54af9bf86e85a67b500f676b65e56c39bf9e87) - @actions-user
+
 ## v2.9.11 (2022/10/23)
 ### Fixes
 - [Update switchmaker.py to correctly handle aliases](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/228a9eea67b43af7125a8176028f85bb3cd11240) - @RogerSelwyn - [#119](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/119)
