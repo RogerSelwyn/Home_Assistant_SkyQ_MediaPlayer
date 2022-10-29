@@ -1,6 +1,7 @@
 {
   "domain": "skyq",
   "name": "Sky Q",
+  "integration_type": "device",
   "documentation": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer",
   "issue_tracker": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues",
   "codeowners": [
