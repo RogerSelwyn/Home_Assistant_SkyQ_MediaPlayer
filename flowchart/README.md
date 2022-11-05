@@ -83,3 +83,16 @@ participant J as 9006 JSON
 I->>+M: Get quota
 M->>J: pvr/storage
 M->>-I: Quota info
+```
+
+## Scheduled recordings
+
+```mermaid
+sequenceDiagram
+participant I as Integration
+participant M as Module
+participant J as 9006 JSON
+I->>+M: Get recordings
+M->>J: pvr/?limit=1000&offset=0
+M->>-I: Recording info
+```
