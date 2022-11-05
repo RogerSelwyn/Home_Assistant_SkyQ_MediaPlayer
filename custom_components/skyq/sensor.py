@@ -222,9 +222,8 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
     async def async_update(self):
         """Get the latest data and update device state."""
         date_format = "%Y-%m-%dT%H:%M:%S%z"
-        recordings_scheduled = await self.hass.async_add_executor_job(
-            self._remote.get_recordings, "SCHEDULED"
-        )
+        recordings = await self.hass.async_add_executor_job(self._remote.get_recordings)
+        recordings_scheduled = _filter_recordings(recordings, "SCHEDULED")
 
         if not recordings_scheduled:
             self._scheduled_programme = CONST_SCHEDULED_OFF
@@ -232,10 +231,10 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
         self._available = True
 
         self._scheduled_programme = CONST_NONE
-        if len(recordings_scheduled.programmes) > 0:
+        if len(recordings_scheduled) > 0:
             self._scheduled_programme = CONST_SCHEDULED
 
-        for recording in recordings_scheduled.programmes:
+        for recording in recordings_scheduled:
             self._schedule_attributes = {
                 CONST_SKYQ_SCHEDULED_START: recording.starttime.strftime(date_format),
                 CONST_SKYQ_SCHEDULED_END: recording.endtime.strftime(date_format),
@@ -243,10 +242,8 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
             }
             break
 
-        recordings_recording = await self.hass.async_add_executor_job(
-            self._remote.get_recordings, "RECORDING"
-        )
-        if len(recordings_recording.programmes) > 0:
+        recordings_recording = _filter_recordings(recordings, "RECORDING")
+        if len(recordings_recording) > 0:
             schedule_data = [
                 {
                     CONST_SKYQ_RECORDING_START: recording.starttime.strftime(
@@ -255,7 +252,7 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
                     CONST_SKYQ_RECORDING_END: recording.endtime.strftime(date_format),
                     CONST_SKYQ_RECORDING_TITLE: recording.title,
                 }
-                for recording in recordings_recording.programmes
+                for recording in recordings_recording
             ]
 
             self._schedule_attributes.update({"recordings": schedule_data})
@@ -266,3 +263,12 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
             self._config.host,
             self._schedule_attributes,
         )
+
+
+def _filter_recordings(recordings, status):
+    recordings_filtered = set()
+    for recording in recordings.programmes:
+        if recording.status == status:
+            recordings_filtered.add(recording)
+
+    return recordings_filtered
