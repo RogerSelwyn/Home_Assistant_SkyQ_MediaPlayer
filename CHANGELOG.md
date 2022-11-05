@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.10.1 (2022/11/05)
+### Maintenance
+- [Add integration_type](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/48378db0037bc5371d374a2db87844a59668de24) - @RogerSelwyn
+- [Add recording flowchart](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/367e65661e6c3ae386464970e87cc89bba551a52) - @RogerSelwyn
+- [Optimise scheduled recording sensor](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/dea5ab9daf88083f0c08890c261c9433d5f67de4) - @RogerSelwyn
+- [Require 2022.11.x](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/42cb656c515f08c1446585cdafd9c4f62b7e1b35) - @RogerSelwyn
+- [Bump to v2.10.1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2e0aa6b87bb985a929126e0d6847269c9b1429ce) - @RogerSelwyn
+
+## v2.10.0 (2022/10/25)
 ### Enhancements
 - [Add sensor with next scheduled recording](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/84a5003336215d53255f28348fffdab31b4d3ceb) - @RogerSelwyn
 
