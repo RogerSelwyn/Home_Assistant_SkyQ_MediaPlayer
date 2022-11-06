@@ -267,9 +267,10 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
 
 
 def _filter_recordings(recordings, status):
-    recordings_filtered = set()
-    for recording in recordings.programmes:
-        if recording.status == status:
-            recordings_filtered.add(recording)
+    recordings_filtered = {
+        recording
+        for recording in recordings.programmes
+        if recording.status == status
+    }
 
     return sorted(recordings_filtered, key=attrgetter("starttime"))
