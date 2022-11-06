@@ -36,6 +36,7 @@ CONF_GET_LIVE_RECORD = "get_live_record"
 CHANNEL_SOURCES_DISPLAY = "channel_sources_display"
 CHANNEL_DISPLAY = "{0} - {1}"
 
+CONST_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
 CONST_DEFAULT_ROOM = "Default Room"
 CONST_ALIAS_FILENAME = "skyqswitchalias.yaml"
 CONST_NONE = "None"
