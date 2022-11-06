@@ -3,6 +3,7 @@
 import json
 import logging
 from datetime import datetime, timedelta, timezone
+from operator import attrgetter
 from types import SimpleNamespace
 
 from homeassistant.components.sensor import SensorEntity
@@ -223,13 +224,13 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
         """Get the latest data and update device state."""
         date_format = "%Y-%m-%dT%H:%M:%S%z"
         recordings = await self.hass.async_add_executor_job(self._remote.get_recordings)
-        recordings_scheduled = _filter_recordings(recordings, "SCHEDULED")
 
-        if not recordings_scheduled:
+        if not recordings:
             self._scheduled_programme = CONST_SCHEDULED_OFF
             return
         self._available = True
 
+        recordings_scheduled = _filter_recordings(recordings, "SCHEDULED")
         self._scheduled_programme = CONST_NONE
         if len(recordings_scheduled) > 0:
             self._scheduled_programme = CONST_SCHEDULED
@@ -271,4 +272,4 @@ def _filter_recordings(recordings, status):
         if recording.status == status:
             recordings_filtered.add(recording)
 
-    return recordings_filtered
+    return sorted(recordings_filtered, key=attrgetter("starttime"))
