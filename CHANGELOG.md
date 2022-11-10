@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.10.3 (2022/11/10)
+### Fixes
+- [Fix issue for bracketed switches](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6d0e0df06ceae4b182a90b9f940d9bf65c540171) - @RogerSelwyn
+
+### Maintenance
+- [Sourcery code improvements](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d236b3aa0027d0b87f7f23b26d3118fb2d956720) - @RogerSelwyn
+- [Bump pyskyqremote to 0.3.20](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/84d2fd334895d74de147efdc0f1bf5d5be77ce60) - @RogerSelwyn
+
+- [Bump to v2.10.3](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7e8e02de60edc2392d1026376dbf97808fa47068) - @RogerSelwyn
+
 ## v2.10.2 (2022/11/06)
 ### Fixes
 - [Fix error in scheduled programme sesnor](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9b4aa1e13148b00bdd1087f1651791480a0076e2) - @RogerSelwyn
