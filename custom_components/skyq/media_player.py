@@ -12,6 +12,7 @@ from homeassistant.components.media_player import (
 )
 from homeassistant.const import ATTR_ENTITY_ID, CONF_HOST, CONF_NAME
 from homeassistant.exceptions import PlatformNotReady
+
 from pyskyqremote.const import (
     APP_EPG,
     COMMANDS,
@@ -591,7 +592,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         recordings = await self.hass.async_add_executor_job(
             self._remote.get_recordings, "RECORDING"
         )
-        for recording in recordings.programmes:
+        for recording in recordings.recordings:
             if current_programme.programmeuuid == recording.programmeuuid:
                 self._entity_attr.skyq_media_typee = SKYQ_LIVEREC
 
