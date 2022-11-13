@@ -12,7 +12,7 @@
 
 ## v2.10.2 (2022/11/06)
 ### Fixes
-- [Fix error in scheduled programme sesnor](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9b4aa1e13148b00bdd1087f1651791480a0076e2) - @RogerSelwyn
+- [Fix error in scheduled programme senaor](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/9b4aa1e13148b00bdd1087f1651791480a0076e2) - @RogerSelwyn
 
 ### Maintenance
 - [Bump to v2.10.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bf4f7f672317c5eb2f1eb92f89973ce6530ba0a2) - @RogerSelwyn
