@@ -9,7 +9,7 @@ Add a skyq platform entry in your configuration.yaml as below.
 
 **Example of basic configuration.yaml**
 
-```
+```yaml
 media_player:
  - platform:  skyq
    name: SkyQ Living Room
@@ -38,11 +38,11 @@ media_player:
 
 ## Sources
 
-```
+```yaml
 <YourChanneName> : ‘<button>,<button>,<button>’.
 ```
 Example
-```
+```yaml
   BBC1HD: '1,1,5'
   BBC2: '1,0,2'
 ```
