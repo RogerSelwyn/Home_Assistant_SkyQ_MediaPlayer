@@ -20,7 +20,7 @@ Avoid using [ ] in the name: or room: of your device. This field is required if 
 
 **Example configuration.yaml with switch generation**
 
-```
+```yaml
 media_player:
  - platform:  skyq
    name: SkyQ Living Room
@@ -34,7 +34,7 @@ media_player:
 
 To integrate these generated switch configuration files, add the generated yaml to your configuration.yaml. The following example configuration implements the generated switches from the generate_switches_for_channels function.
 
-```
+```yaml
 switch:
 - platform: template
   switches: !include  skyq<room>.yaml
@@ -44,7 +44,7 @@ switch:
 
 Because the name of the channel may not always be what you want to use to talk to Google Home, it is possible to place an alias file in the root of your Home Assistant configuration. This needs to be called `skyqswitchalias.yaml`. It is also possible to use this to rename some of the default switches, so you can change `play` to `engage` for example. The contents should be pairs of switchname and alias as below:
 
-```
+```yaml
 BBC One South: BBC South
 ComedyCentHD: Comedy Central HD
 SkySpMainEvHD: Sky Sports Main Event HD
