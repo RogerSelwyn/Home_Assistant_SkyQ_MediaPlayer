@@ -31,10 +31,10 @@ If you want to add a second Sky Q box, just follow the same process again and ad
 
 To configure sources, set as:
 
-```
+```json
 {"<YourChanneName>": "<button>,<button>,<button>", "<YourChanneName2>": "<button>,<button>,<button>"}.
 ```
 Example
-```
+```json
 {"BBC1HD": "1,1,5", "BBC2": "1,0,2"}
 ```
