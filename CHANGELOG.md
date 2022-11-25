@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.10.4 (2022/11/25)
+### Maintenance
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c19e6f0c47e0d0ded28e2d52c22fb2de659b456b) - @RogerSelwyn
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/65e0a64715c0baf87db4d940c3af559fb19acc4b) - @RogerSelwyn
+- [Update configuration_ui.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/71e429d187012aa735bf4ff1f2c28f9e5ecf53dc) - @RogerSelwyn
+- [Update configuration_yaml.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b86eb7aecb4bc47a41f3e61b26997bf62860e79b) - @RogerSelwyn
+- [Update buttons.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2546c366cc418802c68e45d1b06e1474fc1b43d8) - @RogerSelwyn
+- [Update switch_generation_helper.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/69e1bd23032dc16b3eecd967ba2a004fe405ba79) - @RogerSelwyn
+- [Improvement to schedule sensor](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0d063363a4948813505510f642107ce2ee39ddfc) - @RogerSelwyn
+- [Bump to v2.10.4](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/778bc240bd6dd8f74b98c97395a7243ff2c0f86a) - @RogerSelwyn
+- [Bump pyskyqremote to 0.3.21](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7bed4f469b1d84daa7b5201fe61a5921070ea749) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/aec7e06d0bf47bddb753340d030631660a762e64) - @actions-user
+
 ## v2.10.3 (2022/11/10)
 ### Fixes
 - [Fix issue for bracketed switches](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6d0e0df06ceae4b182a90b9f940d9bf65c540171) - @RogerSelwyn
