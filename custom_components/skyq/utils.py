@@ -4,13 +4,14 @@ import json
 import logging
 import os
 
+from homeassistant.const import Platform
+
 from .const import (
     APP_IMAGE_URL_BASE,
     STORAGE_ATTRIBUTES,
     STORAGE_ENCODING,
     STORAGE_HOST,
     STORAGE_HOSTS,
-    STORAGE_SENSOR,
 )
 
 CHAR_REPLACE = {" ": "", "+": "plus", "_": "", ".": ""}
@@ -110,12 +111,12 @@ def read_state(statefile, sensor_type, config_host):
     if os.path.isfile(statefile):
         with open(statefile, "r", encoding=STORAGE_ENCODING) as infile:
             file_content = json.load(infile)
-        if STORAGE_SENSOR in file_content:
-            for sensor in file_content:
-                if sensor[STORAGE_SENSOR] == sensor_type:
-                    for host in sensor[STORAGE_HOSTS]:
-                        if host[STORAGE_HOST] == config_host:
-                            return host[STORAGE_ATTRIBUTES]
+
+        for sensor in file_content:
+            if sensor[Platform.SENSOR] == sensor_type:
+                for host in sensor[STORAGE_HOSTS]:
+                    if host[STORAGE_HOST] == config_host:
+                        return host[STORAGE_ATTRIBUTES]
 
     return None
 
@@ -128,9 +129,7 @@ def write_state(statefile, sensor_type, config_host, new_attributes):
         with open(statefile, "r", encoding=STORAGE_ENCODING) as infile:
             old_file_content = json.load(infile)
             for sensor in old_file_content:
-                if STORAGE_SENSOR not in file_content:
-                    break
-                if sensor[STORAGE_SENSOR] != sensor_type:
+                if sensor[Platform.SENSOR] != sensor_type:
                     file_content.append(sensor)
                 else:
                     old_sensor = sensor
@@ -149,7 +148,7 @@ def write_state(statefile, sensor_type, config_host, new_attributes):
     }
     sensor_hosts.append(host_content)
     sensor_content = {
-        STORAGE_SENSOR: sensor_type,
+        Platform.SENSOR: sensor_type,
         STORAGE_HOSTS: sensor_hosts,
     }
     file_content.append(sensor_content)

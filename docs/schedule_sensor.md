@@ -7,9 +7,10 @@ nav_order: 10
 
 One sensor, updated every minute, is created per SkyQ device (not Minis) when 'Get Live Record Status' is enabled. The sensor shows the following items:
 - Status
-  - 'Scheduled' - There is an item scheduled in the future to record
-  - 'Scheduled - off' - There is an item scheduled but the box is switched off
-  - 'None' - Nothing is scheduled
+  - 'scheduled' - There is an item scheduled in the future to record
+  - 'recording' - There is an item being recorded currently
+  - 'none' - Nothing is scheduled
+- Box State - Powered on/off state 
 - Scheduled Start Time (UTC)
 - Scheduled End Time (UTC)
 - Scheduled Title
