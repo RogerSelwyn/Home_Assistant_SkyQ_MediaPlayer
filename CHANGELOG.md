@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.10.5 (2022/12/05)
+### Maintenance
+- [Remove error messaging for unavailable device for sensors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7ecc1c2bc1d6d1e67db930300c09805be867d2b5) - @RogerSelwyn
+- [Disable sensors by default](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/92eab077e8572405d6d1645a8080272a631d744f) - @RogerSelwyn
+- [Bump to v2.10.5](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e561540ccc07c408b95eb3cee213c2199ae62b0b) - @RogerSelwyn
+
 ## v2.10.4 (2022/11/25)
 ### Maintenance
 - [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c19e6f0c47e0d0ded28e2d52c22fb2de659b456b) - @RogerSelwyn
