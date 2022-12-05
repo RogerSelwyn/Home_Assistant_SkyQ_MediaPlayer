@@ -5,7 +5,7 @@ nav_order: 10
 
 # Schedule Sensor
 
-One sensor, updated every minute, is created per SkyQ device (not Minis) when 'Get Live Record Status' is enabled. The sensor shows the following items:
+One sensor, updated every minute, is created per SkyQ device (not Minis). The sensor is disabled by default. The sensor shows the following items:
 - Status
   - 'scheduled' - There is an item scheduled in the future to record
   - 'recording' - There is an item being recorded currently

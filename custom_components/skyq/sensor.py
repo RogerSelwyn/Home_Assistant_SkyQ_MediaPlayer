@@ -33,7 +33,6 @@ from .const import (
     CONST_SKYQ_STORAGE_PERCENT,
     CONST_SKYQ_STORAGE_USED,
     DOMAIN,
-    FEATURE_GET_LIVE_RECORD,
     SKYQ_ICONS,
     SKYQREMOTE,
     STATE_NONE,
@@ -64,8 +63,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     )
 
     sensors = [SkyQUsedStorage(hass, remote, config)]
-    if config.enabled_features & FEATURE_GET_LIVE_RECORD:
-        sensors.append(SkyQSchedule(hass, remote, config))
+    sensors.append(SkyQSchedule(hass, remote, config))
 
     async_add_entities(sensors, False)
 
@@ -74,6 +72,8 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     """Used Storage Entity for SkyQ Device."""
 
     _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_entity_registry_enabled_default = False
+    _attr_native_unit_of_measurement = DATA_GIGABYTES
 
     def __init__(self, hass, remote, config):
         """Initialize the used storage sensor."""
@@ -95,11 +95,6 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     def device_info(self):
         """Entity device information."""
         return self.skyq_device_info
-
-    @property
-    def unit_of_measurement(self):  # pylint: disable=overridden-final-method
-        """Provide the unit of measurement."""
-        return DATA_GIGABYTES
 
     @property
     def name(self):
@@ -161,6 +156,7 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
     """Schedule information for SkyQ Device."""
 
     _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_entity_registry_enabled_default = False
 
     def __init__(self, hass, remote, config):
         """Initialize the used storage sensor."""
