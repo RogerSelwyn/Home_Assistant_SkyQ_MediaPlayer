@@ -2,7 +2,7 @@
 
 import json
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 from operator import attrgetter
 from types import SimpleNamespace
 
@@ -142,11 +142,12 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     async def async_update(self):
         """Get the latest data and update device state."""
         resp = await self.hass.async_add_executor_job(self._remote.get_quota)
+
         if not resp:
-            self._power_status_off_handling()
+            self._available = False
             return
 
-        self._power_status_on_handling()
+        self._available = True
         self._quota_info = resp
         write_state(
             self._statefile,
@@ -154,23 +155,6 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
             self._config.host,
             self._quota_info.__dict__,
         )
-
-    def _power_status_off_handling(self):
-        self._utc_now = datetime.now(tz=timezone.utc)
-        if self._available:
-            self._available = False
-            if self._quiet_period():
-                _LOGGER.info(
-                    "I0020 - Device is not available overnight, ECO/reboot?: %s",
-                    self.name,
-                )
-            else:
-                _LOGGER.warning("W0010 - Device is not available: %s", self.name)
-
-    def _power_status_on_handling(self):
-        if not self._available:
-            self._available = True
-            _LOGGER.info("I0010 - Device is now available: %s", self.name)
 
 
 class SkyQSchedule(SkyQEntity, SensorEntity):
