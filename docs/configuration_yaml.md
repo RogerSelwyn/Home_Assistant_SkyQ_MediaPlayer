@@ -46,3 +46,4 @@ Example
   BBC1HD: '1,1,5'
   BBC2: '1,0,2'
 ```
+Useable buttons can be found [here](./buttons.md)
