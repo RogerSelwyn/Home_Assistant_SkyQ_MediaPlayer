@@ -13,10 +13,16 @@ If you want to add a second Sky Q box, just follow the same process again and ad
 
 ## Configuration variables
 
+### Initial configuration
+| **Name**                           | **Details** |
+|-----------------------------------:|-------------|
+| Host                               | The IP of the SkyQ set top box, e.g., 192.168.0.10. |
+| Name                               | The name you would like to give to the SkyQ set top box. |
+
+### Optional configuration
 | **Name**                            | **Default** | **Details** |
 |-----------------------------------|:-----------:|-------------|
-| Host                              |             | The IP of the SkyQ set top box, e.g., 192.168.0.10. |
-| Name                              |             | The name you would like to give to the SkyQ set top box. |
+| Channel Sources                   |     _None_  | Select the channels you want to show in the channel dropdown. |
 | Show programme image            | True        | Allows you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing. |
 | Show live TV details           | True        | Allows you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from current known sources. |
 | Get Live Record Status           | False       | Allows you to fetch the status of the currently playing item to see if it is a "Live Recording". Also enables the schedule sensor. |
@@ -27,7 +33,7 @@ If you want to add a second Sky Q box, just follow the same process again and ad
 | EPG Cache Length               | 20           |Allows you to configure the number of EPG channels to cache for the media browser. Larger numbers will cause slower initial load per day and consume more memory. |
 | Custom Sources                    |  _Empty_    | List of channels or other commands that will appear in the source selection. |
 
-## Sources
+## Custom Sources
 
 To configure sources, set as:
 
@@ -38,3 +44,4 @@ Example
 ```json
 {"BBC1HD": "1,1,5", "BBC2": "1,0,2"}
 ```
+Useable buttons can be found [here](./buttons.md)
