@@ -14,12 +14,14 @@ If you want to add a second Sky Q box, just follow the same process again and ad
 ## Configuration variables
 
 ### Initial configuration
+
 | **Name**                           | **Details** |
 |-----------------------------------:|-------------|
 | Host                               | The IP of the SkyQ set top box, e.g., 192.168.0.10. |
 | Name                               | The name you would like to give to the SkyQ set top box. |
 
 ### Optional configuration
+
 | **Name**                            | **Default** | **Details** |
 |-----------------------------------|:-----------:|-------------|
 | Channel Sources                   |     _None_  | Select the channels you want to show in the channel dropdown. |
