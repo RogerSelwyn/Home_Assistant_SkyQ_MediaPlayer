@@ -4,6 +4,7 @@ import logging
 from datetime import datetime, timedelta, timezone
 
 import pytz
+
 from pyskyqremote.const import DEVICE_MULTIROOMSTB, SKY_STATE_OFF
 
 from ..const import (
@@ -13,6 +14,7 @@ from ..const import (
     QUIET_START,
     REBOOT_MAIN_TIMEOUT,
     REBOOT_MINI_TIMEOUT,
+    SKY_STATE_TEMP_ERROR_CHECK,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -32,27 +34,32 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
         self._error_time = None
         self._startup_setup = False
         self._utc_now = None
+        self._power_state = None
 
     async def async_get_power_status(self):
         """Get the power status."""
-        self._utc_now = datetime.now(tz=timezone.utc)
         power_state = await self._hass.async_add_executor_job(self._remote.power_status)
-
         self._set_power_status(power_state)
-        return power_state
+        return self._power_state
 
-    def _set_power_status(self, power_status):
-        if power_status == SKY_STATE_OFF:
+    def _set_power_status(self, power_state):
+        self._utc_now = datetime.now(tz=timezone.utc)
+        if power_state == SKY_STATE_OFF:
             self._power_status_off_handling()
         else:
+            self._power_state = power_state
             self._power_status_on_handling()
 
     def _power_status_off_handling(self):
-
         if not self._error_time:
             self._error_time = self._utc_now
         error_time_target, reboot_time_target = self._target_times()
         self._error_time_debug(error_time_target)
+
+        if self._utc_now > error_time_target:
+            self._power_state = SKY_STATE_OFF
+        else:
+            self._power_state = SKY_STATE_TEMP_ERROR_CHECK
 
         if not self._quiet_period():
             self._power_off_standard_hours(error_time_target)

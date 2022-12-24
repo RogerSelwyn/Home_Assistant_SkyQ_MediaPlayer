@@ -49,6 +49,7 @@ from .const import (
     FEATURE_SWITCHES,
     FEATURE_TV_DEVICE_CLASS,
     REMOTE_BUTTONS,
+    SKY_STATE_TEMP_ERROR_CHECK,
     SKYQ_APP,
     SKYQ_ICONS,
     SKYQ_LIVE,
@@ -366,7 +367,9 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             self._channel_list = await self._async_get_channel_list()
 
         if self._config.device_info:
-            await self._async_update_state()
+            error_state = await self._async_update_state()
+        if error_state:
+            return
 
         if self._old_state != self._state:
             _LOGGER.debug("%s - State changed to '%s'", self.name, self._state)
@@ -509,12 +512,14 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             self._entity_attr.skyq_media_type = SKYQ_OFF
             self._state = MediaPlayerState.OFF
             self._entity_attr.skyq_transport_status = DEFAULT_TRANSPORT_STATE
-            return
+            return False
+        if power_state == SKY_STATE_TEMP_ERROR_CHECK:
+            return True
         if power_state != SKY_STATE_ON:
             self._entity_attr.skyq_media_type = SKYQ_UNKNOWN
             self._state = MediaPlayerState.OFF
             self._entity_attr.skyq_transport_status = None
-            return
+            return False
 
         response = await self.hass.async_add_executor_job(
             self._remote.get_current_state
@@ -530,6 +535,8 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             self._state = MediaPlayerState.OFF
         else:
             self._state = MediaPlayerState.PLAYING
+
+        return False
 
     async def _async_update_current_programme(self):
 
