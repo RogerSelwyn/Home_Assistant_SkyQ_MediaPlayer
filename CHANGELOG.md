@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.10.6 (2022/12/26)
+### Fixes
+- [Fix sky box switching to off for temporary network error](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8e50791d144b618df5145bdfa69687e598112432) - @RogerSelwyn
+### Maintenance
+
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/940fec0c026d681c2499a7aef546484ca104f780) - @RogerSelwyn
+- [Update configuration_ui.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ba35ab80290ff385ccafc6cb43fe7efaec033b8d) - @RogerSelwyn
+- [Update configuration_ui.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5a568039706b4b84fa6d1d61e64f560cc5119d2d) - @RogerSelwyn
+- [Update configuration_yaml.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b9c406df9b7654bfa23b3c312c2959d11b904b8a) - @RogerSelwyn
+- [Add debugging](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a499d2d56f18f26dd72180f112f9264d6917139a) - @RogerSelwyn
+- [Bump to v2.10.6a2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/1b610a589b029568c10e53712085b617d57d1231) - @RogerSelwyn
+- [Improve power off erroring during quiet time](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8ac1668ed00970c11f5162e9961dc54dab6b5d31) - @RogerSelwyn
+- [Bump to v2.10.6](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/28e89be8d5206b39fb525b9c1266f9fdff474c99) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6e5b8ad7630bc44a006e859eaf840f5a2bc002e3) - @actions-user
+
 ## v2.10.5 (2022/12/05)
 ### Maintenance
 - [Remove error messaging for unavailable device for sensors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7ecc1c2bc1d6d1e67db930300c09805be867d2b5) - @RogerSelwyn
