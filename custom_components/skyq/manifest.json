@@ -12,6 +12,6 @@
   ],
   "quality_scale": "silver",
   "config_flow": true,
-  "version": "v2.10.6a2",
+  "version": "v2.10.6",
   "iot_class": "local_polling"
 }
