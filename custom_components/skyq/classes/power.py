@@ -65,7 +65,10 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
             self._power_off_standard_hours(error_time_target)
             return
 
-        if self._config.device_info.wakeReason == ECO_WAKEREASON:
+        if (
+            self._config.device_info.wakeReason == ECO_WAKEREASON
+            or self._config.device_info.gatewayWakeReason == ECO_WAKEREASON
+        ):
             self._power_off_eco(error_time_target)
             return
 
@@ -77,7 +80,7 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
         ) and self._utc_now > error_time_target:
             self.available = False
             self._quiet_time_error = False
-            self._reboot_check = True
+            self._reboot_check = False
             _LOGGER.warning("W0010 - Device is not available: %s", self._config.name)
 
     def _power_off_eco(self, error_time_target):
@@ -86,10 +89,8 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
             and self._utc_now > error_time_target
             and self.available
         ):
-            self.available = False
-            self._quiet_time_error = True
-            _LOGGER.info(
-                "I0030 - Device is not available. ECO sleep?: %s", self._config.name
+            self._quiet_time_error_log(
+                "I0030 - Device is not available. ECO sleep?: %s"
             )
 
     def _power_off_other(self, error_time_target, reboot_time_target):
@@ -98,10 +99,8 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
             and self._utc_now > error_time_target
             and self.available
         ):
-            self.available = False
-            _LOGGER.info(
-                "I0040 - Device is not available. Nightly reboot?: %s",
-                self._config.name,
+            self._quiet_time_error_log(
+                "I0040 - Device is not available. Nightly reboot?: %s"
             )
             return
 
@@ -113,6 +112,11 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
             self._reboot_check = False
             _LOGGER.warning("W0020 - Device is not available: %s", self._config.name)
             return
+
+    def _quiet_time_error_log(self, error_message):
+        self.available = False
+        self._quiet_time_error = True
+        _LOGGER.info(error_message, self._config.name)
 
     def _power_status_on_handling(self):
         self._quiet_time_error = False

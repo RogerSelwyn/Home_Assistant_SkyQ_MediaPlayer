@@ -372,7 +372,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
             return
 
         if self._old_state != self._state:
-            _LOGGER.debug("%s - State changed to '%s'", self.name, self._state)
+            _LOGGER.debug("D0010 - State changed to '%s' - %s", self._state, self.name)
             self._old_state = self._state
 
         if self._state != MediaPlayerState.OFF:
@@ -395,7 +395,6 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         """Turn SkyQ box off."""
         power_status = await self.hass.async_add_executor_job(self._remote.power_status)
         if power_status == SKY_STATE_ON:
-            _LOGGER.debug("%s - 'turn_off' called", self.name)
             await self._press_button("power")
             await self.async_update()
 
@@ -403,7 +402,6 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         """Turn SkyQ box on."""
         power_status = await self.hass.async_add_executor_job(self._remote.power_status)
         if power_status == SKY_STATE_STANDBY:
-            _LOGGER.debug("%s - 'turn_on' called", self.name)
             await self._press_button(["home", "dismiss"])
             await self.async_update()
 
