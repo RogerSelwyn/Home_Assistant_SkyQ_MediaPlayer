@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.10.7 (2022/12/29)
+### Enhancements
+- [Add connection between SkyQ and SkyQ Mini](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/307e0f310ea10a1b8016c7ebea1e4eaad8de16ed) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.10.7](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cbca80915d9eb9163825780d97913b67a89e601a) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5ebd890a2201ff22695e56cda98d996965d39ed4) - @actions-user
+
 ## v2.10.6 (2022/12/26)
 ### Fixes
 - [Fix sky box switching to off for temporary network error](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8e50791d144b618df5145bdfa69687e598112432) - @RogerSelwyn
