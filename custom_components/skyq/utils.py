@@ -1,10 +1,14 @@
 """Utilities for the skyq platform."""
 import collections
+import ipaddress
 import json
 import logging
 import os
+import re
 
 from homeassistant.const import Platform
+
+from pyskyqremote.skyq_remote import SkyQRemote
 
 from .const import (
     APP_IMAGE_URL_BASE,
@@ -155,3 +159,32 @@ def write_state(statefile, sensor_type, config_host, new_attributes):
 
     with open(statefile, "w", encoding=STORAGE_ENCODING) as outfile:
         json.dump(file_content, outfile, ensure_ascii=False, indent=4)
+
+
+async def async_get_device_info(hass, remote, unique_id):
+    """Get device information from the box."""
+    device_info = await hass.async_add_executor_job(remote.get_device_information)
+    gateway_device_info = None
+    if device_info:
+        if not unique_id:
+            unique_id = device_info.used_country_code + "".join(
+                e for e in device_info.serialNumber.casefold() if e.isalnum()
+            )
+        if host_valid(device_info.gatewayIPAddress):
+            gatewayremote = await hass.async_add_executor_job(
+                SkyQRemote, device_info.gatewayIPAddress
+            )
+            gateway_device_info = await hass.async_add_executor_job(
+                gatewayremote.get_device_information
+            )
+
+    return device_info, gateway_device_info, unique_id
+
+
+def host_valid(host):
+    """Return True if hostname or IP address is valid."""
+    try:
+        return ipaddress.ip_address(host).version == ((4 or 6))
+    except ValueError:
+        disallowed = re.compile(r"[^a-zA-Z\d\-]")
+        return all(x and not disallowed.search(x) for x in host.split("."))

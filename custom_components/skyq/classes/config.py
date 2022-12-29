@@ -48,6 +48,7 @@ class Config:
     override_country: str = None
     enabled_features: int = None
     source_list = None
+    gateway_device_info: object = None
 
     def __post_init__(
         self,

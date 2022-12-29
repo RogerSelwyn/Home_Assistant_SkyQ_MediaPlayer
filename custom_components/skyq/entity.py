@@ -3,8 +3,19 @@ import os
 from datetime import datetime, timedelta, timezone
 
 import pytz
+from homeassistant.const import (
+    ATTR_CONFIGURATION_URL,
+    ATTR_HW_VERSION,
+    ATTR_IDENTIFIERS,
+    ATTR_MANUFACTURER,
+    ATTR_MODEL,
+    ATTR_NAME,
+    ATTR_SW_VERSION,
+    ATTR_VIA_DEVICE,
+)
 
 from .const import DOMAIN, QUIET_END, QUIET_START
+from .utils import async_get_device_info
 
 
 class SkyQEntity:
@@ -23,32 +34,32 @@ class SkyQEntity:
     @property
     def skyq_device_info(self):
         """Entity device information."""
-        return (
-            {
-                "identifiers": {(DOMAIN, self._config.device_info.serialNumber)},
-                "name": self._config.name,
-                "manufacturer": self._config.device_info.manufacturer,
-                "model": f"{self._config.device_info.hardwareModel} "
+        device_info = None
+        if self._config.device_info:
+            device_info = {
+                ATTR_IDENTIFIERS: {(DOMAIN, self._config.device_info.serialNumber)},
+                ATTR_NAME: self._config.name,
+                ATTR_MANUFACTURER: self._config.device_info.manufacturer,
+                ATTR_MODEL: f"{self._config.device_info.hardwareModel} "
                 + f"({self._config.device_info.hardwareName})",
-                "hw_version": f"{self._config.device_info.versionNumber}",
-                "sw_version": f"{self._config.device_info.modelNumber}",
-                "configuration_url": f"http://{self._config.host}:9006/as/system/information",
+                ATTR_HW_VERSION: f"{self._config.device_info.versionNumber}",
+                ATTR_SW_VERSION: f"{self._config.device_info.modelNumber}",
+                ATTR_CONFIGURATION_URL: f"http://{self._config.host}:9006/as/system/information",
             }
-            if self._config.device_info
-            else None
-        )
+            if self._config.gateway_device_info:
+                device_info[ATTR_VIA_DEVICE] = (
+                    DOMAIN,
+                    self._config.gateway_device_info.serialNumber,
+                )
+        return device_info
 
     async def _async_get_device_info(self, hass):
         """Query the device for device info."""
-        self._config.device_info = await hass.async_add_executor_job(
-            self._remote.get_device_information
-        )
-        if self._config.device_info and not self._unique_id:
-            self._unique_id = self._config.device_info.used_country_code + "".join(
-                e
-                for e in self._config.device_info.serialNumber.casefold()
-                if e.isalnum()
-            )
+        (
+            self._config.device_info,
+            self._config.gateway_device_info,
+            self._unique_id,
+        ) = await async_get_device_info(hass, self._remote, self._unique_id)
 
     def _skyq_time(self):
         if self._utc_now > datetime.fromtimestamp(

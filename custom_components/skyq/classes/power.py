@@ -65,9 +65,9 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
             self._power_off_standard_hours(error_time_target)
             return
 
-        if (
-            self._config.device_info.wakeReason == ECO_WAKEREASON
-            or self._config.device_info.gatewayWakeReason == ECO_WAKEREASON
+        if self._config.device_info.wakeReason == ECO_WAKEREASON or (
+            self._config.gateway_device_info
+            and self._config.gateway_device_info.wakeReason == ECO_WAKEREASON
         ):
             self._power_off_eco(error_time_target)
             return

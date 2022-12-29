@@ -1,10 +1,8 @@
 """Configuration flow for the skyq platform."""
 
 import contextlib
-import ipaddress
 import json
 import logging
-import re
 from operator import attrgetter
 
 import homeassistant.helpers.config_validation as cv
@@ -13,6 +11,7 @@ from homeassistant import config_entries, exceptions
 from homeassistant.const import CONF_HOST, CONF_NAME
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import AbortFlow, FlowResult
+
 from pyskyqremote.const import KNOWN_COUNTRIES, UNSUPPORTED_DEVICES
 from pyskyqremote.skyq_remote import SkyQRemote
 
@@ -38,7 +37,7 @@ from .const import (
     SKYQREMOTE,
 )
 from .schema import DATA_SCHEMA
-from .utils import async_get_channel_data, convert_sources_json
+from .utils import async_get_channel_data, convert_sources_json, host_valid
 
 SORT_CHANNELS = False
 
@@ -65,7 +64,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
 
         if user_input:
-            if _host_valid(user_input[CONF_HOST]):
+            if host_valid(user_input[CONF_HOST]):
                 host = user_input[CONF_HOST]
                 name = user_input[CONF_NAME]
 
@@ -350,15 +349,6 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
                 CONF_SOURCES, description={"suggested_value": self._sources}
             ): str,
         }
-
-
-def _host_valid(host):
-    """Return True if hostname or IP address is valid."""
-    try:
-        return ipaddress.ip_address(host).version == ((4 or 6))
-    except ValueError:
-        disallowed = re.compile(r"[^a-zA-Z\d\-]")
-        return all(x and not disallowed.search(x) for x in host.split("."))
 
 
 def _validate_commands(source):

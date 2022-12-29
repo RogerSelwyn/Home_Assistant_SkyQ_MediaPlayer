@@ -66,7 +66,12 @@ from .const_homekit import (
     KEY_REWIND,
 )
 from .entity import SkyQEntity
-from .utils import AppImageUrl, async_get_channel_data, get_command
+from .utils import (
+    AppImageUrl,
+    async_get_channel_data,
+    async_get_device_info,
+    get_command,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -123,12 +128,17 @@ async def _async_setup_platform_entry(
         config_item.get(CONF_COUNTRY),
         config_item.get(CONF_TEST_CHANNEL),
     )
-    device_info = await hass.async_add_executor_job(remote.get_device_information)
-    if device_info and not unique_id:
-        unique_id = device_info.used_country_code + "".join(
-            e for e in device_info.serialNumber.casefold() if e.isalnum()
-        )
-    config = Config(unique_id, name, host, device_info, config_item)
+    device_info, gateway_device_info, unique_id = await async_get_device_info(
+        hass, remote, unique_id
+    )
+    config = Config(
+        unique_id,
+        name,
+        host,
+        device_info,
+        config_item,
+        gateway_device_info=gateway_device_info,
+    )
 
     player = SkyQDevice(
         hass,
