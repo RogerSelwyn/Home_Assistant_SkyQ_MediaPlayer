@@ -54,6 +54,7 @@ CONST_SKYQ_SCHEDULED_START = "skyq_scheduled_start"
 CONST_SKYQ_SCHEDULED_END = "skyq_scheduled_end"
 CONST_SKYQ_SCHEDULED_TITLE = "skyq_scheduled_title"
 CONST_SKYQ_TRANSPORT_STATUS = "skyq_transport_status"
+CONST_STATEFILE = ".storage/skyq.restore_state"
 CONST_DEFAULT = "Default"
 CONST_DEFAULT_EPGCACHELEN = 20
 LIST_EPGCACHELEN = [10, 20, 30, 50, 999]

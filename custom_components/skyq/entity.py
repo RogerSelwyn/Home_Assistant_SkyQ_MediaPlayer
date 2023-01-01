@@ -14,7 +14,7 @@ from homeassistant.const import (
     ATTR_VIA_DEVICE,
 )
 
-from .const import DOMAIN, QUIET_END, QUIET_START
+from .const import CONST_STATEFILE, DOMAIN, QUIET_END, QUIET_START
 from .utils import async_get_device_info
 
 
@@ -27,9 +27,7 @@ class SkyQEntity:
         self._config = config
         self._unique_id = config.unique_id
         self._utc_now = None
-        self._statefile = os.path.join(
-            hass.config.config_dir, ".storage/skyq.restore_state"
-        )
+        self._statefile = os.path.join(hass.config.config_dir, CONST_STATEFILE)
 
     @property
     def skyq_device_info(self):

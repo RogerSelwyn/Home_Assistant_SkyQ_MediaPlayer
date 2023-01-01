@@ -1,9 +1,12 @@
 """Initialise."""
 import asyncio
+import json
 import logging
+import os
 
-from homeassistant.const import CONF_HOST, CONF_NAME
+from homeassistant.const import CONF_HOST, CONF_NAME, Platform
 from homeassistant.exceptions import ConfigEntryNotReady
+
 from pyskyqremote.const import DEVICE_GATEWAYSTB, UNSUPPORTED_DEVICES
 from pyskyqremote.skyq_remote import SkyQRemote
 
@@ -14,8 +17,10 @@ from .const import (
     CONF_SOURCES,
     CONF_TV_DEVICE_CLASS,
     CONST_DEFAULT_EPGCACHELEN,
+    CONST_STATEFILE,
     DOMAIN,
     SKYQREMOTE,
+    STORAGE_ENCODING,
     UNDO_UPDATE_LISTENER,
 )
 
@@ -55,6 +60,8 @@ async def async_setup_entry(hass, config_entry):
             remote.device_type,
             name,
         )
+
+    _check_for_legacy_storage(hass)
 
     hass.data[DOMAIN][config_entry.entry_id] = {
         SKYQREMOTE: remote,
@@ -141,3 +148,16 @@ async def async_migrate_entry(hass, config_entry):
     )
 
     return True
+
+
+def _check_for_legacy_storage(hass):
+    """Read state from storage."""
+    statefile = os.path.join(hass.config.config_dir, CONST_STATEFILE)
+    if os.path.isfile(statefile):
+        with open(statefile, "r", encoding=STORAGE_ENCODING) as infile:
+            file_content = json.load(infile)
+
+        for sensor in file_content:
+            if Platform.SENSOR not in sensor:
+                os.remove(statefile)
+                break
