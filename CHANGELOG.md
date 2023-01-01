@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.10.8 (2023/01/01)
+### Fixes
+- [Fix missing storage and schedule sensors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0c3a3ae05c9cbf8bc7cdc20234297e5cf1c5f030) - @RogerSelwyn
+### Maintenance
+- [Bump to v2.10.8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f3fd90a1497123ad910defd4a9e046af313f9cec) - @RogerSelwyn
+
 ## v2.10.7 (2022/12/29)
 ### Enhancements
 - [Add connection between SkyQ and SkyQ Mini](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/307e0f310ea10a1b8016c7ebea1e4eaad8de16ed) - @RogerSelwyn
