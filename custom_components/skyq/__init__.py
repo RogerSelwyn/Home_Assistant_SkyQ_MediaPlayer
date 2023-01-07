@@ -61,7 +61,7 @@ async def async_setup_entry(hass, config_entry):
             name,
         )
 
-    _check_for_legacy_storage(hass)
+    _check_for_storage_contents(hass)
 
     hass.data[DOMAIN][config_entry.entry_id] = {
         SKYQREMOTE: remote,
@@ -150,14 +150,17 @@ async def async_migrate_entry(hass, config_entry):
     return True
 
 
-def _check_for_legacy_storage(hass):
-    """Read state from storage."""
+def _check_for_storage_contents(hass):
+    """Check if storage is current standard and not corrupt."""
     statefile = os.path.join(hass.config.config_dir, CONST_STATEFILE)
     if os.path.isfile(statefile):
-        with open(statefile, "r", encoding=STORAGE_ENCODING) as infile:
-            file_content = json.load(infile)
+        try:
+            with open(statefile, "r", encoding=STORAGE_ENCODING) as infile:
+                file_content = json.load(infile)
 
-        for sensor in file_content:
-            if Platform.SENSOR not in sensor:
-                os.remove(statefile)
-                break
+            for sensor in file_content:
+                if Platform.SENSOR not in sensor:
+                    os.remove(statefile)
+                    break
+        except json.decoder.JSONDecodeError:
+            os.remove(statefile)
