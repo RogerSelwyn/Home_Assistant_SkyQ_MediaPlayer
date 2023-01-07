@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.10.9 (2023/01/07)
+### Fixes
+- [Fix issue with handling empty file](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c6ce1927f808d517f9900b9423e00b53ca2a68cf) - @RogerSelwyn
+### Maintenance
+- [Bump to v2.10.9](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/65837e6ce44dc842cc23af93e5328ccf8732f630) - @RogerSelwyn
+
 ## v2.10.8 (2023/01/01)
 ### Fixes
 - [Fix missing storage and schedule sensors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0c3a3ae05c9cbf8bc7cdc20234297e5cf1c5f030) - @RogerSelwyn
