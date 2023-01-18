@@ -93,17 +93,6 @@ SKYQ_LIVEREC = "liverecord"
 SKYQ_OFF = "off"
 SKYQ_PVR = "pvr"
 SKYQ_UNKNOWN = "unknown"
-SKYQ_ICONS = {
-    SKYQ_APP: "mdi:application-outline",
-    SKYQ_LIVE: "mdi:satellite-variant",
-    SKYQ_LIVEREC: "mdi:record-rec",
-    SKYQ_OFF: "mdi:television",
-    SKYQ_PVR: "mdi:movie-open",
-    SKYQ_UNKNOWN: "mdi:alert-circle-outline",
-    CONST_SKYQ_STORAGE_USED: "mdi:database",
-    CONST_SKYQ_SCHEDULED: "mdi:clock-outline",
-}
-
 
 APP_IMAGE_URL_BASE = f"/api/{DOMAIN}/static"
 
@@ -141,3 +130,15 @@ STATE_NONE = "none"
 STATE_RECORDING = "recording"
 STATE_SCHEDULED = "scheduled"
 SKY_STATE_TEMP_ERROR_CHECK = "error_check"
+
+SKYQ_ICONS = {
+    SKYQ_APP: "mdi:application-outline",
+    SKYQ_LIVE: "mdi:satellite-variant",
+    SKYQ_LIVEREC: "mdi:record-rec",
+    SKYQ_OFF: "mdi:television",
+    SKYQ_PVR: "mdi:movie-open",
+    SKYQ_UNKNOWN: "mdi:alert-circle-outline",
+    CONST_SKYQ_STORAGE_USED: "mdi:database",
+    STATE_SCHEDULED: "mdi:clock-outline",
+    STATE_RECORDING: "mdi:record-rec",
+}

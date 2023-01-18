@@ -3,7 +3,6 @@
 import json
 import logging
 from datetime import timedelta
-from operator import attrgetter
 from types import SimpleNamespace
 
 from homeassistant.components.sensor import SensorEntity
@@ -25,7 +24,6 @@ from .const import (
     CONST_SKYQ_RECORDING_START,
     CONST_SKYQ_RECORDING_TITLE,
     CONST_SKYQ_RECORDINGS,
-    CONST_SKYQ_SCHEDULED,
     CONST_SKYQ_SCHEDULED_END,
     CONST_SKYQ_SCHEDULED_START,
     CONST_SKYQ_SCHEDULED_TITLE,
@@ -42,7 +40,7 @@ from .const import (
     STORAGE_SENSOR_STORAGE,
 )
 from .entity import SkyQEntity
-from .utils import read_state, write_state
+from .utils import none_aware_attrgetter, read_state, write_state
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -199,7 +197,7 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
     @property
     def icon(self):
         """Entity icon."""
-        return SKYQ_ICONS[CONST_SKYQ_SCHEDULED]
+        return SKYQ_ICONS[self._state] if self._available else None
 
     @property
     def available(self):
@@ -243,18 +241,20 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
         )
 
     def _next_scheduled_programme(self, recordings):
-        self._recordings_scheduled = _filter_recordings(recordings, "SCHEDULED")
+        self._recordings_scheduled = _filter_recordings(
+            recordings, "SCHEDULED", date_check=True
+        )
         self._state = STATE_NONE
         if len(self._recordings_scheduled) > 0:
             self._state = STATE_SCHEDULED
 
         for recording in self._recordings_scheduled:
             self._schedule_attributes |= {
+                CONST_SKYQ_SCHEDULED_TITLE: recording.title,
                 CONST_SKYQ_SCHEDULED_START: recording.starttime.strftime(
                     CONST_DATE_FORMAT
                 ),
                 CONST_SKYQ_SCHEDULED_END: recording.endtime.strftime(CONST_DATE_FORMAT),
-                CONST_SKYQ_SCHEDULED_TITLE: recording.title,
             }
 
             break
@@ -263,25 +263,30 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
         recordings_recording = _filter_recordings(recordings, "RECORDING")
         if len(recordings_recording) > 0:
             self._state = STATE_RECORDING
-            schedule_data = [
-                {
-                    CONST_SKYQ_RECORDING_START: recording.starttime.strftime(
-                        CONST_DATE_FORMAT
-                    ),
-                    CONST_SKYQ_RECORDING_END: recording.endtime.strftime(
-                        CONST_DATE_FORMAT
-                    ),
+            schedule_data = []
+            for recording in recordings_recording:
+                data = {
                     CONST_SKYQ_RECORDING_TITLE: recording.title,
                 }
-                for recording in recordings_recording
-            ]
+                if recording.starttime:
+                    data[CONST_SKYQ_RECORDING_START] = recording.starttime.strftime(
+                        CONST_DATE_FORMAT
+                    )
+                if recording.endtime:
+                    data[CONST_SKYQ_RECORDING_END] = recording.endtime.strftime(
+                        CONST_DATE_FORMAT
+                    )
+                schedule_data.append(data)
 
             self._schedule_attributes |= {CONST_SKYQ_RECORDINGS: schedule_data}
 
 
-def _filter_recordings(recordings, status):
+def _filter_recordings(recordings, status, date_check=False):
     recordings_filtered = {
-        recording for recording in recordings.recordings if recording.status == status
+        recording
+        for recording in recordings.recordings
+        if recording.status == status
+        and (not date_check or (date_check and recording.starttime))
     }
 
-    return sorted(recordings_filtered, key=attrgetter("starttime"))
+    return sorted(recordings_filtered, key=none_aware_attrgetter("starttime"))

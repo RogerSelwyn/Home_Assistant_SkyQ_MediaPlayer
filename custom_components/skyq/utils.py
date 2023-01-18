@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import re
+from operator import attrgetter
 
 from homeassistant.const import Platform
 
@@ -188,3 +189,14 @@ def host_valid(host):
     except ValueError:
         disallowed = re.compile(r"[^a-zA-Z\d\-]")
         return all(x and not disallowed.search(x) for x in host.split("."))
+
+
+def none_aware_attrgetter(attr):
+    """Handle sorting with None value."""
+    getter = attrgetter(attr)
+
+    def key_func(item):
+        value = getter(item)
+        return (value is not None, value)
+
+    return key_func
