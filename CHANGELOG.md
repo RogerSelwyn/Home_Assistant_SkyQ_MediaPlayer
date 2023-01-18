@@ -20,6 +20,10 @@
 ### Maintenance
 - [Bump to v2.10.8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f3fd90a1497123ad910defd4a9e046af313f9cec) - @RogerSelwyn
 
+## Past Changes
+<details>
+  <summary>Changes 2022</summary>
+
 ## v2.10.7 (2022/12/29)
 ### Enhancements
 - [Add connection between SkyQ and SkyQ Mini](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/307e0f310ea10a1b8016c7ebea1e4eaad8de16ed) - @RogerSelwyn
@@ -383,6 +387,10 @@
 ### Maintenance
 - [Bump to v2.7.10](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2b5833ff3c3521dbe1576df46eee38378e32fa4d) - @RogerSelwyn
 
+ </details>
+ <details>
+  <summary>Changes 2021</summary>
+
 ## v2.7.9 (2021/12/30)
 ### Fixes
 - [Fix device_info name](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0aade96dcd3a00ab553b2c123679b0ca189dd7b4) - @ollo69
@@ -675,6 +683,10 @@
 - [Remove config_dir as config parameter](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/1d9499f630dbe618e28190e8dbb4385750b67800) - @RogerSelwyn
 - [Reduce timeout to 10 seconds](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5e232ed66499d9405d76f11f3ae7a06285a4b801) - @RogerSelwyn
 
+  </details>
+ <details>
+  <summary>Changes 2020</summary>
+ 
 ## v2.4.9 (2020/11/27)
 ### Maintenance
 
@@ -1030,3 +1042,4 @@
 ## v1.5.3 (2020/04/05)
 - Removed test - @RogerSelwyn
 - Updated screenshots - @RogerSelwyn
+</details>
