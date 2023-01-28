@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.10.11 (2023/01/28)
+### Fixes
+- [Fix error with None state](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f89db2a331178de9f9d69023b3d8300471da7b2b) - @RogerSelwyn
+### Maintenance
+- [Bump to v2.10.11](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a8bac57d06ed30924456bf363f548ceb0f25cb35) - @RogerSelwyn
+
+
 ## v2.10.10 (2023/01/18)
 ### Fixes
 - [Fix scheduled items with no start/end time being shown in schedule sensor](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b239fa7cd50aedf2e0de3230ad528f29df681370) - @RogerSelwyn
