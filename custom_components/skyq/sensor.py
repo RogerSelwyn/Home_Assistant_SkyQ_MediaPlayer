@@ -197,7 +197,7 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
     @property
     def icon(self):
         """Entity icon."""
-        return SKYQ_ICONS[self._state] if self._available else None
+        return SKYQ_ICONS[self._state] if self._state else None
 
     @property
     def available(self):
