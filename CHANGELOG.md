@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.10.12 (2023/01/30)
+### Fixes
+- [Fix error with 'none' state](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e291c3c3f95db13bcaddf1b68af7b7213ccb854b) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.10.12](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2877d831e5c29c1f64bc848e3a548299112a6a13) - @RogerSelwyn
+
 ## v2.10.11 (2023/01/28)
 ### Fixes
 - [Fix error with None state](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f89db2a331178de9f9d69023b3d8300471da7b2b) - @RogerSelwyn
