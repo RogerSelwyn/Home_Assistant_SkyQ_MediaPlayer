@@ -141,4 +141,5 @@ SKYQ_ICONS = {
     CONST_SKYQ_STORAGE_USED: "mdi:database",
     STATE_SCHEDULED: "mdi:clock-outline",
     STATE_RECORDING: "mdi:record-rec",
+    STATE_NONE: "mdi:clock-remove-outline",
 }
