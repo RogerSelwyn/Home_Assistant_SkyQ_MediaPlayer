@@ -7,14 +7,15 @@
 
 The skyq platform allows you to control a Sky Q set top box.
 
-**Note:** This integration does not support **Sky Glass/Stream** or internet only devices that are currently being sold outside the UK.
+**Note:** This integration does not support **Sky Glass**, ** Skye Stream** or the internet only devices that are currently being sold outside the UK.
 
 **Note:** The integration supports Sky Q in the UK (and Ireland using the same EPG), Germany and Italy.
 
 There is currently support for the following device types within Home Assistant:
 
 - Media Player
-- Sensor (UI config only)
+- Sensor - Storage (UI config only)
+- Sensor - Schedule (UI config only)
 
 ### [Buy Me A ~~Coffee~~ Beer 🍻](https://buymeacoffee.com/rogtp)
 I work on this integration because I like things to work well for myself and others, and for it to deliver as much as is achievable with the API. Please don't feel you are obligated to donate, but of course it is appreciated.
