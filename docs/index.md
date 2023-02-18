@@ -7,7 +7,7 @@ nav_order: 1
 
 The skyq platform allows you to control a Sky Q set top box.
 
-**Note:** This integration does not support **Sky Glass** or internet only devices that are currently being sold outside the UK.
+**Note:** This integration does not support **Sky Glass**, **Sky Stream** or the internet only devices that are currently being sold outside the UK.
 
 **Note:** The integration supports Sky Q in the UK (and Ireland using the same EPG), Germany and Italy.
 
