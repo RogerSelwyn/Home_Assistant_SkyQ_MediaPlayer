@@ -1,17 +1,17 @@
 {
   "domain": "skyq",
   "name": "Sky Q",
-  "integration_type": "device",
-  "documentation": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer",
-  "issue_tracker": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues",
   "codeowners": [
     "@rogerselwyn"
   ],
+  "config_flow": true,
+  "documentation": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues",
+  "quality_scale": "silver",
   "requirements": [
     "pyskyqremote==0.3.24"
   ],
-  "quality_scale": "silver",
-  "config_flow": true,
-  "version": "v2.10.12",
-  "iot_class": "local_polling"
+  "version": "v2.10.12"
 }
