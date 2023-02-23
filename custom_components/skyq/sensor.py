@@ -117,19 +117,24 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        return f"{round(self._quota_info.quota_used / 1024, 1)}"
+        return self._quota_info.quota_used / 1024
 
     @property
     def extra_state_attributes(self):
         """Return entity specific state attributes."""
-        maxs = round(self._quota_info.quota_max / 1024, 1)
+        maxs = round(self._quota_info.quota_max / 1024, 5)
         percent = round(
-            (self._quota_info.quota_used / self._quota_info.quota_max) * 100, 1
+            (self._quota_info.quota_used / self._quota_info.quota_max) * 100, 5
         )
         return {
             CONST_SKYQ_STORAGE_MAX: f"{maxs}",
             CONST_SKYQ_STORAGE_PERCENT: f"{percent}",
         }
+
+    @property
+    def suggested_display_precision(self):
+        """Suggest the display precision as 1."""
+        return 1
 
     @Throttle(_SCAN_INTERVAL_STORAGE)
     async def async_update(self):

@@ -1,7 +1,7 @@
 {
   "name": "SkyQ",
   "zip_release": true,
-  "homeassistant": "2022.11.0",
+  "homeassistant": "2023.3.0",
   "content_in_root": false,
   "filename": "skyq.zip",
   "render_readme": true
