@@ -126,7 +126,6 @@ async def async_migrate_entry(hass, config_entry):
     )
 
     if config_entry.version == 1:
-
         new_options = {**config_entry.options}
         if (
             not config_entry.options.get(CONF_TV_DEVICE_CLASS, True)
@@ -162,5 +161,5 @@ def _check_for_storage_contents(hass):
                 if Platform.SENSOR not in sensor:
                     os.remove(statefile)
                     break
-        except json.decoder.JSONDecodeError:
+        except [json.decoder.JSONDecodeError, UnicodeDecodeError]:
             os.remove(statefile)
