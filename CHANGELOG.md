@@ -1,5 +1,25 @@
 # Changelog
 
+## v2.10.13 (2023/04/01)
+### Enhancements
+- [Add suggested precision for display](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0cd3015089a36eaea3dffadd40fae7d8a0bea84d) - @RogerSelwyn
+
+### Fixes
+- [Handle decoding error](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6657c625449b272bc7b9b2688a7f4631dd1240f4) - @RogerSelwyn
+- [Fix issue with incorrect formatting of datetimes](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b7e201cc038bae86ef74423b33025ffe2db956fc) - @RogerSelwyn
+
+### Maintenance
+
+- [Update index.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d1b64266bd86fac94143103c44fd5280b4d32843) - @RogerSelwyn
+- [Update oddities.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/08baf8ee71b5d190935d0b2d64959a82ef130560) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2d260412ad0319cc0baff6693580a6d5ba52b724) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f02179a03893eba5421b32580872546c7053c21a) - @RogerSelwyn
+- [Update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/077d30364b56677987ae0db9d34b514472b1ad90) - @RogerSelwyn
+- [Update hacs.yaml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/32466b99ff2c6b0656dd8381ba29ccafb7034549) - @RogerSelwyn
+- [Update hassfest.yaml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/98837a3d2ab0611b19195310d6ec7892be3a2308) - @RogerSelwyn
+- [Bump to v2.10.13](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ca874e526ff13cca2ac23d32f274eae8565fd6a5) - @RogerSelwyn
+- [Auto update requirements.txt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/153f76b27c7187716f4f44fa95ad9a9f633555ad) - @actions-user
+
 ## v2.10.12 (2023/01/30)
 ### Fixes
 - [Fix error with 'none' state](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e291c3c3f95db13bcaddf1b68af7b7213ccb854b) - @RogerSelwyn
