@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.10.1 (2023/05/20)
+### Fixes
+- [Fix date handling in media browser](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c04e1e74044e38bba69bccb8c4a9f331b8081587) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.10.14](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bdb2117418d1d34340ad93bd4ab1a3f1524e48c7) - @RogerSelwyn
+
 ## v2.10.13 (2023/04/01)
 ### Enhancements
 - [Add suggested precision for display](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0cd3015089a36eaea3dffadd40fae7d8a0bea84d) - @RogerSelwyn
