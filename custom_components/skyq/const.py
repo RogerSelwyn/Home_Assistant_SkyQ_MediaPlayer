@@ -1,5 +1,5 @@
 """Constants for SkyQ."""
-import datetime as dt
+from datetime import datetime, timedelta
 
 from homeassistant.components.media_player import MediaPlayerEntityFeature
 
@@ -19,6 +19,10 @@ DOMAIN = "skyq"
 DOMAINBROWSER = "skyq_browser"
 SKYQREMOTE = "skyqremote"
 UNDO_UPDATE_LISTENER = "undo_update_listener"
+SCAN_INTERVAL = timedelta(seconds=10)
+SCAN_INTERVAL_STORAGE = timedelta(minutes=5)
+SCAN_INTERVAL_SCHEDULE = timedelta(minutes=5)
+
 
 CONF_ADVANCED_OPTIONS = "advanced_options"
 CONF_TV_DEVICE_CLASS = "tv_device_class"
@@ -83,8 +87,8 @@ TIMEOUT = 2
 ERROR_TIMEOUT = 10
 REBOOT_MAIN_TIMEOUT = 180
 REBOOT_MINI_TIMEOUT = 360
-QUIET_START = dt.datetime.strptime("0045", "%H%M").time()
-QUIET_END = dt.datetime.strptime("0600", "%H%M").time()
+QUIET_START = datetime.strptime("0045", "%H%M").time()
+QUIET_END = datetime.strptime("0600", "%H%M").time()
 ECO_WAKEREASON = "ECO"
 
 SKYQ_APP = "app"

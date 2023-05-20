@@ -3,7 +3,7 @@
 import logging
 from datetime import datetime, timedelta, timezone
 
-import pytz
+from homeassistant.util import dt
 
 from pyskyqremote.const import DEVICE_MULTIROOMSTB, SKY_STATE_OFF
 
@@ -43,7 +43,7 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
         return self._power_state
 
     def _set_power_status(self, power_state):
-        self._utc_now = datetime.now(tz=timezone.utc)
+        self._utc_now = dt.utcnow()
         if power_state == SKY_STATE_OFF:
             self._power_status_off_handling()
         else:
@@ -143,8 +143,8 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
         return (self._utc_now - self._error_time).seconds if self._error_time else 0
 
     def _skyq_time(self):
-        if self._utc_now > datetime.fromtimestamp(
-            self._config.device_info.futureTransitionUtc, tz=timezone.utc
+        if self._utc_now > dt.utc_from_timestamp(
+            self._config.device_info.futureTransitionUtc
         ):
             offset = self._config.device_info.futureLocalTimeOffset
         else:
@@ -153,11 +153,15 @@ class SkyQPower:  # pylint: disable=too-few-public-methods
 
     def _quiet_period(self):
         skyq_timenow = self._skyq_time()
-        utctz = pytz.timezone("UTC")
-        quiet_start = utctz.localize(datetime.combine(skyq_timenow.date(), QUIET_START))
-        quiet_end = utctz.localize(datetime.combine(skyq_timenow.date(), QUIET_END))
+        quiet_start = self._combine_time(QUIET_START)
+        quiet_end = self._combine_time(QUIET_END)
 
         return skyq_timenow >= quiet_start and skyq_timenow <= quiet_end
+
+    def _combine_time(self, quiet_time):
+        return datetime.combine(self._skyq_time().date(), quiet_time).replace(
+            tzinfo=timezone.utc
+        )
 
     def _target_times(self):
         error_time_target = (

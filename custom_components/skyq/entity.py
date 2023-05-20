@@ -1,8 +1,6 @@
 """Entity representing a Sky Device."""
 import os
-from datetime import datetime, timedelta, timezone
 
-import pytz
 from homeassistant.const import (
     ATTR_CONFIGURATION_URL,
     ATTR_HW_VERSION,
@@ -14,7 +12,7 @@ from homeassistant.const import (
     ATTR_VIA_DEVICE,
 )
 
-from .const import CONST_STATEFILE, DOMAIN, QUIET_END, QUIET_START
+from .const import CONST_STATEFILE, DOMAIN
 from .utils import async_get_device_info
 
 
@@ -26,7 +24,6 @@ class SkyQEntity:
         self._remote = remote
         self._config = config
         self._unique_id = config.unique_id
-        self._utc_now = None
         self._statefile = os.path.join(hass.config.config_dir, CONST_STATEFILE)
 
     @property
@@ -58,20 +55,3 @@ class SkyQEntity:
             self._config.gateway_device_info,
             self._unique_id,
         ) = await async_get_device_info(hass, self._remote, self._unique_id)
-
-    def _skyq_time(self):
-        if self._utc_now > datetime.fromtimestamp(
-            self._config.device_info.futureTransitionUtc, tz=timezone.utc
-        ):
-            offset = self._config.device_info.futureLocalTimeOffset
-        else:
-            offset = self._config.device_info.presentLocalTimeOffset
-        return self._utc_now + timedelta(seconds=offset)
-
-    def _quiet_period(self):
-        skyq_timenow = self._skyq_time()
-        utctz = pytz.timezone("UTC")
-        quiet_start = utctz.localize(datetime.combine(skyq_timenow.date(), QUIET_START))
-        quiet_end = utctz.localize(datetime.combine(skyq_timenow.date(), QUIET_END))
-
-        return skyq_timenow >= quiet_start and skyq_timenow <= quiet_end
