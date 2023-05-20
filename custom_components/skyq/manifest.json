@@ -13,5 +13,5 @@
   "requirements": [
     "pyskyqremote==0.3.25"
   ],
-  "version": "v2.10.13"
+  "version": "v2.10.14"
 }
