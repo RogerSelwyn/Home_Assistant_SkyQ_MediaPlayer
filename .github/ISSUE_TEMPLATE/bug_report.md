@@ -12,10 +12,6 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**  
 Steps to reproduce the behavior:
-1. What were you doing/watching at the time ?
-2. What channel were you on?
-3. What time did the problem occur?
-4. Which country are you in (bear in mind the supported countries at the moment)?
 
 **Expected behavior**  
 A clear and concise description of what you expected to happen.
@@ -30,9 +26,10 @@ If applicable, add screenshots to help explain your problem.
 **Your configuration**  
 How have you setup your devices, by UI or YAML?
 
-**Your configuration from the options dialogue**  
-or  
-**Your configuration.yaml**  
+**Either - Your configuration from the options dialogue**  
+Assuming you have the diagnostics enabled in your install, you can download your configuration from the Device dialogue by clicking on the three dots at bottom right of the Device Info card.
+
+**Or - Your configuration.yaml**  
 ```yaml
 media_player:
  - platform:  skyq
