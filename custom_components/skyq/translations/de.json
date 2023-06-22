@@ -15,6 +15,9 @@
         },
         "description": "Richten Sie die Sky Q-Integration ein. Wenn Sie Probleme mit der Konfiguration haben, gehen Sie zu: https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer \n \nStellen Sie sicher, dass Ihre Sky Q-Box eingeschaltet ist.",
         "title": "Sky Q"
+      },
+      "confirm": {
+        "description": "Wollen sie installieren {host}?"
       }
     }
   },

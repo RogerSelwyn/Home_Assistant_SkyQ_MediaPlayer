@@ -20,6 +20,7 @@ from .const import (
     CONF_VOLUME_ENTITY,
     CONST_DEFAULT_EPGCACHELEN,
     CONST_DEFAULT_ROOM,
+    DEFAULT_ENTITY_NAME,
     SCAN_INTERVAL,
 )
 
@@ -47,5 +48,5 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 
 DATA_SCHEMA = {
     vol.Required(CONF_HOST): str,
-    vol.Required(CONF_NAME, default="Sky Q"): str,
+    vol.Required(CONF_NAME, default=DEFAULT_ENTITY_NAME): str,
 }

@@ -15,8 +15,11 @@ from .const_homekit import (
     KEY_SELECT,
 )
 
+DEFAULT_ENTITY_NAME = "Sky Q"
+DEFAULT_MINI = "Mini"
 DOMAIN = "skyq"
 DOMAINBROWSER = "skyq_browser"
+MR_DEVICE = "MR-Device"
 SKYQREMOTE = "skyqremote"
 UNDO_UPDATE_LISTENER = "undo_update_listener"
 SCAN_INTERVAL = timedelta(seconds=10)

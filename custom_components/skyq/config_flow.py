@@ -4,10 +4,13 @@ import contextlib
 import json
 import logging
 from operator import attrgetter
+from typing import Any
+from urllib.parse import urlparse
 
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 from homeassistant import config_entries, exceptions
+from homeassistant.components import ssdp
 from homeassistant.const import CONF_HOST, CONF_NAME
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import AbortFlow, FlowResult
@@ -32,8 +35,11 @@ from .const import (
     CONF_VOLUME_ENTITY,
     CONST_DEFAULT,
     CONST_DEFAULT_EPGCACHELEN,
+    DEFAULT_ENTITY_NAME,
+    DEFAULT_MINI,
     DOMAIN,
     LIST_EPGCACHELEN,
+    MR_DEVICE,
     SKYQREMOTE,
 )
 from .schema import DATA_SCHEMA
@@ -100,6 +106,55 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             + "".join(e for e in device_info.serialNumber.casefold() if e.isalnum())
         )
         self._abort_if_unique_id_configured()
+
+    async def async_step_ssdp(self, discovery_info: ssdp.SsdpServiceInfo) -> FlowResult:
+        """Handle a discovered device."""
+        host = str(urlparse(discovery_info.ssdp_location).hostname)
+        try:
+            await self._async_setuniqueid(host)
+        except CannotConnect:
+            pass
+
+        name = discovery_info.ssdp_server
+
+        context = self.context
+        context[CONF_HOST] = host
+        context[CONF_NAME] = name
+        return await self.async_step_confirm()
+
+    async def async_step_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Handle user-confirmation of discovered node."""
+        context = self.context
+        errors = {}
+        name = context[CONF_NAME]
+        host = context[CONF_HOST]
+        devicetype = None
+        try:
+            devicetype = name.split("/")[0]
+        finally:
+            title = DEFAULT_ENTITY_NAME
+            if devicetype == MR_DEVICE:
+                title = title + " " + DEFAULT_MINI
+
+        placeholders = {
+            CONF_NAME: name,
+            CONF_HOST: host,
+        }
+        context["title_placeholders"] = placeholders
+        if user_input is not None:
+            try:
+                await self._async_setuniqueid(host)
+            except CannotConnect:
+                errors["base"] = "cannot_connect"
+            else:
+                user_input = {CONF_HOST: host, CONF_NAME: title}
+                return self.async_create_entry(title=title, data=user_input)
+
+        return self.async_show_form(
+            step_id="confirm", description_placeholders=placeholders
+        )
 
 
 class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
@@ -241,7 +296,6 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._channel_sources_display = user_input[CHANNEL_SOURCES_DISPLAY]
         user_input.pop(CHANNEL_SOURCES_DISPLAY)
         if len(self._channel_sources_display) > 0:
-
             channelitems = []
             for channel in self._channel_sources_display:
                 channel_data = next(

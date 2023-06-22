@@ -5,6 +5,7 @@
     "@rogerselwyn"
   ],
   "config_flow": true,
+  "dependencies": ["ssdp"],
   "documentation": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer",
   "integration_type": "device",
   "iot_class": "local_polling",
@@ -12,6 +13,14 @@
   "quality_scale": "silver",
   "requirements": [
     "pyskyqremote==0.3.25"
+  ],
+  "ssdp": [
+    {
+      "nt": "urn:schemas-nds-com:device:GatewaySkyControl:2"
+    },
+    {
+      "nt": "urn:schemas-nds-com:device:MRSkyControl:2"
+    }
   ],
   "version": "v2.10.14"
 }

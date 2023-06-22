@@ -15,12 +15,8 @@
         },
         "description": "Set up Sky Q integration. If you have problems with configuration go to: https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer \n\nEnsure that your Sky Q box is powered on."
       },
-      "menuskyq": {
-        "description": "Select how you want to configure KNX/IP Secure.",
-        "menu_options": {
-          "discovery": "Discovery",
-          "manual": "Manual ({model})"
-        }
+      "confirm": {
+        "description": "Do you want to install {host}?"
       }
     }
   },
