@@ -1,6 +1,14 @@
 # Changelog
 
-## v2.10.1 (2023/05/20)
+## v2.11.0 (2023/06/22)
+### Enhancements
+- [Added SSDP based discovery](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/558585179985c5842ba6897649f8974536a3e17d) - @RogerSelwyn
+### Maintenance
+- [Update bug_report.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/075135ef2442f9210ad614b9d654fd9b4b05fae8) - @RogerSelwyn
+- [Bump to v2.11.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8da50fba2f610cdadb76cd0d015c2d55999b1279) - @RogerSelwyn
+- [Auto update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/eb9771916344d4dd4a5479aaf14bf2351f2602a5) - @actions-user
+
+## v2.10.14 (2023/05/20)
 ### Fixes
 - [Fix date handling in media browser](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c04e1e74044e38bba69bccb8c4a9f331b8081587) - @RogerSelwyn
 
