@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.11.1 (2023/06/24)
+### Fixes
+- [Fix issue with rediscovery of devices](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/6869478ff11c99b6c3248b071d6fab4931eee73d) - @RogerSelwyn
+### Maintenance
+- [Bump to v2.11.1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5a55f07264391b3c6d118d7552570689db8d2855) - @RogerSelwyn
+### Documentation
+
+- [Update installation.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b92759dd8f16120ed0af1db5fd975b5f75cb3394) - @RogerSelwyn
+
+
 ## v2.11.0 (2023/06/22)
 ### Enhancements
 - [Added SSDP based discovery](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/558585179985c5842ba6897649f8974536a3e17d) - @RogerSelwyn
