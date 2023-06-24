@@ -18,3 +18,5 @@ For channels where there is no EPG, this can also be utilised to provide a chann
 ### Media Player Configuration
 
 There are two methods of configuration, via the [Home Assistant Integrations UI](./configuration_ui.md) dialogue or via [YAML](./configuration_yaml.md). You cannot use both for the same Sky Q box, please use one or the other. Previous YAML configurations are not migrated to the UI method, please continue to use YAML, or delete YAML, reboot and add via UI.
+
+SSDP automatic discovery may also find your Sky Q devices giving you the option to install them with default names.
