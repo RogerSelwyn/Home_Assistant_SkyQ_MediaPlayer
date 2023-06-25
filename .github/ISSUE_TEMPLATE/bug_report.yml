@@ -72,4 +72,26 @@ body:
       description: >-
         How have you setup your devices, by UI or YAML?
 
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Your configuration
+      description: >-
+        Either - Assuming you have the diagnostics enabled in your install, you can download your configuration from the 
+        Device dialogue by clicking on the three dots at bottom right of the Device Info card.
 
+        Or - Your config from configuration.yaml
+      render: yaml
+      
+  - type: textarea
+    attributes:
+      label: Anything in the logs that might be useful for us?
+      description: For example, error message, or stack traces.
+
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: >
+        If you have any additional information for us, use the field below.
+      render: txt
