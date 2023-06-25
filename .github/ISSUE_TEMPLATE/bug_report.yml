@@ -65,7 +65,7 @@ body:
     validations:
       required: true
     attributes:
-      label: Your configuration
+      label: Configuration type
       options: 
         - UI
         - YAML
@@ -76,7 +76,7 @@ body:
     validations:
       required: true
     attributes:
-      label: Your configuration
+      label: Configuration
       description: >-
         Either - Assuming you have the diagnostics enabled in your install, you can download your configuration from the 
         Device dialogue by clicking on the three dots at bottom right of the Device Info card.
