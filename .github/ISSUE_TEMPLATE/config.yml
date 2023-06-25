@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Community questions
+    url: https://community.home-assistant.io/t/custom-component-skyq-media-player/
+    about: If you've got a general question, ask it in the Home Assistant Ccommunity forum.
