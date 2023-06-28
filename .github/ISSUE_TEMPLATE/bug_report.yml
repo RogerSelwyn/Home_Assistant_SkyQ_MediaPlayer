@@ -78,9 +78,9 @@ body:
     attributes:
       label: Configuration UI
       description: >-
-        Assuming you have the diagnostics enabled in your install, you can download your configuration from the 
+        Assuming you have the diagnostics enabled in your install, you can download your configuration from the
         Device dialogue by clicking on the three dots at bottom right of the Device Info card.
-      render: json
+      render: jsono
   - type: textarea
     attributes:
       label: Configuration YAML
