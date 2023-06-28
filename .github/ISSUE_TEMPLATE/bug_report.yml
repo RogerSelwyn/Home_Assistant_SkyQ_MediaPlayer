@@ -68,7 +68,7 @@ body:
       required: true
     attributes:
       label: Configuration type
-      options: 
+      options:
         - UI
         - YAML
       description: >-
@@ -87,7 +87,7 @@ body:
       description: >-
         Your config from configuration.yaml
       render: yaml
-      
+
   - type: textarea
     attributes:
       label: Anything in the logs that might be useful for us?
