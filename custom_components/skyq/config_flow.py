@@ -88,6 +88,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
     async def _async_setuniqueid(self, host):
+        self._async_abort_entries_match({CONF_HOST: host})
         remote = await self.hass.async_add_executor_job(SkyQRemote, host)
         if not remote.device_setup:
             raise CannotConnect()
@@ -106,7 +107,6 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             + "".join(e for e in device_info.serialNumber.casefold() if e.isalnum())
         )
         self._abort_if_unique_id_configured()
-        self._async_abort_entries_match({CONF_HOST: host})
 
     async def async_step_ssdp(self, discovery_info: ssdp.SsdpServiceInfo) -> FlowResult:
         """Handle a discovered device."""
