@@ -5,7 +5,7 @@
 - [Fix for rediscovery of devices when coming out of deep sleep](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e529b0870ed57bcf0894180c08e6417aacbcbb00) - @RogerSelwyn
 
 ### Maintenance
-- [Update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d624884d9230fc48318bd772266afaeeae9118cb) - @RogerSelwyn
+- [Bump to v2.11.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d624884d9230fc48318bd772266afaeeae9118cb) - @RogerSelwyn
 
 ## v2.11.1 (2023/06/24)
 ### Fixes
