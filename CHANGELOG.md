@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.11.3 (2023/07/02)
+### Fixes
+- [Fix issue with corrupt restore state file](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/15c3a1f465c32754bd4998c34282a597df082498) - @RogerSelwyn
+### Maintenance
+- [Bump to v2.11.3](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bdac773827059cc14afe791cfadbb083e5635d22) - @RogerSelwyn
+
 ## v2.11.2 (2023/06/28)
 ### Fixes
 - [Fix for rediscovery of devices when coming out of deep sleep](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e529b0870ed57bcf0894180c08e6417aacbcbb00) - @RogerSelwyn
