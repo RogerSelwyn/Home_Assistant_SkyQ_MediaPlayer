@@ -161,5 +161,5 @@ def _check_for_storage_contents(hass):
                 if Platform.SENSOR not in sensor:
                     os.remove(statefile)
                     break
-        except [json.decoder.JSONDecodeError, UnicodeDecodeError]:
+        except (json.decoder.JSONDecodeError, UnicodeDecodeError):
             os.remove(statefile)
