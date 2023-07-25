@@ -122,7 +122,6 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 async def _async_setup_platform_entry(
     config_item, async_add_entities, remote, unique_id, name, host, hass
 ):
-
     await hass.async_add_executor_job(
         remote.set_overrides,
         config_item.get(CONF_COUNTRY),
@@ -159,7 +158,7 @@ async def _async_setup_platform_entry(
         keyname = _event.data[ATTR_KEY_NAME]
         # _LOGGER.debug(f"D0030 - Homekit event - {player.entity_id} - {keyname}")
         if keyname in REMOTE_BUTTONS:
-            await player.async_play_media(REMOTE_BUTTONS[keyname], DOMAIN)
+            await player.async_play_media(DOMAIN, REMOTE_BUTTONS[keyname])
         elif keyname == KEY_REWIND:
             # Lovelace previous_track buttons do rewind
             await player.async_media_previous_track()
@@ -547,7 +546,6 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         return False
 
     async def _async_update_current_programme(self):
-
         app = await self.hass.async_add_executor_job(
             self._remote.get_active_application
         )
