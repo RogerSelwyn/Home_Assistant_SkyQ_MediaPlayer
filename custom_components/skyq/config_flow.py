@@ -111,17 +111,17 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_ssdp(self, discovery_info: ssdp.SsdpServiceInfo) -> FlowResult:
         """Handle a discovered device."""
         host = str(urlparse(discovery_info.ssdp_location).hostname)
+        _LOGGER.warning("D0020 - Discovered device: %s", host)
         try:
             await self._async_setuniqueid(host)
+            name = discovery_info.ssdp_server
+
+            context = self.context
+            context[CONF_HOST] = host
+            context[CONF_NAME] = name
+            return await self.async_step_confirm()
         except CannotConnect:
-            pass
-
-        name = discovery_info.ssdp_server
-
-        context = self.context
-        context[CONF_HOST] = host
-        context[CONF_NAME] = name
-        return await self.async_step_confirm()
+            _LOGGER.warning("W0020 - Failed to connect - Skipping Device: %s", host)
 
     async def async_step_confirm(
         self, user_input: dict[str, Any] | None = None
@@ -137,7 +137,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         finally:
             title = DEFAULT_ENTITY_NAME
             if devicetype == MR_DEVICE:
-                title = title + " " + DEFAULT_MINI
+                title = f"{title} {DEFAULT_MINI}"
 
         placeholders = {
             CONF_NAME: name,
@@ -154,7 +154,9 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 return self.async_create_entry(title=title, data=user_input)
 
         return self.async_show_form(
-            step_id="confirm", description_placeholders=placeholders
+            step_id="confirm",
+            description_placeholders=placeholders,
+            errors=errors,
         )
 
 
