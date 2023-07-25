@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.11.4 (2023/07/25)
+### Fixes
+- [Fix Apple Remote doesn’t work although accessory exposed](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cb2161549ead4a02f2185fe8ffbe0fba4ff52e61) - @RogerSelwyn
+- [Fix devices discovered but the connection fails are still shown](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ef0c1bee61092994f32b3702b32d8a655402975b) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.11.4](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f3752176ddf85a7eae940c4c1a36657b1c93fac5) - @RogerSelwyn
+
 ## v2.11.3 (2023/07/02)
 ### Fixes
 - [Fix issue with corrupt restore state file](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/15c3a1f465c32754bd4998c34282a597df082498) - @RogerSelwyn
