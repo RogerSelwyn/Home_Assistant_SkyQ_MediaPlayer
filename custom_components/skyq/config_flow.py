@@ -111,7 +111,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_ssdp(self, discovery_info: ssdp.SsdpServiceInfo) -> FlowResult:
         """Handle a discovered device."""
         host = str(urlparse(discovery_info.ssdp_location).hostname)
-        _LOGGER.warning("D0020 - Discovered device: %s", host)
+        _LOGGER.debug("D0020 - Discovered device: %s", host)
         try:
             await self._async_setuniqueid(host)
             name = discovery_info.ssdp_server
