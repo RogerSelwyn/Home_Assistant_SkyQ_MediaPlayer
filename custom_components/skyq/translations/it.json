@@ -57,5 +57,17 @@
         "title": "Riavvia la casella Sky Q e riprova"
       }
     }
+  },
+  "device_automation": {
+    "action_type": {
+      "pause": "Metti in pausa {entity_name}",
+      "play": "Gioca a {entity_name}",
+      "next_track": "Avanti veloce {entity_name}",
+      "previous_track": "Riavvolgi {entity_name}",
+      "turn_on": "Attiva {entity_name}",
+      "turn_off": "Spegnere {entity_name}",
+      "select_source": "Seleziona la sorgente per {entity_name}",
+      "play_media": "Inserisci i pulsanti su {entity_name}"
+    }
   }
 }

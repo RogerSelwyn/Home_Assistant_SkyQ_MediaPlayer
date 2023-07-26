@@ -57,5 +57,17 @@
         "title": "Bitte starten Sie die Sky Q-Box neu und versuchen Sie es erneut"
       }
     }
+  },
+  "device_automation": {
+    "action_type": {
+      "pause": "Pause {entity_name}",
+      "play": "{entity_name} spielen",
+      "next_track": "Schneller Vorlauf {entity_name}",
+      "previous_track": "{entity_name} zurückspulen",
+      "turn_on": "Schalten Sie {entity_name} ein",
+      "turn_off": "Schalten Sie {entity_name} aus",
+      "select_source": "Quelle für {entity_name} auswählen",
+      "play_media": "Eingabetasten auf {entity_name}"
+    }
   }
 }

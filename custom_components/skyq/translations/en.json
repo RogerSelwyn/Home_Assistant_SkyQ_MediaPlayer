@@ -54,5 +54,17 @@
         "title": "Please restart Sky Q box and retry"
       }
     }
+  },
+  "device_automation": {
+    "action_type": {
+      "pause": "Pause {entity_name}",
+      "play": "Play {entity_name}",
+      "next_track": "Fast forward {entity_name}",
+      "previous_track": "Rewind {entity_name}",
+      "turn_on": "Turn on {entity_name}",
+      "turn_off": "Turn off {entity_name}",
+      "select_source": "Select source for {entity_name}",
+      "play_media": "Enter buttons on {entity_name}"
+    }
   }
 }
