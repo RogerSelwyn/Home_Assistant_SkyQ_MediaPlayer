@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.11.5 (2023/07/26)
+### Enhancements
+- [Add Device Actions](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/923ee018797a77c661950d51fad369dbe4240bb1) - @RogerSelwyn
+
+### Fixes
+- [Correct log level for discovered device](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/615451b685150cb63fc4224a77c68efed3acf9af) - @RogerSelwyn
+
+### Maintenance
+- [Bump to v2.11.5](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d5d6228ab31fce31de391e62346217f58fda3e7c) - @RogerSelwyn
+
 ## v2.11.4 (2023/07/25)
 ### Fixes
 - [Fix Apple Remote doesn’t work although accessory exposed](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cb2161549ead4a02f2185fe8ffbe0fba4ff52e61) - @RogerSelwyn
