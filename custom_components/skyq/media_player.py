@@ -176,6 +176,8 @@ async def _async_setup_platform_entry(
 class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     """Representation of a SkyQ Box."""
 
+    _attr_has_entity_name = True
+
     def __init__(
         self,
         hass,
@@ -234,7 +236,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     @property
     def name(self):
         """Get the name of the devices."""
-        return self._config.name
+        return None
 
     @property
     def should_poll(self):
