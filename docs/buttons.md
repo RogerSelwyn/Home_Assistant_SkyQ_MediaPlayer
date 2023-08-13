@@ -7,7 +7,7 @@ nav_order: 5
 
 ## Supported buttons
 
-- sky, power, tvguide or home, boxoffice, search, sidebar, up, down, left, right, select, channelup, channeldown, i, dismiss, text, help,
+- sky, power, backup, tvguide or home, boxoffice, search, sidebar, up, down, left, right, select, channelup, channeldown, i, dismiss, text, help,
 - play, pause, rewind, fastforward, stop, record
 - red, green, yellow, blue
 - 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
