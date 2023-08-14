@@ -21,6 +21,7 @@ from pyskyqremote.skyq_remote import SkyQRemote
 from .const import (
     CHANNEL_DISPLAY,
     CHANNEL_SOURCES_DISPLAY,
+    CONF_ADD_BACKUP,
     CONF_ADVANCED_OPTIONS,
     CONF_CHANNEL_SOURCES,
     CONF_COUNTRY,
@@ -196,6 +197,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._epg_cache_len = config_entry.options.get(
             CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN
         )
+        self._add_backup = config_entry.options.get(CONF_ADD_BACKUP, False)
         self._advanced_options = config_entry.options.get(CONF_ADVANCED_OPTIONS, False)
         self._channel_display = []
         self._channel_list = []
@@ -349,7 +351,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             sources_list = convert_sources_json(sources_json=self._sources)
             for source in sources_list:
                 _validate_commands(source)
-
+        self._add_backup = user_input.get(CONF_ADD_BACKUP)
         return user_input
 
     def _fake_advanced_input(self):
@@ -359,6 +361,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         advanced_input[CONF_EPG_CACHE_LEN] = self._epg_cache_len
         if self._sources:
             advanced_input[CONF_SOURCES] = self._sources
+        advanced_input[CONF_ADD_BACKUP] = self._add_backup
         return advanced_input
 
     async def async_step_retry(
@@ -405,6 +408,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
             vol.Optional(
                 CONF_SOURCES, description={"suggested_value": self._sources}
             ): str,
+            vol.Optional(CONF_ADD_BACKUP, default=self._add_backup): bool,
         }
 
 

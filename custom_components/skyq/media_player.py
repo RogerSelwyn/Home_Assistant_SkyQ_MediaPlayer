@@ -448,7 +448,10 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     async def async_select_source(self, source):
         """Select the specified source."""
         if command := get_command(
-            self._config.custom_sources, self._channel_list, source
+            self._config.custom_sources,
+            self._channel_list,
+            source,
+            self._config.enabled_features,
         ):
             await self._press_button(command)
             await self.async_update()

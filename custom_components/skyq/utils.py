@@ -13,6 +13,7 @@ from pyskyqremote.skyq_remote import SkyQRemote
 
 from .const import (
     APP_IMAGE_URL_BASE,
+    FEATURE_ADD_BACKUP,
     STORAGE_ATTRIBUTES,
     STORAGE_ENCODING,
     STORAGE_HOST,
@@ -56,14 +57,17 @@ def convert_sources(sources_list=None, sources_dict=None):
     return None
 
 
-def get_command(custom_sources, channel_list, source):
+def get_command(custom_sources, channel_list, source, enabled_features):
     """Select the specified source."""
     if source in custom_sources:
         return custom_sources.get(source).split(",")
 
     try:
         channel = next(c for c in channel_list if c.channelname == source)
-        return list(channel.channelno)
+        base_channel = list(channel.channelno)
+        if enabled_features & FEATURE_ADD_BACKUP:
+            base_channel.insert(0, "backup")
+        return base_channel
     except (TypeError, StopIteration):
         return source
 

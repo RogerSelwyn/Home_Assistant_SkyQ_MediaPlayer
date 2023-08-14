@@ -30,12 +30,12 @@ media_player:
 | sources<br>_(list)(Optional)_                   |  _Empty_    | List of channels or other commands that will appear in the source selection. |
 | output_programme_image<br>_(boolean)(Optional)_ | True        | Allows you to disable returning images when watching recorded programmes. Useful if using a modified media player UI, where you don't want the background changing. |
 | live_tv<br>_(boolean)(Optional)_                | True        | Allows you to disable the retrieval of live TV programme information. Useful for people in those countries where the TV schedules are not available from current known sources. |
-| get_live_record<br>_(boolean)(Optional)_                | False       | Allows you to fetch the status of the currently playing item to see if it is a "Live Recording". |
-| tv_device_class                             | True    | Sets device class to TV. Unticked sets it to Receiver. |
+| get_live_record<br>_(boolean)(Optional)_        | False       | Allows you to fetch the status of the currently playing item to see if it is a "Live Recording". |
+| tv_device_class<br>_(boolean)(Optional)_        | True        | Sets device class to TV. Unticked sets it to Receiver. |
 | country<br>_(string)(Optional)_                 | _Empty_     | Overrides the detected country from the SkyQ box. Currently supports "GBR", "ITA" and "DEU". In theory you shouldn't need to use this. |
-| volume_entity<br>_(string)(Optional)_        | _Empty_     | Specifies the entity for which volume control actions will be passed through to. No validation of the entity is done via the UI, warnings will show in the log if an invalid entity is used. Must be a media_player entity. e.g. media_player.braviatv|
-| epg_cache_len<br>_(integer)(Optional)_          | 20           |Allows you to configure the number of EPG channels to cache for the media browser. Larger numbers will cause slower initial load per day and consume more memory. |
-
+| volume_entity<br>_(string)(Optional)_           | _Empty_     | Specifies the entity for which volume control actions will be passed through to. No validation of the entity is done via the UI, warnings will show in the log if an invalid entity is used. Must be a media_player entity. e.g. media_player.braviatv|
+| epg_cache_len<br>_(integer)(Optional)_          | 20          | Allows you to configure the number of EPG channels to cache for the media browser. Larger numbers will cause slower initial load per day and consume more memory. |
+| add_backup<br>_(boolean)(Optional)_             | False       | When enabled, adds the `backup` button command to the buttons sent to the Sky Q box as part of a `Channel Source` selection. Instead of `1,0,1` it will send `backup,1,0,1`.|
 ## Sources
 
 ```yaml

@@ -46,8 +46,7 @@
         "data": {
           "tv_device_class": "TV-Geräteklasse (für Receiver deaktivieren)",
           "country": "Land überschreiben",
-          "epg_cache_len": "EPG-Cache-Länge für Media Browser",
-          "sources": "Benutzerdefinierte Quellen - lesen Sie Github"
+          "epg_cache_len": "Fügen Sie 'Backup' zum Anfang der Kanalquellen hinzu"
         },
         "title": "Sky Q",
         "description": "Erweiterte Setup-Optionen für {name}"

@@ -45,7 +45,8 @@
           "tv_device_class": "TV device class (disable for Receiver)",
           "country": "Override country",
           "epg_cache_len": "EPG cache length for Media Browser",
-          "sources": "Custom sources - read Github"
+          "sources": "Custom sources - read Github",
+          "add_backup": "Add 'backup' to start of channel sources"
         },
         "description": "Advanced setup options for {name}"
       },

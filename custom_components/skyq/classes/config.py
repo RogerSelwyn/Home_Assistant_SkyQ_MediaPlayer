@@ -2,6 +2,7 @@
 from dataclasses import InitVar, dataclass, field
 
 from ..const import (
+    CONF_ADD_BACKUP,
     CONF_CHANNEL_SOURCES,
     CONF_COUNTRY,
     CONF_GEN_SWITCH,
@@ -14,6 +15,7 @@ from ..const import (
     CONF_TV_DEVICE_CLASS,
     CONF_VOLUME_ENTITY,
     CONST_DEFAULT_ROOM,
+    FEATURE_ADD_BACKUP,
     FEATURE_BASIC,
     FEATURE_GET_LIVE_RECORD,
     FEATURE_IMAGE,
@@ -30,6 +32,7 @@ ENABLED_FEATURES = (
     | FEATURE_SWITCHES
     | FEATURE_GET_LIVE_RECORD
     | FEATURE_TV_DEVICE_CLASS
+    | FEATURE_ADD_BACKUP
 )
 
 
@@ -66,6 +69,7 @@ class Config:
         tv_device_class = config_item.get(CONF_TV_DEVICE_CLASS, True)
         live_tv = config_item.get(CONF_LIVE_TV, True)
         get_live_record = config_item.get(CONF_GET_LIVE_RECORD, False)
+        add_backup = config_item.get(CONF_ADD_BACKUP, False)
 
         self.enabled_features = ENABLED_FEATURES
         self.source_list = []
@@ -75,6 +79,9 @@ class Config:
 
         if not tv_device_class:
             self.enabled_features ^= FEATURE_TV_DEVICE_CLASS
+
+        if not add_backup:
+            self.enabled_features ^= FEATURE_ADD_BACKUP
 
         if not live_tv:
             self.enabled_features ^= FEATURE_LIVE_TV

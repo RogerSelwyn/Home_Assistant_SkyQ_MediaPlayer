@@ -28,6 +28,7 @@ SCAN_INTERVAL_SCHEDULE = timedelta(minutes=5)
 
 
 CONF_ADVANCED_OPTIONS = "advanced_options"
+CONF_ADD_BACKUP = "add_backup"
 CONF_TV_DEVICE_CLASS = "tv_device_class"
 CONF_SOURCES = "sources"
 CONF_CHANNEL_SOURCES = "channel_sources"
@@ -72,6 +73,7 @@ FEATURE_LIVE_TV = 4
 FEATURE_SWITCHES = 8
 FEATURE_GET_LIVE_RECORD = 16
 FEATURE_TV_DEVICE_CLASS = 32
+FEATURE_ADD_BACKUP = 64
 
 FEATURE_BASE = (
     MediaPlayerEntityFeature.TURN_OFF

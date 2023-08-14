@@ -47,7 +47,8 @@
           "tv_device_class": "Classe dispositivo TV (disabilita per ricevitore)",
           "country": "Sostituisci paese",
           "epg_cache_len": "Longitud de la caché de EPG para Media Browser",
-          "sources": "Fonti personalizzate - leggi Github"
+          "sources": "Fonti personalizzate - leggi Github",
+          "add_backup": "Aggiungi 'backup' all'inizio delle fonti del canale"
         },
         "title": "Sky Q",
         "description": "Opzioni di configurazione avanzate per {name}"

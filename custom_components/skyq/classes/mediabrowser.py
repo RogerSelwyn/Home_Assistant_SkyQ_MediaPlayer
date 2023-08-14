@@ -67,7 +67,12 @@ class MediaBrowser:
         return channels
 
     async def _async_get_channel_info(self, hass, channel_list, source):
-        command = get_command(self._config.custom_sources, channel_list, source)
+        command = get_command(
+            self._config.custom_sources,
+            channel_list,
+            source,
+            self._config.enabled_features,
+        )
         if command[0] == "backup":
             command.remove("backup")
         channelno = "".join(command)
