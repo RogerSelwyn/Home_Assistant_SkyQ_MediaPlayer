@@ -34,6 +34,7 @@ If you want to add a second Sky Q box, just follow the same process again and ad
 | Override Country | _Empty_     | Overrides the detected country from the SkyQ box. Currently supports "GBR", "ITA" and "DEU". In theory you shouldn't need to use this. |
 | EPG Cache Length               | 20           |Allows you to configure the number of EPG channels to cache for the media browser. Larger numbers will cause slower initial load per day and consume more memory. |
 | Custom Sources                    |  _Empty_    | List of channels or other commands that will appear in the source selection. |
+| Add Backup                    | False    | When enabled, adds the `backup` button command to the buttons sent to the Sky Q box as part of a `Channel Source` selection. Instead of `1,0,1` it will send `backup,1,0,1`.|
 
 ## Custom Sources
 
