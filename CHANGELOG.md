@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.11.6 (2023/08/14)
+### Enhancements
+- [Add ability to add `backup` to all channel source commands](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/518ba0eabb9fe92567cb3c910a836774ee4680ba) - @RogerSelwyn
+
+### Maintenance
+- [Name entities in line with new standards](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/316dd39680134c125ddf6ed8905f40af1a35927e) - @RogerSelwyn
+- [Bump minimum HA version](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/4f034db885e1123cde9a1e2ec1d784fb3625ee0b) - @RogerSelwyn
+- [Bump to v2.11.6](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/2cb21e43d3c8620eb74935d987fd6bee08359d2e) - @RogerSelwyn
+
+### Documentation
+- [Update buttons.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/7d647c39ba29ee9738a1224022ba390007d16a84) - @RogerSelwyn
+- [Correct](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3f1c2caa7676b2a6920cf28fe7eb320846f2f46a) - @RogerSelwyn
+
 ## v2.11.5 (2023/07/26)
 ### Enhancements
 - [Add Device Actions](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/923ee018797a77c661950d51fad369dbe4240bb1) - @RogerSelwyn
