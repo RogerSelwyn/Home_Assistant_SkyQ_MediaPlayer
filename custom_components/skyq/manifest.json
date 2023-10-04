@@ -14,7 +14,7 @@
   "issue_tracker": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues",
   "quality_scale": "silver",
   "requirements": [
-    "pyskyqremote==0.3.25"
+    "pyskyqremote==0.3.26"
   ],
   "ssdp": [
     {
