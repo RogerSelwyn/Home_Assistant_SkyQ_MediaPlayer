@@ -71,6 +71,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     _attr_entity_registry_enabled_default = False
     _attr_native_unit_of_measurement = DATA_GIGABYTES
     _attr_has_entity_name = True
+    _unrecorded_attributes = frozenset((CONST_SKYQ_STORAGE_MAX))
 
     def __init__(self, hass, remote, config):
         """Initialize the used storage sensor."""

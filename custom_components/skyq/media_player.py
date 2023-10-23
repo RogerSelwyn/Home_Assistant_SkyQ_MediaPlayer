@@ -12,7 +12,6 @@ from homeassistant.components.media_player import (
 )
 from homeassistant.const import ATTR_ENTITY_ID, CONF_HOST, CONF_NAME
 from homeassistant.exceptions import PlatformNotReady
-
 from pyskyqremote.const import (
     APP_EPG,
     COMMANDS,
@@ -350,7 +349,6 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         attributes = {
             CONST_SKYQ_MEDIA_TYPE: self._entity_attr.skyq_media_type,
             CONST_SKYQ_TRANSPORT_STATUS: self._entity_attr.skyq_transport_status,
-            "id": self.unique_id,
         }
         if self._entity_attr.skyq_channelno:
             attributes[CONST_SKYQ_CHANNELNO] = self._entity_attr.skyq_channelno
