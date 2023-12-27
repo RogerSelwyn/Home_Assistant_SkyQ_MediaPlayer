@@ -8,9 +8,9 @@ from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
-    DATA_GIGABYTES,
     STATE_OFF,
     STATE_ON,
+    UnitOfInformation,
 )
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.util import Throttle
@@ -69,7 +69,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
 
     _attr_entity_category = EntityCategory.DIAGNOSTIC
     _attr_entity_registry_enabled_default = False
-    _attr_native_unit_of_measurement = DATA_GIGABYTES
+    _attr_native_unit_of_measurement = UnitOfInformation.GIGABYTES
     _attr_has_entity_name = True
     _unrecorded_attributes = frozenset((CONST_SKYQ_STORAGE_MAX))
 
