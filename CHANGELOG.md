@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.11.7 (2023/12/27)
+### 🔨 Maintenance
+- [Minor code tidy up](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d2a879c562dae4159ea068e8ceb2823ebdf79d9f) - @RogerSelwyn
+- [Replace deprecated constant](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/cf5d4bfb967b2e1e771387ff50df97516f43ced8) - @RogerSelwyn
+
+### ⬆️ Dependencies
+- [Bump pyskyqremote to 0.3.26](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/50b0a7acddf55e98ee4b2785595c0018d5f25aa9) - @RogerSelwyn
+
+### 🔖 Release
+- [Bump to v2.11.7](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5750b6d8ce37aa742a3da612dad816c4bdd53888) - @RogerSelwyn
+
 ## v2.11.6 (2023/08/14)
 ### Enhancements
 - [Add ability to add `backup` to all channel source commands](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/518ba0eabb9fe92567cb3c910a836774ee4680ba) - @RogerSelwyn
