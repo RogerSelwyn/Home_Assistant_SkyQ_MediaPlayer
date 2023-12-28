@@ -17,8 +17,13 @@ There is currently support for the following device types within Home Assistant:
 - Sensor - Storage (UI config only)
 - Sensor - Schedule (UI config only)
 
-### [Buy Me A ~~Coffee~~ Beer 🍻](https://buymeacoffee.com/rogtp)
+### [Buy Me A Beer 🍻](https://buymeacoffee.com/rogtp)
 I work on this integration because I like things to work well for myself and others, and for it to deliver as much as is achievable with the API. Please don't feel you are obligated to donate, but of course it is appreciated.
+
+<a href="https://www.buymeacoffee.com/rogtp" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a> 
+<a href="https://www.paypal.com/donate/?hosted_button_id=F7TGHNGH7A526">
+  <img src="https://github.com/RogerSelwyn/actions/blob/e82dab9e5643bbb82e182215a748a3024e3e7eac/images/paypal-donate-button.png" alt="Donate with PayPal" height="40"/>
+</a>
 
 # Documentation
 
