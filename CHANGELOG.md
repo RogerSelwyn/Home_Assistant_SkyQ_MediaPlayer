@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.11.8 (2024/06/05)
+### 🐛 Fixes
+- [Fix blocking call in the event loop](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0cf1dffc072cdd6cf0214b71d2e0637a1be051e6) - @RogerSelwyn
+
+### 📚 Documentation
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/18c2c9b45db873c6653565ce80ca9c7c5024e191) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a297b9e6de7ca2cb725d96e6f3463c9ef07129bf) - @RogerSelwyn
+
+### 🔖 Release
+- [Release v2.11.8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ac9693b74a5f929dde30601c146007a005226436) - @RogerSelwyn
+
 ## v2.11.7 (2023/12/27)
 ### 🔨 Maintenance
 - [Minor code tidy up](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d2a879c562dae4159ea068e8ceb2823ebdf79d9f) - @RogerSelwyn
