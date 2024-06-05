@@ -1,4 +1,5 @@
 """Initialise."""
+
 import asyncio
 import json
 import logging
@@ -6,7 +7,6 @@ import os
 
 from homeassistant.const import CONF_HOST, CONF_NAME, Platform
 from homeassistant.exceptions import ConfigEntryNotReady
-
 from pyskyqremote.const import DEVICE_GATEWAYSTB, UNSUPPORTED_DEVICES
 from pyskyqremote.skyq_remote import SkyQRemote
 
@@ -61,7 +61,7 @@ async def async_setup_entry(hass, config_entry):
             name,
         )
 
-    _check_for_storage_contents(hass)
+    await hass.async_add_executor_job(_check_for_storage_contents, hass)
 
     hass.data[DOMAIN][config_entry.entry_id] = {
         SKYQREMOTE: remote,

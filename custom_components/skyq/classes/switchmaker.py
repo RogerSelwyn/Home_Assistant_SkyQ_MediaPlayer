@@ -3,6 +3,7 @@ A utility function to generate yaml config for SkyQ media players.
 
 To support easy usage with other home assistant integrations, e.g. google home
 """
+
 import logging
 import os.path as _path
 
@@ -37,9 +38,15 @@ class SwitchMaker:
         self._room = room
         self._root = config_dir
         self._alias = {}
+        self._channels = channels
 
         if self._root[-1] != "/":
             self._root += "/"
+
+        self._f = None
+
+    def create_file(self):
+        """Create the switch file."""
         self._f = open(
             f"{self._root}skyq{self._room.replace(' ', '')}.yaml",
             "w+",
@@ -59,7 +66,7 @@ class SwitchMaker:
         self._add_switch("ff", "fastforward", "media_next_track")
         self._add_switch("rw", "rewind", "media_previous_track")
 
-        dedup_channels = list(dict.fromkeys(channels))
+        dedup_channels = list(dict.fromkeys(self._channels))
         for channel in dedup_channels:
             self._add_switch(channel, channel, "select_source", True)
 

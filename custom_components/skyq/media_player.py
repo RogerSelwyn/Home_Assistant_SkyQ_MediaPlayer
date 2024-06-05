@@ -1,4 +1,5 @@
 """The skyq platform allows you to control a SkyQ set top box."""
+
 import logging
 from pathlib import Path
 
@@ -75,9 +76,7 @@ from .utils import (
 _LOGGER = logging.getLogger(__name__)
 
 
-async def async_setup_platform(
-    hass, config, async_add_entities, discovery_info=None
-):  # pylint: disable=unused-argument
+async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):  # pylint: disable=unused-argument
     """Set up the SkyQ platform."""
     host = config.get(CONF_HOST)
     epg_cache_len = config.get(CONF_EPG_CACHE_LEN, CONST_DEFAULT_EPGCACHELEN)
@@ -393,12 +392,13 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         if not self._switches_generated and self.entity_id:
             self._switches_generated = True
             if self._config.enabled_features & FEATURE_SWITCHES:
-                SwitchMaker(
+                switchmaker = SwitchMaker(
                     self.hass.config.config_dir,
                     self.entity_id,
                     self._config.room,
                     self._config.source_list,
                 )
+                await self.hass.async_add_executor_job(switchmaker.create_file)
 
     async def async_turn_off(self):
         """Turn SkyQ box off."""
