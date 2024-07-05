@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.11.9 (2024/07/05)
+### 🐛 Fixes
+- [Resolve deprecation warnings with 2024.7.x](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/1baec23ad6ab695de9b0722f9c8555f5c0c81914) - @RogerSelwyn
+
+### 🔨 Maintenance
+- [Set minimum HA version to 2024.7.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/17f900b358d431c4a6fff1319e097b2389386f7f) - @RogerSelwyn
+
+### 🔖 Release
+- [Bump to v2.11.9](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a08dde7200ebdb04e570b890daece698213aaf7a) - @RogerSelwyn
+  
 ## v2.11.8 (2024/06/05)
 ### 🐛 Fixes
 - [Fix blocking call in the event loop](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0cf1dffc072cdd6cf0214b71d2e0637a1be051e6) - @RogerSelwyn
