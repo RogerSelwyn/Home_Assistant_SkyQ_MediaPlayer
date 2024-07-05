@@ -3,6 +3,7 @@
 import logging
 from pathlib import Path
 
+from homeassistant.components.http import StaticPathConfig
 from homeassistant.components.media_player import (
     DEVICE_CLASS_RECEIVER,
     DEVICE_CLASS_TV,
@@ -145,7 +146,14 @@ async def _async_setup_platform_entry(
 
     should_cache = True
     files_path = Path(__file__).parent / "static"
-    hass.http.register_static_path(APP_IMAGE_URL_BASE, str(files_path), should_cache)
+    # hass.http.register_static_path(APP_IMAGE_URL_BASE, str(files_path), should_cache)
+    await hass.http.async_register_static_paths(
+        [
+            StaticPathConfig(
+                APP_IMAGE_URL_BASE, str(files_path), cache_headers=should_cache
+            )
+        ]
+    )
 
     async_add_entities([player], False)
 
