@@ -6,6 +6,7 @@
   ],
   "config_flow": true,
   "dependencies": [
+    "http",
     "ssdp"
   ],
   "documentation": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer",
