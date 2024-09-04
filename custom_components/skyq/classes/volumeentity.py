@@ -111,7 +111,7 @@ class VolumeEntity:
 
     async def _async_call_service(self, hass, service_name, variable_data=None):
         service_data = {
-            "service": f"media_player.{service_name}",
+            "action": f"media_player.{service_name}",
             "data": variable_data,
         }
 
