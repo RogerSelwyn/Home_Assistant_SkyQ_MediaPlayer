@@ -1,7 +1,7 @@
 {
   "name": "SkyQ",
   "zip_release": true,
-  "homeassistant": "2024.7.0",
+  "homeassistant": "2024.8.0",
   "content_in_root": false,
   "filename": "skyq.zip",
   "render_readme": true
