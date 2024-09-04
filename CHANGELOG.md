@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.11.10 (2024/09/04)
+### 🐛 Fixes
+- [Replace 'service' with 'action'](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5866280d1bc8fc8c4d6a32390d7781fa98807ce1) - @RogerSelwyn
+
+### 🧰 Maintenance
+- [Add http as dependency](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/043419b34093c2912f1bede6363926aed81a908d) - @RogerSelwyn
+- [Set minumum HA version to 2024.8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/562f0d6761dc78b0c116a3d0371629a2b8bcb1d6) - @RogerSelwyn
+
+### 🔖 Release
+- [Release v2.11.10](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/23317c6c9a010d593e9278a34912dd1ef9cc7b6b) - @RogerSelwyn
+
 ## v2.11.9 (2024/07/05)
 ### 🐛 Fixes
 - [Resolve deprecation warnings with 2024.7.x](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/1baec23ad6ab695de9b0722f9c8555f5c0c81914) - @RogerSelwyn
