@@ -5,8 +5,7 @@ from pathlib import Path
 
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.components.media_player import (
-    DEVICE_CLASS_RECEIVER,
-    DEVICE_CLASS_TV,
+    MediaPlayerDeviceClass,
     MediaPlayerEntity,
     MediaPlayerEntityFeature,
     MediaPlayerState,
@@ -335,9 +334,9 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     def device_class(self):
         """Entity class."""
         return (
-            DEVICE_CLASS_TV
+            MediaPlayerDeviceClass.TV
             if self._config.enabled_features & FEATURE_TV_DEVICE_CLASS
-            else DEVICE_CLASS_RECEIVER
+            else MediaPlayerDeviceClass.RECEIVER
         )
 
     @property
