@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.11.11 (2024/10/03)
+### 🐛 Fixes
+- [Fix deprecated constants](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/53c02c86ce2b4061406957fab32b5b366139e85c) - @RogerSelwyn
+
+### 🔖 Release
+- [Release v2.11.11](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/3007fe8f7088a2ff55821a803cc5dae0a5e9960b) - @RogerSelwyn
+
 ## v2.11.10 (2024/09/04)
 ### 🐛 Fixes
 - [Replace 'service' with 'action'](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5866280d1bc8fc8c4d6a32390d7781fa98807ce1) - @RogerSelwyn
