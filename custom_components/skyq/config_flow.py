@@ -10,11 +10,10 @@ from urllib.parse import urlparse
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 from homeassistant import config_entries, exceptions
-from homeassistant.components import ssdp
 from homeassistant.const import CONF_HOST, CONF_NAME
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import AbortFlow, FlowResult
-
+from homeassistant.helpers.service_info import ssdp
 from pyskyqremote.const import KNOWN_COUNTRIES, UNSUPPORTED_DEVICES
 from pyskyqremote.skyq_remote import SkyQRemote
 
@@ -204,7 +203,8 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         self._user_input = None
 
     async def async_step_init(
-        self, user_input=None  # pylint: disable=unused-argument
+        self,
+        user_input=None,  # pylint: disable=unused-argument
     ) -> FlowResult:
         """Set up the option flow."""
         if self._config_entry.entry_id not in self.hass.data[DOMAIN]:
@@ -364,9 +364,7 @@ class SkyQOptionsFlowHandler(config_entries.OptionsFlow):
         advanced_input[CONF_ADD_BACKUP] = self._add_backup
         return advanced_input
 
-    async def async_step_retry(
-        self, user_input=None
-    ):  # pylint: disable=unused-argument
+    async def async_step_retry(self, user_input=None):  # pylint: disable=unused-argument
         """Handle a failed connection."""
         errors = {"base": "cannot_connect"}
 
