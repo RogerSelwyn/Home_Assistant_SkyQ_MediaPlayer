@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.11.12 (2025/01/30)
+### 🧰 Maintenance
+- [Change ssdp import inline with HA core 2025.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/adc68db866c09aa16a586d36bf7efb1371696823) - @RogerSelwyn
+
+### 📚 Documentation
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c145e67c95bf985b32393133761e84936d4b449c) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ab8b8c79843d8308e315a4f6e5cfd85db4749579) - @RogerSelwyn
+
+### 🔖 Release
+- [Auto update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0edadf57368692b9ec297e0d4636519ab09188a9) - @actions-user
+
+
 ## v2.11.11 (2024/10/03)
 ### 🐛 Fixes
 - [Fix deprecated constants](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/53c02c86ce2b4061406957fab32b5b366139e85c) - @RogerSelwyn
