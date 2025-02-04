@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.12.0 (2025/02/04)
+### ✨ Enhancements
+- [Add re-configure suppprt](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/669548a9c3900e8e577a90a41cf0ba849b6f3139) - @RogerSelwyn
+
+### 🔖 Release
+- [Release v2.12.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/fd4829ef5b642d30134ccc172a2df34d63c6000b) - @RogerSelwyn
+
 ## v2.11.12 (2025/01/30)
 ### 🧰 Maintenance
 - [Change ssdp import inline with HA core 2025.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/adc68db866c09aa16a586d36bf7efb1371696823) - @RogerSelwyn
