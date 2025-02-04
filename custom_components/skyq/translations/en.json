@@ -1,7 +1,8 @@
 {
   "config": {
     "abort": {
-      "already_configured": "This Sky Q box is already configured."
+      "already_configured": "This Sky Q box is already configured.",
+      "reconfigure_successful": "Re-configuration was successful"
     },
     "error": {
       "cannot_connect": "Failed to connect to host.",

@@ -42,7 +42,7 @@ from .const import (
     MR_DEVICE,
     SKYQREMOTE,
 )
-from .schema import DATA_SCHEMA, RECONFIGURE_SCHEMA
+from .schema import DATA_SCHEMA
 from .utils import async_get_channel_data, convert_sources_json, host_valid
 
 SORT_CHANNELS = False
@@ -142,7 +142,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             self.host = user_input[CONF_HOST]
-            errors = await self._async_validate_input(self.host)
+            errors = await self._async_validate_input(self.host, reconfigure=True)
             if not errors:
                 return self.async_update_reload_and_abort(
                     entry, data_updates=user_input
@@ -162,7 +162,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Return True if other_flow is matching this flow."""
         return other_flow.host == self.host
 
-    async def _async_setuniqueid(self, host):
+    async def _async_setuniqueid(self, host, reconfigure=False):
         self._async_abort_entries_match({CONF_HOST: host})
         remote = await self.hass.async_add_executor_job(SkyQRemote, host)
         if not remote.device_setup:
@@ -173,21 +173,22 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 "W0010 - Device type - %s - is not supported", remote.device_type
             )
 
-        device_info = await self.hass.async_add_executor_job(
-            remote.get_device_information
-        )
+        if not reconfigure:
+            device_info = await self.hass.async_add_executor_job(
+                remote.get_device_information
+            )
 
-        await self.async_set_unique_id(
-            device_info.countryCode
-            + "".join(e for e in device_info.serialNumber.casefold() if e.isalnum())
-        )
-        self._abort_if_unique_id_configured()
+            await self.async_set_unique_id(
+                device_info.countryCode
+                + "".join(e for e in device_info.serialNumber.casefold() if e.isalnum())
+            )
+            self._abort_if_unique_id_configured()
 
-    async def _async_validate_input(self, host):
+    async def _async_validate_input(self, host, reconfigure=False):
         errors = {}
         if host_valid(host):
             try:
-                await self._async_setuniqueid(host)
+                await self._async_setuniqueid(host, reconfigure)
             except CannotConnect:
                 errors["base"] = "cannot_connect"
 

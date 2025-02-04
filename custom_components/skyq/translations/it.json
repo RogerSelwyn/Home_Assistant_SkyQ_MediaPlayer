@@ -1,7 +1,8 @@
 {
   "config": {
     "abort": {
-      "already_configured": "Questa casella Sky Q è già configurata.."
+      "already_configured": "Questa casella Sky Q è già configurata.",
+      "reconfigure_successful": "La riconfigurazione ha avuto successo"
     },
     "error": {
       "cannot_connect": "Impossibile connettersi all'host.",
