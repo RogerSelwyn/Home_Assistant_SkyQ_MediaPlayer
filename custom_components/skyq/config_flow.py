@@ -72,7 +72,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input:
             self.host = user_input[CONF_HOST]
-            errors = self._async_validate_input(self.host)
+            errors = await self._async_validate_input(self.host)
             if not errors:
                 return self.async_create_entry(
                     title=user_input[CONF_NAME], data=user_input
