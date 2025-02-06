@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.12.1 (2025/02/06)
+### 🐛 Fixes
+- [Fix issue with validation in config flow](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/071546d708228a36532fdba59585bb2db6f49615) - @RogerSelwyn
+
+### 📚 Documentation
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0156a570185c06e65aa5b8a08ac36c3b8493cb12) - @RogerSelwyn
+
+### 🔖 Release
+- [Release v2.12.1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d239af4062911a9f15ecd6f74c3949181c9175d1) - @RogerSelwyn
+
 ## v2.12.0 (2025/02/04)
 ### ✨ Enhancements
 - [Add re-configure support](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/669548a9c3900e8e577a90a41cf0ba849b6f3139) - @RogerSelwyn
