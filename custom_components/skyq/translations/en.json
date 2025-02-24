@@ -70,13 +70,6 @@
     }
   },
   "entity": {
-    "media_player": {
-      "skyq": {
-        "state": {
-          "UNSUPPORTED": "Unsupported"
-        }
-      }
-    },
     "sensor": {
       "schedule": {
         "name": "Schedule",

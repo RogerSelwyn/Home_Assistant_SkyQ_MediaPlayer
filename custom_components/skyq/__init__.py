@@ -22,6 +22,7 @@ from .const import (
     STORAGE_ENCODING,
     UNDO_UPDATE_LISTENER,
 )
+from .schema import PLATFORM_SCHEMA  # noqa: F401
 
 _LOGGER = logging.getLogger(__name__)
 

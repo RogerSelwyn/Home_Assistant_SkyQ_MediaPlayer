@@ -71,13 +71,6 @@
     }
   },
   "entity": {
-    "media_player": {
-      "skyq": {
-        "state": {
-          "UNSUPPORTED": "Nicht unterstützt"
-        }
-      }
-    },
     "sensor": {
       "schedule": {
         "name": "Zeitplan",
