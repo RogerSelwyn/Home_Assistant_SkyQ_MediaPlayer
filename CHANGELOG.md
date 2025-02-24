@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.13.0 (2025/02/24)
+### 🐛 Fixes
+- [Hassfest fixes](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b08b960c6bbf8bfdfe6bdbf4d207b0de01543172) - @RogerSelwyn
+
+### 🧰 Maintenance
+- [Add translations for states](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/799af71b2e8be090b46487896305deff2ffcee82) - @RogerSelwyn
+
+### 🔖 Release
+- [Release v2.13.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/aceedcd78052d51d5026725a349e17f93425653f) - @RogerSelwyn
+
 ## v2.12.1 (2025/02/06)
 ### 🐛 Fixes
 - [Fix issue with validation in config flow](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/071546d708228a36532fdba59585bb2db6f49615) - @RogerSelwyn
@@ -28,7 +38,10 @@
 ### 🔖 Release
 - [Auto update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0edadf57368692b9ec297e0d4636519ab09188a9) - @actions-user
 
-
+## Past Changes
+<details>
+  <summary>Changes 2024</summary>
+  
 ## v2.11.11 (2024/10/03)
 ### 🐛 Fixes
 - [Fix deprecated constants](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/53c02c86ce2b4061406957fab32b5b366139e85c) - @RogerSelwyn
@@ -67,7 +80,11 @@
 
 ### 🔖 Release
 - [Release v2.11.8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/ac9693b74a5f929dde30601c146007a005226436) - @RogerSelwyn
+</details>
 
+<details>
+  <summary>Changes 2023</summary>
+  
 ## v2.11.7 (2023/12/27)
 ### 🔨 Maintenance
 - [Minor code tidy up](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d2a879c562dae4159ea068e8ceb2823ebdf79d9f) - @RogerSelwyn
@@ -201,8 +218,8 @@
 - [Fix missing storage and schedule sensors](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0c3a3ae05c9cbf8bc7cdc20234297e5cf1c5f030) - @RogerSelwyn
 ### Maintenance
 - [Bump to v2.10.8](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/f3fd90a1497123ad910defd4a9e046af313f9cec) - @RogerSelwyn
+</details>
 
-## Past Changes
 <details>
   <summary>Changes 2022</summary>
 
