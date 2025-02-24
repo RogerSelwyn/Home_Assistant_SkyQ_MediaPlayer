@@ -75,6 +75,7 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     _attr_native_unit_of_measurement = UnitOfInformation.GIGABYTES
     _attr_has_entity_name = True
     _unrecorded_attributes = frozenset((CONST_SKYQ_STORAGE_MAX))
+    _attr_translation_key = "storage"
 
     def __init__(self, hass, remote, config):
         """Initialize the used storage sensor."""
@@ -87,11 +88,6 @@ class SkyQUsedStorage(SkyQEntity, SensorEntity):
     def device_info(self):
         """Entity device information."""
         return self.skyq_device_info
-
-    @property
-    def name(self):
-        """Get the name of the devices."""
-        return "Used Storage"
 
     @property
     def unique_id(self):
@@ -171,6 +167,7 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
     _attr_entity_category = EntityCategory.DIAGNOSTIC
     _attr_entity_registry_enabled_default = False
     _attr_has_entity_name = True
+    _attr_translation_key = "schedule"
 
     def __init__(self, hass, remote, config):
         """Initialize the used storage sensor."""
@@ -186,11 +183,6 @@ class SkyQSchedule(SkyQEntity, SensorEntity):
     def device_info(self):
         """Entity device information."""
         return self.skyq_device_info
-
-    @property
-    def name(self):
-        """Get the name of the devices."""
-        return "Schedule"
 
     @property
     def unique_id(self):

@@ -69,5 +69,27 @@
       "select_source": "Quelle für {entity_name} auswählen",
       "play_media": "Eingabetasten auf {entity_name}"
     }
+  },
+  "entity": {
+    "media_player": {
+      "skyq": {
+        "state": {
+          "UNSUPPORTED": "Nicht unterstützt"
+        }
+      }
+    },
+    "sensor": {
+      "schedule": {
+        "name": "Zeitplan",
+        "state": {
+          "none": "Keiner",
+          "recording": "Aufnahme",
+          "scheduled": "Geplant"
+        }
+      },
+      "storage": {
+        "name": "Gebrauchter Speicher"
+      }
+    }
   }
 }

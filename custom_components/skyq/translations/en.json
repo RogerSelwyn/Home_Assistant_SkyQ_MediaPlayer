@@ -68,5 +68,27 @@
       "select_source": "Select source for {entity_name}",
       "play_media": "Enter buttons on {entity_name}"
     }
+  },
+  "entity": {
+    "media_player": {
+      "skyq": {
+        "state": {
+          "UNSUPPORTED": "Unsupported"
+        }
+      }
+    },
+    "sensor": {
+      "schedule": {
+        "name": "Schedule",
+        "state": {
+          "none": "None",
+          "recording": "Recording",
+          "scheduled": "Scheduled"
+        }
+      },
+      "storage": {
+        "name": "Used Storage"
+      }
+    }
   }
 }

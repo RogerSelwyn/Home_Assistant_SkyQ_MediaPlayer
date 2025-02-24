@@ -182,6 +182,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
     """Representation of a SkyQ Box."""
 
     _attr_has_entity_name = True
+    _attr_translation_key = "skyq"
 
     def __init__(
         self,

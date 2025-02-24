@@ -71,5 +71,27 @@
       "select_source": "Seleziona la sorgente per {entity_name}",
       "play_media": "Inserisci i pulsanti su {entity_name}"
     }
+  },
+  "entity": {
+    "media_player": {
+      "skyq": {
+        "state": {
+          "UNSUPPORTED": "Unsupported"
+        }
+      }
+    },
+    "sensor": {
+      "schedule": {
+        "name": "Programma",
+        "state": {
+          "none": "Nessuno",
+          "recording": "Registrazione",
+          "scheduled": "Programmato"
+        }
+      },
+      "storage": {
+        "name": "Stoccaggio usato"
+      }
+    }
   }
 }
