@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.13.1 (2025/02/25)
+### 🐛 Fixes
+- [Handle race errors on status storage update](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c23793b81e81c0bb7c1e561a4df7c822cd892779) - @RogerSelwyn
+
+### 🔖 Release
+- [Release v2.13.1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/82c60c6bf694554215d2e7de6c3d64951829dd75) - @RogerSelwyn
+
 ## v2.13.0 (2025/02/24)
 ### 🐛 Fixes
 - [Hassfest fixes](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b08b960c6bbf8bfdfe6bdbf4d207b0de01543172) - @RogerSelwyn
