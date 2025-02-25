@@ -1,4 +1,5 @@
 """Constants for SkyQ."""
+
 from datetime import datetime, timedelta
 
 from homeassistant.components.media_player import MediaPlayerEntityFeature
@@ -129,6 +130,7 @@ REMOTE_BUTTONS = {
 }
 
 STORAGE_ATTRIBUTES = "attributes"
+STORAGE_LAST_UPDATED = "last_updated"
 STORAGE_ENCODING = "UTF8"
 STORAGE_HOST = "host"
 STORAGE_HOSTS = "hosts"

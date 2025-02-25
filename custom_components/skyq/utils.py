@@ -1,4 +1,5 @@
 """Utilities for the skyq platform."""
+
 import collections
 import ipaddress
 import json
@@ -6,9 +7,10 @@ import logging
 import os
 import re
 from operator import attrgetter
+from time import sleep
 
 from homeassistant.const import Platform
-
+from homeassistant.util import dt as dt_util
 from pyskyqremote.skyq_remote import SkyQRemote
 
 from .const import (
@@ -18,6 +20,7 @@ from .const import (
     STORAGE_ENCODING,
     STORAGE_HOST,
     STORAGE_HOSTS,
+    STORAGE_LAST_UPDATED,
 )
 
 CHAR_REPLACE = {" ": "", "+": "plus", "_": "", ".": ""}
@@ -132,16 +135,29 @@ def read_state(statefile, sensor_type, config_host):
 
 def write_state(statefile, sensor_type, config_host, new_attributes):
     """Write state to storage."""
+    _LOGGER.info("Statefile update for: %s - %s", sensor_type, config_host)
+    for _ in range(4):
+        if _do_statefile_update(statefile, sensor_type, config_host, new_attributes):
+            return
+        sleep(0.2)
+    _LOGGER.warning("Error reading statefile for: %s - %s", sensor_type, config_host)
+
+
+def _do_statefile_update(statefile, sensor_type, config_host, new_attributes):
     file_content = []
     old_sensor = None
+
     if os.path.isfile(statefile):
         with open(statefile, "r", encoding=STORAGE_ENCODING) as infile:
-            old_file_content = json.load(infile)
-            for sensor in old_file_content:
-                if sensor[Platform.SENSOR] != sensor_type:
-                    file_content.append(sensor)
-                else:
-                    old_sensor = sensor
+            try:
+                old_file_content = json.load(infile)
+                for sensor in old_file_content:
+                    if sensor[Platform.SENSOR] != sensor_type:
+                        file_content.append(sensor)
+                    else:
+                        old_sensor = sensor
+            except json.JSONDecodeError:
+                return False
 
     sensor_hosts = []
     if old_sensor:
@@ -154,6 +170,7 @@ def write_state(statefile, sensor_type, config_host, new_attributes):
     host_content = {
         STORAGE_HOST: config_host,
         STORAGE_ATTRIBUTES: new_attributes,
+        STORAGE_LAST_UPDATED: dt_util.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
     }
     sensor_hosts.append(host_content)
     sensor_content = {
@@ -164,6 +181,7 @@ def write_state(statefile, sensor_type, config_host, new_attributes):
 
     with open(statefile, "w", encoding=STORAGE_ENCODING) as outfile:
         json.dump(file_content, outfile, ensure_ascii=False, indent=4)
+    return True
 
 
 async def async_get_device_info(hass, remote, unique_id):
@@ -189,7 +207,7 @@ async def async_get_device_info(hass, remote, unique_id):
 def host_valid(host):
     """Return True if hostname or IP address is valid."""
     try:
-        return ipaddress.ip_address(host).version == ((4 or 6))
+        return ipaddress.ip_address(host).version == (4 or 6)
     except ValueError:
         disallowed = re.compile(r"[^a-zA-Z\d\-]")
         return all(x and not disallowed.search(x) for x in host.split("."))
