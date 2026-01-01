@@ -1,13 +1,12 @@
 """
 A utility function to generate YAML config for SkyQ media players.
 
-Generates modern Template integration YAML intended for use with:
-  template: !include_dir_merge_list templates/
+Generates modern Template integration YAML.
 
 This version:
-- Writes generated YAML files into <config_root>/templates/
+- Writes generated YAML files into <config_root>/ (Home Assistant root config dir)
 - Reads skyqswitchalias.yaml from <config_root>/
-- Uses modern template switch syntax
+- Uses modern template switch syntax (no legacy template switch platform)
 """
 
 import logging
@@ -48,35 +47,33 @@ class SwitchMaker:
         # Resolve Home Assistant config root safely
         self._config_root = self._resolve_config_root(config_dir)
 
-        # Always write into <config_root>/templates/
-        self._templates_dir = _path.join(self._config_root, "templates")
-        os.makedirs(self._templates_dir, exist_ok=True)
-
         self._f = None
         self._first_switch_written = False
 
     @staticmethod
     def _resolve_config_root(config_dir: str) -> str:
-        """Return the HA config directory (handles being passed a file path)."""
+        """
+        Return the HA config directory.
+
+        Handles being passed a file path (e.g. /config/configuration.yaml)
+        by using its parent directory.
+        """
         if not config_dir:
+            # HA typically runs with /config as CWD, but don't assume: use CWD.
             return os.getcwd()
 
         p = _path.abspath(config_dir)
 
-        # If it's a file (or looks like one), use parent directory
+        # If it's a file (or looks like one), use its parent directory
         if _path.isfile(p) or p.lower().endswith((".yaml", ".yml")):
-            p = _path.dirname(p)
-
-        # If they passed .../templates, treat its parent as config root
-        if _path.basename(p).lower() == "templates":
             p = _path.dirname(p)
 
         return p
 
     def create_file(self):
-        """Create the switch file."""
+        """Create the switch file in the config root."""
         out_path = _path.join(
-            self._templates_dir,
+            self._config_root,
             f"skyq{self._room.replace(' ', '')}.yaml",
         )
 
@@ -96,7 +93,7 @@ class SwitchMaker:
         self._add_switch("ff", "fastforward", "media_next_track")
         self._add_switch("rw", "rewind", "media_previous_track")
 
-        # Channel / source switches
+        # Channel / source switches (deduplicate preserving order)
         for channel in dict.fromkeys(self._channels):
             self._add_switch(channel, channel, "select_source", source=True)
 
@@ -128,6 +125,7 @@ class SwitchMaker:
         if self._first_switch_written:
             return
 
+        # This file is intended to be included under `template:` as a list item.
         self._f.write("- switch:\n")
         self._first_switch_written = True
 
@@ -156,3 +154,4 @@ class SwitchMaker:
         self._f.write("        - delay: \"00:00:10\"\n")
         self._f.write("      turn_off:\n")
         self._f.write("        - stop: \"\"\n")
+
