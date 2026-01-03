@@ -1,5 +1,28 @@
 # Changelog
 
+## v2.14.0 (2026/01/03)
+### 🧰 Maintenance
+- [Workflow ordering](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a81b5d44b82778dbd73ce36664d1c87db3f5837e) - @RogerSelwyn
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8416de2e35bc1780b199b42c7a9792d321bd3f38) - @RogerSelwyn
+- [Delete .github/dependabot.yml](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/d6990c807574df11ecf4edff3d89988f53324400) - @RogerSelwyn
+
+### ⬆️ Dependencies
+- [bump actions/checkout from 4 to 5](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/09c5751e2928f3f9780247fa324e04ad6fde1bea) - @dependabot[bot]
+- [bump actions/stale from 9 to 10](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/095d5e20a4a8a536dbf445682967dff701872c14) - @dependabot[bot]
+
+### 📚 Documentation
+- [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/748debf767564f66e018d1906ec26c51c28f34c7) - @RogerSelwyn
+
+### 🔖 Release
+- [Release v2.14.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/840f978293e5526ab625ff234b24727930a2523f) - @RogerSelwyn
+
+### Other
+- [Migrate generated switches to modern template syntax](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/868685f276fc514d68d9ad462ee28f430a7e0bc1) - @andypburke
+- [Write generated template YAML to config root to avoid breaking change](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/41e7d8a172f3ce2a0e2fb6429bd2b34025975342) - @andypburke
+
+
+
+
 ## v2.13.1 (2025/02/25)
 ### 🐛 Fixes
 - [Handle race errors on status storage update](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/c23793b81e81c0bb7c1e561a4df7c822cd892779) - @RogerSelwyn
