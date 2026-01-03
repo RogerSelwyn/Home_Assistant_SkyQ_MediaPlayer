@@ -1,6 +1,10 @@
 # Changelog
 
 ## v2.14.0 (2026/01/03)
+### 🐛 Fixes
+- [Migrate generated switches to modern template syntax](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/868685f276fc514d68d9ad462ee28f430a7e0bc1) - @andypburke
+- [Write generated template YAML to config root to avoid breaking change](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/41e7d8a172f3ce2a0e2fb6429bd2b34025975342) - @andypburke
+  
 ### 🧰 Maintenance
 - [Workflow ordering](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a81b5d44b82778dbd73ce36664d1c87db3f5837e) - @RogerSelwyn
 - [Update README.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8416de2e35bc1780b199b42c7a9792d321bd3f38) - @RogerSelwyn
@@ -15,11 +19,6 @@
 
 ### 🔖 Release
 - [Release v2.14.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/840f978293e5526ab625ff234b24727930a2523f) - @RogerSelwyn
-
-### Other
-- [Migrate generated switches to modern template syntax](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/868685f276fc514d68d9ad462ee28f430a7e0bc1) - @andypburke
-- [Write generated template YAML to config root to avoid breaking change](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/41e7d8a172f3ce2a0e2fb6429bd2b34025975342) - @andypburke
-
 
 
 
