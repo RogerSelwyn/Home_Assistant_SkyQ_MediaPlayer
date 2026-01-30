@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.14.1 (2026/01/30)
+### 🐛 Fixes
+- [Fix type for live recordings](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/12b0f9ed336b1c64f763d6b8592e7024a818da36) - @RogerSelwyn
+
+### 🔖 Release
+- [Release v2.14.1](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/a6c485e578d3d9164d3564f8c11571877046aa2d) - @RogerSelwyn
+
+
+
+
 ## v2.14.0 (2026/01/03)
 ### 🐛 Fixes
 - [Migrate generated switches to modern template syntax](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/868685f276fc514d68d9ad462ee28f430a7e0bc1) - @andypburke
