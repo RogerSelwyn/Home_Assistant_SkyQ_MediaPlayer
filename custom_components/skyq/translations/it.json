@@ -14,7 +14,7 @@
           "host": "Host",
           "name": "Nome"
         },
-        "description": "Imposta l'integrazione Sky Q. In caso di problemi con la configurazione, visitare: https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer \n\nAccertarsi che la casella Sky Q sia accesa.",
+        "description": "Imposta l'integrazione Sky Q. Accertarsi che la casella Sky Q sia accesa.",
         "title": "Sky Q"
       },
       "confirm": {

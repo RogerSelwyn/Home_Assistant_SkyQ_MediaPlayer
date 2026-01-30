@@ -14,7 +14,7 @@
           "host": "Host",
           "name": "Name"
         },
-        "description": "Set up Sky Q integration. If you have problems with configuration go to: https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer \n\nEnsure that your Sky Q box is powered on."
+        "description": "Set up Sky Q integration. Ensure that your Sky Q box is powered on."
       },
       "confirm": {
         "description": "Do you want to install {host}?"
