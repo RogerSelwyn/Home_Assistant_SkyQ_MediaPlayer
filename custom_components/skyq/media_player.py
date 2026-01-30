@@ -625,7 +625,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         )
         for recording in recordings.recordings:
             if current_programme.programmeuuid == recording.programmeuuid:
-                self._entity_attr.skyq_media_typee = SKYQ_LIVEREC
+                self._entity_attr.skyq_media_type = SKYQ_LIVEREC
 
     async def _async_get_recording(self, current_media):
         recording = await self.hass.async_add_executor_job(

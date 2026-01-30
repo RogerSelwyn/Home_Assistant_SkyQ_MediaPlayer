@@ -207,7 +207,8 @@ async def async_get_device_info(hass, remote, unique_id):
 def host_valid(host):
     """Return True if hostname or IP address is valid."""
     try:
-        return ipaddress.ip_address(host).version == (4 or 6)
+        ipaddress.ip_address(host)
+        return True
     except ValueError:
         disallowed = re.compile(r"[^a-zA-Z\d\-]")
         return all(x and not disallowed.search(x) for x in host.split("."))

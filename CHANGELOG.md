@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.14.1 (2026/01/30)
+### 🐛 Fixes
+- Fix IPv6 address validation in host validation (IPv6 was incorrectly rejected)
+- Fix live recording media type attribute typo (SKYQ_LIVEREC was never set)
+
 ## v2.14.0 (2026/01/03)
 ### 🐛 Fixes
 - [Migrate generated switches to modern template syntax](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/868685f276fc514d68d9ad462ee28f430a7e0bc1) - @andypburke

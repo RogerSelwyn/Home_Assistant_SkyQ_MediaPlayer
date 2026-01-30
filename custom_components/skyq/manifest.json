@@ -2,6 +2,7 @@
   "domain": "skyq",
   "name": "Sky Q",
   "codeowners": [
+    "@jagjitreehal",
     "@rogerselwyn"
   ],
   "config_flow": true,
@@ -9,10 +10,10 @@
     "http",
     "ssdp"
   ],
-  "documentation": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer",
+  "documentation": "https://github.com/jagjitreehal/Home_Assistant_SkyQ_MediaPlayer",
   "integration_type": "device",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues",
+  "issue_tracker": "https://github.com/jagjitreehal/Home_Assistant_SkyQ_MediaPlayer/issues",
   "quality_scale": "silver",
   "requirements": [
     "pyskyqremote==0.3.26"
@@ -25,5 +26,5 @@
       "nt": "urn:schemas-nds-com:device:MRSkyControl:2"
     }
   ],
-  "version": "v2.14.0"
+  "version": "v2.14.1"
 }
