@@ -1,12 +1,13 @@
 """
 A utility function to generate YAML config for SkyQ media players.
 
-Generates modern Template integration YAML.
+Generates modern Template integration YAML intended for use with:
+  template: !include_dir_merge_list templates/
 
 This version:
-- Writes generated YAML files into <config_root>/ (Home Assistant root config dir)
+- Writes generated YAML files into <config_root>/templates/
 - Reads skyqswitchalias.yaml from <config_root>/
-- Uses modern template switch syntax (no legacy template switch platform)
+- Uses modern template switch syntax
 """
 
 import logging
@@ -47,6 +48,11 @@ class SwitchMaker:
         # Resolve Home Assistant config root safely
         self._config_root = self._resolve_config_root(config_dir)
 
+        # Always write into <config_root>/templates/
+        self._templates_dir = _path.join(self._config_root, "templates")
+
+        os.makedirs(self._templates_dir, exist_ok=True)
+
         self._f = None
         self._first_switch_written = False
 
@@ -68,12 +74,16 @@ class SwitchMaker:
         if _path.isfile(p) or p.lower().endswith((".yaml", ".yml")):
             p = _path.dirname(p)
 
+        # If they passed .../templates, treat its parent as config root
+        if _path.basename(p).lower() == "templates":
+            p = _path.dirname(p)
+
         return p
 
     def create_file(self):
-        """Create the switch file in the config root."""
+        """Create the switch file."""
         out_path = _path.join(
-            self._config_root,
+            self._templates_dir,
             f"skyq{self._room.replace(' ', '')}.yaml",
         )
 
