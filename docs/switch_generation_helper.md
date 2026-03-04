@@ -34,11 +34,7 @@ media_player:
 
 To integrate these generated switch configuration files, add the generated yaml to your configuration.yaml. The following example configuration implements the generated switches from the generate_switches_for_channels function.
 
-```yaml
-switch:
-- platform: template
-  switches: !include  skyq<room>.yaml
-```
+The switches are generated as `skyq<room>.yaml` in the `<config_root>/templates` directory, which should be included in your configuration using a `!include_dir` function.
 
 ## Aliases
 
