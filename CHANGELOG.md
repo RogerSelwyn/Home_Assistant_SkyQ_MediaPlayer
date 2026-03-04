@@ -1,5 +1,24 @@
 # Changelog
 
+## v3.0.0 (2026/03/04)
+### 💥 Breaking Changes
+- [Use templates directory](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bad3b9b962e86fb004c72ff3cf37392071b203ed) - @RogerSelwyn
+
+### 🐛 Fixes
+- [Fix hassfest validation](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/66293bd1b3fc13458a2d0b38237d54bd67efa55c) - @RogerSelwyn
+
+### 🧰 Maintenance
+- [Add local brand logos](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/847b8c76a568e0cb23efe778b347093c0b93e5cf) - @RogerSelwyn
+
+### 🔖 Release
+- [Release v3.0.0](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e46c5108520ac8864898e0fc567da5c210f7a1bc) - @RogerSelwyn
+
+### Other
+- [Use templates directory](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/885cc8ebfa86e1bf57aeb9f689bd784d2d8ce8b9) - @RogerSelwyn
+
+
+
+
 ## v2.14.1 (2026/01/30)
 ### 🐛 Fixes
 - [Fix type for live recordings](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/12b0f9ed336b1c64f763d6b8592e7024a818da36) - @RogerSelwyn
