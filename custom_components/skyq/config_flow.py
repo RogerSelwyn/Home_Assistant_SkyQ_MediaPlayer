@@ -182,7 +182,7 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 device_info.countryCode
                 + "".join(e for e in device_info.serialNumber.casefold() if e.isalnum())
             )
-            self._abort_if_unique_id_configured()
+            self._abort_if_unique_id_configured(updates={CONF_HOST: host})
 
     async def _async_validate_input(self, host, reconfigure=False):
         errors = {}
