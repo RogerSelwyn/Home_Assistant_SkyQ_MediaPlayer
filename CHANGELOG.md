@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.0.1 (2026/06/17)
+### 🐛 Fixes
+- [refresh entry host on SSDP rediscovery (DHCP drift)](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b1202e3e710d8100bfac3cfc9f82c74a183881ec) - @Nino6689
+
+### 📚 Documentation
+- [Update switchmaker docs](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5d97509d7dcd2949cf585d467abefa5107c3bf57) - @RogerSelwyn
+- [More doc changes](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b31f229515a3d6ef5f6176e7c20b762e30f24476) - @RogerSelwyn
+
+### 🔖 Release
+- [Auto update manifest.json](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/bc4373a28713b63eb9e3f5328f7cf022f1f61f78) - @actions-user
+
+
+
+
 ## v3.0.0 (2026/03/04)
 ### 💥 Breaking Changes
 - [Use templates directory](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/885cc8ebfa86e1bf57aeb9f689bd784d2d8ce8b9) - @RogerSelwyn
