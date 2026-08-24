@@ -1,14 +1,11 @@
 # Changelog
 
 ## v3.0.2 (2026/08/24)
-### 🔖 Release
-- [Release v3.0.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0f704c3330a9e3fd6fcd64e0dd6ef5ccba33f117) - @RogerSelwyn
-
-### Other
+### 🐛 Fixes
 - [Fix live-record crash + two startup robustness issues](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5c7e1264e35bb77d44990000029423bcdf45ecaf) - @fuzzybear62
 
-
-
+### 🔖 Release
+- [Release v3.0.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0f704c3330a9e3fd6fcd64e0dd6ef5ccba33f117) - @RogerSelwyn
 
 ## v3.0.1 (2026/06/17)
 ### 🐛 Fixes
