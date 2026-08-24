@@ -382,6 +382,7 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         if not self._channel_list:
             self._channel_list = await self._async_get_channel_list()
 
+        error_state = False
         if self._config.device_info:
             error_state = await self._async_update_state()
         if error_state:
@@ -623,6 +624,10 @@ class SkyQDevice(SkyQEntity, MediaPlayerEntity):
         recordings = await self.hass.async_add_executor_job(
             self._remote.get_recordings, "RECORDING"
         )
+        if not recordings:
+            # get_recordings can transiently return None (box powering up/down or
+            # not answering); skip live-record detection this cycle rather than raise.
+            return
         for recording in recordings.recordings:
             if current_programme.programmeuuid == recording.programmeuuid:
                 self._entity_attr.skyq_media_type = SKYQ_LIVEREC
