@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.0.2 (2026/08/24)
+### 🔖 Release
+- [Release v3.0.2](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/0f704c3330a9e3fd6fcd64e0dd6ef5ccba33f117) - @RogerSelwyn
+
+### Other
+- [Fix live-record crash + two startup robustness issues](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5c7e1264e35bb77d44990000029423bcdf45ecaf) - @fuzzybear62
+
+
+
+
 ## v3.0.1 (2026/06/17)
 ### 🐛 Fixes
 - [refresh entry host on SSDP rediscovery (DHCP drift)](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b1202e3e710d8100bfac3cfc9f82c74a183881ec) - @Nino6689
