@@ -53,11 +53,6 @@ class SkyQEntity:
 
     def _set_via_device(self, device_info, gateway_identifier):
         """Link to a registered gateway without using deprecated registry APIs."""
-        if "via_device_id" not in dr.DeviceInfo.__annotations__:
-            # Compatibility with older supported Home Assistant versions.
-            device_info["via_device"] = gateway_identifier
-            return
-
         registry = dr.async_get(self._hass)
         gateways = [
             device
