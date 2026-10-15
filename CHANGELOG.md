@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.0.3 (2026/10/15)
+### 🐛 Fixes
+- [use registry device IDs for SkyQ gateway links](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8927ebbeeedec2cd7eb1589c0ec87321418442e2) - @xtimmy86x
+- [require HA 2026.8 and remove legacy device compatibility](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/b46fa423d2a48091d9416fa0bbd098093bf1bde8) - @xtimmy86x
+
+### 📚 Documentation
+- [Update CHANGELOG.md](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/609b9e5fa91841eb763ec189314a93ca7fec7416) - @RogerSelwyn
+
+### 🔖 Release
+- [Release v3.0.3](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/e7c24ef6fbbbb44d3b28046fec83fd668dd61448) - @RogerSelwyn
+
+
+
+
 ## v3.0.2 (2026/08/24)
 ### 🐛 Fixes
 - [Fix live-record crash + two startup robustness issues](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/5c7e1264e35bb77d44990000029423bcdf45ecaf) - @fuzzybear62
