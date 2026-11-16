@@ -54,7 +54,6 @@ class SkyqConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Example config flow."""
 
     VERSION = 2
-    CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_POLL
     host: str | None = None
 
     def __init__(self):
