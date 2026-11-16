@@ -1,11 +1,11 @@
 # Changelog
 
 ## v3.0.4 (2026/11/16)
+### 🧰 Maintenance
+- [Remove deprecated CONNECTION_CLASS declaration](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/15f5fbe13b1c52a55edffdc1d00582893c97aa07) - @steve-prentice
+
 ### 🔖 Release
 - [Release v3.0.4](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/8250bceaafde08cb26c2f04f7e22c1fa8126a715) - @RogerSelwyn
-
-### Other
-- [Remove deprecated CONNECTION_CLASS declaration](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/commit/15f5fbe13b1c52a55edffdc1d00582893c97aa07) - @steve-prentice
 
 
 
